@@ -1,0 +1,185 @@
+/*copied from http://www.zdnet.com/blog/btl/microsofts-windows-phone-7-potential-marketing-pitch-im-a-phone-too/37399?tag=nl.e539 18 AUG 2011 */
+body{font:normal 75%/1.7 "Segoe UI",sans-serif;color:#252525;background:#15293e url(http://localhost/CS150/images/bg-test.png) repeat-x 0 135px; padding-bottom: 10px; }
+
+/*start:userSignup*/
+.center_pure{
+  width: 760px ;
+  margin-left: auto ;
+  margin-right: auto ;
+  text-align: left;  
+}
+
+.center_purest{
+  margin-left: auto ;
+  margin-right: auto ;
+  text-align: left;  
+}
+
+.centeredtable{
+	padding-left: 10%;	
+}
+
+.comingSoon{
+	text-align: center;
+}
+
+.highlightMe{
+	width: 50%;
+	border-style: solid;
+	border-width: 1px;	
+	border-color: rgb(75, 52, 167);
+}
+
+#uplb_ident_explain
+{
+	padding: 10px 10px 10px 0;
+	background-color: rgb(229,227,228);
+	color: rgb(117,108,111);
+	text-align: justified;
+	width: 50% ;		
+    margin-left: auto ;
+    margin-right: auto ;
+	margin-bottom: 20px;
+	
+}
+
+.field_grouping_bar{
+	width: 100%;
+	height:40px;
+	padding-left:5px;
+	padding-right: 3px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	clear:both;
+	background-color: rgb(55,108,205);
+	display: block;
+	color: white;
+	text-align: left;
+	vertical-align: bottom;
+	font-family: "Segoe UI", Verdana, Tahoma;
+	font-size: 1.6em;
+}
+
+#div_table_col_left
+{
+	width: 120px;
+}
+#div_table_col_bigger
+{
+	width: 200px;
+}
+#div_table_col_right
+{
+	width: 120px;
+}
+#div_field_explain_logo
+{
+	float:left; 
+	height: 100%;
+	margin:10px; 	
+}
+
+.table_col_left
+{
+	width: 120px;
+}
+#table_col_bigger
+{
+	width: 200px;
+}
+.table_col_right
+{
+	width: 120px;
+}
+#field_explain_logo
+{
+	float:left; 
+	height: 100%;
+	margin:10px; 	
+}
+
+
+/*end:userSignup*/
+
+
+
+#main_container{
+	min-height: 90%;
+	margin: 0 auto;
+	width:900px;
+	background-color:#FFFFFF;
+	overflow: visible;
+}
+
+div #page_title
+{
+	clear: both;
+	font-family: "Segoe UI Light", Arial;
+	font-size: 32px;
+	padding-left: 20px;
+	float: left;	
+	color: rgb(79,79,79);
+}
+
+
+/*start:bloat alert, 18AUG2011*/
+#menu_bar{
+	width:900px;
+	height:42px;
+	padding:0px;
+	clear:both;
+	background-color: rgb(107,189,70);
+	display: block;
+	color: white;
+}
+#menu_bar ul{
+list-style:none;padding:0 0 0 0px;margin: 2px 2px 0px 2px;display:block;
+}
+#menu_bar ul li{
+margin: 5px 15px 0px 5px; 	/*top right bottom left*/
+list-style:none;display:inline;float:left;width:auto;height:42px;padding:0px;line-height:42px; font-family:"Segoe UI", Arial, Helvetica, sans-serif; font-size:13px;
+border-right: 1px;
+border-color: black;
+}
+#menu_bar ul li a{
+height:42px; width: auto;float:left;text-decoration:none; margin:0px 3px 0px 3px;color:#fff;text-align:center;
+padding: 0px 5px 0px 5px;
+}
+#menu_bar ul li a:hover{
+height:42px;width: auto;text-decoration:none;color: #fff; background:url('../images/menu_arrow.gif') no-repeat left;
+color: yellow;
+padding: 0px 5px 0px 5px;
+}
+#menu_bar ul li a.current{
+height:42px;width: auto;float:left;text-decoration:none;padding:0px;color: #fff;padding:0 0 0 25px; background:url('../images/menu_arrow.gif') no-repeat left; color: yellow;
+padding: 0px 5px 0px 5px;
+}
+
+#menu_bar ul li#menu_bar_current{
+	font-weight: bold;
+	font-size: 1.1em;
+}
+#menu_bar ul li#menu_bar_current a{
+	color: yellow;
+}
+/*end:bloat alert, 18AUG2011*/
+
+#graynavbar {    
+	CLEAR: both;
+	BORDER-BOTTOM: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; PADDING-BOTTOM: 8px; PADDING-LEFT: 17px; WIDTH: 864px; PADDING-RIGHT: 17px; BACKGROUND: url('../images/user-bg.png') #fefefe repeat-x; HEIGHT: 12px; OVERFLOW: hidden; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; PADDING-TOP: 8px; -moz-border-radius-bottomleft: 2px; -moz-border-radius-bottomright: 2px; -moz-border-radius-topleft: 2px; -moz-border-radius-topright: 2px;
+	background-color: rgb(238,238,238);
+}
+#graynavbar a{    color:#5F5F5F;     font-weight:bold;     text-decoration:none;     color:#5f5f5f}
+#graynavbar ul{    float:right;     margin:0;     padding:0}
+#graynavbar li{    border-right:1px solid #999;     padding-right:5px}
+#graynavbar .last{    margin-right:0;     border:none}
+#graynavbar .last:hover{    margin-right:0;  background-color:white;}
+#graynavbar h2, #graynavbar li{    float:left;     font-size:1em;     line-height:16px;     font-weight:bold;     list-style:none;     margin-right:5px;     margin-bottom:0;     margin-top:0;     padding-top:0;     padding-bottom:0}
+#graynavbar li img{    vertical-align:middle}
+
+#footer{
+	color: rgb(193, 193, 193);
+	background: url('../images/footer-bg.png') repeat-y;
+	padding: 5px 10px 5px 10px;
+	text-align: center;
+}

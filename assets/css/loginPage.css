@@ -1,0 +1,77 @@
+#left_content{
+width:320px;
+margin:10px;
+float:left;
+}
+.login_form_row{
+	float:left;
+	padding:4px 0 4px 0;
+}
+label.login_label{
+	width:70px;
+	float:left;
+	padding:3px 5px 0 0;
+	color: white;
+	text-align:right;
+}
+input.login_input{
+	width:153px;
+	height:18px;
+	float:left;
+	border:1px #9dbbc6 solid;
+	background-color:#fff;
+	color: #000;
+}
+input.login{
+	float:right;
+	padding:10px 20px 0 0;
+}
+.text_box{	
+	width:278px;
+	height: 96px;
+	padding: 15px;
+	background: rgb(55,129,204);		
+}
+div .errorNotice{
+	color: rgb(204,51,0);
+	font-size: 1.2em;
+}
+span #usernameFldMsg{	
+	color: rgb(248,248,248);
+	margin-left: 20%;
+}
+
+ul.loginWarning
+{
+	list-style: none;
+	margin: 0 0 1em 15px;
+	padding: 0;	
+}
+ul.loginWarning li
+{
+	line-height: 2em;
+	margin: .25em 0;
+	padding: 0 0 0 30px;	
+	background: url("../../images/appbar.close.rest_small.png") no-repeat 0 4px;	
+	
+}
+li ul{
+    margin: 0 0 0 30px;
+	list-style: disc;
+}
+li ul li{
+    padding-left: 0;
+	background: none;
+}
+/* Holly Hack to fix ie6 li bg */
+/* Hides from IE-mac \*/
+* html li{height: 1%;}
+/* End hide from IE-mac */
+div .signup_div
+{
+	text-align: left;
+}
+div .signup_div a.button:hover
+{
+	background-color: rgb(126,126,126);
+}

@@ -5,20 +5,22 @@ $this->load->view('html-generic/doctype.inc');
 <?php
 	$this->pageTitle = "UXT - Sign up";
 	$this->thisPage_menuCorrespond = "HOME";
+	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
-	$this->load->view('css/body_all.css');
-	$this->load->view('css/userSignup.css');
-	$this->load->view('css/buttonOK.css');
-	$this->load->view('javascript/jquery-core.inc');
-	$this->load->view('javascript/proceedbutton_jquery.inc');
-	$this->load->view('javascript/resetbutton_jquery.inc');
-	$this->load->view('javascript/form-validation/usersignup.js');
 ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
+	
+	<?php
+		$this->load->view('html-generic/jquery-core.inc');
+	?>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup-actionListener.js'; ?>"/></script>
 </head>
 <body>
-
-
-
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -26,8 +28,7 @@ $this->load->view('html-generic/doctype.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>
-		
+		?>		
 		<div id="graynavbar" >		
 			<!-- <ul>
 				<li>a</li>
@@ -105,26 +106,26 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="firstNameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="MiddleNameFld">							
-							<label class="label" for="MiddleName">Middle name</label>							
+						<div class="row" id="middleNameFld">							
+							<label class="label" for="middleName">Middle name</label>							
 							<div class="collection">
-								<input type="text" name="MiddleName" />
-								<input type="hidden" name="MiddleName_validate" value="0" />
+								<input type="text" name="middleName" />
+								<input type="hidden" name="middleName_validate" value="0" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
-								<span id="MiddleNameFldMsg"></span>
+								<span id="middleNameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="LastNameFld">							
-							<label class="label" for="LastName">Last name</label>							
+						<div class="row" id="lastNameFld">							
+							<label class="label" for="lastName">Last name</label>							
 							<div class="collection">
-								<input type="text" name="LastName" />
-								<input type="hidden" name="LastName_validate" value="0" />
+								<input type="text" name="lastName" />
+								<input type="hidden" name="lastName_validate" value="0" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
-								<span id="LastNameFldMsg"></span>
+								<span id="lastNameFldMsg"></span>
 							</div>
 						</div>
 						<div class="row" id="genderFld">							
@@ -272,13 +273,15 @@ $this->load->view('html-generic/doctype.inc');
 					
 				</div>
 				
-		</div><!--end of centralContainer-->
+			</div>
 			</form> <!--end of form -->
 		<div style=" clear:both;"></div>
+		</div><!--end of centralContainer-->
     </div><!--end of main content-->
 	
 <?php
 	$this->load->view('html-generic/footer.inc');
 ?>
 </body>
-<html>
+</div>
+</html>

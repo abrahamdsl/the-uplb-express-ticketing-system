@@ -7,6 +7,23 @@ class Login_model extends CI_Model {
 		parent::__construct();
 		$this->load->library('session');
 	}
+
+	// DEPRECATED 28 Nov 2011 1645
+	//function check_and_Act_On_Login($redirectTo = NULL, $loadThisView = NULL, $data = NULL)
+	
+	function getUserInfo_for_Panel()
+	{
+		/*  24NOV2011 1144 | Taken from Redbana Internship Project, then edited
+			made | abe | 15JUN2011_2343			
+		*/
+		
+		return array(
+						   'accountNum' => $this->session->userData('accountNum'),
+						   'lastName' => $this->session->userData('lastName'), 
+						   'firstName' => $this->session->userData('firstName'),
+						   'middleName' => $this->session->userData('middleName')
+		);	
+	}
 	
 	function isUser_LoggedIn()
 	{	
@@ -15,43 +32,38 @@ class Login_model extends CI_Model {
 		return $result;
 	}
 	
-	function check_and_Act_On_Login($redirectTo = NULL, $loadThisView = NULL, $data = NULL)
+	function logout()
 	{
-		/*	22 NOV 2011 | Taken from Redbana Internship Project
-			--------------------
-			made | abe | 02JUN2011_1340
-		    - this is a function intended to be called on by controllers, 
-			wherein a user is checked if logged in, and if not acts accordingly
-			based on the parameters passed by the calling controllers
-			If a user is logged in, function ends.
-			
-			ASSUMPTION:
-			Either $redirectTo or $loadThisView can be used.
-			Cannot be both null.
-			If both specified, $redirectTo is prioritized.
-			PARAMS:						
-			$redirectTo   :
-			$loadThisView :
-			$data         : error messages
-			
-			RETURNS:
-			nothing
-		*/
+		$data['logged_in'] = FALSE;
+		$this->session->set_userdata($data);
 		
-		if ( $this->isUser_LoggedIn() == FALSE )
-		{
-			if($redirectTo == NULL and $loadThisView == NULL)
-			{
-				die("check_and_Act_On_Login: Specify where to go!");
-			}else{
-				if($redirectTo != NULL){
-				    $this->session->set_userdata('LOGIN_WARNING', $data); 
-					redirect($redirectTo);			// as of 02JUN2011, the current problem is how to pass data by redirecting
-				}
-				if($loadThisView != NULL) $this->load->view($loadThisView, $data);				
-			}	
-		}
-	} // check_and_Act_On_Login
+		$this->session->sess_destroy();
+				
+	}
+	
+	function setUserSession( $accountNum, $name  )
+	{
+		/* made 24 NOV 2011 1130
+			sets the relevant UserSession Data for use throughout the app
+			(i.e. for the name and account number of the customer)
+			
+			$name - string array having "first", "middle" and "last" as indices
+			$accountNum - int var
+			
+			ASSUMPTION: all data passed here are already 'escaped'
+		*/
+		$data['firstName'] = $name['first'];
+		$data['middleName'] = $name['middle'];
+		$data['lastName'] = $name['last'];
+		$data['accountNum'] = $accountNum;
+		$data['logged_in'] = TRUE;
+		
+		$this->session->set_userdata($data);
+		
+		return true;
+	}
+	
+	
 
 }
 
