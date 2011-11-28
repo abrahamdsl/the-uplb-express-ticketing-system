@@ -6,6 +6,9 @@ class userAccountCtrl extends CI_Controller {
 	{
 		parent::__construct();		
 		$this->load->library('session');
+		$this->load->model('login_model');
+		$this->load->model('Account_model');
+		$this->load->model('Permission_model');
 	}
 	
 	function index()
@@ -15,9 +18,34 @@ class userAccountCtrl extends CI_Controller {
 			login-login
 			
 		*/
-		$this->load->view('ohHome');
+		if( $this->login_model->isUser_LoggedIn() )
+		{
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+			$this->load->view('homepage', $data);
+		}else{			
+			$this->userSignup();
+		}	
+	}//index
 	
-	}
+		
+	function newUserWelcome()
+	{
+		$step;
+
+		$step = $this->session->userdata('userSignup_step');	// get where stage it is
+		//$data['userSignup_step'] = 3;							// now next step
+		//$this->session->set_userdata($data);
+		//$isFunctionCallValid = isset($_POST["formValidityIndicator"]);		
+		
+		if( $step == 2  )
+		{			
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+			$this->load->view('newUserWelcome', $data);
+		}else{
+			redirect("userAccountCtrl"); // redirect to homepage
+		}
+		
+	}// newUserWelcome
 	
 	function userSignup()
 	{
@@ -31,10 +59,11 @@ class userAccountCtrl extends CI_Controller {
 		$this->session->set_userdata($data);
 		
 		$this->load->view('userSignup');		// now load the webpage
-	}
+	} //userSignup
 	
 	function userSignup_step2()
-	{
+	{		
+		
 		$step = $this->session->userdata('userSignup_step');
 		$status = $this->session->userdata('userSignup_status');
 		
@@ -42,39 +71,33 @@ class userAccountCtrl extends CI_Controller {
 		   however, this can be a hazard if some arbitrary HTML made with a form having such "studentnumber"
 		   submits to our url/function call
 			
-		*/
+		*/				
 		$isFunctionCallValid = isset($_POST["studentNumber"]);		
-		
 		
 		if(  $step == 1 &&  $isFunctionCallValid )
 		{					
 			$data['userSignup_step'] = 2;			// now, new step
-			
 			$this->session->set_userdata($data);
-			$this->load->view('userSignup_part2');
+			
+			$this->Account_model->createAccount();	// perform insertion to database			
+			
+			//create default permission
+			$this->Permission_model->createDefault( $this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ) );	
+		
+		// set these data for use while navigating the site (i.e., the nav bar)			
+			
+			$this->login_model->setUserSession(
+				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
+				$this->Account_model->getUser_Names( $this->input->post('username') )
+			);
+			
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+			$this->load->view('userSignup_part2', $data);
 		}else{
 			// user is trying to access part 2 without acccomplishing step1, so redirect to step1 first
 			redirect("userAccountCtrl/userSignup");
 		}
 	} // userSignup_step2()
-	
-	function newUserWelcome()
-	{
-		$isFunctionCallValid = isset($_POST["formValidityIndicator"]);		
 		
-		if( $isFunctionCallValid )
-		{
-			die("Welcome.... xoxo");
-		}else{
-			redirect("userAccountCtrl"); // redirect to homepage
-		}
-		
-	}// newUserWelcome
-	
-	function test()
-	{
-		$this->load->view('test');
-	}
-
-}
+} // class
 ?>

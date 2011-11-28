@@ -3,7 +3,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Sign up";
+	$this->pageTitle = "Welcome UXT User!";
 	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -37,21 +37,25 @@ $this->load->view('html-generic/doctype.inc');
     <div id="main_content">    	
     	<div id="centralContainer">           		   
 			<div id="page_title">
-				Sign up for the UPLB Express Ticketing System | Step 2
+				Finished
 			</div>
 			<div style="padding-left:10px; clear: both">
-				Would you like to connect your social networking accounts? If so, click the corresponding image for that
-				account. <br/> You can also click next immediately if you want to skip this.
-			</div>
-			<form name="socialNetworkForm" action="<?php echo base_url()."userAccountCtrl/newUserWelcome"; ?>" method="post" >
-				<input type="hidden" name="formValidityIndicator" value="*888" /> <!-- *888 some arbitrary value -->
-				<div class="comingSoon" >
-					<h1>This feature is coming soon.</h1>
+				You have successfully signed up for the UPLB Express Ticketing System
+				<br/>
+				To start using the site, please click Start.
+				We hope you enjoy the services we offer. <br/>
+				Have a nice day! </br/>
+				<br/><br/>
+				By the way, your account number is:				
+			</div>			
+				<div class="comingSoon highlightMe center_purest"  >
+					<span>
+						<h1><?php echo $userData['accountNum']; ?></h1>
+					</span>					
 				</div>		
 				<div id="essentialButtonsArea">
-								<a onClick="javascript: document.socialNetworkForm.submit()" class="button" id="buttonOK" ><span class="icon">Next</span></a>						
-				</div>
-			</form>
+								<a href="<?php echo base_url().'SessionCtrl/' ?>" class="button" id="buttonOK" ><span class="icon">Start</span></a>						
+				</div>		
 			<div style=" clear:both;"></div>
 		</div>
     </div><!--end of main content-->

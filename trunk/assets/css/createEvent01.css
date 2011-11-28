@@ -1,0 +1,35 @@
+div .mainWizardBox
+{
+	width: 80%;
+	text-align: center;
+}
+div .mainWizardBox div.mainWizardTop
+{
+	clear: both;
+}
+div.mainWizardMainSections
+{
+	margin: 2px 0 2px 0;
+}
+
+span.MWMS1
+{
+	width: 50%;
+	float: left;
+	text-align: left;
+}
+span.MWMS2
+{
+	margin-left: 50%;
+	text-align: center;
+}
+.textInputSize
+{
+	width: 45%;
+}
+
+div .accordionContainer
+{
+	width: 80%;
+	text-align: center;
+}
