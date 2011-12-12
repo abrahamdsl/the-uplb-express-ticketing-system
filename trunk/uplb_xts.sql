@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 28, 2011 at 01:59 PM
+-- Generation Time: Dec 12, 2011 at 01:58 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -27,16 +27,38 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `event` (
   `EventID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` int(255) NOT NULL,
+  `Name` varchar(255) NOT NULL,
   `Description` varchar(1000) NOT NULL,
-  `FB_RSVP` int(11) NOT NULL,
+  `FB_RSVP` varchar(255) DEFAULT NULL,
   `Temp` int(11) NOT NULL DEFAULT '100',
-  PRIMARY KEY (`EventID`),
-  UNIQUE KEY `FB_RSVP` (`FB_RSVP`)
+  PRIMARY KEY (`EventID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `event`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `event_slot`
+--
+
+CREATE TABLE IF NOT EXISTS `event_slot` (
+  `EventID` int(11) NOT NULL AUTO_INCREMENT,
+  `Showtime_ID` int(11) NOT NULL,
+  `Status` varchar(255) NOT NULL,
+  `Assigned_To_User` int(11) NOT NULL,
+  `Seat` int(11) NOT NULL,
+  `Sold_by` int(11) NOT NULL,
+  `Ticket_Class_FK` varchar(255) NOT NULL,
+  `Hold_Duration` time NOT NULL,
+  PRIMARY KEY (`EventID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `event_slot`
 --
 
 
@@ -63,6 +85,57 @@ CREATE TABLE IF NOT EXISTS `grand_permission` (
 INSERT INTO `grand_permission` (`AccountNum_ID`, `ADMINISTRATOR`, `EVENT_MANAGER`, `RECEPTIONIST`, `CUSTOMER`, `FACULTY`) VALUES
 (582327, 0, 1, 0, 1, 0),
 (641378, 0, 0, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `showing_time`
+--
+
+CREATE TABLE IF NOT EXISTS `showing_time` (
+  `EventID` int(11) NOT NULL,
+  `StartDate` date NOT NULL,
+  `StartTime` time NOT NULL,
+  `EndDate` date NOT NULL,
+  `EndTime` time NOT NULL,
+  `Book_Completion_Time` time NOT NULL DEFAULT '00:15:00',
+  `Location` varchar(255) DEFAULT NULL,
+  `seat_pattern` varchar(255) DEFAULT NULL,
+  `Slots` int(10) NOT NULL DEFAULT '0',
+  `Status` varchar(255) NOT NULL DEFAULT 'UNCONFIGURED',
+  PRIMARY KEY (`EventID`,`StartDate`,`StartTime`,`EndDate`,`EndTime`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `showing_time`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_class`
+--
+
+CREATE TABLE IF NOT EXISTS `ticket_class` (
+  `EventID` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Price` double NOT NULL DEFAULT '0',
+  `Slots` int(11) NOT NULL DEFAULT '0',
+  `Privileges` varchar(1000) NOT NULL,
+  `Restrictions` varchar(1000) NOT NULL,
+  PRIMARY KEY (`EventID`,`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ticket_class`
+--
+
+INSERT INTO `ticket_class` (`EventID`, `Name`, `Price`, `Slots`, `Privileges`, `Restrictions`) VALUES
+(0, 'BUSINESS', 0, 0, '', ''),
+(0, 'REGULAR', 0, 0, '', ''),
+(0, 'STANDING', 0, 0, '', ''),
+(0, 'VIP', 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -111,14 +184,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `temp1` int(11) DEFAULT NULL,
   `temp2` int(11) DEFAULT NULL,
   PRIMARY KEY (`AccountNum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=855860 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=807520 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `addr_homestreet`, `addr_barangay`, `addr_cityMunicipality`, `addr_province`, `temp1`, `temp2`) VALUES
-(582327, 'abrahamdsl', '8sdk17a3', 'ABRAHAM', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
+(582327, 'admin', 'password', 'ABRAHAM', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
 (641378, 'wordchamp427', '', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
 (807519, 'wordchamp427', 'alfredobula', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL);
 

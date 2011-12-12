@@ -1,0 +1,21 @@
+div.accordionImitation
+{
+	min-height: 10px;
+	height: auto;
+	width: 100%;	
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(66,112,250);
+	
+}
+div.accordionImitation div#title
+{
+	background-color: rgb(66,112,250);
+	padding: 5px;
+	color: white;
+}
+div .accordionImitation div#content
+{
+	text-align: center;
+	padding: 5px;
+}

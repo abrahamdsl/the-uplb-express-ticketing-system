@@ -267,7 +267,7 @@ $this->load->view('html-generic/doctype.inc');
 					</fieldset>																	
 					
 					<div id="essentialButtonsArea">
-						<a onClick="document.pressed=this.value" class="button" id="buttonOK" ><span class="icon">Sign me up</span></a>
+						<a class="button" id="buttonOK" ><span class="icon">Sign me up</span></a>
 						<a class="button" id="buttonReset" ><span class="icon">Reset fields</span></a>
 					</div>
 					

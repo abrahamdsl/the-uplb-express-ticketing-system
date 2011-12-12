@@ -1,0 +1,66 @@
+div#cEvent02_container{
+	min-height: 50px;
+	height: auto;
+	overflow: auto;
+	width: inherit;
+	padding: 15px;
+}
+
+div.starboardSide{
+	width: 49.5%;
+	min-height: 50px;
+	height: auto;	
+	float: left;
+	border-style: solid;
+	border-width: 0px 1px 0px 0px;
+	border-color: rgb(211,211,211);
+}
+
+div.portSide{
+	width: 49.5%;
+	min-height: 50px;
+	height: auto;	
+	margin-left: 50%;
+	border-style: solid;
+	border-width: 0px 0px 0px 1px;
+	border-color: rgb(211,211,211);
+}
+div.bothUnder
+{	
+	min-height: 10%;
+	height: auto;
+	margin-top: 10px;
+	border-width: 0px;
+}
+/*div.starboardUnder{
+	margin-top: 3px;
+	min-height: 10%;
+	height: auto;
+}
+div.portUnder{
+	height: 10%;
+}*/
+input[type="button"]{
+	width: 68px;
+	height: 23px;
+	font-size: 1em;
+}
+
+select.dateAndTimeSelection{
+	margin-top: 5px;
+	width: 80%;
+	height: 20%;
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(211,211,211);
+}
+input.time{
+	width: 20%;
+}
+span.particularEntries{
+	float: left;
+	width: 99%;
+	clear: both;
+
+}

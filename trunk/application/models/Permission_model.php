@@ -16,7 +16,7 @@ class Permission_model extends CI_Model {
 		$data = array( "AccountNum_ID" => $accountNum );
 		
 		return $this->db->insert( 'grand_permission', $data);
-	}
+	} //createDefault
 	
 	function getPermissionStraight( $accountNum )
 	{
