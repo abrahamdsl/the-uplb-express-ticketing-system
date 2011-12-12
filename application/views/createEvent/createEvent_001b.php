@@ -22,7 +22,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>"/></script>	
-
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_001b.js'; ?>"/></script>	
 </head>
 <body>
 <div id="main_container">
@@ -42,25 +42,31 @@ $this->load->view('html-generic/doctype.inc');
     <div id="main_content">    	
     	<div id="centralContainer">           		   
 			<div id="page_title">
-				Create Event
+				Create Event 
 			</div>
 			<div style="padding-left:10px; clear: both">
 				Please fill out the following fields.
 			</div>				
 			<!-- accordion start -->
+			<!--  -->
 			<div class="accordionContainer center_purest">
 				<div id="accordion" >
-					<h3><a href="#">Basic details</a></h3>
-					<div>
-						<div class="mainWizardMainSections">
-							<span class="MWMS1" >Name</span>
-							</span class="MWMS2"><input type="text" name="eventName" class="textInputSize" /></span>					
-						</div>
-						<div class="mainWizardMainSections">
-							<span class="MWMS1" >Facebook RSVP Page</span>
-							</span class="MWMS2"><input type="text" name="eventFBRSVP" class="textInputSize" /></span>					
-						</div>
-					</div>					
+					<h3><a href="#">Basic details</a></h3>					
+					<form method="post"  action="<?php echo base_url().'EventCtrl/create_step2' ?>" name="formLogin" id="formMain">
+						<input type="hidden" id="allIsWell" value="0" />
+						<div>
+							<div class="mainWizardMainSections">
+								<span class="MWMS1" >Name (Required)</span>
+								<span class="MWMS2"><input type="text" name="eventName" class="textInputSize" id="id_eventName" /></span>					
+								<span class="MWMShidden fieldErrorNotice" id="NameRequired" hidden="true" >This is not allowed to be blank</span>								
+								<span class="MWMShidden fieldErrorNotice" id="EventExists" hidden="true" ><p>An event with the same name already exists</p></span>
+							</div>
+							<div class="mainWizardMainSections">
+								<span class="MWMS1" >Facebook RSVP Page</span>
+								<span class="MWMS2"><input type="text" name="eventFBRSVP" class="textInputSize" /></span>					
+							</div>
+						</div>					
+					</form>
 				</div> <!-- accordion -->
 				<div id="essentialButtonsArea">
 							<a onClick="document.pressed=this.value" class="button" id="buttonOK" ><span class="icon">Next</span></a>							

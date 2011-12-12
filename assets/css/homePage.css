@@ -2,6 +2,10 @@
 {
 	width: 90%;
 	margin-top: 10px;
+	padding-bottom: 20px;
+	min-height: 50%;
+	height: 90%;
+	position: inherit;
 }
 .accordion_innercontent_lefthalf
 {	

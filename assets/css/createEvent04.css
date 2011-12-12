@@ -1,0 +1,66 @@
+.emphasisNeeded
+{
+	font-size: 1.5em;
+}
+#id_slots{
+	margin-top: 20px;
+	text-align: center;
+}
+table.schedulesCentral{
+	padding: 10px;
+	text-align: center;
+}
+table.schedulesCentral thead tr td
+{	
+	font-size: 1.5em;
+	
+}
+table.schedulesCentral thead tr td.iNeedMostSpace
+{	
+	padding-left: 20px;
+	padding-right: 20px;
+}
+table.schedulesCentral thead tr td.iNeedMoreSpace
+{	
+	padding-left: 10px;
+	padding-right: 10px;	
+}
+table.schedulesCentral tbody tr td label.redEye
+{	
+	color: red;	
+}
+table.schedulesCentral tbody tr.even{
+	background-color: rgb(231,227,228);
+}
+table.schedulesCentral tbody tr.odd{
+	background-color: rgb(204,202,203);
+}
+table.schedulesCentral tbody tr td.startDate{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+div.cEvent04_container{
+	min-height: 50px;
+	height: auto;
+	overflow: auto;	
+	padding-bottom: 10px;
+}
+div.starBoardSide{
+	width: 49%;
+	min-height: 100px;
+	height: auto;
+	float: left;	
+	border-style: solid;
+	border-color: red;
+	border-width: 0px 1px 0px 0px;
+}
+div.portSide{	
+	width: 49%;
+	min-height: 100px;
+	height: auto;	
+	margin-left: 51%;
+	text-align: center;	
+}
+input.adjustButtons{
+	width: 40px;
+}

@@ -1,0 +1,15 @@
+.commonality{
+	width: 75%;
+	text-align: center;	
+	border-style: none; 
+	border-width: 0px; 	
+}
+input.even{
+	background-color: rgb(243,241,242);
+}
+input.odd{
+	background-color: rgb(216,214,215);
+}
+table.schedulesCentral tbody tr td{
+	padding: 10px;
+}

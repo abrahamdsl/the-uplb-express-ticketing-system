@@ -60,6 +60,13 @@ body{font:normal 75%/1.7 "Segoe UI",sans-serif;color:#252525;background:#15293e 
 	font-size: 1.6em;
 }
 
+div.centralContainer{
+	min-height: 60%;
+	height: 61%;
+	
+	padding-bottom: 15px;
+}
+
 #div_table_col_left
 {
 	width: 120px;
@@ -181,5 +188,10 @@ padding: 0px 5px 0px 5px;
 	color: rgb(193, 193, 193);
 	background: url('../images/footer-bg.png') repeat-y;
 	padding: 5px 10px 5px 10px;
-	text-align: center;
+	text-align: center;	
+}
+
+.fieldErrorNotice{
+	font-size: 0.8em;
+	color: red;
 }
