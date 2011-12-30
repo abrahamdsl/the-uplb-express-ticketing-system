@@ -30,7 +30,7 @@ class TicketClass_model extends CI_Model {
 			'Slots' => $slots,
 			'Privileges' => $privileges,
 			'Restrictions' => $restrictions,
-			'Priority' = > $priority			
+			'Priority' => $priority			
 		);
 		
 		return $this->db->insert( 'ticket_class', $data );
