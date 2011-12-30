@@ -27,6 +27,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>"/></script>				
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -54,24 +55,35 @@ $this->load->view('html-generic/doctype.inc');
 				Book a ticket | Post a Reservation
 			</div>
 			<div style="padding-left:10px; clear: both">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do 
-				<br/>
-				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+				The fun starts here.
+				<br/>				
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Select now</div>
 					<div id="content">												
-						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step7' ?>" name="formLogin" id="formMain">							
+						<input type="hidden" id="lastFocus" value="" />
+						<form method="post"  action="<?php echo base_url().'EventCtrl/book_step2' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Select an event
+										Step 1: Select an event
 									</span>
 									<span class="right" id="right_inner" >	
 										<span class="center_purest">
 											<select id="eventSelection" name="events" class="center_purest" style="width: 80%;" >
+													<option value="NULL" >
+														<?php
+															if( count ($configuredEventsInfo ) > 0 ){
+														?>
+																Select Event
+														<?php
+															}else{
+														?>
+																No events found at this time
+														<?php } ?>
+													</option>
 												<?php
 													foreach(  $configuredEventsInfo as $singleEvent )
 													{
@@ -86,16 +98,27 @@ $this->load->view('html-generic/doctype.inc');
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Select a showing time
+										Step 2: Select a showing time
 									</span>
 									<span class="right" id="right_inner" >
-										<select id="showingTimeSelection" name="showingTimes" class="center_purest disabled" style="width: 80%;" disabled="true" >
-										</select>
+										<span id="showtimeDummy" >
+											Select an event first
+										</span>
+										<span id="showtimeCustomError" >											
+										</span>
+										<span id="showtimeWaiting" hidden="true"  >										
+											<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" />
+										</span>
+										<span id="showtimeSelectionReal" hidden="true" >
+											<select id="showingTimeSelection" name="showingTimes" class="center_purest" style="width: 80%;" >
+											</select>
+										</span>
+										
 									</span>
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Select the quantity
+										Step 3: Select the quantity
 									</span>
 									<span class="right"  id="right_inner" >
 										<input type="text" class="commonality ayokongDefaultAngItsuraNgButton" id="slot" name="slot" value="1" /><br/>
@@ -113,7 +136,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div style=" clear:both;"></div>
+			<div id="misc" style=" clear:both;"></div>
 		</div>		
     </div><!--end of main content-->
 	

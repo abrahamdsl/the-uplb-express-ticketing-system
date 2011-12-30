@@ -238,7 +238,7 @@ $(document).ready( function() {
 		{
 			if ( !isTimestampGreater( sellingDateStart, sellingTimeStart, sellingDateEnd, sellingTimeEnd, isShow_RedEye) )		//found in generalChecks.js
 			{
-				alert("Selling date end is earlier than selling date end.");
+				alert("Selling end timestamp is earlier than selling start timestamp.");
 				return false;
 			}		
 		}
