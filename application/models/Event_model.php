@@ -189,19 +189,45 @@ class Event_model extends CI_Model {
 		return $result_arr;	
 	}// getBeingConfiguredShowingTimes(..)
 	
-	function getConfiguredShowingTimes( $eventID = NULL )
+	function getConfiguredShowingTimes( $eventID = NULL , $validToday = false )
 	{
 		/* Created 29DEC2011-2055					
+		
+			30DEC2011-1900: added param $validToday - which serves if to check if today's date is well within the
+			showing time
 		*/
+		$query_obj;
+		
 		if( $eventID == NULL ) return NULL;
 		
-		$query_obj = $this->db->get_where(
-			'showing_time', 
-			array(
-				'eventID' => $eventID,
-				'STATUS' => 'CONFIGURED' 
-			)
-		);
+		if( !$validToday  )
+		{
+			$query_obj = $this->db->get_where(
+				'showing_time', 
+				array(
+					'eventID' => $eventID,
+					'STATUS' => 'CONFIGURED' 
+				)
+			);
+		}else{	// compare today's date against the online selling availability of showing times
+			date_default_timezone_set('Asia/Manila');
+		
+			// assemble today's date that is compatible with MySQL comparison
+			// YYYY-MM-DD
+			$dateToday = date( 'Y-m-d ' );			
+			$timeToday = date( 'H:i:s' );
+			
+			$sql = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND `Status` = 'CONFIGURED' AND 
+					CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= ? AND
+					CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= ?;";
+			$query_obj = $this->db->query( $sql, array(
+					$eventID,
+					$dateToday.$timeToday,					
+					$dateToday.$timeToday
+				)
+			);
+			
+		}
 		
 		$result_arr = $query_obj->result();
 		
@@ -246,7 +272,8 @@ class Event_model extends CI_Model {
 		foreach( $allEvents as $key => $singleEvent )
 		{
 			//echo( var_dump( $singleEvent) );			
-			$showingTimes[ $singleEvent->EventID ] = $this->getConfiguredShowingTimes( $singleEvent->EventID );
+			$cfgST = $this->getConfiguredShowingTimes( $singleEvent->EventID , true );
+			if( count( $cfgST ) > 0 ) $showingTimes[ $singleEvent->EventID ] = $cfgST;
 			//echo var_dump( $showingTimes );
 		}//foreach
 		

@@ -11,6 +11,7 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
 		$this->load->model('Event_model');
+		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
 		$this->load->model('TicketClass_model');
 		$this->load->model('UsefulFunctions_model');
@@ -33,20 +34,27 @@ class EventCtrl extends CI_Controller {
 		$allEvents = $this->Event_model->getAllEvents();		// get all events first		
 		// using all got events, check ready for sale ones (i.e. configured showing times)
 		$showingTimes = $this->Event_model->getReadyForSaleEvents( $allEvents );	
-		// 
+		// get event info from table `events` 
 		foreach( $showingTimes as $key => $singleShowingTime )
 		{
 			$configuredEventsInfo[ $key ] = $this->Event_model->retrieveSingleEventFromAll( $key, $allEvents );
 		}
-		
+		//store to $data for passing to view
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
 		$data['showingTimes'] = $showingTimes;
 		$data['configuredEventsInfo'] =  $configuredEventsInfo;
-		$this->load->view( "book/bookStep1", $data );
-		/*echo( var_dump( $showingTimes ) );
-		echo "--------<br/>";
-		die( var_dump( $configuredEventsInfo ) );*/
+		
+		$this->load->view( "book/bookStep1", $data );		
 	}//book(..)
+	
+	function book_step2()
+	{
+		/*
+			Created 30DEC2011-1855
+		*/
+		die(var_dump( $_POST ) );
+		
+	}//book_step2(..)
 	
 	function create()
 	{				
@@ -393,19 +401,31 @@ class EventCtrl extends CI_Controller {
 		return $this->Event_model->isEventExistent( $name );	
 	} //doesEventExist
 	
-	//function getConfiguredShowingTimes( $eventID = $this->input->post( 'eventID' ) )
-	function getConfiguredShowingTimes( $eventID = 443 )
+	function getConfiguredShowingTimes( $eventID = null )
+	//function getConfiguredShowingTimes( $eventID = 686 )
 	{
 		/*
 			Created 30DEC2011-1053
 		*/
 		$allConfiguredShowingTimes;
 		
-		if( $eventID == false ) return false;
-		echo var_dump( $eventID );
-		$allConfiguredShowingTimes = $this->Event_model->getConfiguredShowingTimes( $eventID );
+		//if( $eventID == null ) return "false";
+		//echo var_dump( $eventID );
+		/*if( $eventID == null )
+			$eventID = 686;
+		else*/
+			$eventID = $this->input->post( 'eventID' );
+		$allConfiguredShowingTimes = $this->Event_model->getConfiguredShowingTimes( $eventID , true);
+		if( count( $allConfiguredShowingTimes ) == 0 )
+		{
+			echo "ERROR_No configured showing times.";
+			return false;
+		}
+		$xmlResult = $this->MakeXML_model->XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes );
 		
-		die( var_dump( $allConfiguredShowingTimes ) );
+		echo $xmlResult;
+		return true;
+		//die( var_dump( $xmlResult ) );
 	}//getConfiguredShowingTimes(..)
 	
 	function manage()

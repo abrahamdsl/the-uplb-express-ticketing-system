@@ -4,5 +4,12 @@ border-width: 1px;
 border-color: rgb(171,173,179);
 }
 .disabled{
+	color: white;
 	background-color: rgb(112,115,124);
+}
+span#showtimeDummy{
+	margin-top: 20px;
+}
+span#showtimeCustomError{
+	color: red;
 }

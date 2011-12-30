@@ -40,6 +40,19 @@ function isDateValid( date )
 	return true;
 }
 
+function isElementNotVisible( thisIdentifier )
+{
+	/*
+		Created 30DEC2011-1742
+		
+		*Fool-proof for different recent browsers.
+		*Derived from 
+		http://stackoverflow.com/questions/178325/how-do-you-test-if-something-is-hidden-in-jquery
+	*/
+	//alert( 'meow' + $( thisIdentifier ).css( "display" )  );
+	return ( $( thisIdentifier ).css( "display" ) == 'none' );
+};
+
 function isInt( thisVar )
 {
 	var y = thisVar.length;
