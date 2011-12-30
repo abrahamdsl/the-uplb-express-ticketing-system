@@ -88,7 +88,7 @@ $this->load->view('html-generic/doctype.inc');
 						<area shape="rect" coords="6,7,176,101" title="Create Event" alt="Create Event" href="<?php echo base_url().'EventCtrl/create'; ?>" />
 						<area shape="rect" coords="188,7,358,101" title="Confirm Reservation" alt="Confirm Reservation" href="" />
 						<area shape="rect" coords="367,7,537,101" title="Modify Reservation" alt="Modify Reservation" href="" />
-						<area shape="rect" coords="545,7,715,101" title="Modify Event" alt="Modify Event" href="" />
+						<area shape="rect" coords="545,7,715,101" title="Modify Event" alt="Modify Event" href="<?php echo base_url().'EventCtrl/manage'; ?>" />
 						<area shape="rect" coords="6,106,176,200" title="Modify Ticket Classes" alt="Modify Ticket Classes" href="" />
 						<area shape="rect" coords="188,106,358,200" title="Clean Unconfirmed Slots" alt="Clean Unconfirmed Slots" href="" />
 						<area shape="rect" coords="367,106,537,200" title="Customer care" alt="Customer care" href="" />

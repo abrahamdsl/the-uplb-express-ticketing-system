@@ -1,10 +1,5 @@
-$(document).ready(function() {
-		$( "#datepicker").datepicker({
-			changeMonth: true,
-			changeYear: true,
-			dateFormat: 'yy/mm/dd',
-			yearRange: '2011:2099'
-		});		
+$(document).ready( function() {		
+				
 		$( "#datepicker2").datepicker({
 			changeMonth: true,
 			changeYear: true,
@@ -17,8 +12,16 @@ $(document).ready(function() {
 			dateFormat: 'yy/mm/dd',
 			yearRange: '2011:2099'
 		});		
-		/*
-		$('#datepicker').click( function() {
-			$(this).datepicker();			
-		});*/
+		
+		$('#timepicker3').timepicker({
+				showLeadingZero: true,
+				onHourShow: tpEndOnHourShowCallback,
+				onMinuteShow: tpEndOnMinuteShowCallback,
+				minutes: {
+					starts: 0,
+					ends: 59,
+					interval: 1
+				}
+		});
+		
 });

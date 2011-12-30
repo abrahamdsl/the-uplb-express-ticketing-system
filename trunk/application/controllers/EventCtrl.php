@@ -13,6 +13,7 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('Event_model');
 		$this->load->model('Permission_model');
 		$this->load->model('TicketClass_model');
+		$this->load->model('UsefulFunctions_model');
 		
 		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
 	} //construct
@@ -21,6 +22,31 @@ class EventCtrl extends CI_Controller {
 	{		
 		$this->create();		
 	}//index
+	
+	function book()
+	{
+		/*
+			Created 29DEC2011-2048
+		*/
+		$configuredEventsInfo = array();
+		
+		$allEvents = $this->Event_model->getAllEvents();		// get all events first		
+		// using all got events, check ready for sale ones (i.e. configured showing times)
+		$showingTimes = $this->Event_model->getReadyForSaleEvents( $allEvents );	
+		// 
+		foreach( $showingTimes as $key => $singleShowingTime )
+		{
+			$configuredEventsInfo[ $key ] = $this->Event_model->retrieveSingleEventFromAll( $key, $allEvents );
+		}
+		
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
+		$data['showingTimes'] = $showingTimes;
+		$data['configuredEventsInfo'] =  $configuredEventsInfo;
+		$this->load->view( "book/bookStep1", $data );
+		/*echo( var_dump( $showingTimes ) );
+		echo "--------<br/>";
+		die( var_dump( $configuredEventsInfo ) );*/
+	}//book(..)
 	
 	function create()
 	{				
@@ -102,37 +128,52 @@ class EventCtrl extends CI_Controller {
 		$this->load->view( 'createEvent/createEvent_003', $data );		
 	}//create_step3
 	
-	function create_step4()
+	function create_step4( $repeat = false )
 	{		
 		$unconfiguredShowingTimes; 
 		
-		$cookie = array(
-			'name'   => "createEvent_step",
-			'value'  => intval($this->input->cookie( "createEvent_step" )) + 1,
-			'expire' => '3600'
-		);
-		$this->input->set_cookie($cookie);
+		/* we go through here if first time configuring: first time configuration left some
+			showing times unconfigured then finished configuring and then there are still 
+			unconfigured so go back here
+		*/
+		$repeatPOST =  $this->input->post( 'repeat' );
 		
+		if( !is_bool( $repeatPOST ) )
+		{
+			if( strtolower( $repeatPOST ) == "true" ) $repeat = true;
+		}		
 		
-		
-		if( $_COOKIE['createEvent_step'] != 3 ){
-			// 11DEC2011-2213 RE-ENABLE ON PRODUCTION 
-			//redirect('/');
-		}
-						
-		// now, with the data, create showings and insert them to the database
-		$this->Event_model->createShowings();
+		if( !$repeat ){
+			$cookie = array(
+				'name'   => "createEvent_step",
+				'value'  => intval($this->input->cookie( "createEvent_step" )) + 1,
+				'expire' => '3600'
+			);
+			$this->input->set_cookie($cookie);
+			
+			
+			
+			if( $_COOKIE['createEvent_step'] != 3 ){
+				// 11DEC2011-2213 RE-ENABLE ON PRODUCTION 
+				//redirect('/');
+			}
+			// let's get the last uniqueID for this event if ever
+			$lastUniqueID = $this->Event_model->getLastShowingTimeUniqueID( $this->input->cookie('eventID') );
+			
+			// now, with the data, create showings and insert them to the database			
+			$this->Event_model->createShowings( $lastUniqueID );
+		} //if
 		
 		// now, get such showings straight from the DB
 		$unconfiguredShowingTimes = $this->Event_model->getUnconfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
 		if( $unconfiguredShowingTimes == NULL)
-		{
+		{			
 			// CODE MISSING:  what to do on error?
 			return FALSE;
-		}
+		}		
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 		$data['unconfiguredShowingTimes'] = $unconfiguredShowingTimes;
-		$this->load->view('createEvent/createEvent_004', $data);		
+		$this->load->view('createEvent/createEvent_004', $data);				
 	}//create_step4(..)
 	
 	function create_step5()
@@ -212,44 +253,137 @@ class EventCtrl extends CI_Controller {
 		$classes = array();
 		$prices = array();
 		$slots = array();
+		$temp; 
+		$lastTicketClassUniqueID;
 		
 		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
 		
 		//iterate through and assign
+		$x = 0;
 		$classesCount = 0;
 		foreach( $_POST as $key => $val)
 		{
-			/*
-				PSEUDOCODE 12DEC2011-2140
-				
-				if( $key starts with "price" )
-				{
-					$prices[ explode("_",$key)[1] ] = $val;					
-				}else
-				if( $key starts with "slot" )
-				{
-					$slots[ explode("_",$key)[1] ] = $val;
-				}
-				$classes[ $classesCount ] = explode("_",$key)[1];
 			
-			$classesCount++;	//count how many classes
-			*/
+				// PSEUDOCODE 12DEC2011-2140
+				
+				if( $this->UsefulFunctions_model->startsWith( $key, "price" ) )
+				{
+					$temp = explode("_",$key);
+					$prices[ $temp[1] ] = $val;					
+				}else
+				if( $this->UsefulFunctions_model->startsWith( $key, "slot" ) )
+				{					
+					$temp = explode("_",$key);
+					$slots[ $temp[1] ] = $val;
+				}
+				if( $x % 2 == 0) $classes[ $classesCount++ ] = $temp[1];
+			
+			$x++;	//count how many classes
+			//*/
 		}
 		
-		// ON-HOLD: 12DEC2011-2145: now, insert ticket classes
-		/*
+		/* 15DEC2011-1715: DEBUGGING PURPOSES ONLY REMOVE WHEN COMFORTABLE
+		echo var_dump(
+			$_POST
+		);
+		echo var_dump(
+			$classes
+		);		
+		echo var_dump(
+			$prices
+		);
+		echo var_dump(
+			$slots
+		);
+		echo var_dump( $classesCount );
+		*/
+				
+		$databaseSuccess = TRUE;
+		$lastTicketClassUniqueID = $this->TicketClass_model->getLastTicketClassUniqueID( $this->input->cookie( 'eventID' ) );
+		$lastTicketClassUniqueID++;
+		// CODE MISSING: database checkpoint
 		for( $x = 0; $x < $classesCount; $x++ )
 		{
-			$this->Event_model->createTicketClass(
+			
+			$databaseSuccess = $this->TicketClass_model->createTicketClass(
+				$lastTicketClassUniqueID,
 				$this->input->cookie( 'eventID' ),
+				$classes[ $x ],
+				$prices[ $classes[ $x ] ],
+				$slots[ $classes[ $x ] ],
+				"IDK",
+				"IDY",
+				0
 			);
+			if( !$databaseSuccess ){
+				// CODE MISSING:  database rollback
+				echo 'insertion failed';
+				break;			
+			}
+		}//for
+		
+		// now set ticket class's unique id for the being configured events
+		$this->Event_model->setShowingTimeTicketClass( $this->input->cookie( 'eventID' ), $lastTicketClassUniqueID );
+				
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
+		$this->load->view('createEvent/createEvent_006', $data);				
+	}//create_step6(..)
+	
+	function create_step7()
+	{
+		// START: validation if correct page is being submitted
+		$correctPage = true;
+		$stillUnconfiguredEvents;
+		
+		if( !$this->input->post("selling_dateStart") ) $correctPage = false;
+		if( !$this->input->post("selling_dateEnd") ) $correctPage = false;
+		if( !$this->input->post("selling_timeStart") ) $correctPage = false;
+		if( !$this->input->post("selling_timeEnd") ) $correctPage = false;
+		if( !$this->input->post("deadlineChoose") ) $correctPage = false;
+		if( !$this->input->post("bookCompletionTime") ) $correctPage = false;
+		if( !$this->input->post("seatNone_StillSell") ) $correctPage = false;
+		if( !$this->input->post("confirmationSeatReqd") ) $correctPage = false;
+		
+		if( !$correctPage )	// invalid page submitting to this or directly accessing
+		{
+			redirect("/");
+		}
+		// END: validation if correct page is being submitted
+		
+		if( !$this->Event_model->setParticulars( $this->input->cookie( 'eventID' ) ) )
+		{
+			echo "Create Step 7 Set Particulars Fail.";
+			die();
+		}
+		$this->Event_model->stopShowingTimeConfiguration( $this->input->cookie( 'eventID' ) );	// now mark these as 'CONFIGURED'
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
+		// get still unconfigured events
+		$stillUnconfiguredEvents = $this->Event_model->getUnconfiguredShowingTimes(  $this->input->cookie( 'eventID' )  );
+		if( count( $stillUnconfiguredEvents ) > 0 )
+		{											
+			$this->load->view('createEvent/stillUnconfiguredNotice', $data);
+		}else{
+			$this->load->view('createEvent/allConfiguredNotice', $data);
+		}		
+		//$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
+		//$this->load->view('createEvent/createEvent_007', $data);				
+		//die( var_dump( $_POST ) );
+	}//create_step7
+
+	function deleteEventCompletely()
+	{
+		$deleteResult;
+		//die( var_dump ($_POST ));
+		$deleteResult = $this->Event_model->deleteAllEventInfo( $this->input->post( 'eventID' ) );
+		if( $deleteResult )
+		{
+			echo "Success";
+		}else{
+			echo "Fail";
 		}
 		
-		
-		*/
-		
-		die( "12DEC2011-2152<br/><br/>This iteration is only up to this far.<br/>Please check later for more updates.<br/><br/> :-) " ); 
-	}//create_step5(..)
+		$this->manage();
+	}//deleteEventCompletely
 	
 	function doesEventExist()
 	{
@@ -258,6 +392,30 @@ class EventCtrl extends CI_Controller {
 		if( $name == NULL) return FALSE;
 		return $this->Event_model->isEventExistent( $name );	
 	} //doesEventExist
+	
+	//function getConfiguredShowingTimes( $eventID = $this->input->post( 'eventID' ) )
+	function getConfiguredShowingTimes( $eventID = 443 )
+	{
+		/*
+			Created 30DEC2011-1053
+		*/
+		$allConfiguredShowingTimes;
+		
+		if( $eventID == false ) return false;
+		echo var_dump( $eventID );
+		$allConfiguredShowingTimes = $this->Event_model->getConfiguredShowingTimes( $eventID );
+		
+		die( var_dump( $allConfiguredShowingTimes ) );
+	}//getConfiguredShowingTimes(..)
+	
+	function manage()
+	{
+		//created 20DEC2011-1423
+		$data['events'] = $this->Event_model->getAllEvents();
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
+		
+		$this->load->view('manageEvent/home', $data);
+	}//manageEvent
 	
 } //class
 ?>
