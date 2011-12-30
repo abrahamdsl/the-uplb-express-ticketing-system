@@ -12,6 +12,14 @@ div.mainWizardMainSections
 	/*margin: 2px 0 2px 0;*/
 	margin-bottom: 2em;
 	clear: both;
+	min-height: 10px;
+	height: auto;
+	overflow: auto;
+	text-align: center;
+	border-style: solid;
+	border-color: green;
+	border-width: 1px;
+	vertical-align: center;
 }
 /* 11DEC2011-1557 REMOVE LATER. FOR DEBUGGING PURPOSES ONLY.
 span{

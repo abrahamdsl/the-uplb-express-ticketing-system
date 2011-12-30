@@ -4,9 +4,9 @@ $(document).ready(function() {
     $("#buttonOK").hover(
     function() {
         //mouse over
-        $(this).css('background', 'rgb(126,126,126)')
+        $(this).css('background', 'rgb(126,126,126)');
     }, function() {
-        //mouse out
-        $(this).css('background', colorOrig)
+        //mouse out		
+        $(this).css('background', colorOrig);						
     });
 });

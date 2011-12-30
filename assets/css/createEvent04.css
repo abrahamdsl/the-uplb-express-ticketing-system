@@ -45,14 +45,20 @@ div.cEvent04_container{
 	overflow: auto;	
 	padding-bottom: 10px;
 }
+div.cEvent04_container div#content{
+	text-align: center;
+	overflow: visible;
+}
 div.starBoardSide{
 	width: 49%;
 	min-height: 100px;
 	height: auto;
 	float: left;	
+	overflow: visible;
 	border-style: solid;
 	border-color: red;
 	border-width: 0px 1px 0px 0px;
+	
 }
 div.portSide{	
 	width: 49%;
@@ -63,4 +69,7 @@ div.portSide{
 }
 input.adjustButtons{
 	width: 40px;
+}
+span#right_inner{
+	text-align: center;
 }

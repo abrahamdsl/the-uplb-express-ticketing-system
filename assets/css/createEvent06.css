@@ -1,0 +1,135 @@
+div.starBoardSide{
+	width: 49%;
+	min-height: 100px;
+	height: auto;
+	float: left;	
+	border-style: solid;
+	border-color: red;
+	border-width: 1px 1px 1px 1px;
+	text-align: center;
+}
+div.portSide{	
+	width: 49%;
+	min-height: 100px;
+	height: auto;	
+	margin-left: 51%;
+	text-align: center;	
+	border-style: solid;
+	border-color: yellow;
+	border-width: 1px 1px 1px 1px;
+}
+div.KoreanPeninsula{
+	min-height: 30px;
+	height: auto;
+	width: 95%;
+	margin-bottom: 10px;
+	overflow: auto;	
+	border-style: solid;
+	border-color: blue;
+	border-width: 1px 1px 1px 1px;
+	padding: 8px;
+}
+div.KoreanPeninsula span.left {
+	min-height: 34px;	
+	height: 34px;	
+	overflow: auto;
+	float: left;
+	text-align: left;
+	width: 45%;
+	margin-left: 15px;
+	padding-top: 10px;
+	border-style: solid;
+	border-color: yellow;
+	border-width: 1px 1px 1px 1px;
+}
+span#special{
+	height: 50px;
+	overflow: visible;
+}
+
+div.KoreanPeninsula span.right{
+	min-height: 34px;	
+	height: 34px;	
+	overflow: visible;
+	float: left;
+	text-align: left;
+	width: 45%;
+	margin-left: 15px;
+	padding-top: 10px;
+	border-style: solid;
+	border-color: green;
+	border-width: 2px;
+}
+
+input.textInputSize{
+	width: 70px;
+}
+input.textInputSize_Larger{
+	width: 130px;
+}
+input.grayGuide{
+	color: gray;
+	font-style: italic;
+}
+.Step6Captions{		
+	min-width: 50%;
+	width: auto;
+	/*float: left;*/
+	text-align: center;
+	padding-top: 6px;
+	
+	margin-bottom: 10px;
+	vertical-align: center;
+
+	border-style: solid;
+	border-color: red;
+	border-width: 1px;
+	
+	clear: right;
+	overflow: auto;
+}
+span.Step6ActualItems{
+	overflow: auto;
+	min-width: 30%;
+	width: auto;
+	min-height: inherit;
+	height: inherit;
+	border-style: solid;
+	border-color: blue;
+	border-width: 1px;
+	vertical-align: center;	
+	float: auto;
+	
+}
+
+div.test{
+	min-width: 1px;
+	width: 80%;
+	min-height: 20px;
+	height: auto;
+	overflow: auto;
+	border-style: solid;
+	border-color: blue;
+	border-width: 3px;
+	text-align: center;
+}
+span#right_inner{
+	min-height: 65px;
+	overflow: auto;
+
+}
+span.innerRightChanging{
+	min-height: 50px; 
+	height: auto; 
+	width: 50%; 	
+	padding-top: 15px;
+	vertical-align: bottom;
+	border-style: solid;
+	border-color: red;
+	border-width: 0px;
+	text-align: center;
+}
+
+select.deadlineSelection{
+	width: 80%;
+}

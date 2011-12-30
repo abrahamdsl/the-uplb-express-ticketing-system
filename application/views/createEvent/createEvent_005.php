@@ -25,6 +25,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_005.js'; ?>"/></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/javascriptVardump.js'; ?>"/></script>			
 </head>
 <body>
 <div id="main_container">
@@ -84,16 +85,20 @@ $this->load->view('html-generic/doctype.inc');
 												<?php echo $TCD->Name; ?>
 											</td>
 											<td>
-												<input type="text" class="commonality <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" name="price_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Price; ?>" />
+												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_price_<?php echo $TCD->Name; ?>" name="price_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Price; ?>" /><br/>
+												<input type="button" value="-" id="reducePrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+												<input type="button" value="+" id="addPrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
-												<input type="text" class="commonality <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" name="slot_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Slots; ?>" />
+												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_slot_<?php echo $TCD->Name; ?>" name="slot_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Slots; ?>" /><br/>
+												<input type="button" value="-" id="reduceSlots_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+												<input type="button" value="+" id="addSlots_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
-												<input type="button" value="Choose seats" id="id_seat_<?php echo $TCD->Name; ?>" />
+												<input type="button" value="Choose seats" class="ayokongDefaultAngItsuraNgButton" id="id_seat_<?php echo $TCD->Name; ?>" />
 											</td>
 											<td>
-												<input type="button" value="Edit Privileges/Restrictions" id="id_privilege_<?php echo $TCD->Name; ?>" />
+												<input type="button" value="Edit Privileges/Restrictions" class="ayokongDefaultAngItsuraNgButton"  id="id_privilege_<?php echo $TCD->Name; ?>" />
 											</td>
 										</tr>
 									<?php

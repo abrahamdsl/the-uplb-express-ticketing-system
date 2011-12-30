@@ -82,7 +82,7 @@ class Event_model extends CI_Model {
 		
 	}//createEvent_basic
 	
-	function createShowings()
+	function createShowings( $event_LastUniqueID = null )
 	{ 
 		/*
 			created 11DEC2011-1943
@@ -92,7 +92,11 @@ class Event_model extends CI_Model {
 		$showingTime_raw;
 		$timeFrame;
 		$dateEnd;
-		$insertResult = FALSE;;
+		$insertResult = FALSE;
+
+		if( !is_int( $event_LastUniqueID ) ){
+			if( $event_LastUniqueID == null ) return false;
+		}
 		
 		// CODE MISSING: database checkpoint
 		foreach( $_POST as $key => $val )
@@ -104,6 +108,7 @@ class Event_model extends CI_Model {
 			   formerly spaces that were converted into such to suit the W3 standards for 
 			   valid characters in attributes/selectors of HTML elements.
 			*/
+			
 			$showingTime_raw = explode( "x", $key );		// separate date and time parts 
 			$timeFrame = $showingTime_raw[1];				// this is the time part, assign to some other part
 			$showingTime_raw[1] = null;						// nullify this index, so we can use it again
@@ -120,6 +125,7 @@ class Event_model extends CI_Model {
 			}
 			//now insert			
 			$insertResult = $this->insertShowingInstance( 
+				++$event_LastUniqueID,				// uniqueID, i.e., identifier of this showing time of a certain event
 				$this->input->cookie('eventID'), 	// eventID, to reference to 'event' table
 				$showingTime_raw[0],				// start date
 				$showingTime_raw[1][0],				// start time
@@ -137,25 +143,29 @@ class Event_model extends CI_Model {
 		return true;
 	}//createShowings(..)
 	
-	function createTicketClass( 
-		$eventID  = NULL, $class = NULL, $price = 0, $slots = 0, $privileges = NULL,  $restrictions = NULL 
-	)
+	function deleteAllEventInfo( $eventID = NULL )
 	{
-		/*
-			CREATED 12DEC2011-2132
-			
-		*/
-		$data = array(
-			'EventID' => $eventID,
-			'Name' => $class,
-			'Price' => $price,
-			'Slots' => $slots,
-			'Privileges' => $privileges,
-			'Restrictions' => $restrictions
-		);
+		// created 20DEC2011-1455
 		
-		return $this->db->insert( 'ticket_class', $data );
-	}//createTicketClasses(..)
+		// delete showing times
+		$query_obj1 = $this->db->delete( 'showing_time', array( 'eventID' => $eventID  ) );
+		// delete ticket class
+		//$sql = "DELETE FROM `ticket_class` WHERE `";
+		$query_obj2 = $this->db->delete( 'ticket_class', array( 'EventID' => $eventID  ) );
+		// finally, from the event table
+		$query_obj3 = $this->db->delete( 'event', array( 'eventID' => $eventID  ) );
+		
+		return ( $query_obj1 and $query_obj2 and $query_obj3 );
+	} // deleteAllEventInfo
+	
+	function getAllEvents()
+	{
+		// created 20DEC2011-1418
+		$query_obj = $this->db->get('event');
+		$result_arr = $query_obj->result();
+		
+		return $result_arr;
+	}//getAllEvents
 	
 	function getBeingConfiguredShowingTimes( $eventID = NULL )
 	{
@@ -179,6 +189,70 @@ class Event_model extends CI_Model {
 		return $result_arr;	
 	}// getBeingConfiguredShowingTimes(..)
 	
+	function getConfiguredShowingTimes( $eventID = NULL )
+	{
+		/* Created 29DEC2011-2055					
+		*/
+		if( $eventID == NULL ) return NULL;
+		
+		$query_obj = $this->db->get_where(
+			'showing_time', 
+			array(
+				'eventID' => $eventID,
+				'STATUS' => 'CONFIGURED' 
+			)
+		);
+		
+		$result_arr = $query_obj->result();
+		
+		return $result_arr;		
+	}//getConfiguredShowingTimes(..)
+	
+	function getLastShowingTimeUniqueID( $eventID = null )
+	{
+		/*
+			Created 30DEC2011-1155
+			
+			Created with regard to booking step 1.
+			Returns an integer, or if none found, 0, meaning no showing time
+			yet for this event.
+		*/
+		
+		if( $eventID == null ) return false;
+		
+		$sql = "SELECT `UniqueID`,`EventID` FROM  `showing_time` WHERE  `EventID` =  ? ORDER BY  `UniqueID` DESC LIMIT 0 , 1000";
+		$query_obj = $this->db->query( $sql, array( $eventID ) );
+		$array_result = $query_obj->result();
+		
+		// now, what we want is found at the first element
+		if( count( $array_result ) > 0 )
+		{
+			$lastInt = intval( $array_result[0]->UniqueID );
+			return $lastInt;
+		}else return 0;		
+	}//getLastShowingTimeUniqueID
+	
+	function getReadyForSaleEvents( $allEvents )
+	{
+		/*
+			Created 29DEC2011-2046
+			
+		*/
+		$showingTimes = array();
+		
+		//CHECK if $allEvents is valid
+		if( !is_array( $allEvents ) ) return false;
+						
+		foreach( $allEvents as $key => $singleEvent )
+		{
+			//echo( var_dump( $singleEvent) );			
+			$showingTimes[ $singleEvent->EventID ] = $this->getConfiguredShowingTimes( $singleEvent->EventID );
+			//echo var_dump( $showingTimes );
+		}//foreach
+		
+		return $showingTimes;
+	}// getReadyForSaleEvents(..)
+			
 	function getUnconfiguredShowingTimes( $eventID = NULL )
 	{
 		/* Created 12DEC2011-1227
@@ -202,13 +276,15 @@ class Event_model extends CI_Model {
 		return $result_arr;		
 	}//getUnconfiguredShowingTimes(..)
 	
-	function insertShowingInstance( $eventID, $dateStart, $timeStart, $dateEnd, $timeEnd)
+	function insertShowingInstance( $uniqueID, $eventID, $dateStart, $timeStart, $dateEnd, $timeEnd)
 	{
 		/*
 			created 11DEC2011-2224
 			
 			Inserts to the table `showing_time` a single instance of such showing time,
 			needing only the above parameters. Might change.
+			
+			30DEC2011-1204: added $uniqueID param.
 		*/
 				
 		/* DEBUGGING CODE : Remove on production
@@ -221,6 +297,7 @@ class Event_model extends CI_Model {
 		$dateEnd = str_replace( '/', '-', $dateEnd );
 		
 		$data = array(
+			'UniqueID' => $uniqueID,
 			'EventID' => $eventID,
 			'StartDate' => $dateStart,
 			'StartTime' => $timeStart,
@@ -309,6 +386,98 @@ class Event_model extends CI_Model {
 		return $showingTime_raw;
 	}//processShowingTimeRepresentation(..)
 	
+	function retrieveSingleEventFromAll( $eventID = null, $allEvents = null )
+	{
+		/*
+			Created 29DEC2011-2108
+			
+			$allEvents should be in object form. (That is, ->result() ran already ).
+		*/
+		//validate the params
+		if( $eventID == null ) return false; 	// invalid function call
+		if( !is_array( $allEvents ) ) return false;
+		
+		foreach( $allEvents as $singleEvent )
+		{
+			if( $singleEvent->EventID == $eventID ) return $singleEvent;
+		}//foreach
+		
+		return null;
+	}//retrieveSingleEventFromAll
+	
+	function setParticulars( $eventID = NULL )
+	{
+		/*
+			Created 29DEC2011-1339
+			
+			Basically created for Create Event-Step7.
+			Updates the database entry of a showing time's online selling availability,
+			deadline for paying if not paid immediately, seat requirments, etc.
+		*/
+		$sql;
+		$query_result;
+		$BookCompletionOption;
+		$BookCompletionOption_sent;
+		$noMoreSeat_StillSell;
+		$seatRequiredOnConfirmation;
+		$numOfDays = 0;
+		$ShouldLookForNumOfDays = true;
+		$lookForNumOfDays;
+		
+		if( $eventID == NULL) return FALSE;	//invalid call to this function
+		
+		// translate this deadline payment option into strings
+		$BookCompletionOption_sent = intval( $this->input->post('deadlineChoose') );		
+		switch( $BookCompletionOption_sent )
+		{
+			case 1: $BookCompletionOption = "FIXED_SAMEDAY"; 
+					$ShouldLookForNumOfDays = false;
+					break;
+			case 2: $BookCompletionOption = "FIXED_AFTER"; 
+					$lookForNumOfDays = "numOfDays_fixed";
+					break;
+			case 3: $BookCompletionOption = "RELATIVE_AFTER"; 
+					$lookForNumOfDays = "numOfDays_relative";
+					break;			
+			default: die("setParticulars error: Invalid option for Deadline of payment of slots. Please contact admin.");
+		}//switch		
+		//echo var_dump($this->input->post( $lookForNumOfDays ) );
+		if( $ShouldLookForNumOfDays and is_numeric( $this->input->post( $lookForNumOfDays ) ) )
+		{
+			$numOfDays = intval( $this->input->post( $lookForNumOfDays ) );
+		}				
+		// adjust the radio buttons value when submitted to what is acceptable to MySQL
+		$noMoreSeat_StillSell = $this->input->post("seatNone_StillSell") == "YES"  ? TRUE : FALSE;
+		$seatRequiredOnConfirmation = $this->input->post("confirmationSeatReqd") == "YES" ? TRUE : FALSE;
+		// assemble sql query		
+		$sql = "UPDATE `showing_time` SET
+					`Selling_Start_Date` = ?,
+					`Selling_Start_Time` = ?,
+					`Selling_End_Date` = ?,
+					`Selling_End_Time` = ?, 
+					`Book_Completion_Option` = ?,
+					`Book_Completion_Days` = ?,
+					`Book_Completion_Time` = ?,					
+					`NoMoreSeat_StillSell` = ?,
+					`SeatRequiredOnConfirmation` = ?
+				WHERE `EventID` = ? AND `Status` = 'BEING_CONFIGURED'; ";
+		// now fire!		
+		$query_result = $this->db->query( $sql, array(
+				$this->input->post( 'selling_dateStart' ),
+				$this->input->post( 'selling_timeStart' ),
+				$this->input->post( 'selling_dateEnd' ),
+				$this->input->post( 'selling_timeEnd' ),
+				$BookCompletionOption ,
+				$numOfDays,
+				$this->input->post( 'bookCompletionTime' ),
+				$noMoreSeat_StillSell,
+				$seatRequiredOnConfirmation,
+				$eventID
+			)
+		);		
+		return $query_result;
+	}//setParticulars
+	
 	function setShowingTimeConfigStat( $eventID = NULL, $thisScheduleString = NULL, $newStat = "UNCONFIGURED" )
 	{
 		/*
@@ -372,6 +541,37 @@ class Event_model extends CI_Model {
 		
 		return $dbAccessResult;
 	}//setShowingTimeConfigStat(..)
+	
+	function setShowingTimeTicketClass( $eventID = null, $uniqueID = null)
+	{
+		/*
+			Created 30DEC2011-1312
+			
+			Created due to bug arising from Create Event Step 6.
+		*/
+		if(  $eventID == null ) return false;
+		if(  $uniqueID == null ) return false;
+		
+		$sql = "UPDATE `showing_time` SET `ticket_class` = ? WHERE `EventID` = ? AND `Status` = 'BEING_CONFIGURED' ";
+		$query_result = $this->db->query( $sql, array( $uniqueID, $eventID ) );
+		
+		return $query_result;
+	}//setShowingTimeTicketClass(..)
+	
+	function stopShowingTimeConfiguration( $eventID )
+	{
+		/*
+			Created 29DEC2011-1445
+			
+			- Different from $this->setShowingTimeConfigStat(..) in that this doesn't 
+				require schedules
+			- Basically created for Create Event - Step 7: changes configuration status to 'CONFIGURED' from 'BEING_CONFIGURED'
+		*/
+		$sql = "UPDATE `showing_time` SET `Status` = 'CONFIGURED' WHERE `Status` = 'BEING_CONFIGURED' AND `EventID` = ?; ";
+		$dbAccessResult = $this->db->query( $sql, array( $eventID ) );
+		
+		return $dbAccessResult;
+	}// stopShowingTimeConfiguration
 	
 }//class
 
