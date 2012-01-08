@@ -1,3 +1,38 @@
+function convertDateMonth_toText( thisDate )
+{
+	/* created 07JAN2012-1742
+	
+		thisDate = String. Date with format YYYY/MM/DD.
+		ASSUMPTION: Correct format submitted.
+	*/
+	var splitted = null;
+	var thisMonth = null;
+	var thisMonth_STR = null;
+	var returnThis;
+	var x;
+	var y;
+		
+	splitted = thisDate.split( '\/' );	
+	thisMonth = parseInt( splitted[1] );	
+	switch( thisMonth )
+	{
+		case 1: thisMonth_STR = "Jan" ; break;
+		case 2: thisMonth_STR = "Feb" ; break;
+		case 3: thisMonth_STR = "Mar" ; break;
+		case 4: thisMonth_STR = "Apr" ; break;
+		case 5: thisMonth_STR = "May" ; break;
+		case 6: thisMonth_STR = "Jun" ; break;
+		case 7: thisMonth_STR = "Jul" ; break;
+		case 8: thisMonth_STR = "Aug" ; break;
+		case 9: thisMonth_STR = "Sep" ; break;
+		case 10: thisMonth_STR = "Oct" ; break;
+		case 11: thisMonth_STR = "Nov" ; break;
+		case 12: thisMonth_STR = "Dec" ; break;
+	}	
+	return ( splitted[0] + '/' + thisMonth_STR + '/' + splitted[2] );
+}//convertDateMonth_toText
+
+
 function isDateValid( date )
 {
 	// created 29DEC2011-1033

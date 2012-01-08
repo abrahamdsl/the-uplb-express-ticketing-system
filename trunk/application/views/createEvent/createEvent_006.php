@@ -17,6 +17,11 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
+	<!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
+	?>
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
@@ -27,14 +32,17 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.datepicker.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.timepicker.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/datepickerBoot.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>		
-	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/createEvent006.js'; ?>"/></script>				
-	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006.js'; ?>"/></script>				
+	<!--For overlay-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
 	
   	
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>	
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -74,9 +82,20 @@ $this->load->view('html-generic/doctype.inc');
 						<input type="hidden" id="selling_dateEnd_caption" value="End Date" />						
 						<input type="hidden" id="selling_timeEnd_caption" value="End Time" />						
 						<!-- <input type="hidden" id="maxSlot" value="<?php //echo $maxSlots; ?>" /> -->
-						<input type="hidden" id="allIsWell" value="0" />
+						<input type="hidden" id="allIsWell" value="0" />																		
 						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step7' ?>" name="formLogin" id="formMain">
 							<input type="hidden" id="deadlineSelectionVal" value="1" />
+							<!--
+								08JAN2012-1419: Since we have to represent the visible dates in a user friendly form,
+								i.e., 2012/01/02 as 02JAN2012, the field that will be considered when passed into the server
+								are these, instead of the visible ones
+							-->						
+							<input type="hidden" name="hidden_selling_dateStart" value="" />
+							<input type="hidden" name="hidden_selling_timeStart" value="" />
+							<input type="hidden" name="hidden_selling_dateEnd" value="" />
+							<input type="hidden" name="hidden_selling_timeEnd" value="" />
+							<!-- end-->
+							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
@@ -88,7 +107,9 @@ $this->load->view('html-generic/doctype.inc');
 										<input type="text" id="datepicker2" class="textInputSize grayGuide" name="selling_dateEnd" value="End Date" />
 										<input type="text" id="timepicker_end_006" class="textInputSize grayGuide" name="selling_timeEnd" value="End Time" />
 										<br/>
-										<!--this red eye indicator is used by some function in createEvent_002.js that is being called from here -->
+										<!--this red eye indicator is used by some function in createEvent_002.js that is being called from here,
+											so we include it here so that such JS file won't malfunction because of this single element's absence
+										-->
 										<input type="hidden" name="redEyeIndicator" id="id_redEyeIndicator" alt="This indicates that show starts today but ends the next day, i.e. 0800PM but 1230AM which is the next day.">
 										<!--<label for="redEyeIndicator">Red Eye Deadline?</label> -->
 									</span>

@@ -18,7 +18,6 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>"/></script>	
-?>
 </head>
 <body>
 <div id="main_container">

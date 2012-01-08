@@ -1,3 +1,11 @@
+function formSubmit()
+{
+	// created 7JAN2012-1547
+	document.forms[0].submit();			
+	
+	return [ this ];
+}
+
 $(document).ready( function () 
 {
 	$("#checkAll").click( function() {
@@ -12,7 +20,7 @@ $(document).ready( function ()
 		thisVal = $("#id_slots").val();
 		if( !isInt( thisVal ) )
 		{
-			alert("Invalid number of slots.");
+			displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );						
 			return;
 		}
 		$("#id_slots").val( parseInt(thisVal) + 1);		
@@ -22,14 +30,14 @@ $(document).ready( function ()
 		thisVal = $("#id_slots").val();
 		if( !isInt( thisVal ) )
 		{
-			alert("Invalid number of slots.");
+			displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );	
 			return;
 		}
 		$("#id_slots").val( parseInt(thisVal) - 1);		
 	});
 	
 	$("#buttonReset").click( function() {						
-			alert('Feature coming later.');
+			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 	});
 	
 	$("#buttonOK").click( function() {						
@@ -50,24 +58,23 @@ $(document).ready( function ()
 			
 			if( !atLeastOneCheckBoxSelected )
 			{
-				alert("Please select at least one showing time to configure.");
+				displayOverlay( 'error' , 'info required', "Please select at least one showing time to configure." );					
 				return;
 			}
 			
 			thisVal = $("#id_slots").val();
 			if( !isInt( thisVal ) )
 			{
-				alert("Invalid number of slots.");
+				displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );	
 				return;
 			}
 			if( thisVal < 1 )
-			{
-				alert("As in zero slot? Are you kidding me?");
+			{				
+				displayOverlay( 'error' , 'bad expectation', "As in zero slot? Are you kidding me?" );
 				return;
 			}
-			decision = confirm('Are you sure these are what you want to configure now?');
-			if( !decision ) return;
+			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure these are what you want to configure now?" );																		
 			
-			document.forms[0].submit();
+			
 	});
 });

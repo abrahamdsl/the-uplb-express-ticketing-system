@@ -23,14 +23,22 @@ function checkSlotsTotal( theObject)
 	}
 	
 	if( Total > parseInt( $("#maxSlot").val() ) )
-	{
-		alert("Total slots of all classes exceeds maximum allowed.");
+	{		
+		displayOverlay( 'error' , 'error', "Total slots of all classes exceeds maximum allowed." );										
 		theObject.val( $('#lastFocus').val() );	// restore the former value
 		return false;
 	}
 	
 	return true;
 }//checkSlotsTotal(..)
+
+function formSubmit()
+{
+	// created 7JAN2012-1547
+	document.forms[0].submit();			
+	
+	return [ this ];
+}
 
 function giveMeClass( elemID )
 {	
@@ -57,11 +65,11 @@ $(document).ready( function() {
 	});
 	
 	$('input[id^="id_seat_"]').click( function() {
-		alert('Functionality coming soon');
+		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 	});
 	
 	$('input[id^="id_privilege_"]').click( function() {
-		alert('Functionality coming soon');
+		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 	});
 	
 	$('input[id^="addSlots_"]').click( function() {	
@@ -71,8 +79,8 @@ $(document).ready( function() {
 		
 		$( selector_ChangeThis ).focus();
 		if( !isInt( thisVal ) )
-		{
-			alert("Invalid slot quantity.");
+		{			
+			displayOverlay( 'error' , 'error', "Invalid slot quantity." );										
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
@@ -98,13 +106,14 @@ $(document).ready( function() {
 		var thisVal = $( selector_ChangeThis ).val();		
 		
 		if( !isInt( thisVal ) )
-		{
-			alert("Invalid number of slots.");
+		{			
+			displayOverlay( 'error' , 'error',"Invalid number of slots." );
 			return;
 		}		
 		if( parseInt(thisVal) == 0 ) 
 		{
-			alert("Minimum slots is zero."); return;
+			displayOverlay( 'error' , 'bad expectation',"Minimum slots is zero." );
+			return;
 		}
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);
 	});
@@ -116,7 +125,7 @@ $(document).ready( function() {
 		
 		if( !isInt( thisVal ) )
 		{
-			alert("Invalid number of slots.");
+			displayOverlay( 'error' , 'error',"Invalid number of slots." );
 			return;
 		}		
 		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
@@ -129,12 +138,12 @@ $(document).ready( function() {
 		
 		if( !isInt( thisVal ) )
 		{
-			alert("Invalid number of slots.");
+			displayOverlay( 'error' , 'error',"Invalid number of slots." );
 			return;
 		}		
 		if( parseInt(thisVal) == 0 ) 
 		{
-			alert("Minimum price is zero."); return;
+			displayOverlay( 'error' , 'bad expectation',"Minimum price is zero." );return;
 		}
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
 	});
@@ -142,13 +151,13 @@ $(document).ready( function() {
 	$('input[name^="price"]').blur( function()	{
 		if( !isFloat( $(this).val() ) )
 		{
-			alert('Price not valid');
+			displayOverlay( 'error' , 'bad expectation',"Price not valid." );
 			$(this).val( $('#lastFocus').val() );
 			return;
 		}
 		if( parseFloat( $(this).val() ) < 0 )
-		{
-			alert('Negative amount not allowed.');
+		{			
+			displayOverlay( 'error' , 'bad expectation','Negative amount not allowed.' );
 			$(this).val( $('#lastFocus').val() );
 			return;
 		}
@@ -158,7 +167,7 @@ $(document).ready( function() {
 	$('input[name^="slot"]').blur( function()	{				
 		if( !isInt( $(this).val() ) )
 		{
-			alert("Invalid slot quantity.");
+			displayOverlay( 'error' , 'error', "Invalid slot quantity." );
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
@@ -171,16 +180,11 @@ $(document).ready( function() {
 	}); //$('input[name^="slot"]').blur(..)
 	
 	$("#buttonReset").click( function() {
-		alert("Feature coming soon.");
+		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 	});
 	
-	$("#buttonOK").click( function() {
-		var decision = false;
-		
-		decision = confirm("Are you sure you have configured them?");
-		if( !decision ) return;
-		
-		document.forms[0].submit();
+	$("#buttonOK").click( function() {		
+		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure you have configured them?");																				
 	});
 	
 	/*$('input[name^="slot"]').change(		

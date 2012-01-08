@@ -1,4 +1,10 @@
-
+function formSubmit()
+{
+	// created 7JAN2012-1547
+	document.forms[0].submit();			
+	
+	return [ this ];
+}
 
 $(document).ready( function() {
 	// created 21DEC2011-1637
@@ -23,14 +29,21 @@ $(document).ready( function() {
 	
 	$('input[name^="selling_date"]').change( function() {				
 		var newVal = $(this).val();
+		var thisElemName = $(this).attr('name');
+		var hiddenCounterpart = 'hidden_' + thisElemName;
 		
-		if( newVal.length == 0 )	// restore the last value and class before change
+		// if the field is now blank, restore the last value and class before change
+		if( newVal.length == 0 )	
 		{						
 			$(this).attr( 'class', "textInputSize grayGuide" );
-			$(this).val( $( '#' + $(this).attr('name')+'_caption').val() );		
+			$(this).val( $( '#' + thisElemName +'_caption').val() );		
 			return true;
 		}		
-		$(this).attr( 'class', "textInputSize" );	// make the class so that regular black, not italicized text will appear
+		$(this).attr( 'class', "textInputSize" );	// make the class so that regular black, not italicized text will appear		
+		//copy the new value to hidden counterpart
+		$( 'input[name="' + hiddenCounterpart + '"]' ).val( newVal );
+		//display in user friendly size
+		$(this).val( convertDateMonth_toText( newVal ) );
 	});
 	
 	$('input[name^="selling_date"]').focus( function() {
@@ -105,12 +118,12 @@ $(document).ready( function() {
 		if( newVal != $('#numOfDays_caption').val() ){	
 			$(this).attr( 'class', $('#lastFocus_class').val() );
 			if( !isInt( newVal ) ){
-				alert( "Invalid number of days" );
+				displayOverlay( 'error' , 'error', "Invalid number of days" );				
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}
 			if( parseInt( newVal ) < 1 ) {
-				alert( "Minimum of 1 day for this. " );
+				displayOverlay( 'error' , 'error', "Minimum of 1 day for this. " );				
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}
@@ -122,7 +135,7 @@ $(document).ready( function() {
 	
 	$('#numOfDays').focus( function() {
 		$('#lastFocus').val( $(this).val() );					//put old value to lastFocus
-		$('#lastFocus_class').val( $(this).attr( 'class' ) );			//put old class to lastFocus_class
+		$('#lastFocus_class').val( $(this).attr( 'class' ) );	//put old class to lastFocus_class
 		$(this).val("");										//empty the contents
 	});
 	// END: #numOfDays
@@ -188,7 +201,7 @@ $(document).ready( function() {
 		if( newVal != "Days" ){	
 			$(this).attr( 'class', $('#lastFocus_class').val() );
 			if( !isInt( newVal ) ){
-				alert( "Invalid number of days" );
+				displayOverlay( 'error' , 'error', "Invalid number of days" );				
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}			
@@ -209,8 +222,8 @@ $(document).ready( function() {
 	//SUBMIT BUTTON
 	$('#buttonOK').click( function(){
 		// START: validate online selling availability		
-		var sellingDateStart = $('input[name="selling_dateStart"]').val();
-		var sellingDateEnd = $('input[name="selling_dateEnd"]').val();
+		var sellingDateStart = $('input[name="hidden_selling_dateStart"]').val();
+		var sellingDateEnd = $('input[name="hidden_selling_dateEnd"]').val();
 		var sellingTimeStart = $('input[name="selling_timeStart"]').val();
 		var sellingTimeEnd = $('input[name="selling_timeEnd"]').val();
 		var isShow_RedEye = document.getElementById('id_redEyeIndicator').checked;
@@ -219,26 +232,26 @@ $(document).ready( function() {
 		var deadlineModeChosen;
 		
 		if( !isDateValid( sellingDateStart ) ) {
-			alert('Invalid Selling Date Start');
+			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Date Start." );									
 			return false;
 		}
-		if( !isDateValid( sellingDateEnd ) ) {
-			alert('Invalid Selling Date End');
+		if( !isDateValid( sellingDateEnd ) ) {			
+			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Date End" );			
 			return false;
 		}
-		if( !isTimeValid( sellingTimeStart ) ){
-			alert('Invalid Selling Time Start');
+		if( !isTimeValid( sellingTimeStart ) ){			
+			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Time Start" );			
 			return false;
 		}
-		if( !isTimeValid( sellingTimeEnd ) ) {
-			alert('Invalid Selling Time End');
+		if( !isTimeValid( sellingTimeEnd ) ) {			
+			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Time End" );			
 			return false;
 		}
 		if( !isShow_RedEye )
 		{
 			if ( !isTimestampGreater( sellingDateStart, sellingTimeStart, sellingDateEnd, sellingTimeEnd, isShow_RedEye) )		//found in generalChecks.js
-			{
-				alert("Selling end timestamp is earlier than selling start timestamp.");
+			{				
+				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp is earlier than selling start timestamp." );		
 				return false;
 			}		
 		}
@@ -251,40 +264,33 @@ $(document).ready( function() {
 		// REFACTORING HOTSPOT!!!!
 		{
 			case "1":	if( !isTimeValid( $('#fixedTime').val() ) ){
-							alert("Invalid time specified for payment deadline.");
+							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
 							return false;
 						}						
 						break;			
 			case "2":	if( !isTimeValid( $('#fixedTime').val() ) ){
-							alert("Invalid time specified for payment deadline.");
+							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
 							return false;
 						}		
 						numOfDays = parseInt( $('#numOfDays').val() );
 						if( isNaN( numOfDays ) || numOfDays < 1 ){
-							alert( "Invalid number of days for payment deadline" );
+							displayOverlay( 'error' , 'error', "Invalid number of days for payment deadline" );										
 							return false;
 						}						
 						break;
 			case "3":   numOfDays = parseInt( $('#relative_days').val() );
 						if( isNaN( numOfDays ) || numOfDays < 0 ){
-							alert( "Invalid number of days for payment deadline" );
+							displayOverlay( 'error' , 'error', "Invalid number of days for payment deadline" );										
 							return false;
 						}						
 						if( !isTimeValid( $('#fixedTime').val() ) ){
-							alert("Invalid time specified for payment deadline.");
+							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
 							return false;
 						}		
 						break;
 		}
 		//END: validate deadline of payment
-		decision = confirm("Are you sure you these entries are correct? Please check one more time.");
-		if( !decision ) return false;
-		document.forms[0].submit();
+		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure that these entries are correct? Please check one more time." );		
 	});
 	
 });
-
-function performRitual( thisObj )
-{
-	alert('ritual' + thisObj );
-}

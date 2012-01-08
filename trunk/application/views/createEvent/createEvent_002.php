@@ -3,7 +3,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "Create Event!";
+	$this->pageTitle = "Create Event Step 2";
 	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -15,10 +15,15 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent02.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
-
+	<!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
+	?>		
 	<?php
 		$this->load->view('html-generic/jquery-core_choiceB.inc');
-	?>			
+	?>	
+	
 	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
@@ -34,8 +39,14 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_002.js'; ?>"/></script>			
 	
+	<!--For overlay-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>		
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -74,7 +85,7 @@ $this->load->view('html-generic/doctype.inc');
 							<div id="center_purest cEvent02_container ">
 								<div class="starboardSide">
 									<select size="5" multiple="multiple" disabled="true" id="timeSelect" class="dateAndTimeSelection center_purest" multiple="multiple" >
-									  <option value="NONE" id="noneTimeIndicator" class="timeFrames_proper" >Add time</option>									  									  
+										<option value="NONE" id="noneTimeIndicator" class="timeFrames_proper" >Add time</option>									  									  
 									</select>									
 								</div>
 								<div class="portSide">
@@ -85,7 +96,7 @@ $this->load->view('html-generic/doctype.inc');
 								<div class="starboardSide bothUnder">
 									<span style="float: left; margin-right: 20px; clear:right">
 										<input type="checkbox" name="redEyeIndicator" id="id_redEyeIndicator" alt="This indicates that show starts today but ends the next day, i.e. 0800PM but 1230AM which is the next day." />
-										<label for="redEyeIndicator">Red Eye Show?</label>
+										<label for="id_redEyeIndicator">Red Eye Show?</label>
 									</span>
 									<input type="text" id="timepicker_start" class="time"  />
 									<input type="text" id="timepicker_end" class="time" />

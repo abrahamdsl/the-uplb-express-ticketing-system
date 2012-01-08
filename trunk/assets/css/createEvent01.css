@@ -16,9 +16,9 @@ div.mainWizardMainSections
 	height: auto;
 	overflow: auto;
 	text-align: center;
-	border-style: solid;
+	/*border-style: solid;
 	border-color: green;
-	border-width: 1px;
+	border-width: 1px;*/
 	vertical-align: center;
 }
 /* 11DEC2011-1557 REMOVE LATER. FOR DEBUGGING PURPOSES ONLY.

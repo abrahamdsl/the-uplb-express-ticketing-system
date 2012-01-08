@@ -66,7 +66,7 @@ class EventCtrl extends CI_Controller {
 		$this->input->set_cookie($cookie);
 		
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
-		$this->load->view('createEvent/createEvent_001b', $data);
+		$this->load->view('createEvent/createEvent_001', $data);
 	}//create
 	
 	function create_step2()
@@ -339,12 +339,13 @@ class EventCtrl extends CI_Controller {
 	
 	function create_step7()
 	{
+		//echo( var_dump($_POST ) );
 		// START: validation if correct page is being submitted
 		$correctPage = true;
 		$stillUnconfiguredEvents;
 		
-		if( !$this->input->post("selling_dateStart") ) $correctPage = false;
-		if( !$this->input->post("selling_dateEnd") ) $correctPage = false;
+		if( !$this->input->post("hidden_selling_dateStart") ) $correctPage = false;
+		if( !$this->input->post("hidden_selling_dateEnd") ) $correctPage = false;
 		if( !$this->input->post("selling_timeStart") ) $correctPage = false;
 		if( !$this->input->post("selling_timeEnd") ) $correctPage = false;
 		if( !$this->input->post("deadlineChoose") ) $correctPage = false;
