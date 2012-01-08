@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2011 at 01:01 PM
+-- Generation Time: Jan 08, 2012 at 07:10 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -32,16 +32,12 @@ CREATE TABLE IF NOT EXISTS `event` (
   `FB_RSVP` varchar(255) DEFAULT NULL,
   `Temp` int(11) NOT NULL DEFAULT '100',
   PRIMARY KEY (`EventID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=880 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=955 ;
 
 --
 -- Dumping data for table `event`
 --
 
-INSERT INTO `event` (`EventID`, `Name`, `Description`, `FB_RSVP`, `Temp`) VALUES
-(139, 'Faculty Follies', 'echos', '', 100),
-(686, 'Elbi Pie', 'echos', '', 100),
-(879, 'Beviant Loves', 'echos', '', 100);
 
 -- --------------------------------------------------------
 
@@ -88,7 +84,8 @@ CREATE TABLE IF NOT EXISTS `grand_permission` (
 
 INSERT INTO `grand_permission` (`AccountNum_ID`, `ADMINISTRATOR`, `EVENT_MANAGER`, `RECEPTIONIST`, `CUSTOMER`, `FACULTY`) VALUES
 (582327, 0, 1, 0, 1, 0),
-(641378, 0, 0, 0, 1, 0);
+(641378, 0, 0, 0, 1, 0),
+(771566, 0, 0, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -126,17 +123,6 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 -- Dumping data for table `showing_time`
 --
 
-INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `seat_pattern`, `Slots`, `ticket_class`, `Status`, `UUID`) VALUES
-(1, 139, '2012-01-30', '18:05:00', '2012-01-30', '22:05:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-01-04', '09:00:00', '2012-01-07', '12:31:00', 0, 0, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
-(1, 686, '2011-12-12', '15:55:00', '2011-12-12', '17:55:00', 'FIXED_SAMEDAY', 0, '07:00:00', '2011-12-21', '14:00:00', '2011-12-23', '12:17:00', 1, 1, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
-(1, 879, '2012-01-04', '19:30:00', '2012-01-04', '23:46:00', 'FIXED_AFTER', 1, '17:00:00', '2011-12-30', '11:00:00', '2011-12-31', '23:00:00', 0, 1, NULL, NULL, 108, 2, 'CONFIGURED', NULL),
-(2, 139, '2012-01-31', '18:05:00', '2012-01-31', '22:05:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-01-04', '09:00:00', '2012-01-07', '12:31:00', 0, 0, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
-(2, 686, '2011-12-12', '18:55:00', '2011-12-13', '00:55:00', 'RELATIVE_AFTER', 2, '10:00:00', '2011-12-22', '14:00:00', '2011-12-31', '15:31:00', 0, 0, NULL, NULL, 50, 2, 'CONFIGURED', NULL),
-(2, 879, '2012-01-05', '19:30:00', '2012-01-05', '23:46:00', 'FIXED_AFTER', 1, '17:00:00', '2011-12-30', '11:00:00', '2011-12-31', '23:00:00', 0, 1, NULL, NULL, 108, 2, 'CONFIGURED', NULL),
-(3, 686, '2011-12-13', '15:55:00', '2011-12-13', '17:55:00', 'FIXED_SAMEDAY', 0, '07:00:00', '2011-12-21', '14:00:00', '2011-12-23', '12:17:00', 1, 1, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
-(3, 879, '2012-01-06', '19:30:00', '2012-01-06', '23:46:00', 'FIXED_AFTER', 1, '17:00:00', '2011-12-30', '11:00:00', '2011-12-31', '23:00:00', 0, 1, NULL, NULL, 108, 2, 'CONFIGURED', NULL),
-(4, 686, '2011-12-14', '15:55:00', '2011-12-14', '17:55:00', 'FIXED_SAMEDAY', 0, '07:00:00', '2011-12-21', '14:00:00', '2011-12-23', '12:17:00', 1, 1, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
-(5, 686, '2011-12-14', '18:55:00', '2011-12-15', '00:55:00', 'RELATIVE_AFTER', 2, '10:00:00', '2011-12-22', '14:00:00', '2011-12-31', '15:31:00', 0, 0, NULL, NULL, 50, 2, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -164,27 +150,7 @@ INSERT INTO `ticket_class` (`EventID`, `UniqueID`, `Name`, `Price`, `Slots`, `Pr
 (0, -1, 'BUSINESS', 0, 0, '', '', 2),
 (0, -1, 'REGULAR', 0, 0, '', '', 3),
 (0, -1, 'STANDING', 0, 0, '', '', 4),
-(0, -1, 'VIP', 0, 0, '', '', 1),
-(139, 1, 'BUSINESS', 0, 5, 'IDK', 'IDY', 0),
-(139, 1, 'REGULAR', 0, 3, 'IDK', 'IDY', 0),
-(139, 1, 'STANDING', 0, 4, 'IDK', 'IDY', 0),
-(139, 1, 'VIP', 0, 10, 'IDK', 'IDY', 0),
-(686, 1, 'BUSINESS', 50, 50, 'IDK', 'IDY', 0),
-(686, 1, 'REGULAR', 20, 20, 'IDK', 'IDY', 0),
-(686, 1, 'STANDING', 0, 20, 'IDK', 'IDY', 0),
-(686, 1, 'VIP', 100, 10, 'IDK', 'IDY', 0),
-(686, 2, 'BUSINESS', 80, 25, 'IDK', 'IDY', 0),
-(686, 2, 'REGULAR', 0, 0, 'IDK', 'IDY', 0),
-(686, 2, 'STANDING', 0, 0, 'IDK', 'IDY', 0),
-(686, 2, 'VIP', 100, 25, 'IDK', 'IDY', 0),
-(879, 1, 'BUSINESS', 0, 8, 'IDK', 'IDY', 0),
-(879, 1, 'REGULAR', 0, 8, 'IDK', 'IDY', 0),
-(879, 1, 'STANDING', 0, 9, 'IDK', 'IDY', 0),
-(879, 1, 'VIP', 0, 6, 'IDK', 'IDY', 0),
-(879, 2, 'BUSINESS', 0, 8, 'IDK', 'IDY', 0),
-(879, 2, 'REGULAR', 0, 8, 'IDK', 'IDY', 0),
-(879, 2, 'STANDING', 0, 9, 'IDK', 'IDY', 0),
-(879, 2, 'VIP', 0, 6, 'IDK', 'IDY', 0);
+(0, -1, 'VIP', 0, 0, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -207,7 +173,8 @@ CREATE TABLE IF NOT EXISTS `uplbconstituent` (
 
 INSERT INTO `uplbconstituent` (`AccountNum_ID`, `studentNumber`, `employeeNumber`) VALUES
 (582327, 200837120, NULL),
-(641378, 200837122, NULL);
+(641378, 200837122, NULL),
+(771566, 200837121, NULL);
 
 -- --------------------------------------------------------
 
@@ -242,6 +209,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `addr_homestreet`, `addr_barangay`, `addr_cityMunicipality`, `addr_province`, `temp1`, `temp2`) VALUES
 (582327, 'abrahamdsl', '8sdk17a3', 'ABRAHAM', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
 (641378, 'wordchamp427', '', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
+(771566, 'meowmeow', 'meowmeow', 'NYAN', 'S.', 'CAT', 'FEMALE', '9183981185', '0', 'ADS@YAHOO.COM', '', '', '', '', NULL, NULL),
 (807519, 'wordchamp427', 'alfredobula', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL);
 
 --

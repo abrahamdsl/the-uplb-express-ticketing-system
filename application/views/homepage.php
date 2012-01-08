@@ -56,7 +56,7 @@ $this->load->view('html-generic/doctype.inc');
 						{
 					?>					
 					<div id="ticketSelectionDiv">
-						Ticket selection here					
+						<a href="EventCtrl/book">Ticket selection here</a>
 					</div>
 					<div>
 						Other functions

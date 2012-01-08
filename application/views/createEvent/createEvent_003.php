@@ -13,6 +13,11 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
+	<!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
+	?>		
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
 	?>			
@@ -22,8 +27,14 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_003.js'; ?>"/></script>			
+	
+	<!--For overlay-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>		
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php

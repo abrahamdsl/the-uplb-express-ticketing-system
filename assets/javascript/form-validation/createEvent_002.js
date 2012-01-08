@@ -26,6 +26,26 @@ function appendToHidden( which, newEntry)
 	return true;
 }//appendToHidden
 
+function deleteSelectedShowingTimeInfo( data )
+{
+	/*
+		Created 07JAN2012-1723
+		
+		data - an array, expected only one element, containing the ID for the showing time info ton be deleted
+	*/
+	
+	removeFromHidden( data[0], $("option:selected").val() );
+	$("option:selected").remove();	
+}//deleteSelectedShowingTimeInfo
+
+function formSubmit()
+{
+	// created 7JAN2012-1547
+	document.forms[0].submit();			
+	
+	return [ this ];
+}
+
 function removeFromHidden( which, whatEntry )
 {
 	var currentVal;
@@ -93,16 +113,13 @@ function removeFromHidden( which, whatEntry )
 	actionListener for submitting the form
 */
 $(document).ready(function()
-	{
-		
-		//alert('loaded');
-						
+	{								
 		/*
 			ask for some form submit confirmation here
 		*/
 	
 		$("#buttonReset").click( function() {						
-			alert('Feature coming later.');
+			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 		});
 		
 		/*
@@ -115,20 +132,17 @@ $(document).ready(function()
 			
 			if( timeFrames == "" )
 			{
-				alert("We cannot proceed if you don't have time frames specified.");
+				displayOverlay( 'error' , 'info required', "We cannot proceed if you don't have time frames specified." );										
 				return;
 			}
 			
 			if( dateFrames == "" )
 			{
-				alert("We cannot proceed if you don't have date frames specified.");
+				displayOverlay( 'error' , 'info required', "We cannot proceed if you don't have date frames specified." );						
 				return;
 			}
-			
-			decision = confirm("Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard.");
-			if( !decision ) return;
-			
-			document.forms[0].submit();			
+						
+			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard." );																		
 		});
 		
 		$("#addTimeBtn").click( function()
@@ -149,15 +163,15 @@ $(document).ready(function()
 				
 				//check first if they are not blank
 				if( $('#timepicker_start').val() == "" )
-				{
-					alert('Enter time start!');
-					return;
+				{					
+					displayOverlay( 'error' , 'info required', "Enter time start!" );						
+					return false;
 				}
 				
 				if( $('#timepicker_end').val() == "" )
 				{
-					alert('Enter time end!');
-					return;
+					displayOverlay( 'error' , 'info required', "Enter time end!" );						
+					return false;
 				}
 				
 				//now try determining difference
@@ -171,15 +185,15 @@ $(document).ready(function()
 				// if invalid time string is submitted, difference_in_Millisecs would be NaN
 				if( isNaN(difference_in_Millisecs) )
 				{
-					alert('Incorrect time format');
+					displayOverlay( 'error' , 'misunderstanding', "Incorrect time format!" );						
 					return;
 				}
 																
 				if( !isShow_RedEye )
 				{
 					if( difference_in_Millisecs < 0 )
-					{
-						alert('Not a Red Eye show but end time is earlier than showing time!');
+					{						
+						displayOverlay( 'error' , 'bad expectation', "Not a Red Eye show but end time is earlier than showing time!" );						
 						return;
 					}					
 				}				
@@ -192,7 +206,7 @@ $(document).ready(function()
 				{					
 					if( timeFrames_obj[x].innerHTML == addThisTimeframe )
 					{
-						alert( 'Time exists already' );
+						displayOverlay( 'error' , 'bad expectation', "Time exists already!" );						
 						return;
 					}															
 				}
@@ -204,9 +218,15 @@ $(document).ready(function()
 					timeFrames = $('#timeSelect').children();				//reinitialize
 				}
 				
-				add_me = '<option class="timeFrames_proper"  >' + addThisTimeframe +"</option>";
+				add_me = '<option class="timeFrames_proper" id="' + addThisTimeframe + '" >' + addThisTimeframe  +"</option>";
 				timeFrames.add(add_me).appendTo($('#timeSelect'));					
 				appendToHidden( 'TIME', addThisTimeframe );
+				
+				//remove values for timeframe and unset red-eye checkbox
+				$( '#timepicker_start' ).val( "" );
+				$( '#timepicker_end' ).val( "" );
+				$( '#id_redEyeIndicator' ).attr( "checked", false );							
+				
 			}			
 		);//addTimeBtn
 	
@@ -222,20 +242,20 @@ $(document).ready(function()
 			
 			if( dateChosen == "" )	// blank, alert!
 			{
-				alert("Please choose a date");
+				displayOverlay( 'error' , 'info required', "Please choose a date." );						
 				return;
 			}
 			
 			if( dateChosen_splitted.length != 3 )
 			{
-				alert('Invalid date format');
+				displayOverlay( 'error' , 'misunderstanding', "Invalid date." );						
 			}
 			
 			for( x=0; x < 3; x++ )	// array length should be fixed at 3: mm/dd/yyyy
 			{
 				if( !isInt(dateChosen_splitted[x]) )	// found at javascript/form-validation/generalChecks.js
-				{
-					alert('Invalid characters detected.');
+				{					
+					displayOverlay( 'error' , 'bad expectation', "Invalid characters detected." );			
 					return;
 				}
 			}
@@ -245,10 +265,10 @@ $(document).ready(function()
 			
 			//check if date already exists
 			for( x=0, y=dateFrames_obj.length ; x < y ; x++ )			// now check the existing timeframe to see if something exists already
-			{										
-					if( dateFrames_obj[x].innerHTML == dateChosen )
-					{
-						alert( 'Date exists already' );
+			{															
+					if( $(dateFrames_obj[x]).val() == dateChosen )
+					{					
+						displayOverlay( 'error' , 'Date exists already', "Please specify another date." );	
 						return;
 					}					
 			}
@@ -256,35 +276,41 @@ $(document).ready(function()
 			if( dateFrames.first().val() == "NONE" )
 			{					
 					document.getElementById('dateSelect').innerHTML = "";   //remove the "Add Date" text
-					$('#dateSelect').attr( 'disabled', false );					//enable the selection
+					$('#dateSelect').attr( 'disabled', false );				//enable the selection
 					dateFrames = $('#dateSelect').children();				//reinitialize
 			}
 				
 			// now add						
-			add_me = '<option class="dateFrames_proper" value="' +dateChosen + '" >' + dateChosen +"</option>";
+			add_me = '<option class="dateFrames_proper" value="' + dateChosen + '" >' + convertDateMonth_toText( dateChosen ) +"</option>";
 			dateFrames.add( add_me ).appendTo($('#dateSelect'));	
 			appendToHidden( 'DATE', dateChosen );			
+			
+			//clear value of date input
+			$( '#datepicker' ).val( "" );
 		}); //addDateBtn
 		
 		/*
 			Function for deleting an entry
 		*/
 		$('select').dblclick( function(){
-			var thisVal = $(this).val();
+			var thisVal = $(this).val();			
 			var whatClass = $("option:selected").attr('class');
-			var optionFor = ( whatClass == "timeFrames_proper" ) ? "TIME" : "DATE";
-			var decision;
-			
-			if ( thisVal == null ) return;
-			decision = confirm( 'Do you want to delete the following?\n\n ' + thisVal );
-			
-			if( !decision ) return;
-			
-			
-			removeFromHidden( optionFor, $("option:selected").val() );
-			$("option:selected").remove();
-			
-			
-		}); //double clicking an option
+			var optionFor = ( whatClass == "timeFrames_proper" ) ? "TIME" : "DATE";						
+			var userFriendlyValue;
+										
+			if ( thisVal == null ) return false;
+			if( optionFor == "DATE" )
+			{
+				/*
+					07JAN2012_1816: IDK why, but if i use "thisVal" instead of 
+					"thisVal.toString()" as an argument, it seems an object is passed
+					instead of a string
+				*/
+				userFriendlyValue =  convertDateMonth_toText( thisVal.toString() );
+			}else{
+				userFriendlyValue = thisVal;
+			}					
+			displayOverlay_confirm( 'warning' , 'Confirm', 'deleteSelectedShowingTimeInfo', new Array( optionFor ), 'Do you want to delete the following?<br/><br/> ' + userFriendlyValue  );																								
+		}); //double clicking an option to delete
 	}
 );

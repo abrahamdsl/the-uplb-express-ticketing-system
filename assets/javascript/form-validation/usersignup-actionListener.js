@@ -258,14 +258,13 @@ $(document).ready(function()
 			// now determine if uplbConstituent is checked
 			// if checked, either student num or employee should be filled out and okay
 			uplbConstituency = document.getElementsByName('uplbConstituentBoolean')[0];			
-			alert(uplbConstituency.checked );
+			//alert(uplbConstituency.checked );
 			if( areAllOK && uplbConstituency.checked )
 			{
 				if( ! ( uplbConstituency_fields[0].value == "1"  || 
 						uplbConstituency_fields[1].value == "1") 
 				)
-				{
-					alert('fak');
+				{					
 					areAllOK = false;
 				}
 				
@@ -274,10 +273,8 @@ $(document).ready(function()
 			if( !areAllOK )				
 			{
 				alert( "Error detected or not all fields are filled out. Please review the form." );
-			}else{
-				alert('tryying transmission...');
-				document.forms["formSignup"].submit();
-				alert('weh?');
+			}else{				
+				document.forms[0].submit();				
 			}
 		});					
 	}

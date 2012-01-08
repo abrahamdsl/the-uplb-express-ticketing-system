@@ -1,12 +1,17 @@
+function formSubmit()
+{
+	// created 7JAN2012-1547
+	document.forms[0].submit();			
+	
+	return [ this ];
+}
+
 $(document).ready(function()
 	{
 		$('#buttonOK').click( function(){
 			var decision;
 			
-			decision = confirm("Are you sure you have selected the appropriate showings?");
-			if( !decision ) return;
-
-			document.forms[0].submit();
+			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure you have selected the appropriate showings?" );																					
 		}); //buttonOK click
 		
 		$('input[class="selectDeselectBtns"]').click( function(){			

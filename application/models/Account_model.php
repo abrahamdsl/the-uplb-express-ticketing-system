@@ -151,6 +151,17 @@ class Account_model extends CI_Model {
 		return( $userInfo_obj->num_rows == 1 ); 			
 	}
 	
+	function generateAccountNumber()
+	{
+		$accountNum;
+		
+		do{
+			$accountNum = rand( 100000, 999999 );			
+		}while( $this->isAccountNumExistent( $accountNum ) );
+		
+		return $accountNum;
+	}//generateAccountNumber
+	
 	function getUserInfo($username = NULL, $password = NULL)
 	/*
 		27 NOV 2011 1150 | Taken from Redbana internship project model/login_model/fetch_User()
@@ -165,16 +176,6 @@ class Account_model extends CI_Model {
 		
 		return $query;
 	}
-		
-	function generateAccountNumber()
-	{
-		$accountNum;
-		
-		do{
-			$accountNum = rand( 100000, 999999 );			
-		}while( $this->isAccountNumExistent( $accountNum ) );
-		
-		return $accountNum;
-	}
+			
 }//class
 ?>

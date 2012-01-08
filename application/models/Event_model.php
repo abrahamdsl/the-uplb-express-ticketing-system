@@ -490,9 +490,9 @@ class Event_model extends CI_Model {
 				WHERE `EventID` = ? AND `Status` = 'BEING_CONFIGURED'; ";
 		// now fire!		
 		$query_result = $this->db->query( $sql, array(
-				$this->input->post( 'selling_dateStart' ),
+				$this->input->post( 'hidden_selling_dateStart' ),
 				$this->input->post( 'selling_timeStart' ),
-				$this->input->post( 'selling_dateEnd' ),
+				$this->input->post( 'hidden_selling_dateEnd' ),
 				$this->input->post( 'selling_timeEnd' ),
 				$BookCompletionOption ,
 				$numOfDays,

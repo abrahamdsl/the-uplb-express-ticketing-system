@@ -1,0 +1,64 @@
+/* *{
+	font-family: "Segoe UI", Verdana, Arial, Tahoma;
+}*/
+
+/*
+	Created 31DEC2011-1612
+	
+	Requires loading of view: '/html-generic/baseURLforJS.inc'
+*/
+.overlay{
+	background: transparent url( '../images/overlay.png' ) repeat top left;	
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	z-index: 100;
+}
+.box{
+	position: fixed;
+	top: -200px;
+	left: 30%;
+	right: 30%;
+	background-color: #fff;
+	/*color: #7f7f7f;*/
+	color: rgb( 77, 77, 81);
+	padding: 20px;
+	border: 2px solid #ccc;
+	z-index: 101;
+}
+span.boxclose{
+	float: right;
+	width: 26px;
+	height: 26px;
+	background: transparent url( '../images/cancel.png' ) repeat top left;
+	margin-top: -30px;
+	margin-right: -30px;
+	cursor: pointer;	
+}
+.box h1{
+	font-family: "Segoe UI Light", Verdana;
+	border-bottom: 1px dashed #7f7f7f;
+	margin: -20px -20px 0px -20px;
+	padding: 10px;	/*#ffefef;*/
+	/*color: rgb(208,208,210);	*/
+}
+.error{
+	color: rgb(208,208,210);
+	background-color: rgb(255,39,21);
+}
+.okay{
+	color: white;
+	background-color: rgb(1,148,38);
+}
+.warning{
+	color: black;
+	background-color: rgb(254,187,10);
+}
+a.overlayButton{
+	background-color: rgb(126,126,126);
+}
+a.overlayButton:hover{
+	background-color: rgb(209,72,14);
+}
