@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 08, 2012 at 07:10 AM
+-- Generation Time: Jan 13, 2012 at 03:47 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -32,12 +32,16 @@ CREATE TABLE IF NOT EXISTS `event` (
   `FB_RSVP` varchar(255) DEFAULT NULL,
   `Temp` int(11) NOT NULL DEFAULT '100',
   PRIMARY KEY (`EventID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=955 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=466 ;
 
 --
 -- Dumping data for table `event`
 --
 
+INSERT INTO `event` (`EventID`, `Name`, `Description`, `FB_RSVP`, `Temp`) VALUES
+(149, 'Elbi Pie', 'echos', '', 100),
+(306, 'Panmumjom', 'echos', '', 100),
+(465, 'DMZ', 'echos', '', 100);
 
 -- --------------------------------------------------------
 
@@ -123,6 +127,12 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 -- Dumping data for table `showing_time`
 --
 
+INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `seat_pattern`, `Slots`, `ticket_class`, `Status`, `UUID`) VALUES
+(1, 149, '2012-01-27', '19:00:00', '2012-01-27', '21:00:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-01-08', '12:00:00', '2012-01-13', '12:30:00', 1, 1, NULL, NULL, 100, 1, 'CONFIGURED', NULL),
+(1, 306, '2012-01-28', '15:25:00', '2012-01-28', '22:41:00', 'FIXED_SAMEDAY', 0, '12:16:00', '2012-01-08', '12:46:00', '2012-01-11', '12:48:00', 1, 1, NULL, NULL, 200, 1, 'CONFIGURED', NULL),
+(1, 465, '2012-01-13', '11:35:00', '2012-01-13', '11:36:00', 'FIXED_SAMEDAY', 0, '21:00:00', '2012-01-13', '17:00:00', '2012-01-14', '12:16:00', 0, 0, NULL, NULL, 100, 2, 'CONFIGURED', NULL),
+(2, 149, '2012-01-27', '22:00:00', '2012-01-28', '00:00:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-01-08', '12:00:00', '2012-01-13', '12:00:00', 1, 1, NULL, NULL, 50, 2, 'CONFIGURED', NULL),
+(3, 149, '2012-01-28', '19:00:00', '2012-01-28', '21:00:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-01-08', '12:00:00', '2012-01-13', '12:30:00', 1, 1, NULL, NULL, 100, 1, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -139,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `ticket_class` (
   `Privileges` varchar(1000) NOT NULL,
   `Restrictions` varchar(1000) NOT NULL,
   `priority` int(11) DEFAULT '0',
+  `HoldingTime` time DEFAULT '00:20:00',
   PRIMARY KEY (`EventID`,`UniqueID`,`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -146,11 +157,27 @@ CREATE TABLE IF NOT EXISTS `ticket_class` (
 -- Dumping data for table `ticket_class`
 --
 
-INSERT INTO `ticket_class` (`EventID`, `UniqueID`, `Name`, `Price`, `Slots`, `Privileges`, `Restrictions`, `priority`) VALUES
-(0, -1, 'BUSINESS', 0, 0, '', '', 2),
-(0, -1, 'REGULAR', 0, 0, '', '', 3),
-(0, -1, 'STANDING', 0, 0, '', '', 4),
-(0, -1, 'VIP', 0, 0, '', '', 1);
+INSERT INTO `ticket_class` (`EventID`, `UniqueID`, `Name`, `Price`, `Slots`, `Privileges`, `Restrictions`, `priority`, `HoldingTime`) VALUES
+(0, -1, 'BUSINESS', 0, 0, '', '', 2, '00:20:00'),
+(0, -1, 'REGULAR', 0, 0, '', '', 3, '00:20:00'),
+(0, -1, 'STANDING', 0, 0, '', '', 4, '00:20:00'),
+(0, -1, 'VIP', 0, 0, '', '', 1, '00:20:00'),
+(149, 1, 'BUSINESS', 75, 30, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 1, 'REGULAR', 50, 40, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 1, 'STANDING', 0, 20, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 1, 'VIP', 100, 10, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 2, 'BUSINESS', 0, 0, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 2, 'REGULAR', 0, 0, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 2, 'STANDING', 0, 0, 'IDK', 'IDY', 0, '00:20:00'),
+(149, 2, 'VIP', 200, 50, 'IDK', 'IDY', 0, '00:20:00'),
+(306, 1, 'BUSINESS', 0, 4, 'IDK', 'IDY', 0, '00:20:00'),
+(306, 1, 'REGULAR', 0, 2, 'IDK', 'IDY', 0, '00:20:00'),
+(306, 1, 'STANDING', 0, 4, 'IDK', 'IDY', 0, '00:20:00'),
+(465, 1, 'VIP', 0, 5, 'IDK', 'IDY', 0, '00:20:00'),
+(465, 2, 'BUSINESS', 0, 5, 'IDK', 'IDY', 0, '00:19:00'),
+(465, 2, 'REGULAR', 0, 5, 'IDK', 'IDY', 0, '00:18:00'),
+(465, 2, 'STANDING', 0, 6, 'IDK', 'IDY', 0, '00:02:00'),
+(465, 2, 'VIP', 0, 5, 'IDK', 'IDY', 0, '00:20:00');
 
 -- --------------------------------------------------------
 

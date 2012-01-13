@@ -13,8 +13,8 @@ class TicketClass_model extends CI_Model {
 	}
 	
 	function createTicketClass( 
-		$UniqueID, $eventID  = NULL, $class = NULL, $price = 0, 
-		$slots = 0, $privileges = NULL,  $restrictions = NULL, $priority = 0
+		$UniqueID, $eventID  = NULL, $class = NULL, $price = 0, $slots = 0, 
+		$privileges = NULL,  $restrictions = NULL, $priority = 0, $holdingTime = 20
 	)
 	{
 		/*
@@ -22,6 +22,7 @@ class TicketClass_model extends CI_Model {
 			
 			30DEC2011-1307, added $UniqueID param
 		*/
+		
 		$data = array(
 			'UniqueID' => $UniqueID,
 			'EventID' => $eventID,
@@ -30,7 +31,8 @@ class TicketClass_model extends CI_Model {
 			'Slots' => $slots,
 			'Privileges' => $privileges,
 			'Restrictions' => $restrictions,
-			'Priority' => $priority
+			'Priority' => $priority,
+			'HoldingTime' => "00:".$holdingTime.":00"
 		);
 		
 		return $this->db->insert( 'ticket_class', $data );
