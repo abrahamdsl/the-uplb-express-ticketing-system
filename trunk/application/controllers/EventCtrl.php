@@ -261,19 +261,16 @@ class EventCtrl extends CI_Controller {
 		$classes = array();
 		$prices = array();
 		$slots = array();
+		$holdingTime = array();
 		$temp; 
-		$lastTicketClassUniqueID;
-		
+		$lastTicketClassUniqueID;		
 		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
 		
-		//iterate through and assign
+		//iterate through submitted values, tokenize them into respective classes and assign
 		$x = 0;
 		$classesCount = 0;
-		foreach( $_POST as $key => $val)
-		{
-			
-				// PSEUDOCODE 12DEC2011-2140
-				
+		foreach( $_POST as $key => $val) // isn't this somewhat a security risk?
+		{										
 				if( $this->UsefulFunctions_model->startsWith( $key, "price" ) )
 				{
 					$temp = explode("_",$key);
@@ -283,11 +280,14 @@ class EventCtrl extends CI_Controller {
 				{					
 					$temp = explode("_",$key);
 					$slots[ $temp[1] ] = $val;
+				}else
+				if( $this->UsefulFunctions_model->startsWith( $key, "holdingTime" ) )
+				{					
+					$temp = explode("_",$key);
+					$holdingTime[ $temp[1] ] = $val;
 				}
-				if( $x % 2 == 0) $classes[ $classesCount++ ] = $temp[1];
-			
-			$x++;	//count how many classes
-			//*/
+				if( $x % 3 == 0) $classes[ $classesCount++ ] = $temp[1];			
+			$x++;	//count how many classes			
 		}
 		
 		/* 15DEC2011-1715: DEBUGGING PURPOSES ONLY REMOVE WHEN COMFORTABLE
@@ -321,7 +321,8 @@ class EventCtrl extends CI_Controller {
 				$slots[ $classes[ $x ] ],
 				"IDK",
 				"IDY",
-				0
+				0,
+				$holdingTime[ $classes[ $x ] ]
 			);
 			if( !$databaseSuccess ){
 				// CODE MISSING:  database rollback

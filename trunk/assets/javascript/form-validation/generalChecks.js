@@ -11,8 +11,11 @@ function convertDateMonth_toText( thisDate )
 	var returnThis;
 	var x;
 	var y;
-		
-	splitted = thisDate.split( '\/' );	
+	var splitter;
+	
+	splitter = thisDate[4];
+	
+	splitted = thisDate.split( splitter );	
 	thisMonth = parseInt( splitted[1] );	
 	switch( thisMonth )
 	{
@@ -31,6 +34,58 @@ function convertDateMonth_toText( thisDate )
 	}	
 	return ( splitted[0] + '/' + thisMonth_STR + '/' + splitted[2] );
 }//convertDateMonth_toText
+
+function convertTimeTo12Hr( thisTime )
+{
+	/*
+		Created 08JAN2012-2020
+		
+		Accepts time in the format of HH:MM:SS or HH:MM
+	*/
+	var timeLen;
+	var splitLen;
+	var splitter;
+	var splitted;
+	var hourPart;
+	var hourPart_STR;
+	var meridien = "AM";
+	var returnThisVal;
+	
+	timeLen = thisTime.length;	
+	if( (timeLen == 5 || timeLen == 8) == false ) return false;
+	splitter = thisTime[2];
+	
+	splitted = thisTime.split( splitter );
+	splitLen = splitted.length;
+	if( (splitLen == 2 || splitLen == 3) == false ) return false;	
+	hourPart = parseInt( splitted[0] );	
+	switch( hourPart )
+	{
+		case 13: hourPart_STR="01" ; break
+		case 14: hourPart_STR="02" ; break
+		case 15: hourPart_STR="03" ; break
+		case 16: hourPart_STR="04" ; break
+		case 17: hourPart_STR="05" ; break
+		case 18: hourPart_STR="06" ; break
+		case 19: hourPart_STR="07" ; break
+		case 20: hourPart_STR="08" ; break
+		case 21: hourPart_STR="09" ; break
+		case 22: hourPart_STR="10" ; break
+		case 23: hourPart_STR="11" ; break
+		case 0:
+		case 24: hourPart_STR="12" ; break
+		default: hourPart_STR = splitted[0]; break;
+	}
+	if( hourPart >= 13 )
+	{
+		meridien = "PM";
+	}
+	returnThisVal = hourPart_STR + ":" + splitted[1];
+	if( splitLen == 3 ) returnThisVal += ( ":" + splitted[2] );
+	returnThisVal += ( " " + meridien );
+	return returnThisVal;
+	//now assemble
+}//convertTimeTo12Hr
 
 
 function isDateValid( date )

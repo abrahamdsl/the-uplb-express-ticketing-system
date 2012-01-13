@@ -78,7 +78,8 @@ $this->load->view('html-generic/doctype.inc');
 										<tr>
 											<td class="iNeedMostSpace" >Class</td>
 											<td class="iNeedMostSpace" >Price</td>
-											<td class="iNeedMostSpace" >Distribution<br/>(Total Max <?php echo $maxSlots; ?>)</td>
+											<td class="iNeedMostSpace" >Distribution<p class="titleDescriptor" >(Total max of <?php echo $maxSlots; ?>)</p></td>
+											<td class="iNeedMoreSpace" >Holding Time<p class="titleDescriptor" >(in minutes, max 60)</p></td>											
 											<td class="iNeedMoreSpace" >&nbsp;</td>											
 											<td class="iNeedMoreSpace" >&nbsp;</td>
 										</tr>
@@ -97,12 +98,18 @@ $this->load->view('html-generic/doctype.inc');
 											<td>
 												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_price_<?php echo $TCD->Name; ?>" name="price_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Price; ?>" /><br/>
 												<input type="button" value="-" id="reducePrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
-												<input type="button" value="+" id="addPrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+												<input type="button" value="+" id="
+												addPrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
 												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_slot_<?php echo $TCD->Name; ?>" name="slot_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Slots; ?>" /><br/>
 												<input type="button" value="-" id="reduceSlots_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 												<input type="button" value="+" id="addSlots_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+											</td>												
+											<td>
+												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_HoldingTime_<?php echo $TCD->Name; ?>" name="holdingTime_<?php echo $TCD->Name; ?>" value="20" /><br/>
+												<input type="button" value="-" id="reduceHoldingTime_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+												<input type="button" value="+" id="addHoldingTime_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
 												<input type="button" value="Choose seats" class="ayokongDefaultAngItsuraNgButton" id="id_seat_<?php echo $TCD->Name; ?>" />
@@ -115,6 +122,14 @@ $this->load->view('html-generic/doctype.inc');
 											$x++;
 										}								
 									?>
+										<tr>
+											<td class="iNeedMostSpace" >&nbsp;</td>
+											<td class="iNeedMostSpace" >&nbsp;</td>
+											<td class="iNeedMostSpace" ><input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="totalSlotsChosen" value="0" /><br/></td>
+											<td class="iNeedMoreSpace" >&nbsp;</td>											
+											<td class="iNeedMoreSpace" >&nbsp;</td>											
+											<td class="iNeedMoreSpace" >&nbsp;</td>
+										</tr>
 									<tbody>
 								</table>								
 							</div>							

@@ -17,10 +17,10 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>
-	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
+	<!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
@@ -32,9 +32,14 @@ $this->load->view('html-generic/doctype.inc');
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
+	<!--For overlay-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
   	
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>		
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -64,6 +69,11 @@ $this->load->view('html-generic/doctype.inc');
 					<div id="title">Select now</div>
 					<div id="content">												
 						<input type="hidden" id="lastFocus" value="" />
+						<input type="hidden" id="slotEnabledClass" value="commonality ayokongDefaultAngItsuraNgButton enabled" />
+						<input type="hidden" id="slotDisabledClass" value="commonality ayokongDefaultAngItsuraNgButton disabled" />
+						<input type="hidden" id="adjustEnabledClass" value="adjustButtons ayokongDefaultAngItsuraNgButton enabled" />
+						<input type="hidden" id="adjustDisabledClass" value="adjustButtons ayokongDefaultAngItsuraNgButton disabled" />
+						
 						<form method="post"  action="<?php echo base_url().'EventCtrl/book_step2' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
@@ -102,7 +112,7 @@ $this->load->view('html-generic/doctype.inc');
 									</span>
 									<span class="right" id="right_inner" >
 										<span id="showtimeDummy" >
-											Select an event first
+											<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="messenger" name="messenger" value="Select an event first" disabled="true" /><br/>
 										</span>
 										<span id="showtimeCustomError" >											
 										</span>
@@ -120,10 +130,10 @@ $this->load->view('html-generic/doctype.inc');
 									<span class="left" >
 										Step 3: Select the quantity
 									</span>
-									<span class="right"  id="right_inner" >
-										<input type="text" class="commonality ayokongDefaultAngItsuraNgButton" id="slot" name="slot" value="1" /><br/>
-										<input type="button" value="-" id="reduceSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
-										<input type="button" value="+" id="addSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+									<span class="right"  id="right_inner" >										
+										<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="slot" name="slot" value="1"  disabled="true" /><br/>
+										<input type="button" value="-" id="reduceSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="true" />								
+										<input type="button" value="+" id="addSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="true" />								
 									</span>
 								</div>								
 							</div>							
@@ -134,7 +144,7 @@ $this->load->view('html-generic/doctype.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
-							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
+							<!--<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a> -->
 			</div>	
 			<div id="misc" style=" clear:both;"></div>
 		</div>		

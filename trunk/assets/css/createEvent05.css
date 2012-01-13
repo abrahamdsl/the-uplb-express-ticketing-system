@@ -21,3 +21,6 @@ input.odd{
 table.schedulesCentral tbody tr td{
 	padding: 10px;
 }
+p.titleDescriptor{
+	font-size: 0.6em;
+}
