@@ -1,0 +1,64 @@
+/*
+ * SimpleModal Basic Modal Dialog
+ * http://www.ericmmartin.com/projects/simplemodal/
+ * http://code.google.com/p/simplemodal/
+ *
+ * Copyright (c) 2010 Eric Martin - http://ericmmartin.com
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Revision: $Id: basic.css 257 2010-07-27 23:06:56Z emartin24 $
+ *
+ *20JAN2012-1531 : Modified by Abe to suit needs
+ */
+ 
+ img {border:0;} 
+ 
+#basic-modal-content-dialogBox {display:none;}
+
+/* Overlay */
+#simplemodal-overlay {position: relative; min-height:200px; min-width:500px; height: auto; width: auto; overflow: auto; background-color:#000; cursor:wait; display: block;}
+
+/* Container */
+#simplemodal-container { height: auto; width: auto; color:#bbb; background-color:#333; border:4px solid #444; /*padding:20px;*/ }
+
+#simplemodal-container .simplemodal-data {/*padding:8px;*/}
+#simplemodal-container a {color:#ddd;}
+#simplemodal-container a.modalCloseImg {background:url('http://localhost/simplemodal_basic/img/basic/x.png') no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
+
+
+/* "Obvious Container" */
+div.obviousContainer{ width: 500px; height; 200px; }
+
+div.obviousContainer div#crownTitle{ 
+	padding: 3px; 
+	font-family: 'Segoe UI Light', Verdana, Arial; 
+}
+
+div.obviousContainer div.errorX{
+	color: rgb(208,208,210);
+	background-color: rgb(255,39,21);
+}
+div.obviousContainer div.okayX{
+	color: white;
+	background-color: rgb(1,148,38);
+}
+div.obviousContainer div.warningX{
+	color: black;
+	background-color: rgb(254,187,10);
+}
+
+div.obviousContainer div#messageBody{ margin-left: 10px; margin-right: 10px; padding: 15px 15px 40px 15px; }
+
+div.obviousContainer div.buttons{
+	padding-right: 12px;
+}
+
+/* Button */
+a.overlayButton{
+	background-color: rgb(126,126,126);
+}
+a.overlayButton:hover{
+	background-color: rgb(209,72,14);
+}

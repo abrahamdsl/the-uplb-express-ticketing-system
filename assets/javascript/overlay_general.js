@@ -45,8 +45,8 @@ function displayOverlay( type, title, message )
 	
 	$( '#overlay' ).fadeIn( 'fast', function(){			
 			$( '#box' ).animate( { 'top':'160px' }, 100 );			
-	});	
-	//alert('displayed ov');
+	});
+	
 }//displayOverlay
 
 function displayOverlay_confirm( type, title, yesFunctionCall, yFC_args, message )

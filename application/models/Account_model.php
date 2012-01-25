@@ -43,33 +43,7 @@ class Account_model extends CI_Model {
 	
 		return $transactionSuccess;
 	}//createAccount
-	
-	function getAccountNumber( $username )
-	{
-		$query_obj = $this->db->get_where('user', 
-							array( 'username' => $username )
-							);
-						
-		$result_arr = $query_obj->result();
 		
-		return intval($result_arr[0]->AccountNum);		
-	}//getAccountNumber
-	
-	function getUser_Names( $username )
-	{
-		$query_obj = $this->db->get_where('user', 
-							array( 'username' => $username )
-							);
-		$result_arr = $query_obj->result();
-		
-		$names = array(
-			"first" => $result_arr[0]->Fname,
-			"middle" => $result_arr[0]->Mname,
-			"last" => $result_arr[0]->Lname,
-		);
-		return $names;
-	}// getUser_Names()
-	
 	function insertUPLBConstituencyData( $accountNum )
 	{
 		/*
@@ -161,6 +135,32 @@ class Account_model extends CI_Model {
 		
 		return $accountNum;
 	}//generateAccountNumber
+	
+	function getAccountNumber( $username )
+	{
+		$query_obj = $this->db->get_where('user', 
+							array( 'username' => $username )
+							);
+						
+		$result_arr = $query_obj->result();
+		
+		return intval($result_arr[0]->AccountNum);		
+	}//getAccountNumber
+	
+	function getUser_Names( $username )
+	{
+		$query_obj = $this->db->get_where('user', 
+							array( 'username' => $username )
+							);
+		$result_arr = $query_obj->result();
+		
+		$names = array(
+			"first" => $result_arr[0]->Fname,
+			"middle" => $result_arr[0]->Mname,
+			"last" => $result_arr[0]->Lname,
+		);
+		return $names;
+	}// getUser_Names()
 	
 	function getUserInfo($username = NULL, $password = NULL)
 	/*
