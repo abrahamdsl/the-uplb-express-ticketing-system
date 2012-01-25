@@ -1,0 +1,16 @@
+#summary Log for Revision 11 since I did not put any when committing
+#labels Featured,Phase-QA
+
+= Introduction =
+
+Basically what's the summary is above. And why didn't I put a log? It's because I'm having some difficulty with TortoiseSVN - when committing it says I have to update my working directory but then when I'm updating it says "No such revision 238". Apparently, when updating the working directory, it references to one of my other projects!!! However when I tried updating the conflicting subfolders, it worked. Then I tried committing now, without typing - and it just committed.
+
+
+= Details =
+
+*Added seat map creation functionality - accessible to admin users. Though bug - other users can still access it via <host>/SeatCtrl/create. Fix coming later.
+   - Hint of seat selection via drag and drop is now visible.
+   - Seat map is m x n matrix format only.
+   - So farm can only remove a column to make an aisle. 
+   - Other features such as removing rows, restoring the column/aisle will be for later.
+* Prototyping/started to use another overlay/modal plug-in called SimpleModal - it seems it is much easier..
