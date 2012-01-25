@@ -42,6 +42,10 @@ $this->load->view('html-generic/doctype.inc');
 	<!--For overlay-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
 	
+	<link type='text/css' href='css/confirm.css' rel='stylesheet' media='screen' />
+	<script type='text/javascript' src='http://localhost/simplemodal_confirm/js/jquery.simplemodal.js'></script>
+	<!-- <script type='text/javascript' src='http://localhost/simplemodal_confirm/js/confirm.js'></script> -->
+	
 </head>
 <body>
 <?php

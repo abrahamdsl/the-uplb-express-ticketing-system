@@ -119,7 +119,8 @@ $(document).ready(function()
 		*/
 	
 		$("#buttonReset").click( function() {						
-			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+			//displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+			$('#confirm').modal();
 		});
 		
 		/*

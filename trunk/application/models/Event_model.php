@@ -22,7 +22,9 @@ class Event_model extends CI_Model {
 			of string too.
 			
 			Doesn't matter if the separators are '/' (forward slash), 
-			they would be replaced with dashes.			
+			they would be replaced with dashes.		
+
+			19JAN2012-1105 : REFACTOR: Might consider moving this to 'UsefulFunctions_model.php'
 		*/
 		if ( $thisDate == ""  ) return "2000-01-01";	// sent an empty string
 			
@@ -61,6 +63,9 @@ class Event_model extends CI_Model {
 	
 	function createEvent_basic( )
 	{
+		/*
+			19JAN2012-1106 : BUG : No checking yet if $eventID already exists in the DB
+		*/
 		$eventID = rand(0, 1000);		
 		
 		$data = array(

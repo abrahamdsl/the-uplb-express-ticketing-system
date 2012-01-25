@@ -2,7 +2,7 @@
 Created 31DEC2011-1612. Helped by 
 http://tympanus.net/codrops/2009/12/03/css-and-jquery-tutorial-overlay-with-slide-out-box/
 -->
-<div class="overlay" id="overlay" style="display: none;" ></div>
+<div class="overlay" id="overlay" style="display: none;" hidden="true" ></div>
 <div class="box" id="box">
 	<span class="boxclose" id="boxclose" ></span>
 	<h1 id="overlayBoxH1Title" class="error"><!-- this is dynamically filled out--></h1>

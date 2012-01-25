@@ -85,6 +85,12 @@ $(document).ready( function() {
 	});
 	
 	$('input[id^="id_seat_"]').click( function() {
+		$seatMapUniqueID = $('#seatMap option:selected').val();		
+		if( isNaN( parseInt( $seatMapUniqueID ) ) )
+		{
+			displayOverlay( 'error' , 'first and foremost', 'Please choose a seat map first.' );
+			return false;
+		}
 		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
 	});
 	
@@ -150,15 +156,14 @@ $(document).ready( function() {
 		{
 			displayOverlay( 'error' , 'error',"Invalid number of slots." );
 			return;
-		}		
+		}				
 		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
 	});
 	
 	$('input[id^="reducePrice_"]').click( function() {
 		var thisClass = giveMeClass( $(this).attr("id") );
 		var selector_ChangeThis = "#id_price_" + thisClass;		
-		var thisVal = $( selector_ChangeThis ).val();		
-		
+		var thisVal = $( selector_ChangeThis ).val();				
 		if( !isInt( thisVal ) )
 		{
 			displayOverlay( 'error' , 'error',"Invalid number of slots." );
@@ -167,7 +172,7 @@ $(document).ready( function() {
 		if( parseInt(thisVal) == 0 ) 
 		{
 			displayOverlay( 'error' , 'bad expectation',"Minimum price is zero." );return;
-		}
+		}		
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
 	});
 	

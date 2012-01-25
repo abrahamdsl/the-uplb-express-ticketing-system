@@ -24,3 +24,28 @@ table.schedulesCentral tbody tr td{
 p.titleDescriptor{
 	font-size: 0.6em;
 }
+div.attentionNeeded{
+	background-color: red;
+}
+div#containingFeaturedTable{
+	position: relative; 
+	top: -110px; 
+	z-index: 9
+}
+div#containingSeatMapSelection{
+	position: relative;  
+	z-index: 10;
+	height: 50px; 
+	width: 33%; 
+	left: -12px; 
+	float: right; 
+	text-align: center; 
+	vertical-align: top; 	
+	border-style: solid; 
+	border-width: 1px; 
+	border-color: gray; 	
+	padding: 20px;
+}
+div#containingSeatMapSelection select#seatMap{
+	width: 60%; 
+}

@@ -124,18 +124,11 @@ $this->load->view('html-generic/doctype.inc');
 					{
 				?>
 				<h3><a href="#">Administration</a></h3>
-				<div>
-					<p>
-					Cras dictum. Pellentesque habitant morbi tristique senectus et netus
-					et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
-					faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
-					mauris vel est.
-					</p>
-					<p>
-					Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
-					Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-					inceptos himenaeos.
-					</p>
+				<div>					
+					<img src="<?php echo base_url().'assets/images/administrator-preliminary_all_horiz.png'; ?>" usemap="#administratorMap" />					
+						<map name="administratorMap">
+							<area shape="rect" coords="4,1,186,103" title="Create Seat Map" alt="Create Seat Map" href="<?php echo base_url().'SeatCtrl/create'; ?>" />							
+						</map>
 				</div>
 				<?php
 					} // ender for administrator

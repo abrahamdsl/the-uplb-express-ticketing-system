@@ -1,0 +1,96 @@
+*{
+	font-family: "Segoe UI", Verdana, Arial;
+}
+table tr td{	
+	width: 20px;
+	height: 17px;	
+	/*border-style: solid;
+	border-color: gray;
+	border-width: 1px;		*/
+	text-align: center;
+}
+table tr td.legend:hover{	
+	background-color: green;
+}
+table tr td input{
+	width: 14px;
+	text-align: center;	
+	background-color: white;
+}
+/*table tr td input.seatInfo{
+	background-color: none;
+	border-width: 0px;
+}*/
+div#msg{
+	height: 120px;
+	font-size: 3em;
+}
+div#seatIndicatorLegend{
+	margin-top: 10px;
+	min-height: 30px;
+	width: 100%;
+	height: auto;
+}
+.holder{
+	min-height: 100px;
+	min-width: 10px;
+	width: 97%;
+	height: 500px;
+	padding: 5px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	overflow: scroll;
+}
+.holder_inner{
+	min-height: 14px;
+	min-width: 14px;
+	width: auto;
+	height: 30px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: blue;										
+	overflow-x: none;
+	overflow-y: auto;
+}
+.selection {
+	position: absolute;
+	border: 1px solid #89B;
+	background: #BCE;
+	background-color: #BEC;
+	border-color: #8B9;
+	}
+.size2 {
+	height: 118px;
+	line-height: 118px;
+	}
+.size3 {
+	height: 178px;
+	line-height: 178px;
+	}
+.drop {
+	width: 19px;
+	height: 16px;
+	float: left;
+	border: 1px dashed #888;
+	background: #EEE;
+	text-align: center;
+	/*padding: 10px;*/
+	/*margin: 0 10px 10px 0;*/
+	margin-left: 2px;
+	margin-right: 2px;
+	font-size: 0.6em;
+}
+/*.drop:hover{
+	color: white;
+	font-weight: bold;
+	background-color: rgb(38, 119, 184);
+}*/
+.dropped {
+	background-color: #EBC;
+	border-color: #B89;
+	}	
+.active {  
+	background-color: #CEB;
+	border-color: #9B8;
+	}

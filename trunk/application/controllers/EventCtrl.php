@@ -13,6 +13,8 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('Event_model');
 		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
+		$this->load->model('Seat_model');		
+		$this->load->model('Slot_model');		
 		$this->load->model('TicketClass_model');
 		$this->load->model('UsefulFunctions_model');
 		
@@ -236,8 +238,10 @@ class EventCtrl extends CI_Controller {
 			
 			$x++;
 		}//foreach(..)
+		// get seat map available
+		$data['seatMaps'] = $this->Seat_model->getUsableSeatMaps( $slots );
 		
-		// get ticket classes
+		// get ticket classes		
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 		$data['ticketClasses_default'] = $this->TicketClass_model->getDefaultTicketClasses();
 		$data['maxSlots'] = $slots;
@@ -289,23 +293,7 @@ class EventCtrl extends CI_Controller {
 				if( $x % 3 == 0) $classes[ $classesCount++ ] = $temp[1];			
 			$x++;	//count how many classes			
 		}
-		
-		/* 15DEC2011-1715: DEBUGGING PURPOSES ONLY REMOVE WHEN COMFORTABLE
-		echo var_dump(
-			$_POST
-		);
-		echo var_dump(
-			$classes
-		);		
-		echo var_dump(
-			$prices
-		);
-		echo var_dump(
-			$slots
-		);
-		echo var_dump( $classesCount );
-		*/
-				
+								
 		$databaseSuccess = TRUE;
 		$lastTicketClassUniqueID = $this->TicketClass_model->getLastTicketClassUniqueID( $this->input->cookie( 'eventID' ) );
 		$lastTicketClassUniqueID++;
@@ -324,15 +312,35 @@ class EventCtrl extends CI_Controller {
 				0,
 				$holdingTime[ $classes[ $x ] ]
 			);
+						
 			if( !$databaseSuccess ){
 				// CODE MISSING:  database rollback
 				echo 'insertion failed';
-				break;			
+				break;						
 			}
+								
 		}//for
 		
 		// now set ticket class's unique id for the being configured events
 		$this->Event_model->setShowingTimeTicketClass( $this->input->cookie( 'eventID' ), $lastTicketClassUniqueID );
+		
+		/*
+			For each showing time being configured, create actual slots.
+		*/
+		foreach( $data['beingConfiguredShowingTimes'] as $eachShowingTime )
+		{
+			$thisST_ticketClasses = $this->TicketClass_model->getTicketClasses( $this->input->cookie( 'eventID' ), $lastTicketClassUniqueID );						
+			foreach( $thisST_ticketClasses as $eachTicketClass )
+			{			
+				$this->Slot_model->createSlots( 
+					$eachTicketClass->Slots,
+					$this->input->cookie( 'eventID' ),
+					$eachShowingTime->UniqueID,
+					$lastTicketClassUniqueID,
+					$eachTicketClass->Name
+				);
+			}
+		}						
 				
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
 		$this->load->view('createEvent/createEvent_006', $data);				
@@ -438,6 +446,6 @@ class EventCtrl extends CI_Controller {
 		
 		$this->load->view('manageEvent/home', $data);
 	}//manageEvent
-	
+		
 } //class
 ?>

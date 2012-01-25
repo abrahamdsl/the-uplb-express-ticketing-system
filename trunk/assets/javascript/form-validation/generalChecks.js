@@ -1,3 +1,21 @@
+String.prototype.startsWith = function(str) 
+{ return (this.match("^"+str)==str); }
+
+String.prototype.endsWith = function(str) 
+{ return (this.match(str+"$")==str); }
+
+// Converts an integer (unicode value) to a char
+function itoa(i)
+{ 
+   return String.fromCharCode(i);
+}
+
+// Converts a char into to an integer (unicode value)
+function atoi(a)
+{ 
+   return a.charCodeAt();
+}
+
 function convertDateMonth_toText( thisDate )
 {
 	/* created 07JAN2012-1742

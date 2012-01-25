@@ -78,5 +78,19 @@ class TicketClass_model extends CI_Model {
 		}else return 0;		
 	}//getLastTicketClassUniqueID
 		
+	function getTicketClasses( $eventID, $uniqueID )
+	{
+		/*
+			14JAN2012-1440
+		*/
+		if( $eventID == null || $uniqueID == null  ) return false;
+		
+		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `UniqueID` = ? ";
+		$query_obj = $this->db->query( $sql_command, array( $eventID, $uniqueID ) );
+		$array_result = $query_obj->result();
+		
+		return $array_result;
+	}//getTicketClasses
+	
 } //class
 ?>

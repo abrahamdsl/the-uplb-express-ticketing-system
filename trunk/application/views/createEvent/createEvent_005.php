@@ -18,6 +18,8 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<!--For overlay-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<!--For overlay v2 -->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
 	?>		
@@ -33,10 +35,22 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/javascriptVardump.js'; ?>"/></script>			
 	<!--For overlay-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/></script>	
+	
+	<script type="text/javascript"	>
+		$(document).ready( function(){
+			$('#sample').click( function(){
+				$('#basic-modal-content-dialogBox').modal();
+				//alert( $('#basic-modal-content').css( 'height' ) );
+			});
+		});
+	</script>
 </head>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
+		$this->load->view('html-generic/overlayv2_freeform.inc');
 ?>	
 <div id="main_container">
 	<div id="header">    	    	        
@@ -50,7 +64,8 @@ $this->load->view('html-generic/doctype.inc');
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>			
     </div>
-        
+     
+	 
     
     <div id="main_content" >    	
     	<div id="centralContainer">           		   
@@ -64,6 +79,8 @@ $this->load->view('html-generic/doctype.inc');
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
+				<input type="button" id="sample" value="sample" />				
+		
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Choose them</div>
 					<div id="content">
@@ -72,14 +89,24 @@ $this->load->view('html-generic/doctype.inc');
 						<input type="hidden" id="allIsWell" value="0" />
 						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step6' ?>" name="formLogin" id="formMain">
 						<div>
-							<div>
+							<div id="containingSeatMapSelection" >
+								<p>Choose seat map: 
+									<select id="seatMap" name="seatMap" >								
+										<option value="null" selected="selected" ></option>									
+										<?php foreach( $seatMaps as $singleSeatMap ){ ?>
+											<option value="<?php echo $singleSeatMap->UniqueID; ?>" ><?php echo $singleSeatMap->Name; ?></option>
+										<?php }?>
+									</select>			
+								</p>																
+							</div>
+							<div id="containingFeaturedTable" >
 								<table class="center_purest schedulesCentral">
 									<thead>
 										<tr>
 											<td class="iNeedMostSpace" >Class</td>
 											<td class="iNeedMostSpace" >Price</td>
 											<td class="iNeedMostSpace" >Distribution<p class="titleDescriptor" >(Total max of <?php echo $maxSlots; ?>)</p></td>
-											<td class="iNeedMoreSpace" >Holding Time<p class="titleDescriptor" >(in minutes, max 60)</p></td>											
+											<td class="iNeedMoreSpace" >Holding Time<p class="titleDescriptor" >(in minutes, max 59)</p></td>											
 											<td class="iNeedMoreSpace" >&nbsp;</td>											
 											<td class="iNeedMoreSpace" >&nbsp;</td>
 										</tr>
@@ -98,8 +125,7 @@ $this->load->view('html-generic/doctype.inc');
 											<td>
 												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_price_<?php echo $TCD->Name; ?>" name="price_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Price; ?>" /><br/>
 												<input type="button" value="-" id="reducePrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
-												<input type="button" value="+" id="
-												addPrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
+												<input type="button" value="+" id="addPrice_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
 												<input type="text" class="commonality ayokongDefaultAngItsuraNgButton <?php if( $x % 2 == 0 ) {?>even<?php }else{ ?> odd<?php }; ?>" id="id_slot_<?php echo $TCD->Name; ?>" name="slot_<?php echo $TCD->Name; ?>" value="<?php echo $TCD->Slots; ?>" /><br/>

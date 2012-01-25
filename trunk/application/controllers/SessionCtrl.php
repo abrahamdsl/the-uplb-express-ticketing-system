@@ -43,7 +43,8 @@ class SessionCtrl extends CI_Controller {
 				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
 				$this->Account_model->getUser_Names( $this->input->post('username') )
 			);
-			$this->userHome();
+			//$this->userHome();
+			redirect('/');
 		}else{			
 			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
 			$this->session->set_userdata($data);
