@@ -10,8 +10,9 @@ class SeatCtrl extends CI_Controller {
 		parent::__construct();	
 		$this->load->helper('cookie');
 		$this->load->model('login_model');				
+		$this->load->model('MakeXML_model');				
 		$this->load->model('Seat_model');				
-		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
+		//if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
 	} //construct
 	
 	function index()
@@ -85,5 +86,39 @@ class SeatCtrl extends CI_Controller {
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
 		$this->load->view( 'createSeat/allConfiguredNotice' , $data);			
 	}
+	
+	function getMasterSeatmapData()
+	{
+		/*
+			Created 28JAN2012-2215
+			
+			Only for AJAX requests.
+		*/
+		$masterSeatMapDetails;
+		$masterSeatMapProperData;
+		$uniqueID = $this->input->post( 'uniqueID' );
+		//$uniqueID = 9610832;
+	
+		// user is accessing via browser address bar, so not allowed
+		if( $this->input->is_ajax_request() === false ) redirect('/');
+		
+		// no post data, so fail
+		if( $uniqueID === false )
+		{
+			echo "INVALID_NO-POST-DATA";
+			return false;
+		}
+		
+		//get DB entries
+		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $uniqueID );
+		$masterSeatMapProperData = $this->Seat_model->getMasterSeatMapActualSeats( $uniqueID );
+		
+		//now make XML
+		//die( var_dump( $this->MakeXML_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData ) ));
+		
+		echo $this->MakeXML_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
+		return true;
+	}// getMasterSeatmapData
+	
 }//class
 ?>

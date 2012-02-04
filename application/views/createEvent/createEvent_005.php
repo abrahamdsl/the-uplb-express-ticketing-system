@@ -15,11 +15,10 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
-	<!--For overlay-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<!--For overlay v2 -->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	 <!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/> <!--For overlay v2 -->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
 	?>		
@@ -27,24 +26,19 @@ $this->load->view('html-generic/doctype.inc');
 		$this->load->view('html-generic/jquery-core.inc');
 	?>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_005.js'; ?>"/></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/javascriptVardump.js'; ?>"/></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_005.js'; ?>"/></script>				
 	<!--For overlay-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
-	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/></script>	
+	<!-- For overlay v2-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/>	
+	<?php
+		$this->load->view('html-generic/seatV2_Essentials_Scripts.inc');
+	?>	
 	
 	<script type="text/javascript"	>
-		$(document).ready( function(){
-			$('#sample').click( function(){
-				$('#basic-modal-content-dialogBox').modal();
-				//alert( $('#basic-modal-content').css( 'height' ) );
-			});
-		});
+		
 	</script>
 </head>
 <body>
@@ -78,26 +72,32 @@ $this->load->view('html-generic/doctype.inc');
 				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
 			</div>			
 			<!-- accordion start -->			
-			<div class="center_purest homePage_accordion_container" >
-				<input type="button" id="sample" value="sample" />				
-		
+			<div class="center_purest homePage_accordion_container" >				
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Choose them</div>
 					<div id="content">
 						<input type="hidden" id="lastFocus" value="" />
 						<input type="hidden" id="maxSlot" value="<?php echo $maxSlots; ?>" />
-						<input type="hidden" id="allIsWell" value="0" />
+						<input type="hidden" id="allIsWell" value="0" />						
+						<?php										
+							foreach( $ticketClasses_default as $TCD )
+							{				
+						?>	
+						<input type="hidden" id="seatAssigned_<?php echo $TCD->Name;?>" value="0" />						
+						<?php
+							}
+						?>
 						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step6' ?>" name="formLogin" id="formMain">
 						<div>
+							
 							<div id="containingSeatMapSelection" >
-								<p>Choose seat map: 
-									<select id="seatMap" name="seatMap" >								
+								Choose seat map: 
+									<select id="seatMapPullDown" name="seatMapPullDown" >								
 										<option value="null" selected="selected" ></option>									
 										<?php foreach( $seatMaps as $singleSeatMap ){ ?>
 											<option value="<?php echo $singleSeatMap->UniqueID; ?>" ><?php echo $singleSeatMap->Name; ?></option>
 										<?php }?>
 									</select>			
-								</p>																
 							</div>
 							<div id="containingFeaturedTable" >
 								<table class="center_purest schedulesCentral">
@@ -116,8 +116,7 @@ $this->load->view('html-generic/doctype.inc');
 										$x=0;
 										foreach( $ticketClasses_default as $TCD )
 										{				
-																		
-									?>
+									?>							
 										<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?>>
 											<td>
 												<?php echo $TCD->Name; ?>
@@ -138,7 +137,7 @@ $this->load->view('html-generic/doctype.inc');
 												<input type="button" value="+" id="addHoldingTime_<?php echo $TCD->Name; ?>" class="adjustButtons ayokongDefaultAngItsuraNgButton" />								
 											</td>
 											<td>
-												<input type="button" value="Choose seats" class="ayokongDefaultAngItsuraNgButton" id="id_seat_<?php echo $TCD->Name; ?>" />
+												<input type="button" value="Choose seats" class="ayokongDefaultAngItsuraNgButton" id="id_seat_<?php echo $TCD->Name; ?>" name="seatTrigger_<?php echo $TCD->Name; ?>" />
 											</td>
 											<td>
 												<input type="button" value="Edit Privileges/Restrictions" class="ayokongDefaultAngItsuraNgButton"  id="id_privilege_<?php echo $TCD->Name; ?>" />
@@ -164,6 +163,10 @@ $this->load->view('html-generic/doctype.inc');
 					</div>
 				</div>												
 			</div>
+			<!-- to load a new page -->
+			<form id="id_forwarder" name="forwarder" method="post"  action="<?php echo base_url().'EventCtrl/create_step6_forward'; ?>" >
+				<input type="hidden" name="uuid" id="eligibility" value="0" <?php echo '/'; ?>>
+			</form>
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														

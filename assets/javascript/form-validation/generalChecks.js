@@ -105,6 +105,23 @@ function convertTimeTo12Hr( thisTime )
 	//now assemble
 }//convertTimeTo12Hr
 
+function getCookie(c_name)
+{
+	/*
+		Created 30JAN2012-1959. From http://www.w3schools.com/js/js_cookies.asp
+	*/
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++)
+	  {
+	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+	  x=x.replace(/^\s+|\s+$/g,"");
+	  if (x==c_name)
+		{
+		return unescape(y);
+		}
+	  }
+}//  getCookie
 
 function isDateValid( date )
 {
@@ -314,3 +331,14 @@ function isTimeValid( time1 )
 	}
 	
 }//isTimeValid
+
+function setCookie(c_name,value,exdays)
+{
+	/*
+		Created 30JAN2012-1959. From http://www.w3schools.com/js/js_cookies.asp
+	*/
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+} // setCookie

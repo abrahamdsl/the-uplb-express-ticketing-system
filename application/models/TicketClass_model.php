@@ -13,7 +13,7 @@ class TicketClass_model extends CI_Model {
 	}
 	
 	function createTicketClass( 
-		$UniqueID, $eventID  = NULL, $class = NULL, $price = 0, $slots = 0, 
+		$GroupID, $UniqueID, $eventID  = NULL, $class = NULL, $price = 0, $slots = 0, 
 		$privileges = NULL,  $restrictions = NULL, $priority = 0, $holdingTime = 20
 	)
 	{
@@ -24,6 +24,7 @@ class TicketClass_model extends CI_Model {
 		*/
 		
 		$data = array(
+			'GroupID' => $GroupID,
 			'UniqueID' => $UniqueID,
 			'EventID' => $eventID,
 			'Name' => $class,
@@ -54,7 +55,7 @@ class TicketClass_model extends CI_Model {
 		
 	}//getDefaultTicketClasses()
 		
-	function getLastTicketClassUniqueID( $eventID = null )
+	function getLastTicketClassGroupID( $eventID = null )
 	{
 		/*
 			Created 30DEC2011-1248
@@ -66,31 +67,52 @@ class TicketClass_model extends CI_Model {
 		
 		if( $eventID == null ) return false;
 		
-		$sql = "SELECT `EventID`,`UniqueID` FROM  `ticket_class` WHERE  `EventID` =  ? ORDER BY  `UniqueID` DESC LIMIT 0 , 1000";
+		$sql = "SELECT `EventID`,`GroupID` FROM  `ticket_class` WHERE  `EventID` =  ? ORDER BY  `GroupID` DESC LIMIT 0 , 1000";
 		$query_obj = $this->db->query( $sql, array( $eventID ) );
 		$array_result = $query_obj->result();
 		
 		// now, what we want is found at the first element
 		if( count( $array_result ) > 0 )
 		{
-			$lastInt = intval( $array_result[0]->UniqueID );
+			$lastInt = intval( $array_result[0]->GroupID );
 			return $lastInt;
 		}else return 0;		
-	}//getLastTicketClassUniqueID
+	}//getLastTicketClassGroupID
 		
-	function getTicketClasses( $eventID, $uniqueID )
+	function getTicketClasses( $eventID, $groupID )
 	{
 		/*
 			14JAN2012-1440
 		*/
-		if( $eventID == null || $uniqueID == null  ) return false;
+		if( $eventID == null || $groupID == null  ) return false;
 		
-		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `UniqueID` = ? ";
-		$query_obj = $this->db->query( $sql_command, array( $eventID, $uniqueID ) );
+		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `GroupID` = ? ";
+		$query_obj = $this->db->query( $sql_command, array( $eventID, $groupID ) );
 		$array_result = $query_obj->result();
 		
 		return $array_result;
 	}//getTicketClasses
 	
+	function makeArray_NameAsKey( $ticketClasses )
+	{
+		/*
+			Created 04FEB2012-1921
+			
+			Accepts one parameter, actually, the one being returned by $this->getTicketClasses(..),
+			This is being called from EventCtrl controller.
+		*/
+		$theArray = Array();
+		
+		foreach( $ticketClasses as $x )
+		{
+			/*
+				Though this may seem redundant, but our objective is
+				to be able to easily access an array containing ticket classes.				
+			*/
+			$theArray[ $x->Name ] = $x;			
+		}
+		
+		return $theArray;
+	}//makeArray_NameAsKey(..)
 } //class
 ?>

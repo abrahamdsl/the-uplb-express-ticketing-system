@@ -1,7 +1,9 @@
 var confirmX = false;
+var confirmX_noShow = false;
 var overlayVisible = false;
 var returnValue = null;
 var arrayMaker = null;
+var closeOnPositive = true;
 
 function assembleMessageForOverlay( title, message )
 {
@@ -20,45 +22,50 @@ function decideOverlayTitleColor( type )
 	switch( typeLowered )
 	{
 		case "error":   classH1 = "error"; break;
-		case "notice":
+		case "notice":  classH1 = "okay"; confirmX_noShow = true; break;
 		case "okay":    classH1 = "okay"; break;
 		case "warning": classH1 = "warning"; break;		
-	}
-	//alert( titleLowered );
+	}	
 	$( '#overlayBoxH1Title' ).attr( 'class' , classH1 );	
 }// decideOverlayTitleColor
 
 function displayOverlay( type, title, message )
 {
-	//created 31DEC2011-1616
-	//alert( confirmX );
-	if( confirmX ){
-		$( '#overlayEssentialButtonsArea' ).show();
-	}else{
-		$( '#overlayEssentialButtonsArea_OkayOnly' ).show();
-	}
+	//created 31DEC2011-1616	
 	
 	// edit the texts to appear
 	assembleMessageForOverlay( title, message );
 	// edit how the h1 should look like
 	decideOverlayTitleColor( type );
+	if( !confirmX_noShow )
+	{	
+		if( confirmX ){											// yes or no buttons
+			$( '#overlayEssentialButtonsArea' ).show();
+		}else{													// ok button only
+			$( '#overlayEssentialButtonsArea_OkayOnly' ).show();
+		}
+	}else{
+		// no need to show buttons for messages like 'please wait...'
+		$( 'div[id^="#overlayEssentialButtonsArea"]' ).hide();
+	}
 	
 	$( '#overlay' ).fadeIn( 'fast', function(){			
 			$( '#box' ).animate( { 'top':'160px' }, 100 );			
-	});
-	
+	});	
 }//displayOverlay
 
-function displayOverlay_confirm( type, title, yesFunctionCall, yFC_args, message )
+function displayOverlay_confirm( type, title, yesFunctionCall, yFC_args, noFunctionCall, nFC_args, message )
 {
 	/*created 31DEC2011-1800
 	
 	  07JAN2012-1548 added new param 'yesFunctionCall'
+	  03FEB2012-1536 added new params 'noFunctionCall', 'nFC_args'
 	*/	
-	arrayMaker = {
-		someProperty: 'somevaluehere',
-		make: yesFunctionCall,
-		args: yFC_args
+	arrayMaker = {		
+		func_yes: yesFunctionCall,
+		args_yes: yFC_args,
+		func_no: noFunctionCall,
+		args_no: nFC_args
 	};
 		
 	confirmX = true;			// indicator if we are to display YES and NO buttons
@@ -67,10 +74,22 @@ function displayOverlay_confirm( type, title, yesFunctionCall, yFC_args, message
 	
 }//displayOverlay_confirm
 
+function displayOverlay_confirm_NoCloseOnChoose( type, title, yesFunctionCall, yFC_args,  noFunctionCall, nFC_args, message )
+{
+	/*
+		02FEB2012-1141
+		
+		Differs only from above function in that it does not hide the modal after choosing, plus the args
+	*/
+	closeOnPositive = false;
+	displayOverlay_confirm( type, title, yesFunctionCall, yFC_args, noFunctionCall, nFC_args, message )
+}//displayOverlay_confirm
+
 function hideOverlay()
 {
-	//created 31DEC2011-1616
 	
+	//created 31DEC2011-1616
+	//modified 30JAN2012-1920
 	$( '#box' ).animate( { 'top': '-200px' }, 100, function(){
 			$( '#overlay' ).fadeOut( 'fast' );
 	});
@@ -78,29 +97,39 @@ function hideOverlay()
 	/* if this overlay being hidden has YES or NO buttons,
 		hide the div holding such then set the indicator to false again.		
 	*/
-	if( confirmX ){
-		$( '#overlayEssentialButtonsArea' ).hide();	
-		confirmX = false;
-	}else{
-		$( '#overlayEssentialButtonsArea_OkayOnly' ).hide();	
-	}
-	
-}//displayOverlay
-
-function waitForUserSelection()
-{
-	//created 31DEC2011-2337
-	if( returnValue == undefined )
+	setTimeout( null, 300 ); // to make sure the modal is out of the screen before proceeding 
+	if( confirmX_noShow )
 	{
-		setTimeout( waitForUserSelection, 100);
-		return;
+		confirmX_noShow = false;
 	}else{
-		var toReturn = returnValue;
-		returnValue = null;
-		return toReturn;
-	}
+		if( confirmX ){
+			$( '#overlayEssentialButtonsArea' ).hide();	
+			confirmX = false;
+		}else{
+			$( '#overlayEssentialButtonsArea_OkayOnly' ).hide();	
+		}
+	}	
+}//HIDEOverlay
+
+function modifyAlreadyDisplayedOverlay( type, title, message, showButtonArea )
+{
+	/*
+		Created 02FEB2012-1146. Specifically, for overlay version 1, still existing on the screen
+		that wasn't earlier removed. Arose due to Create Event Step 5.
+		
+		Difference from displayOverlay(..) is the absence of the last three lines that actually perform
+		the appearance of the overlay. Maybe we can refactor this sometime.
+	*/
 	
-}//waitForUserSelection
+	// edit the texts to appear
+	assembleMessageForOverlay( title, message );
+	// edit how the h1 should look like
+	decideOverlayTitleColor( type );
+	if( showButtonArea === false )
+	{
+		$( '#overlayEssentialButtonsArea' ).hide();	
+	}		
+}//displayOverlay
 
 // this enables user to close overlay via function key
 $(document).keyup( function(e)
@@ -114,14 +143,8 @@ $(document).keyup( function(e)
 $(document).ready( function(){
 	// dahil sa weakness ng IE lang to promise! rawr.
 	$('div^#overlayEssentialButtonsArea').hide();
-	
-	// START: Test outside of SP app. Remove on production.
-	$( '#activator' ).click( function(){						
-		displayOverlay( 'warning', 'Warning', "You are handsome!");
-	});
-	// END: Test outside of SP app. Remove on production.
-	
-	$( '#boxclose' ).click( function(){		
+			
+	$( '#boxclose' ).click( function(){				
 		hideOverlay();		
 	});
 	
@@ -137,25 +160,47 @@ $(document).ready( function(){
 			since the HTML elements that are intended to call are named
 			"overlayButton_YES" and "overlayButton_NO", we split their
 			ID by using an underscore and thus, depending on the second element
-			of the resulting array, we determine if the user clicked Yes or No.
-			
-			Actually, if user click no, we just do nothing.
+			of the resulting array, we determine if the user clicked Yes or No.						
 		*/
 		var mode = $(this).attr( 'id' ).split('_')[1];
-		
+		var callNFC = false;
 		
 		if( mode == "YES" ){		
 			//now determine if to call the function with an argument or not
-			if( ( arrayMaker.args === null || arrayMaker.args === undefined ) )
+			if( ( arrayMaker.args_yes === null || arrayMaker.args_yes === undefined ) )
 			{
-				window[ arrayMaker.make ]();			
+				window[ arrayMaker.func_yes ]();			
 			}else{
-				window[ arrayMaker.make ]( arrayMaker.args  );			
+				window[ arrayMaker.func_yes ]( arrayMaker.args_yes  );			
+			}
+			// 02FEB2012-1142
+			if( closeOnPositive == false )
+			{			
+				closeOnPositive = true;
+				return false;
+			}else{
+				hideOverlay();
 			}
 			returnValue = true;
+		}else {
+			if( arrayMaker != null )
+			{
+				if( arrayMaker.func_no != null )
+				{
+					//now determine if to call the function with an argument or not
+					if( arrayMaker.args_no == null || arrayMaker.args_no == undefined  )
+					{
+						window[ arrayMaker.func_no ]();			
+					}else{
+						window[ arrayMaker.func_no ]( arrayMaker.args_no  );			
+					}
+				}
+			}
+			returnValue = false;
+			hideOverlay();
 		}
-		else returnValue = false;
-		hideOverlay();		
+		
+		return returnValue = true;
 	});
 		
 	

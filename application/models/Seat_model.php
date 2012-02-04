@@ -53,6 +53,22 @@ class Seat_model extends CI_Model {
 		return true;
 	}//createDefaultSeats
 	
+	function copyDefaultSeatsToActual( $seatMapUniqueID )
+	{
+		/*
+			Created 04FEB2012-1415
+			
+			Called during Create Event Step 6 - Saving the seat configuration of the events being configured.
+			This is the first step, copy the entries of the seat map in the table `seats_default` to 
+			`seats_actual` then we just update the copied entries in the latter table when processing sent 
+			information to the server.
+		*/
+		$sql_command = "INSERT `seats_actual` (`Seat_map_UniqueID`, `Matrix_x`, `Matrix_y`, `Visual_row`, 
+				`Visual_col`, `Status`, `Comments`) SELECT * FROM `seats_default`	WHERE `Seat_map_UniqueID` = ? ";
+				
+		return $this->db->query( $sql_command, array( $seatMapUniqueID ) );	
+	}//copyDefaultSeatsToActual(..)
+	
 	function createSeatMap()
 	{
 		$uniqueID;
@@ -94,6 +110,40 @@ class Seat_model extends CI_Model {
 		
 		return $uniqueID;
 	}//generateAccountNumber
+
+	function getSingleMasterSeatMapData( $uniqueID )
+	{
+		/*
+			Created 28JAN2012-2222
+			
+			Simply gets a master seat map's info from table `seat_map`
+			
+			Returns a MySQL result object since we only need one.
+		*/
+		$sql_command = "SELECT * FROM `seat_map` WHERE `UniqueID` = ?";
+		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
+		
+		return $arrayResult[0];
+	}// getSingleMasterSeatMap
+	
+	function getMasterSeatMapActualSeats( $uniqueID )
+	{
+		/*
+			Created 28JAN2012-2226
+			
+			Gets all seat info of the seat map whose uniqueID was supplied, from `seats_default`
+			
+			Returns a MySQL result object since we only need one.
+		*/
+		
+		/* we opted to not use '*' because by doing so, `UniqueID` would be included in the results that are quite large, 
+			which we are avoiding since it will just consume memory space and involve processing time which are not necessary.
+		*/
+		$sql_command = "SELECT `Matrix_x`,`Matrix_y`,`Visual_row`,`Visual_col`,`Status`,`Comments` FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
+		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
+		
+		return $arrayResult;
+	}// getMasterSeatMapActualSeats
 
 	function getUsableSeatMaps( $requestedCapacity )
 	{
@@ -209,6 +259,20 @@ class Seat_model extends CI_Model {
 							
 		return $transactionResult;	
 	}// setSeatMapStatus
+	
+	function updateNewlyCopiedSeats( $eventID, $showtimeID )
+	{
+		/*
+			Created 04FEB2012-1421
+			
+			Function to be called after $this->copyDefaultSeatsToActual(..). Since the newly copied entries' 
+			`EventID` and `Showing_Time_ID` are both set to zero, we update them to reflect the proper values,
+			as submitted to the server.
+		*/
+		$sql_command = "UPDATE `seats_actual` SET `EventID` = ?, `Showing_Time_ID` = ? WHERE `EventID` = '0' AND `Showing_Time_ID` = '0'";
+		
+		return $this->db->query( $sql_command, array( $eventID, $showtimeID ) );
+	}//updateNewlyCopiedSeats(..)
 	
 	function updateSeatMapUsableCapacity( $uniqueID, $usableSeats ){
 		/*

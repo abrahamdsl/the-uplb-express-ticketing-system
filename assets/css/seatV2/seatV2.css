@@ -1,0 +1,174 @@
+/*START: The innerSeatDiv */
+div#innerSeatDiv{
+	height: inherit;
+	width: inherit;
+	overflow: none;
+}
+
+*.textUnselectable{
+/*	28JAN2012 | To prevent selection of the texts during seat selection via lasso. Deals with different browsers.
+    From http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting 
+*/
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.ui-selectable-helper {position: absolute; z-index: 9999; border:1px solid #000; background-color:red; opacity:0.5; filter: alpha(opacity=10); }
+/*	On  JQuery v1.4.2: needed this, but if v1.8.16 (which is newer btw), not anymore
+.ui-selectable-helper div {opacity:0.1; filter: alpha(opacity=10); width:auto; height:auto; background-color: #000; } 
+*/
+
+.ui-draggable-dragging {z-index:9998;}
+
+.ui-selectable-helper div {opacity:0.1; filter: alpha(opacity=10); width:auto; height:auto; background-color: yellow; } 
+
+.drop{	
+	width: 19px;
+	height: 16px;
+	float: left;
+	border: 1px dashed #888;
+	
+	text-align: center;	
+	margin-left: 2px;
+	margin-right: 2px;
+	font-size: 0.8em;	
+	cursor:pointer; 	
+	z-index: 10001;
+}
+
+.dropAvailable{
+	background: #EEE;
+}
+.drop_VIP{
+	background: yellow;
+}
+.drop_BUSINESS{
+	background: violet;
+}
+.drop_REGULAR{
+	background: blue;
+	color: white;
+}
+.drop_STANDING{
+	background: orange;
+}
+.dropUnavailable{
+	width: 19px;
+	height: 16px;
+	float: left;
+	background: inherit;
+	border: none;
+	text-indent: -3000px;
+	overflow: hidden; 
+	display: none;
+}
+
+.aisle{
+	background-color: inherit;	
+	border: 1px dashed white;
+}
+
+/*.items_selected {background-color:#EBC; border-color: #B89; color:#fff;height:16px; width:100%;}*/
+.ui-selecting {background-color:#CEB; border-color: #9B8; !important;}
+.ddms_selected {background-color:#ebc !important;}
+
+/*.ddms_move {background-color:#ccc !important;}*/
+.ddms_hover {background-color:#bbb !important;}
+
+/*END: The innerSeatDiv */
+
+/*START: All other parts of the Seat V2 overlay*/
+div#SeatV2Title{
+	min-width: 25%; 
+	width: auto; 
+	overflow: auto; 
+	float: left; 	
+	margin-bottom: 20px;
+}
+div#SeatV2Title span#titleProper{
+	font-size: 2em; float: left;
+}
+div#SeatV2Title span#place{
+	float: left; clear: left;
+}
+
+div#whileSelectingIndicator{
+	display: none;
+	min-width: 25%; width: auto; overflow: auto; float: right; clear: right; 
+}
+
+div#whileSelectingIndicator span#quantityBeingSelected{
+	font-size: 3em;
+}
+
+div#warningIndicator{
+	display: none;
+	font-size: 1.5em;
+	min-width: 30%; width: auto; overflow: auto; float: right; clear: right; border: 0.5px solid blue;
+}
+
+div#lassoInfoHolder{
+	min-width: 25%; width: auto; overflow: auto; float: right; border: 0px solid aqua; top: -15px; text-align: center;
+}
+
+div#lassoInfoHolder input#lassoWillDo
+{
+	min-width: 50px; width: auto;
+}
+
+div#seatSelectionLegend{
+	
+	clear: left;  min-width: 500px; width: auto; min-height: 30px; height: auto; overflow: auto; display: inline; float: left; border: 0px solid yellow; margin-bottom: 10px;
+}
+div#seatSelectionLegend span{
+	padding: 5px; margin: 2px; width: auto; display: inline;
+}
+div#seatSelectionLegend span#available{
+	background-color: #EEE;
+	color: black;
+}
+div#seatSelectionLegend span#occupiedByOther{
+	background-color: green;
+}
+div#seatSelectionLegend span#assigned{
+	background-color: #EBC;
+	color: black;
+}
+
+div#seatSelectionTable{
+	clear: both; color: black; width: 900px; min-height: 200px; height: 300px; text-align: center; border: 2px solid gray; overflow: auto; background-color: white; margin-bottom: 10px;
+}
+
+div#totalSeatChosen{
+	min-width: 30%; width: auto; overflow: auto; border: 0.5px solid gray; float: left;
+}
+
+div#overlayV2ButtonsArea{
+	min-width: 20%; width: auto; overflow: auto;  float: right text-align: right; vertical-align: bottom; margin-top: 30px; 	padding-right: 12px;
+}
+
+
+/* Button */
+a.overlayV2Button{
+	background-color: rgb(126,126,126);
+	display: block;	
+	width: 132px;
+	height: 28px;
+	margin: 5px auto;
+	padding: 5px 0 0 0;
+	text-align: center;
+	font-family: "Segoe UI", Calibri, Verdana, Arial, sans-serif;
+	text-decoration: none;
+	font-weight: bold;
+	color: white;
+	float:right;
+	margin-left: 2px;
+}
+a.overlayV2Button:hover{
+	background-color: rgb(209,72,14);
+}
+/*END: All other parts of the Seat V2 overlay*/

@@ -12,7 +12,7 @@ class Slot_model extends CI_Model {
 	}
 	
 	function createSlots( $quantity, $eventID, $showtimeID, 
-		$ticketClass_UniqueID, $ticketClass_Name  )
+		$ticketClass_GroupID, $ticketClass_UniqueID  )
 	{
 		/*
 			Created 14JAN2012-1335
@@ -23,18 +23,17 @@ class Slot_model extends CI_Model {
 		$x;
 		$y;
 		
-		$startingUniqueID = $this->getSlotsLastUniqueID( $eventID, $showtimeID );				
-		$sql_command  = "INSERT INTO `event_slot` ( `UniqueID`, `UUID`, `EventID`, `Showtime_ID`, `Ticket_Class_UniqueID`, `Ticket_Class_Name` ) VALUES (?, UUID( ), ?, ?, ?, ?) ";
+		$startingUniqueID = $this->getSlotsLastGroupID( $eventID, $showtimeID );				
+		$sql_command  = "INSERT INTO `event_slot` ( `UniqueID`, `UUID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID` ) VALUES (?, UUID( ), ?, ?, ?, ?) ";
 		// CODE MISSING: database checkpoint
 		for( $x = 0, ++$startingUniqueID; $x < $quantity; $x++, $startingUniqueID++ )
-		{
-			echo $startingUniqueID."..<br/>";
+		{			
 			$query_obj = $this->db->query( $sql_command, array(
 							$x + 1, //$startingUniqueID,
 							$eventID,
 							$showtimeID,
-							$ticketClass_UniqueID,
-							$ticketClass_Name
+							$ticketClass_GroupID,
+							$ticketClass_UniqueID
 						) 
 			);
 			if( $query_obj === false )
@@ -47,7 +46,7 @@ class Slot_model extends CI_Model {
 		return true;
 	}//createSlots
 	
-	function getSlotsLastUniqueID( $eventID = null, $showtimeID = null )
+	function getSlotsLastGroupID( $eventID = null, $showtimeID = null )
 	{
 		/*
 			Created 14JAN2012-1338
@@ -58,7 +57,7 @@ class Slot_model extends CI_Model {
 		
 		if( $eventID == null or  $showtimeID ) return false;
 		
-		$sql = "SELECT `UniqueID`,`EventID`,`Showtime_ID` FROM  `event_slot` WHERE  `EventID` =  ? AND `Showtime_ID` = ? ORDER BY  `UniqueID` DESC LIMIT 0 , 10000";
+		$sql = "SELECT `UniqueID`,`EventID`,`Showtime_ID` FROM  `event_slot` WHERE  `EventID` =  ? AND `Showtime_ID` = ? ORDER BY  `GroupID` DESC LIMIT 0 , 10000";
 		$query_obj = $this->db->query( $sql, array( $eventID, $showtimeID ) );
 		$array_result = $query_obj->result();
 		
@@ -68,6 +67,6 @@ class Slot_model extends CI_Model {
 			$lastInt = intval( $array_result[0]->UniqueID );
 			return $lastInt;
 		}else return 0;		
-	}//getLastUniqueID
+	}//getSlotsLastGroupID
 }//class
 ?>

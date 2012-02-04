@@ -318,12 +318,7 @@ class Event_model extends CI_Model {
 			
 			30DEC2011-1204: added $uniqueID param.
 		*/
-				
-		/* DEBUGGING CODE : Remove on production
-		echo "----------------<br/> I have received:";
-		echo "eID: ".$eventID."<br/>"."dS: ".$dateStart."<br/>"."tS".$timeStart."<br/>"."dE :".$dateEnd."<br/>"."tE :".$timeEnd."<br/>";
-		*/
-		
+								
 		// replace slashes with dashes
 		$dateStart = str_replace( '/', '-', $dateStart );
 		$dateEnd = str_replace( '/', '-', $dateEnd );
@@ -584,7 +579,7 @@ class Event_model extends CI_Model {
 		if(  $eventID == null ) return false;
 		if(  $uniqueID == null ) return false;
 		
-		$sql = "UPDATE `showing_time` SET `ticket_class` = ? WHERE `EventID` = ? AND `Status` = 'BEING_CONFIGURED' ";
+		$sql = "UPDATE `showing_time` SET `Ticket_class_GroupID` = ? WHERE `EventID` = ? AND `Status` = 'BEING_CONFIGURED' ";
 		$query_result = $this->db->query( $sql, array( $uniqueID, $eventID ) );
 		
 		return $query_result;

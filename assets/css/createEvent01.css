@@ -47,6 +47,7 @@ span.MWMShidden
 	text-align: center;
 	margin-left: 50%;	
 	clear: right;
+	display: none;
 	
 }
 .textInputSize
