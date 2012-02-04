@@ -20,6 +20,7 @@ input.odd{
 }
 table.schedulesCentral tbody tr td{
 	padding: 10px;
+	z-index: 0;	
 }
 p.titleDescriptor{
 	font-size: 0.6em;
@@ -30,11 +31,15 @@ div.attentionNeeded{
 div#containingFeaturedTable{
 	position: relative; 
 	top: -110px; 
-	z-index: 9
+	z-index: 0;
+}
+div#containingFeaturedTable *{
+	clear: left; /* 29JAN2012-1130: Needed for Firefox, at this point 9.01 */
+	z-index: 0;
 }
 div#containingSeatMapSelection{
 	position: relative;  
-	z-index: 10;
+	z-index: 50;
 	height: 50px; 
 	width: 33%; 
 	left: -12px; 
@@ -46,6 +51,9 @@ div#containingSeatMapSelection{
 	border-color: gray; 	
 	padding: 20px;
 }
-div#containingSeatMapSelection select#seatMap{
+div#containingSeatMapSelection * {
+	z-index: inherit;
+}
+div#containingSeatMapSelection select#seatMapPullDown{
 	width: 60%; 
 }

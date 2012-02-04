@@ -119,8 +119,7 @@ $(document).ready(function()
 		*/
 	
 		$("#buttonReset").click( function() {						
-			//displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
-			$('#confirm').modal();
+			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );									
 		});
 		
 		/*
@@ -143,7 +142,7 @@ $(document).ready(function()
 				return;
 			}
 						
-			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard." );																		
+			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard." );																		
 		});
 		
 		$("#addTimeBtn").click( function()
@@ -311,7 +310,7 @@ $(document).ready(function()
 			}else{
 				userFriendlyValue = thisVal;
 			}					
-			displayOverlay_confirm( 'warning' , 'Confirm', 'deleteSelectedShowingTimeInfo', new Array( optionFor ), 'Do you want to delete the following?<br/><br/> ' + userFriendlyValue  );																								
+			displayOverlay_confirm( 'warning' , 'Confirm', 'deleteSelectedShowingTimeInfo', new Array( optionFor ), null, null, 'Do you want to delete the following?<br/><br/> ' + userFriendlyValue  );																								
 		}); //double clicking an option to delete
 	}
 );

@@ -103,4 +103,72 @@ class MakeXML_model extends CI_Model {
 		
 	}// XMLize_ConfiguredShowingTimes(..)
 	
+	function XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData )
+	{
+		/* created 28JAN2012-2156
+		
+			returns string of the ff format:
+				X_Y
+			
+			X - operation indicator, may take on { INVALID, ERROR, FILE }
+			Y - exlanation of X
+			
+		*/
+		$XMLfile = $this->createTempFile();
+		$fp;
+		
+		if( !is_array( $masterSeatMapProperData ) )
+		{
+			return "INVALID_DATA";
+		}
+		
+		$fp = fopen( $XMLfile, "w" );
+		if( $fp != NULL )
+		{
+			// Initiate class
+			$xml = new xml_writer;
+			$xml->setRootName( 'seatmap' );
+			$xml->initiate();
+			
+			//configure details first
+			// start branch 1 ( details)
+			$xml->startBranch( 'details' );
+			$xml->addNode( 'unique_id', $masterSeatMapDetails->UniqueID );
+			$xml->addNode( 'name', $masterSeatMapDetails->Name );
+			$xml->addNode( 'rows', $masterSeatMapDetails->Rows );
+			$xml->addNode( 'cols', $masterSeatMapDetails->Cols );
+			$xml->addNode( 'location', $masterSeatMapDetails->Location );
+			$xml->addNode( 'status', $masterSeatMapDetails->Status );
+			$xml->addNode( 'usableCapacity', $masterSeatMapDetails->UsableCapacity );
+			$xml->addNode( 'mastermap', '1' );
+			//end branch 1
+			$xml->endBranch();
+			 
+			 // start branch 2 ( dataproper )
+			$xml->startBranch( 'dataproper' );
+			foreach( $masterSeatMapProperData as $eachSeat )
+			{
+				// start branch 2-a
+				$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
+				$xml->addNode( 'row',   $eachSeat->Visual_row );
+				$xml->addNode( 'col',   $eachSeat->Visual_col );
+				$xml->addNode( 'status',   $eachSeat->Status );
+				$xml->addNode( 'comments',   $eachSeat->Comments );
+				
+				//end branch 2-a
+				$xml->endBranch();
+			}
+			//end branch 2
+			$xml->endBranch();
+			
+			$xmlContent = $xml->getXml();
+			// Print the XML to screen
+			fwrite( $fp,  $xmlContent );
+			fclose( $fp );
+			return  $xmlContent;
+		}else{
+			// cannot write to current disk!
+			return "ERROR_CANNOT-WRITE-TO-DISK";
+		}
+	}
 }

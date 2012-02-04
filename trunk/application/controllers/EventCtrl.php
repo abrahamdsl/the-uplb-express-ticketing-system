@@ -10,6 +10,7 @@ class EventCtrl extends CI_Controller {
 		parent::__construct();	
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
+		$this->load->model('CoordinateSecurity_model');
 		$this->load->model('Event_model');
 		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
@@ -18,7 +19,9 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('TicketClass_model');
 		$this->load->model('UsefulFunctions_model');
 		
-		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
+		if( !$this->login_model->isUser_LoggedIn() ){		
+			redirect('/SessionCtrl');
+		}
 	} //construct
 	
 	function index()
@@ -259,22 +262,27 @@ class EventCtrl extends CI_Controller {
 			CREATED 12DEC2011-2109
 			
 		
-		*/
+		*/		
 		$x;
 		$classesCount;
 		$classes = array();
 		$prices = array();
 		$slots = array();
 		$holdingTime = array();
-		$temp; 
-		$lastTicketClassUniqueID;		
+		$temp = array(); 
+		$lastTicketClassGroupID;		
 		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
+		$seatMap;
+		
+		// get first seatMap info and unset it from post
+		$seatMap = $this->input->post( 'seatMapPullDown' );
+		unset( $_POST['seatMapPullDown'] );
 		
 		//iterate through submitted values, tokenize them into respective classes and assign
 		$x = 0;
 		$classesCount = 0;
 		foreach( $_POST as $key => $val) // isn't this somewhat a security risk?
-		{										
+		{						
 				if( $this->UsefulFunctions_model->startsWith( $key, "price" ) )
 				{
 					$temp = explode("_",$key);
@@ -290,19 +298,19 @@ class EventCtrl extends CI_Controller {
 					$temp = explode("_",$key);
 					$holdingTime[ $temp[1] ] = $val;
 				}
-				if( $x % 3 == 0) $classes[ $classesCount++ ] = $temp[1];			
-			$x++;	//count how many classes			
+				if( $x % 3 == 0) $classes[ $classesCount++ ] = $temp[1];	// count how many classes			
+				$x++;														// loop indicator
 		}
 								
 		$databaseSuccess = TRUE;
-		$lastTicketClassUniqueID = $this->TicketClass_model->getLastTicketClassUniqueID( $this->input->cookie( 'eventID' ) );
-		$lastTicketClassUniqueID++;
+		$lastTicketClassGroupID = $this->TicketClass_model->getLastTicketClassGroupID( $this->input->cookie( 'eventID' ) );
+		$lastTicketClassGroupID++;
 		// CODE MISSING: database checkpoint
 		for( $x = 0; $x < $classesCount; $x++ )
-		{
-			
+		{			
 			$databaseSuccess = $this->TicketClass_model->createTicketClass(
-				$lastTicketClassUniqueID,
+				$lastTicketClassGroupID,
+				$x+1,
 				$this->input->cookie( 'eventID' ),
 				$classes[ $x ],
 				$prices[ $classes[ $x ] ],
@@ -311,40 +319,143 @@ class EventCtrl extends CI_Controller {
 				"IDY",
 				0,
 				$holdingTime[ $classes[ $x ] ]
-			);
-						
+			);						
 			if( !$databaseSuccess ){
 				// CODE MISSING:  database rollback
 				echo 'insertion failed';
 				break;						
-			}
-								
+			}								
 		}//for
+		// CODE MISSING: database commit
 		
-		// now set ticket class's unique id for the being configured events
-		$this->Event_model->setShowingTimeTicketClass( $this->input->cookie( 'eventID' ), $lastTicketClassUniqueID );
+		// now set ticket class's group id for the being configured events
+		$this->Event_model->setShowingTimeTicketClass( $this->input->cookie( 'eventID' ), $lastTicketClassGroupID );
 		
 		/*
 			For each showing time being configured, create actual slots.
 		*/
 		foreach( $data['beingConfiguredShowingTimes'] as $eachShowingTime )
 		{
-			$thisST_ticketClasses = $this->TicketClass_model->getTicketClasses( $this->input->cookie( 'eventID' ), $lastTicketClassUniqueID );						
+			$thisST_ticketClasses = $this->TicketClass_model->getTicketClasses( $this->input->cookie( 'eventID' ), $lastTicketClassGroupID );						
 			foreach( $thisST_ticketClasses as $eachTicketClass )
 			{			
 				$this->Slot_model->createSlots( 
 					$eachTicketClass->Slots,
 					$this->input->cookie( 'eventID' ),
 					$eachShowingTime->UniqueID,
-					$lastTicketClassUniqueID,
-					$eachTicketClass->Name
+					$lastTicketClassGroupID,
+					$eachTicketClass->UniqueID
 				);
 			}
 		}						
 				
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
-		$this->load->view('createEvent/createEvent_006', $data);				
+		/*
+		
+		
+		*/		
+		echo "OK-JQXHR"	;
+		//$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
+		//$this->load->view('createEvent/createEvent_006', $data);				
 	}//create_step6(..)
+	
+	function create_step6_seats()
+	{
+		/*
+			Created 04FEB2012-1852
+		*/		
+		$beingConfiguredShowingTimes = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
+		foreach( $beingConfiguredShowingTimes as $eachSession )
+		{
+			// duplicate seat pattern to the table containing actual seats
+			$this->Seat_model->copyDefaultSeatsToActual( $this->input->post( 'seatmapUniqueID' ) );
+			// update the eventID and UniqueID of the newly duplicated seats
+			$this->Seat_model->updateNewlyCopiedSeats( $this->input->cookie( 'eventID' ),  $eachSession->UniqueID );
+			// get the ticket classes of the events being configured
+			$ticketClasses_obj = $this->TicketClass_model->getTicketClasses( $this->input->cookie( 'eventID' ),  $eachSession->Ticket_Class_GroupID );
+			// turn the previously retrieved ticket classes into an array accessible by the class name
+			$ticketClasses = $this->TicketClass_model->makeArray_NameAsKey( $ticketClasses_obj );
+			// get seat map object to access its rows and cols, for use in the loop later
+			$seatmap_obj = $this->Seat_model->getSingleMasterSeatMapData( $this->input->post( 'seatmapUniqueID' ) );
+			for( $x = 0; $x < $seatmap_obj->Rows; $x++)
+			{
+				for( $y = 0; $y < $seatmap_obj->Cols; $y++)
+				{
+					$seatValue = $this->input->post( 'seat_'.$x.'-'.$y );
+					$status;
+					$ticketClassUniqueID;
+					$sql_command = "UPDATE `seats_actual` SET `Status` = ? ";
+					$sql_command_End = "WHERE  `Seat_map_UniqueID` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? AND `Matrix_x` = ? AND `Matrix_y` = ?";
+					if( $seatValue === "0" or $seatValue === false )
+					{
+						//unselected
+						$status = -2;
+						$this->db->query( 	$sql_command.$sql_command_End, array(
+												$status,												
+												$this->input->post( 'seatmapUniqueID' ),
+												$this->input->cookie( 'eventID' ),
+												$eachSession->UniqueID,
+												$x,
+												$y
+											)
+						);
+					}else if( $seatValue === "-1" )
+					{
+						// no class assigned
+						$status = -1;
+						$this->db->query( 	$sql_command.$sql_command_End, array(
+												$status,												
+												$this->input->post( 'seatmapUniqueID' ),
+												$this->input->cookie( 'eventID' ),
+												$eachSession->UniqueID,
+												$x,
+												$y
+											)
+						);
+					}else{	// contains class in string
+						$status = 0;
+						$ticketClassUniqueID = $ticketClasses[ $seatValue ]->UniqueID;
+						$this->db->query( 	$sql_command.", `Ticket_Class_GroupID` = ?, `Ticket_Class_UniqueID` = ? ".$sql_command_End,
+											array(
+												$status,
+												$eachSession->Ticket_Class_GroupID,
+												$ticketClassUniqueID,
+												$this->input->post( 'seatmapUniqueID' ),
+												$this->input->cookie( 'eventID' ),
+												$eachSession->UniqueID,
+												$x,
+												$y
+											)
+						);
+					}
+				}
+			}
+		}
+		echo $this->CoordinateSecurity_model->createActivity( 'CREATE_EVENT', 'JQXHR', 'string' );		
+	}//create_step6_seats()
+	
+	function create_step6_forward()
+	{
+		/*
+			Created 04FEB2012-1845
+		
+			This is created to 'entertain' the request of the client page
+			to load entirely the next page.
+		*/
+	
+		$pageEligibilityIndicator = "JQXHR";
+	
+		/*
+			Page access eligibility check
+		*/
+		// does UUID exist 		
+		if( $this->CoordinateSecurity_model->doesActivityExist( $this->input->post( 'uuid' ) ) === false ) redirect('/');		
+		// UUID exists. Does activity indicator has valid value?
+		if( $this->CoordinateSecurity_model->isActivityEqual( $this->input->post( 'uuid' ), $pageEligibilityIndicator , "string" ) === false ) redirect('/' );
+		
+		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
+		$this->load->view('createEvent/createEvent_006', $data);				
+	}
 	
 	function create_step7()
 	{
@@ -411,20 +522,21 @@ class EventCtrl extends CI_Controller {
 		return $this->Event_model->isEventExistent( $name );	
 	} //doesEventExist
 	
-	function getConfiguredShowingTimes( $eventID = null )
-	//function getConfiguredShowingTimes( $eventID = 686 )
+	function getConfiguredShowingTimes( $eventID = null )	
 	{
 		/*
 			Created 30DEC2011-1053
 		*/
 		$allConfiguredShowingTimes;
 		
-		//if( $eventID == null ) return "false";
-		//echo var_dump( $eventID );
-		/*if( $eventID == null )
-			$eventID = 686;
-		else*/
-			$eventID = $this->input->post( 'eventID' );
+		//Added 29JAN2012-1530: user is accessing via browser address bar, so not allowed
+		if( $this->input->is_ajax_request() === false ) redirect('/');
+				
+		$eventID = $this->input->post( 'eventID' );
+		if( $eventID === false )
+		{
+			echo "INVALID_POST-DATA-REQUIRED";
+		}
 		$allConfiguredShowingTimes = $this->Event_model->getConfiguredShowingTimes( $eventID , true);
 		if( count( $allConfiguredShowingTimes ) == 0 )
 		{
@@ -434,8 +546,7 @@ class EventCtrl extends CI_Controller {
 		$xmlResult = $this->MakeXML_model->XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes );
 		
 		echo $xmlResult;
-		return true;
-		//die( var_dump( $xmlResult ) );
+		return true;		
 	}//getConfiguredShowingTimes(..)
 	
 	function manage()

@@ -3,6 +3,7 @@
 */
 $(document).ready(function()
 	{
+	
 		/*
 			ask for some form submit confirmation here
 		*/

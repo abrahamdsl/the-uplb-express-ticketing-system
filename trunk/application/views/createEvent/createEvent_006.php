@@ -35,9 +35,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006.js'; ?>"/></script>				
 	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
-	
-  	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>		  	
 </head>
 <body>
 <?php

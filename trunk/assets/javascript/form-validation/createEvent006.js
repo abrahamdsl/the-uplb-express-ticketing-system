@@ -290,7 +290,7 @@ $(document).ready( function() {
 						break;
 		}
 		//END: validate deadline of payment
-		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure that these entries are correct? Please check one more time." );		
+		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure that these entries are correct? Please check one more time." );		
 	});
 	
 });

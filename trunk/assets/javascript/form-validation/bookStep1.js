@@ -143,7 +143,7 @@ $(document).ready( function() {
 				// hide the ajax pre-loader
 				$("span#showtimeWaiting").hide();	
 			}//function		
-		); // $.post
+		); // $.post		
 		toggleStep3Buttons();
 	});
 	

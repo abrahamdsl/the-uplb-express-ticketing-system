@@ -73,7 +73,7 @@ $(document).ready( function ()
 				displayOverlay( 'error' , 'bad expectation', "As in zero slot? Are you kidding me?" );
 				return;
 			}
-			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure these are what you want to configure now?" );																		
+			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure these are what you want to configure now?" );																		
 			
 			
 	});
