@@ -6,6 +6,50 @@ function formSubmit()
 	return [ this ];
 }
 
+function getEarliestShowingTimeStartDate()
+{
+	/*
+		Created 05FEB2012-1257
+		
+		Gets date from the page, sorts and returns the string (UTC form)
+		of the date which is earliest.
+	*/
+	var dates = new Array();	
+	var x=0;
+	//get dates from the page and assign to array
+	$("table.schedulesCentral tr td.BCST_date input.value" ).each(
+		function(){		
+			dates[x++] = new Date( $(this).val() );			
+		}
+	);
+	dates.sort( function(a,b){return a-b; } );	
+	return dates[0].toUTCString();
+}
+
+function getEarliestShowingTimeStartTime()
+{
+	/*
+		Created 05FEB2012-1322
+		
+		Gets starting times from the page, sorts and returns the string (UTC form)
+		of the time which is earliest.
+	*/	
+	var dates = new Array();	
+	var x=0; 
+	$("table.schedulesCentral tr td.BCST_time_start input.value" ).each(
+		function(){			
+			var date_obj = new Date( );
+			var classifiedTime = classifyTime( $(this).val() );		// found in generalChecks.js
+			date_obj.setUTCHours( classifiedTime["hour"] );
+			date_obj.setUTCMinutes( classifiedTime["min"] );
+			date_obj.setUTCSeconds( classifiedTime["sec"] );
+			dates[x++] = date_obj; 
+		}
+	);
+	dates.sort( function(a,b){return a-b; } );	
+	return dates[0].toUTCString();
+}
+
 $(document).ready( function() {
 	// created 21DEC2011-1637
 	var antiRepeater = 0;
@@ -15,6 +59,24 @@ $(document).ready( function() {
 	$('#right_inner_fixedAfterBookingDay').hide();
 	$('#right_inner_RelativeAfterBookingDay').hide();
 	
+	// convert the showing time dates' months to text
+	$("table.schedulesCentral tr td.BCST_date input.value" ).each(
+		function(){
+			$(this).parent().children('span').html( 
+				convertDateMonth_toText( $(this).val() ) 
+			);
+		}
+	);
+	getEarliestShowingTimeStartTime();
+	// convert the showing time times' to 12-hr
+	$('table.schedulesCentral tr td[class^="BCST_time"] input.value' ).each(
+		function(){
+			$(this).parent().children('span').html( 
+				convertTimeTo12Hr( $(this).val() )
+			);
+		}
+	);
+			
 	// START: selling dates start and end
 	$('input[name^="selling_date"]').blur( function() {		
 		var isDatepickerOpen = $(this).datepicker("widget").is(":visible");		
@@ -55,9 +117,7 @@ $(document).ready( function() {
 
 		$('#lastFocus').val( $(this).val() );					//put old value to lastFocus
 		$('#lastFocus_class').val( $(this).attr( 'class' ) );	//put old class to lastFocus_class
-		$(this).val("");										//empty the contents
-		
-		//alert( "focus now: " + $('#lastFocus').val() + "|" + antiRepeater + "|" + $(this).val() );		
+		$(this).val("");										//empty the contents			
 	});
 	// END: selling dates start and end
 	
@@ -94,9 +154,7 @@ $(document).ready( function() {
 
 		$('#lastFocus').val( $(this).val() );					//put old value to lastFocus
 		$('#lastFocus_class').val( $(this).attr( 'class' ) );	//put old class to lastFocus_class
-		$(this).val("");										//empty the contents
-		
-		//alert( "focus now: " + $('#lastFocus').val() + "|" + antiRepeater + "|" + $(this).val() );		
+		$(this).val("");										//empty the contents				
 	});
 	// END: selling times start and end
 	
@@ -157,8 +215,7 @@ $(document).ready( function() {
 		
 		if( newVal != $('#fixedTime_caption').val() ){
 			$(this).attr( 'class', "textInputSize_Larger" );
-		}
-				
+		}				
 	});
 	
 	$('#fixedTime').focus( function() {		
@@ -230,6 +287,8 @@ $(document).ready( function() {
 		var decision = false;
 		var numOfDays;
 		var deadlineModeChosen;
+		var earliestST_Date;
+		var earliestST_Time;
 		
 		if( !isDateValid( sellingDateStart ) ) {
 			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Date Start." );									
@@ -254,6 +313,17 @@ $(document).ready( function() {
 				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp is earlier than selling start timestamp." );		
 				return false;
 			}		
+			var earliestST_Date = new Date( getEarliestShowingTimeStartDate() );
+			var earliestST_Time = new Date( getEarliestShowingTimeStartTime() );
+			var estD_str = earliestST_Date.getFullYear() + '-' + ( earliestST_Date.getMonth() + 1 ) + '-' + earliestST_Date.getDate();
+			var estT_str = earliestST_Time.getUTCHours() + ':' + earliestST_Time.getUTCMinutes();
+			
+			if ( !isTimestampGreater( sellingDateEnd, sellingTimeEnd, estD_str,  estT_str ,isShow_RedEye) )		//found in generalChecks.js
+			{				
+				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp should be earlier than the earliest showing time ( " +  estD_str + " " +  estT_str  + " ). ");		
+				return false;
+			}
+			//console.log( 'pakpaktok ' + estD_str + '..' + estT_str );
 		}
 		// END: validate online selling availability		
 		

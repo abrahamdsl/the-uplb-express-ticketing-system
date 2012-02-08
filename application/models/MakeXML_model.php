@@ -148,10 +148,31 @@ class MakeXML_model extends CI_Model {
 			$xml->startBranch( 'dataproper' );
 			foreach( $masterSeatMapProperData as $eachSeat )
 			{
+				/*
+						09FEB2012-0214 : In connection with Issue 25 in Google Code / "Why still compute the rows and cols when it's in the XML?".
+						So I configured it to get the rows and cols from the XML. 
+							(We are talking here about Create Event Step 5 - Getting Seat Map - Assigning Rows and Columns )
+						
+						However, if we have the XML structure
+						*************************************
+							<seat x="i" y"j" >
+								<row>a</row>
+								<col>b</col>
+								<status>c</col>
+								<comment></comment>
+							</seat>
+						************************************
+						and therefore in the JavaScript function to get col, we have to have this command
+						****************************************
+								$(this).find( 'col' ).text();
+						****************************************						
+						.. then IT DOES NOT WORK. However, here in the XML, when I change <col> to <colx>, it works!
+						I've tested it twice, in Google Chrome 11, for the meantime. Why is it so, I wonder?
+				*/
 				// start branch 2-a
 				$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
 				$xml->addNode( 'row',   $eachSeat->Visual_row );
-				$xml->addNode( 'col',   $eachSeat->Visual_col );
+				$xml->addNode( 'colX',   $eachSeat->Visual_col );
 				$xml->addNode( 'status',   $eachSeat->Status );
 				$xml->addNode( 'comments',   $eachSeat->Comments );
 				

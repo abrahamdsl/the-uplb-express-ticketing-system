@@ -9,9 +9,12 @@ class Event_model extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('cookie');
 		$this->load->library('session');
+		
+		
 	}
-	
+			
 	function addOneDay( $thisDate )
 	{	
 		/*
@@ -163,6 +166,15 @@ class Event_model extends CI_Model {
 		return ( $query_obj1 and $query_obj2 and $query_obj3 );
 	} // deleteAllEventInfo
 	
+	function deleteBookingCookies()
+	{
+		/*
+			Created 06FEB2012-1734
+		*/
+		$cookie_names = $this->getBookingCookieNames();
+		foreach( $cookie_names as $singleCookie ) delete_cookie( $singleCookie );
+	}// deleteBookingCookies()
+	
 	function getAllEvents()
 	{
 		// created 20DEC2011-1418
@@ -193,6 +205,16 @@ class Event_model extends CI_Model {
 		
 		return $result_arr;	
 	}// getBeingConfiguredShowingTimes(..)
+	
+	function getBookingCookieNames()
+	{		
+		/*
+			09FEB2012-0059 | These cookies are for use in the booking steps.
+		*/	
+		return ( Array( 
+			"eventID", "showtimeID", "ticketClassGroupID", "eventName", "startDate",
+			"startTime", "endDate", "endTime", "slots_being_booked", "location") );
+	}//getBookingCookieNames()
 	
 	function getConfiguredShowingTimes( $eventID = NULL , $validToday = false )
 	{
@@ -239,6 +261,18 @@ class Event_model extends CI_Model {
 		return $result_arr;		
 	}//getConfiguredShowingTimes(..)
 	
+	function getEventInfo( $eventID )
+	{
+		/*
+			Created 05FEB2012-2234
+		*/
+		$sql_command = "SELECT * FROM `event` WHERE `EventID` = ?";
+		$result_arr = $this->db->query( $sql_command, array( $eventID ) )->result();
+		if( count( $result_arr ) < 1 ) return false;
+		else
+			return $result_arr[0];
+	}//getEventInfo(..)
+	
 	function getLastShowingTimeUniqueID( $eventID = null )
 	{
 		/*
@@ -275,16 +309,32 @@ class Event_model extends CI_Model {
 		if( !is_array( $allEvents ) ) return false;
 						
 		foreach( $allEvents as $key => $singleEvent )
-		{
-			//echo( var_dump( $singleEvent) );			
+		{			
 			$cfgST = $this->getConfiguredShowingTimes( $singleEvent->EventID , true );
-			if( count( $cfgST ) > 0 ) $showingTimes[ $singleEvent->EventID ] = $cfgST;
-			//echo var_dump( $showingTimes );
+			if( count( $cfgST ) > 0 ) $showingTimes[ $singleEvent->EventID ] = $cfgST;			
 		}//foreach
 		
 		return $showingTimes;
 	}// getReadyForSaleEvents(..)
 			
+	function getSingleShowingTime( $eventID = NULL, $showtimeID = NULL )
+	{
+		/*
+			Created 05FEB2012-2039
+			
+			Arose at the need of Book Step 2. I'm so late nahhh!!!! WAHHHH!!
+			
+			Returns single MYSQL_OBJ (as in one entry) if successful, else
+			boolean false.
+		*/
+		$sql_command = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND `UniqueID` = ?;";
+		$mysql_result_arr = $this->db->query( $sql_command, array( $eventID, $showtimeID ) )->result();
+		
+		if( count( $mysql_result_arr ) !== 1 ) return false;
+		else
+			return $mysql_result_arr[0];
+	}//getSingleShowingTime( .. )
+	
 	function getUnconfiguredShowingTimes( $eventID = NULL )
 	{
 		/* Created 12DEC2011-1227
@@ -431,6 +481,25 @@ class Event_model extends CI_Model {
 		
 		return null;
 	}//retrieveSingleEventFromAll
+	
+	function setBookingCookies( $cookie_values )
+	{
+		/*
+			Created 09FEB2012-0052. Moved from EventCtrl for refactoring purposes.
+			
+			Sets cookies needed in booking process. Called in EventCtrl/book_step2
+		*/		
+		$cookie_names = $this->getBookingCookieNames();
+		for( $x=0, $y = count($cookie_names); $x<$y; $x++ )	// $cookie_names is global - found in construct
+		{
+			$cookie = Array(
+				'name' => $cookie_names[ $x ],
+				'value' => $cookie_values[ $x ],
+				'expire' => 3600				// change later to how long ticketclass hold time
+			);
+			$this->input->set_cookie($cookie);		
+		}	
+	}// setBookingCookies
 	
 	function setParticulars( $eventID = NULL )
 	{

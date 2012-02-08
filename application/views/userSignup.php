@@ -29,15 +29,7 @@ $this->load->view('html-generic/doctype.inc');
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
 		?>		
-		<div id="graynavbar" >		
-			<!-- <ul>
-				<li>a</li>
-				<li>b</li>
-				<li class="last">
-					<a href='login/logout' class='underline'>Log out</a>
-				</li>
-			</ul>
-			-->			
+		<div id="graynavbar" >					
 		</div>
         
     </div>
@@ -51,8 +43,7 @@ $this->load->view('html-generic/doctype.inc');
 			<div style="padding-left:10px; clear: both">
 				Please complete the following information:
 			</div>				
-			<!-- start of form -->
-			<!--onSubmit="return OnSubmitForm5();"-->
+			<!-- start of form -->			
 			<form method="post"  action="<?php echo base_url().'userAccountCtrl/userSignup_step2' ?>" name="formSignup" id="formMain">
 
 				<div class="center_pure">

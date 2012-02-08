@@ -100,10 +100,7 @@ $this->load->view('html-generic/doctype.inc');
 											</td>
 											<td>	
 												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" /><?php echo $eachShowingTime->StartTime; ?></label><br/>
-											</td>
-											<!-- <td>
-												-
-											</td> -->
+											</td>											
 											<td>
 												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" <?php if($redEye){ ?>class="redEye"<?php }; ?> /><?php echo $eachShowingTime->EndTime; ?></label><br/>
 											</td>

@@ -33,15 +33,16 @@ function adjustColumnIndicators( rows, cols )
 		$('table.textUnselectable div#bottom_' + aisleIndex).html( 'A' );
 		for( ++aisleIndex; aisleIndex < cols; aisleIndex++ )
 		{
-			concernedDiv_top = $('table.textUnselectable div#top_' + aisleIndex );
-			concernedDiv_col = $('table.textUnselectable div[id$="_' + aisleIndex + '"] span.col' );
-			concernedDiv_bottom = $('table.textUnselectable div#bottom_' + aisleIndex );
-			adjustThis = concernedDiv_top.html();						
+			concernedDiv_top = $('table.textUnselectable div#top_' + aisleIndex );			// get handle to top indicator
+			concernedDiv_bottom = $('table.textUnselectable div#bottom_' + aisleIndex );	// get handle to bottom indicator
+			adjustThis = concernedDiv_top.html();											// get current content
 			if( adjustThis != 'A' ){
+				/* so if not aisle already, get current value, parse it to integer, decrement by one
+					and replace the top indicators concerned with this new value
+				*/
 				adjustThis = parseInt( adjustThis );
 				adjustThis--;
-				concernedDiv_top.html( adjustThis );
-				concernedDiv_col.html( adjustThis );
+				concernedDiv_top.html( adjustThis );				
 				concernedDiv_bottom.html( adjustThis );
 			}
 		}
@@ -147,7 +148,7 @@ $(document).ready( function(){
 				for(x=1, letter=65; x<rows+1; x++, letter++ )
 				{
 					for(y=0;y<cols;y++){
-						$(allTRs[x]).append('<td><div id="' + parseInt(x-1) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + itoa(letter) + '</span><span class="col" >'+ (y+1) + ' </span><input type="hidden" name="seat_' + parseInt(x-1) + '-' + y+ '" class="seatClass" value="0"  \/></div></td>');
+						$(allTRs[x]).append('<td><div id="' + parseInt(x-1) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + '</span><span class="col" >'+  ' </span><input type="hidden" name="seat_' + parseInt(x-1) + '-' + y+ '" class="seatClass" value="0"  \/></div></td>');
 					}
 				}
 				// then, the right indicators
@@ -155,12 +156,35 @@ $(document).ready( function(){
 						$(allTRs[y]).append('<td><div class="guide left" id="right_' + y + '" >' + itoa(letter) +'</div></td>');	// itoa() found in generalChecks.js					
 				}
 				
-				actualSeats.find('seat').each( function(){					
+				actualSeats.find('seat').each( function(){		
+					/*
+						09FEB2012-0214 : In connection with Issue 25 in Google Code / "Why still compute the rows and cols when it's in the XML?".
+						So I configured it to get the rows and cols from the XML. 
+						
+						However, if we have the XML structure
+						*************************************
+							<seat x="i" y"j" >
+								<row>a</row>
+								<col>b</col>
+								<status>c</col>
+								<comment></comment>
+							</seat>
+						************************************
+						and therefore in this function to get col, we have to have this command
+						****************************************
+								$(this).find( 'col' ).text();
+						****************************************						
+						.. then IT DOES NOT WORK. However, in the XML, when I change <col> to <colx>, it works!
+						I've tested it twice, in Google Chrome 11, for the meantime. Why is it so?
+					*/
 					var x = $(this).attr('x');
 					var y = $(this).attr('y');
+					var row = $(this).find('row').text();
+					var colx = $(this).find( 'colX' ).text();
 					var status = parseInt( $(this).find( 'status' ).text() );
-					var concernedDiv = $('div#' + x + '_' + y);
-					concernedDiv.children('input.seatClass').val( status );
+					var concernedDiv = $('div#' + x + '_' + y);					
+					concernedDiv.children('span.row').html( row );
+					concernedDiv.children('span.col').html( colx );					
 					if( status == -1 ){
 						addNewAisleToList( y );
 						concernedDiv.removeClass( 'ui-selectable' );
@@ -168,7 +192,7 @@ $(document).ready( function(){
 						concernedDiv.removeClass( 'ui-selected' );
 						concernedDiv.removeClass( 'dropAvailable' );
 						concernedDiv.addClass( 'dropUnavailable' );
-					}			
+					}
 				});
 				
 				// now call the function to be able to select these items
@@ -189,7 +213,8 @@ $(document).ready( function(){
 				// adjust column indicators to make way for aisles
 				adjustColumnIndicators( rows, cols );
 				nullifyAisleCount();
-				// 
+				hideOverlay();
+				alreadyConfiguredSeat = true;				
 			}
 			
 			$('#armageddon').click( function(){

@@ -13,10 +13,10 @@ fieldset
 	text-align:right;
 	padding-right: 5px;
 	zoom:1;
-	*display:inline;
+	display:inline; /*08FEB2012-2215: remove '*' before 'display', what's it for?*/
 }
 .row div{
 	display:inline-block;
 	zoom:1;
-	*display:inline;
+	display:inline; /*08FEB2012-2215: remove '*' before 'display', what's it for?*/
 }

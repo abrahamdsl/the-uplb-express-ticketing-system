@@ -1,0 +1,36 @@
+table#bookProgressIndicator
+{	
+	margin-top: 5px;
+	space: 0px;
+}
+table#bookProgressIndicator tr{
+	margin: 0px;
+	padding: 0px;
+	background-color: rgb(229,227,228);
+}
+table#bookProgressIndicator tr td.passed
+{
+	border-bottom: 5px solid rgb(158,205,63);
+	background-color: rgb(253,253,253);
+}
+table#bookProgressIndicator tr td
+{
+	margin: 0px 0px 0px 0px;
+	padding: 10px;
+	border-left: 1px solid  rgb(216,228,214);
+	border-right: 1px solid  rgb(216,228,214);
+	border-top: 1px solid  rgb(216,228,214);
+	border-bottom: 5px solid rgb(122,147,177);
+}
+table#bookProgressIndicator tr td span.step
+{
+	font-size: 1.7em;
+	float: left;
+}
+table#bookProgressIndicator tr td span.caption
+{
+	margin-left: 10px;
+	font-size: 0.9em;
+	float: top;
+	padding: 5px;
+}

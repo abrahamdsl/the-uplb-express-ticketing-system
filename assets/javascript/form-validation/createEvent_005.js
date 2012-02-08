@@ -3,6 +3,7 @@
 	at createEvent_004.js too and its relation with here.
 */
 var lastUsedSeatmap = -1;
+var alreadyConfiguredSeat = false;
 
 function checkSlotsTotal( theObject)
 {
@@ -25,28 +26,30 @@ function createSeatmapOnPage( args )
 {
 	/*
 		Created 30JAN2012
-	*/
+	*/	
+	//display notice
 	if( args["isOverlayDisplayedAlready"] === true ) modifyAlreadyDisplayedOverlay( 'notice' , 'please wait', 'Getting seat map info ...', false );
 	else{
-		displayOverlay( 'notice' , 'please wait', 'Getting seat map info ...' );
+		displayOverlay( 'notice' , 'please wait', 'Getting seat map info, this may take up to a minute ...<br/><br/>' );
 	}
+	// ajax-time!
 	var x = $.ajax({	
 		type: 'POST',
 		url: 'http://localhost/species/SeatCtrl/getMasterSeatmapData',
-		timeout: 5000,
+		timeout: 50000,
 		data: { 'uniqueID': args["seatMapUniqueID"] },				
-		success: function(data){										
-			$(document).manipulateSeatAJAX( data );					
-			
+		success: function(data){
+			alreadyConfiguredSeat = false;
+			$(document).manipulateSeatAJAX( data );			// make now the HTML
+			lastUsedSeatmap =  args["seatMapUniqueID"];
+			$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
 		}
-	});
-	setTimeout("hideOverlay()", 1700);
+	});	
 	x.fail(	function(jqXHR, textStatus) { 
-				displayOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.' ); 
-				revertSeatMapPulldown( args );
-	} ) ;
-	lastUsedSeatmap =  args["seatMapUniqueID"];
-	$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
+				revertSeatMapPulldown();
+				modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false ); 				
+				return false;
+	} ) ;	
 }
 
 function formSubmitPreCheck()
@@ -125,7 +128,7 @@ function giveMeClass( elemID )
 	return y[1];
 }
 
-function revertSeatMapPulldown( args )
+function revertSeatMapPulldown( )
 {
 	/*
 		Created 03FEB2012-1546. Used when event manager already selected seat map, but wants
@@ -134,7 +137,7 @@ function revertSeatMapPulldown( args )
 		selected seat map displayed on the page.
 	*/
 	$('#seatMapPullDown option:selected').attr( "selected", "false");						// unselect	
-	$('#seatMapPullDown [value="' + lastUsedSeatmap + '"]').attr('selected', 'selected');   // revert to the old one	
+	$('#seatMapPullDown option[value="' + lastUsedSeatmap + '"]').attr('selected', 'selected');   // revert to the old one		
 }
 
 
@@ -159,8 +162,7 @@ function sumTotalSlots()
 	$('#totalSlotsChosen').val( Total );
 }//sumSlotsTotal(..)
 
-$(document).ready( function() {
-	var alreadyConfiguredSeat = false;
+$(document).ready( function() {	
 	
 	$('div[class="drop"]').click( function(){
 		$('#warningIndicator').html( $(this).attr('style') );
@@ -168,20 +170,20 @@ $(document).ready( function() {
 
 	});
 	
-	$('#seatMapPullDown').change( function(){		
+	$('#seatMapPullDown').change( function(){
+		// called when user selects a seat map from the pull down list
 		var args = new Array();
 		
-		if( $(this).val() == "null" ) return false;
+		if( $(this).val() == "null" ) return false;		// selects the blank entry, so don't do anything
 		args["seatMapUniqueID"] = $(this).val();		
+		if( args["seatMapUniqueID"] == lastUsedSeatmap ) return false;
 		if( alreadyConfiguredSeat ){
 			args["isOverlayDisplayedAlready"] = true;
-			displayOverlay_confirm_NoCloseOnChoose( 'warning' , 'Confirm', 'createSeatmapOnPage', args, 'revertSeatMapPulldown', args, "Your previous seat assignments would be erased. Continue?");										
-			// if negative is answer to above, you should revert to previous selection.
+			displayOverlay_confirm_NoCloseOnChoose( 'warning' , 'Confirm', 'createSeatmapOnPage', args, 'revertSeatMapPulldown', null, "Your previous seat assignments would be erased. Continue?");			
 		}
 		else{
 			args["isOverlayDisplayedAlready"] = false;
-			createSeatmapOnPage( args );
-			alreadyConfiguredSeat = true;
+			createSeatmapOnPage( args );			
 		}
 	});
 	
@@ -254,9 +256,7 @@ $(document).ready( function() {
 							$.modal.close();						
 						}
 			}
-		);
-		
-		//displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+		);				
 	});
 	
 	$('input[id^="id_privilege_"]').click( function() {

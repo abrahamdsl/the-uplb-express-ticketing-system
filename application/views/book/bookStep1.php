@@ -4,7 +4,7 @@ $this->load->view('html-generic/doctype.inc');
 <head>
 <?php
 	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
-	$this->thisPage_menuCorrespond = "Create Event Step 6";
+	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
@@ -18,6 +18,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For overlay-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
@@ -56,6 +57,9 @@ $this->load->view('html-generic/doctype.inc');
     
     <div id="main_content" >    	
     	<div id="centralContainer">           		   
+<?php			
+			$this->load->view( 'html-generic/bookProgressIndicator.inc');
+?>		
 			<div id="page_title">
 				Book a ticket | Post a Reservation
 			</div>

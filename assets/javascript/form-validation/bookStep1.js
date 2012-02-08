@@ -1,11 +1,42 @@
 var step3ButtonsDisabled = true;
+var thisNewSlotClass = $('#slotDisabledClass').val();
+var thisNewAdjustButtonsClass = $('#adjustDisabledClass').val(); 
+
+function disableStep3Buttons()
+{
+	if( step3ButtonsDisabled ) return false;
+	
+	thisNewSlotClass = $('#slotDisabledClass').val();
+	thisNewAdjustButtonsClass = $('#adjustDisabledClass').val(); 
+	step3ButtonsDisabled = 'disabled';
+	postProcessStep3Buttons();
+}
+
+function enableStep3Buttons()
+{
+	if( !step3ButtonsDisabled ) return false;
+	thisNewSlotClass = $('#slotEnabledClass').val();
+	thisNewAdjustButtonsClass = $('#adjustEnabledClass').val(); 
+	step3ButtonsDisabled = false;
+	postProcessStep3Buttons();
+}
+
+function postProcessStep3Buttons()
+{
+	$( '#reduceSlots' ).attr( 'disabled', step3ButtonsDisabled ); 
+	$( '#addSlots' ).attr( 'disabled', step3ButtonsDisabled ); 
+	$( '#slot' ).attr( 'disabled', step3ButtonsDisabled ); 
+	$( '#reduceSlots' ).attr( 'class', thisNewAdjustButtonsClass ); 
+	$( '#addSlots' ).attr( 'class', thisNewAdjustButtonsClass ); 
+	$( '#slot' ).attr( 'class', thisNewSlotClass ); 
+}
 
 function toggleStep3Buttons()
 {
 	/*
 		08JAN2012-1845
 	*/
-	var thisNewSlotClass;
+	/*var thisNewSlotClass;
 	var thisNewAdjustButtonsClass;
 	
 	if( step3ButtonsDisabled )
@@ -13,20 +44,11 @@ function toggleStep3Buttons()
 		thisNewSlotClass = $('#slotEnabledClass').val();
 		thisNewAdjustButtonsClass = $('#adjustEnabledClass').val(); 
 	}else{
-		thisNewSlotClass = $('#slotDisabledClass').val();
-		thisNewAdjustButtonsClass = $('#adjustDisabledClass').val(); 
+		
 	}
 	step3ButtonsDisabled = !step3ButtonsDisabled; // reverse
-	// toggle buttons
-	/*alert( step3ButtonsDisabled );	
-	alert( thisNewAdjustButtonsClass );
-	alert( thisNewSlotClass );*/
-	$( '#reduceSlots' ).attr( 'disabled', step3ButtonsDisabled ); 
-	$( '#addSlots' ).attr( 'disabled', step3ButtonsDisabled ); 
-	$( '#slot' ).attr( 'disabled', step3ButtonsDisabled ); 
-	$( '#reduceSlots' ).attr( 'class', thisNewAdjustButtonsClass ); 
-	$( '#addSlots' ).attr( 'class', thisNewAdjustButtonsClass ); 
-	$( '#slot' ).attr( 'class', thisNewSlotClass ); 
+
+	*/
 }//enableStep3Buttons
 
 $(document).ready( function() {
@@ -64,16 +86,18 @@ $(document).ready( function() {
 		if( $(this).val() == "NULL" ){
 			$("span#showtimeSelectionReal").hide();	// hide the selection that contains the events
 			$("span#showtimeDummy").show();			// show the message "Select an Event first" in Showing Time panel
-			toggleStep3Buttons();	
+			disableStep3Buttons();	
 			return false;		
 		}
 		
 		$("span#showtimeWaiting").show();		// show ajax pre-loader
 		// now contact server to request for "for sale" showing times of the selected event
-		$.post(
-			CI.base_url + "EventCtrl/getConfiguredShowingTimes" , // URL, CI.base_url found in the page
-			{ 'eventID': $(this).val() },						  // DATA
-			function(data){										  // function to handle afterwards
+		var requestST_POST = $.ajax({
+			type: 'POST',
+			url: CI.base_url + "EventCtrl/getConfiguredShowingTimes" , // URL, CI.base_url found in the page
+			timeout: 40000,
+			data: { 'eventID': $(this).val() },						  // DATA
+			success: function(data){										  // function to handle afterwards
 				var splitDetails = data.split('_');
 				if( splitDetails[0] == "ERROR" || splitDetails[0] == "INVALID" )
 				{
@@ -90,8 +114,11 @@ $(document).ready( function() {
 					var endDate;
 					var endTime;
 					var x=0;
+					var z=0;
 					var uniqueID_arr = [];
-					var entryIndicator_arr = [];
+					var entryIndicator_arr = [];					
+					var showTimeDates = [];
+					var showTimeDatesCounter = [];
 					
 					// for each showing time entry...
 					$( splitDetails[1] ).find( 'schedule' ).each( function() {
@@ -108,43 +135,54 @@ $(document).ready( function() {
 						endDate = $endTimeStamp_obj.find('date').text();						
 						endTime = $endTimeStamp_obj.find('time').text();
 						
-						// now assemble
-						entryIndicator = convertDateMonth_toText( startDate.toString() );												
-						entryIndicator += " ";
+						// add a date to the optgroup identifier
+						if( showTimeDates[ convertDateMonth_toText(startDate.toString() ) ] === undefined )
+						{
+							showTimeDates[ convertDateMonth_toText( startDate.toString() ) ] = [];							
+							showTimeDatesCounter[ convertDateMonth_toText( startDate.toString() ) ] = 0;
+						}
+						
+						// now assemble						
+						entryIndicator = '<option value="' + $(this).attr( 'uniqueID' )  +'" >';
 						entryIndicator += convertTimeTo12Hr( startTime );
 						entryIndicator += " - ";
+						entryIndicator += convertTimeTo12Hr( endTime );
 						if( startDate != endDate ) // if not same date (i.e. red-eye), add end date
 						{
+							entryIndicator += '( ';
 							entryIndicator += ( convertDateMonth_toText( endDate.toString() ) + " ") ;
-						}
-						entryIndicator += convertTimeTo12Hr( endTime );					
-						entryIndicator_arr.push( entryIndicator );	// add to the array
-						//#showingTimeSelection
+							entryIndicator += ' )';
+						}						
+						entryIndicator += "</option>";
+						showTimeDates[ convertDateMonth_toText( startDate.toString() ) ][ showTimeDatesCounter[ convertDateMonth_toText( startDate.toString() ) ]++ ] = entryIndicator;						
 					});
-					// get a handle to the children, i.e. the options/showing times 
+					// get a handle to the children, i.e. the options/showing times, so that we can add <optgroup> 
 					var showTimesMenu = $('#showingTimeSelection').children();
-					for( x = 0; x < entryIndicator_arr.length; x++)
+					showTimesMenu.add( '<option value="NULL">Select a showing time</option>' ).appendTo( "#showingTimeSelection" );
+					for( var key in showTimeDates )
 					{
-						/*
-							Loop through the accumulated showing times earlier
-							and assemble an <option> HTML element and then append to
-							the selection.
-						*/
-						var addThisHTML = '<option value="';
-						addThisHTML += uniqueID_arr[x];
-						addThisHTML += '" >';
-						addThisHTML += entryIndicator_arr[x];
-						addThisHTML += '</option>';
-						showTimesMenu.add( addThisHTML ).appendTo( "#showingTimeSelection" );				
-					}																		
+						showTimesMenu.add( '<optgroup label="' + key  + '" >&nbsp;</opgroup>' ).appendTo( "#showingTimeSelection" );
+						var optgroupHandle = $('select#showingTimeSelection optgroup[label="' + key  + '"]');
+						for( x = 0; x < showTimeDatesCounter[key]; x++ )
+						{							
+							$('select#showingTimeSelection optgroup[label="' + key  + '"]').append( showTimeDates[key][x] ); //.appendTo( $('#showingTimeSelection select optgroup[label="' + key  + '"]') );							
+						}
+					}					
+					
 					// then show the selection
 					$("span#showtimeSelectionReal").show();															
 				}//if split..[0] == "OK"				
 				// hide the ajax pre-loader
-				$("span#showtimeWaiting").hide();	
+				$("span#showtimeWaiting").hide();
+				enableStep3Buttons();				
 			}//function		
-		); // $.post		
-		toggleStep3Buttons();
+		});			
+		requestST_POST.fail( function( jqXHR, textStatus ){
+			$("span#showtimeWaiting").hide();
+			$("span#showtimeDummy").show();
+			displayOverlay( 'error' , 'Connection timeout','It seems you have lost your internet connection. Please try again.<br/><br/>' , false );
+		});
+		
 	});
 	
 	$('input#addSlots').click( function() {			
@@ -214,6 +252,12 @@ $(document).ready( function() {
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
+		if( parseFloat( $(this).val() ) > 10 )
+		{			
+			displayOverlay( 'error' , 'restriction', "Only 10 slots can be booked at a time." );
+			$(this).val( $('#lastFocus').val() );
+			return false;
+		}
 		if( parseFloat( $(this).val() ) < 1 )
 		{			
 			displayOverlay( 'error' , 'error', "Minimum of 1 slot!" );
@@ -224,10 +268,15 @@ $(document).ready( function() {
 	
 	$('#buttonOK').click( function(){
 		var selectedEventID =  $('select#eventSelection option:selected').val();
-		
-		if( selectedEventID == "NULL" )
+		var selectedSchedule = $('select#showingTimeSelection option:selected').val();
+		if( selectedEventID == "NULL"  )
 		{
 			displayOverlay( 'error' , 'error', "Please select an event first." );
+			return false;
+		}
+		if( selectedSchedule == "NULL" )
+		{
+			displayOverlay( 'error' , 'error', "Please select a showing time first." );
 			return false;
 		}
 		

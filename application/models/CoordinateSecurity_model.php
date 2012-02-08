@@ -4,8 +4,9 @@ created 04FEB2012-1618
 
 The purpose of this is for the manipulation of table `coordinate_security`.
 This table by the way, stores indicators that a page can be accessed already.
-Arose as the need to "ajaxify" when Create Event Step 6 is submitted to server processing and we still want to load
-a new whole page 
+Arose as the need to "ajaxify" when Create Event Step 6 data are submitted to server processing and we still want to load
+a new whole page after the server successfully processed the data
+
 :
 	For example, the processing controller function will set that it is now ok.
 	Then back in the page, the form that will submit to the processing controller that will output the new page is called.
@@ -74,21 +75,33 @@ class CoordinateSecurity_model extends CI_Model {
 	{
 		$dbValue;
 		$compareValue;
-		$entity;
-			
-		$entity = $this->getSingleActivity( $uuid );
+		$entity_raw;
+		$entity_type;
+		$dbValue;
+				
+		$entity_raw = $this->getSingleActivity( $uuid );			// get a record from DB
+		$entity_type = strtolower( $entity_raw->VALUE_TYPE ); 		// get its type
+		// now determine what data type it is
+		if( $entity_type === "int" or $entity_type === "integer" )
+		{
+			$dbValue = intval( $entity_raw->VALUE );			
+		}else
+		if( $entity_type === "str" or $entity_type === "string" )
+		{
+			$dbValue = (string) $entity_raw->VALUE;			
+		}	
+								
 		$type = strtolower($type);
+		// determine what data type is the data in question
 		if( $type === "int" or $type === "integer" )
 		{
-			$compareValue = intval( $value );
-			$dbValue = intval( $entity->VALUE );
+			$compareValue = intval( $value );			
 		}else
 		if( $type === "str" or $type === "string" )
 		{
-			$compareValue = (string) $value;
-			$dbValue = (string) $entity->VALUE;
+			$compareValue = (string) $value;			
 		}	
-		return ( $dbValue === $compareValue );
+		return ( $dbValue === $compareValue );			// compare value and data type
 	}
 	
 	function updateActivity( $uuid, $value )
