@@ -4,24 +4,56 @@ String.prototype.startsWith = function(str)
 String.prototype.endsWith = function(str) 
 { return (this.match(str+"$")==str); }
 
-// Converts an integer (unicode value) to a char
-function itoa(i)
-{ 
-   return String.fromCharCode(i);
-}
-
 // Converts a char into to an integer (unicode value)
 function atoi(a)
 { 
    return a.charCodeAt();
 }
 
+function classifyDate( dateStr )
+{
+	/*
+		Created 06FEB2012-1610
+		
+		A date of the format YYYY-MM-DD is passed and an array is returned
+		with entries being identified by "year", "month", "day". The values
+		in the array are of type int.
+	*/
+	var dateStr_split = dateStr.split( dateStr[4] );
+	var returnThis = new Array();
+	returnThis["year"] = parseInt( dateStr_split[0] );
+	returnThis["month"] = parseInt( dateStr_split[1] );
+	returnThis["day"] = parseInt( dateStr_split[2] );
+	
+	return returnThis;
+}
+
+function classifyTime( timeStr )
+{
+	/*
+		Created 05FEB2012-1330
+		
+		A time of the format HH:MM:SS is passed and an array is returned,
+		with entries being identified by "hour","min","sec"		
+	*/
+	var timeStr_split = timeStr.split(':');
+	var returnThis = new Array();
+	returnThis["hour"] = timeStr_split[0];
+	returnThis["min"] = timeStr_split[1];
+	returnThis["sec"] = timeStr_split[2];
+	
+	return returnThis;
+}
+
 function convertDateMonth_toText( thisDate )
 {
 	/* created 07JAN2012-1742
 	
-		thisDate = String. Date with format YYYY/MM/DD.
+		thisDate = String. Date with format YYYY/MM/DD or YYYY-MM-DD
 		ASSUMPTION: Correct format submitted.
+		
+		Changed 05FEB2012-1233 : The returned string's delimiter is the
+			same as the string passed, instead of the former default '/'.
 	*/
 	var splitted = null;
 	var thisMonth = null;
@@ -50,7 +82,7 @@ function convertDateMonth_toText( thisDate )
 		case 11: thisMonth_STR = "Nov" ; break;
 		case 12: thisMonth_STR = "Dec" ; break;
 	}	
-	return ( splitted[0] + '/' + thisMonth_STR + '/' + splitted[2] );
+	return ( splitted[0] + splitter + thisMonth_STR + splitter + splitted[2] );
 }//convertDateMonth_toText
 
 function convertTimeTo12Hr( thisTime )
@@ -59,6 +91,8 @@ function convertTimeTo12Hr( thisTime )
 		Created 08JAN2012-2020
 		
 		Accepts time in the format of HH:MM:SS or HH:MM
+		
+		Changed 05FEB2012-1241 : Does not return second part if it's "00"
 	*/
 	var timeLen;
 	var splitLen;
@@ -99,7 +133,7 @@ function convertTimeTo12Hr( thisTime )
 		meridien = "PM";
 	}
 	returnThisVal = hourPart_STR + ":" + splitted[1];
-	if( splitLen == 3 ) returnThisVal += ( ":" + splitted[2] );
+	if( splitLen == 3 && splitted[2] !== "00" ) returnThisVal += ( ":" + splitted[2] );
 	returnThisVal += ( " " + meridien );
 	return returnThisVal;
 	//now assemble
@@ -163,6 +197,37 @@ function isDateValid( date )
 	}*/
 	
 	return true;
+}
+
+function getDayInTextOfDate( dateStr )
+{
+	/*
+		Created 06FEB2012-1607
+	*/
+	var classifiedDate = classifyDate( dateStr )
+	var d = new Date( classifiedDate['year'], classifiedDate['month']-1, classifiedDate['day'] );
+	var weekday=new Array(7);
+	
+	weekday[0]="Sunday";
+	weekday[1]="Monday";
+	weekday[2]="Tuesday";
+	weekday[3]="Wednesday";
+	weekday[4]="Thursday";
+	weekday[5]="Friday";
+	weekday[6]="Saturday";
+	
+	return weekday[d.getDay()];
+}
+
+function isElementDisabled( identifier )
+{
+	/*
+		Created 05FEB2012-1841
+	*/
+	disabledAttr = $( identifier ).attr('disabled');
+	if( disabledAttr === 'disabled' || disabledAttr === 'true' ) return true;
+	else
+		return false;
 }
 
 function isElementNotVisible( thisIdentifier )
@@ -331,6 +396,12 @@ function isTimeValid( time1 )
 	}
 	
 }//isTimeValid
+
+// Converts an integer (unicode value) to a char
+function itoa(i)
+{ 
+   return String.fromCharCode(i);
+}
 
 function setCookie(c_name,value,exdays)
 {

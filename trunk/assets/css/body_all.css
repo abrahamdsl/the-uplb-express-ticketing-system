@@ -1,6 +1,9 @@
 /*copied from http://www.zdnet.com/blog/btl/microsofts-windows-phone-7-potential-marketing-pitch-im-a-phone-too/37399?tag=nl.e539 18 AUG 2011 */
 body{font:normal 75%/1.7 "Segoe UI",sans-serif;color:#252525;background:#15293e url(http://localhost/CS150/images/bg-test.png) repeat-x 0 135px; padding-bottom: 10px; }
 
+input, select{
+	font-family: "Segoe UI", Verdana, Arial, Tahoma;
+}
 /*start:userSignup*/
 .center_pure{
   width: 760px ;
@@ -156,6 +159,7 @@ padding: 0px 5px 0px 5px;
 height:42px;width: auto;text-decoration:none;color: #fff; background:url('../images/menu_arrow.gif') no-repeat left;
 color: yellow;
 padding: 0px 5px 0px 5px;
+border-top: 3px solid rgb(240,240,240);
 }
 #menu_bar ul li a.current{
 height:42px;width: auto;float:left;text-decoration:none;padding:0px;color: #fff;padding:0 0 0 25px; background:url('../images/menu_arrow.gif') no-repeat left; color: yellow;

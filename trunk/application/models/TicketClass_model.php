@@ -78,11 +78,29 @@ class TicketClass_model extends CI_Model {
 			return $lastInt;
 		}else return 0;		
 	}//getLastTicketClassGroupID
+	
+	function getSingleTicketClass( $eventID, $groupID, $uniqueID ){
+		/*
+			Created 06FEB2012-1850
+			
+			Returns MYSQL_OBJ
+		*/
+		$commonTC = $this->getTicketClasses( $eventID, $groupID );
+		if( $commonTC === false ) return false;
+		foreach( $commonTC as $singleClass )
+		{
+			if( intval($singleClass->UniqueID) === intval( $uniqueID ) ) return $singleClass;
+		}
 		
+		return false;
+	}//getSingleTicketClass
+	
 	function getTicketClasses( $eventID, $groupID )
 	{
 		/*
-			14JAN2012-1440
+			Created 14JAN2012-1440
+			
+			05FEB2012-2056: Added returning of boolean false if no entry found.
 		*/
 		if( $eventID == null || $groupID == null  ) return false;
 		
@@ -90,8 +108,24 @@ class TicketClass_model extends CI_Model {
 		$query_obj = $this->db->query( $sql_command, array( $eventID, $groupID ) );
 		$array_result = $query_obj->result();
 		
+		if( count( $array_result ) < 1 ) return false;
 		return $array_result;
 	}//getTicketClasses
+	
+	function getTicketClassesExceptThisUniqueID( $eventID, $groupID, $uniqueID )
+	{
+		/*
+			Created 06FEB2012-1857						
+		*/
+		if( $eventID == null || $groupID == null  ) return false;
+		
+		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `GroupID` = ? AND `UniqueID` != ?";
+		$query_obj = $this->db->query( $sql_command, array( $eventID, $groupID, $uniqueID ) );
+		$array_result = $query_obj->result();
+		
+		if( count( $array_result ) < 1 ) return false;
+		return $array_result;
+	}//getTicketClassesExceptThisUniqueID
 	
 	function makeArray_NameAsKey( $ticketClasses )
 	{

@@ -25,8 +25,8 @@ div.KoreanPeninsula{
 	margin-bottom: 10px;
 	overflow: auto;	
 	border-style: solid;
-	border-color: blue;
-	border-width: 1px 1px 1px 1px;
+	border-color: rgb(213,227,210);
+	border-width: 2px 0px 2px 0px;
 	padding: 8px;
 }
 div.KoreanPeninsula span.left {
@@ -38,9 +38,10 @@ div.KoreanPeninsula span.left {
 	width: 45%;
 	margin-left: 15px;
 	padding-top: 10px;
-	border-style: solid;
+	font-size: 1.2em;
+	/*border-style: solid;
 	border-color: yellow;
-	border-width: 1px 1px 1px 1px;
+	border-width: 1px 1px 1px 1px;*/
 }
 span#special{
 	height: 50px;
@@ -56,9 +57,11 @@ div.KoreanPeninsula span.right{
 	width: 49%;
 	margin-left: 15px;
 	padding-top: 10px;
+	padding-left: 10px;
 	border-style: solid;
-	border-color: green;
-	border-width: 2px;
+	/*border-color: rgb(237,243,236);*/
+	border-color: rgb(216,228,214);
+	border-width: 0px 0px 0px 2px;
 }
 
 input.textInputSize{
@@ -98,7 +101,7 @@ span.Step6ActualItems{
 	border-color: blue;
 	border-width: 1px;
 	vertical-align: center;	
-	float: auto;
+	/*float: auto; CSS NOT VALID*/
 	
 }
 

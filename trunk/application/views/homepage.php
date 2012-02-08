@@ -12,10 +12,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
-	<?php
-		$this->load->view('html-generic/jquery-core.inc');
-	?>			
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
@@ -38,7 +35,7 @@ $this->load->view('html-generic/doctype.inc');
         
     
     <div id="main_content">    	
-    	<div id="centralContainer">           		   
+    	<div id="centralContainer" class="homepageSpecial" > 
 			<div id="page_title">
 				Functions
 			</div>

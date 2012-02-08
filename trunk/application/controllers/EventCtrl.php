@@ -18,7 +18,7 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('Slot_model');		
 		$this->load->model('TicketClass_model');
 		$this->load->model('UsefulFunctions_model');
-		
+		$this->load->helper('cookie');
 		if( !$this->login_model->isUser_LoggedIn() ){		
 			redirect('/SessionCtrl');
 		}
@@ -48,7 +48,7 @@ class EventCtrl extends CI_Controller {
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
 		$data['showingTimes'] = $showingTimes;
 		$data['configuredEventsInfo'] =  $configuredEventsInfo;
-		
+		$data['currentStep'] = 1;
 		$this->load->view( "book/bookStep1", $data );		
 	}//book(..)
 	
@@ -57,9 +57,136 @@ class EventCtrl extends CI_Controller {
 		/*
 			Created 30DEC2011-1855
 		*/
-		die(var_dump( $_POST ) );
+		$eligbilityIndicator = "CCDB7X";
+		$eventID = $this->input->post( 'events' );
+		$showtimeID = $this->input->post( 'showingTimes');
+		$slots = $this->input->post( 'slot' );
+		$slotDistributionAmongClasses = Array();
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();					
+		$eventInfo;
+		$cookie_names;
+		$cookie_values;
+		
+		// validate if form submitted has the correct data
+		if( $eventID === false or $showtimeID === false or $slots === false )
+		{
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+		}
+		$showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 
+		if( $showtimeObj === false )
+		{
+			// no showing time exists
+			redirect('/');
+		}
+		$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $showtimeObj->Ticket_Class_GroupID );
+		if( $ticketClasses === false )
+		{
+			// no ticket classes exist
+			redirect('/');
+		}			
+		$eventInfo = $this->Event_model->getEventInfo( $eventID );		// get major info of this event
+		//Cookie part
+		$cookie_values = Array( 
+			$eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $eventInfo->Name, 
+			$showtimeObj->StartDate, $showtimeObj->StartTime, $showtimeObj->EndDate, $showtimeObj->EndTime,
+			intval( $slots ), $eventInfo->Location
+		);
+		$this->Event_model->setBookingCookies( $cookie_values );		
+		// now ticket classes proper
+		foreach( $ticketClasses as $singleClass )
+		{				
+			$serializedClass_Slot_UUID = "";
+							
+			$eachClassSlots = $this->Slot_model->getSlotsForBooking( $slots, $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $singleClass->UniqueID );				
+			if( $eachClassSlots === false ){
+				//IN future get near expiring, for now sold out
+				$slotDistributionAmongClasses[ $singleClass->Name ]  = false;
+				continue;
+			}
+			//serialize UUIDs of slot
+			foreach( $eachClassSlots  as $evSlot )
+			{
+				$serializedClass_Slot_UUID .= ($evSlot->UUID."_");
+			}
+			// truncate the last underscore
+			$serializedClass_Slot_UUID = substr( $serializedClass_Slot_UUID, 0, strlen( $serializedClass_Slot_UUID )-1 );	
+			//set UUIDs of the slots
+			$cookie = array(
+				'name'   => $singleClass->UniqueID."_slot_UUIDs",
+				'value'  => $serializedClass_Slot_UUID,
+				'expire' => '3600'				// change later to how long ticketclass hold time
+			);
+			$this->input->set_cookie($cookie);
+									
+			$slotDistributionAmongClasses[ $singleClass->Name ]  = true; // for view page						
+		}
+		/*
+			The next 3 variables have been set in cookies earlier. The problem is,
+			they aren't usable immediately, so just send directly to view the data and 
+			PHP will echo it.
+		*/
+		$data['ticketClasses'] = $ticketClasses;
+		$data['slots'] = $slots;
+		$data['eventInfo'] = $this->Event_model->getEventInfo( $eventID );
+		$data['showtimeObj'] = $showtimeObj;
+		$data['ticketClasses_presence'] = $slotDistributionAmongClasses;
+		$data['currentStep'] = 2;
+		$this->load->view( 'book/bookStep2', $data );
 		
 	}//book_step2(..)
+		
+	function book_step3()
+	{		
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();					
+		$eventID = $this->input->cookie( 'eventID' );;
+		$ticketClassGroupID = $this->input->cookie( 'ticketClassGroupID' );
+		$uniqueID = $this->input->post( 'selectThisClass' );
+		
+		if( $uniqueID === false )
+		{
+			redirect('/');
+		}
+		
+		$selectedTicketClass = $this->TicketClass_model->getSingleTicketClass( $eventID, $ticketClassGroupID, $uniqueID );
+		$allOtherClasses = $this->TicketClass_model->getTicketClassesExceptThisUniqueID( $eventID, $ticketClassGroupID, $uniqueID );
+		if( $selectedTicketClass === false /*or $allOtherClasses === false*/ ) // 08FEB2012-2145, turned into comment condition somewhat ambiguous
+		{
+			redirect('/');
+		}
+		$this->Slot_model->freeSlotsBelongingToClasses( $allOtherClasses );		// since we now don't care about these, free so.
+		
+		
+		$data['currentStep'] = 3;
+		$this->load->view( 'book/bookStep3', $data);
+		
+		//die( var_dump( $_POST ) );
+	}//book_step3()
+	
+	function book_step3_cancel( )
+	{
+		/*
+			Created 06FEB2012-1647
+			
+			Called when client suddenly cancels the process of booking. So, we have to free
+			the slots we temporarily reserved for him/her.
+		*/
+		if( $this->input->is_ajax_request() === false ) redirect('/');
+		
+		$eventID = $this->input->cookie( 'eventID' );
+		$ticketClassGroupID = $this->input->cookie( 'ticketClassGroupID' );
+		if( $eventID === false or $ticketClassGroupID === false )
+		{
+			echo "INVALID_DATA-NEEDED";
+			return false;
+		}
+		// get ticket classes since we have reserved X slots for each ticket classes of the showing time bconcerned
+		$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $ticketClassGroupID );
+		$this->Slot_model->freeSlotsBelongingToClasses( $ticketClasses );
+		$this->Event_model->deleteBookingCookies();		
+		echo "OK";
+		return true;
+	}//book_step3_cancel
 	
 	function create()
 	{				
@@ -76,6 +203,10 @@ class EventCtrl extends CI_Controller {
 	
 	function create_step2()
 	{		
+		// cookie does not immediately take effect so just have to pass it
+		$data['eventName'] = $this->input->post( "eventName" );		 
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+		
 		$cookie = array(
 			'name'   => "createEvent_step",
 			'value'  => intval($this->input->cookie( "createEvent_step" )) + 1,
@@ -93,26 +224,24 @@ class EventCtrl extends CI_Controller {
 		//if user is accessing this directly, redirect
 		if( $this->input->post( 'eventName' ) == FALSE )
 		{
-			redirect('/');
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
 		}
 	
 		
 		// is it existent
 		if( $this->Event_model->isEventExistent( $this->input->post( 'eventName' ) ) )
 		{
-			echo('Page under construction<br/>');
-			echo('Event exists. Please specify a new name. <br/>');
-			echo('<a href="javascript: window.history.back();">Back</a>');
-			die();
+			$data['error'] = "CUSTOM";	
+			$data['redirect'] = false;
+			$data['theMessage'] = "There is already an event with the same name. Please choose another one";					
+			$this->load->view( 'errorNotice', $data ) ;
+			return false;
 		}
 		
 		//now insert basic to DB
-		$this->Event_model->createEvent_basic();		
-		
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
-		
-		// cookie does not immediately take effect so just have to pass it
-		$data['eventName'] = $this->input->post( "eventName" );		 
+		$this->Event_model->createEvent_basic();						
 		$this->load->view('createEvent/createEvent_002', $data);		
 	}//create_step2;
 	
@@ -133,8 +262,7 @@ class EventCtrl extends CI_Controller {
 		){
 			redirect('/');
 		}
-		
-		
+				
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 		$data['scheduleMatrix'] = $this->Event_model->constructMatrix();
 		
@@ -143,7 +271,8 @@ class EventCtrl extends CI_Controller {
 	
 	function create_step4( $repeat = false )
 	{		
-		$unconfiguredShowingTimes; 
+		$unconfiguredShowingTimes;
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 		
 		/* we go through here if first time configuring: first time configuration left some
 			showing times unconfigured then finished configuring and then there are still 
@@ -167,8 +296,9 @@ class EventCtrl extends CI_Controller {
 			
 			
 			if( $_COOKIE['createEvent_step'] != 3 ){
-				// 11DEC2011-2213 RE-ENABLE ON PRODUCTION 
-				//redirect('/');
+				/*$data['error'] = "UNAUTHORIZED_ACCESS";									
+				$this->load->view( 'errorNotice', $data ) ;
+				return false;*/
 			}
 			// let's get the last uniqueID for this event if ever
 			$lastUniqueID = $this->Event_model->getLastShowingTimeUniqueID( $this->input->cookie('eventID') );
@@ -179,12 +309,15 @@ class EventCtrl extends CI_Controller {
 		
 		// now, get such showings straight from the DB
 		$unconfiguredShowingTimes = $this->Event_model->getUnconfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
-		if( $unconfiguredShowingTimes == NULL)
+		if( $unconfiguredShowingTimes == NULL )
 		{			
-			// CODE MISSING:  what to do on error?
+			$data['error'] = "CUSTOM";									
+			$data['theMessage'] = "INTERNAL SERVER ERROR<br/><br/>No unconfigured showing times got";
+			$data['redirect'] = false;
+			$this->load->view( 'errorNotice', $data ) ;
 			return FALSE;
 		}		
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
+		
 		$data['unconfiguredShowingTimes'] = $unconfiguredShowingTimes;
 		$this->load->view('createEvent/createEvent_004', $data);				
 	}//create_step4(..)
@@ -249,10 +382,12 @@ class EventCtrl extends CI_Controller {
 		$data['ticketClasses_default'] = $this->TicketClass_model->getDefaultTicketClasses();
 		$data['maxSlots'] = $slots;
 		if( $data == NULL ){
-			// CODE MISSING / EXPAND: What to do?
-			die('No default ticket classes!!!! Seek admin\'s help.');			
-		}
-		//die(var_dump( $data['ticketClasses_default'] ));
+			$data['error'] = "CUSTOM";									
+			$data['theMessage'] = "INTERNAL SERVER ERROR<br/><br/>Default ticket classes were not found in the database! Please seek administrator help.";
+			$data['redirect'] = false;
+			$this->load->view( 'errorNotice', $data ) ;
+			return FALSE;
+		}		
 		$this->load->view('createEvent/createEvent_005', $data);				
 	}//create_step5(..)
 	
@@ -322,7 +457,11 @@ class EventCtrl extends CI_Controller {
 			);						
 			if( !$databaseSuccess ){
 				// CODE MISSING:  database rollback
-				echo 'insertion failed';
+				$data['error'] = "CUSTOM";									
+				$data['theMessage'] = "INTERNAL SERVER ERROR<br/><br/>Database insertion failed.";
+				$data['redirect'] = false;
+				$this->load->view( 'errorNotice', $data ) ;
+				return FALSE;
 				break;						
 			}								
 		}//for
@@ -348,14 +487,9 @@ class EventCtrl extends CI_Controller {
 				);
 			}
 		}						
-				
-		/*
-		
-		
-		*/		
+								
 		echo "OK-JQXHR"	;
-		//$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
-		//$this->load->view('createEvent/createEvent_006', $data);				
+		// no loading of view since this was "ajaxified"
 	}//create_step6(..)
 	
 	function create_step6_seats()
@@ -447,9 +581,9 @@ class EventCtrl extends CI_Controller {
 		/*
 			Page access eligibility check
 		*/
-		// does UUID exist 		
+		// does UUID exist,  If not redirect.
 		if( $this->CoordinateSecurity_model->doesActivityExist( $this->input->post( 'uuid' ) ) === false ) redirect('/');		
-		// UUID exists. Does activity indicator has valid value?
+		// UUID exists. Does activity indicator has valid value? If not redirect.
 		if( $this->CoordinateSecurity_model->isActivityEqual( $this->input->post( 'uuid' ), $pageEligibilityIndicator , "string" ) === false ) redirect('/' );
 		
 		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );

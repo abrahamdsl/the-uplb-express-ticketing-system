@@ -31,7 +31,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.datepicker.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.timepicker.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/datepickerBoot.js'; ?>"/></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006_pickerBoot.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006.js'; ?>"/></script>				
 	<!--For overlay-->	
@@ -92,7 +92,50 @@ $this->load->view('html-generic/doctype.inc');
 							<input type="hidden" name="hidden_selling_timeStart" value="" />
 							<input type="hidden" name="hidden_selling_dateEnd" value="" />
 							<input type="hidden" name="hidden_selling_timeEnd" value="" />
-							<!-- end-->
+							<!-- end-->							
+							
+								<table class="center_purest schedulesCentral">
+									<thead>
+										<tr>											
+											<td class="iNeedMostSpace" >Date</td>
+											<td class="iNeedMoreSpace" >Time Start</td>
+											<!-- <td>&nbsp;</td> -->
+											<td class="iNeedMoreSpace" >Time End</td>
+										</tr>
+									</thead>
+									<tbody>
+									<?php
+										$x=0;
+										foreach( $beingConfiguredShowingTimes as $eachShowingTime )
+										{				
+											// determine if this is a red-eye show
+											$redEye = FALSE;
+											$timeStart = strtotime( $eachShowingTime->StartTime );
+											$timeEnd = strtotime( $eachShowingTime->EndTime );
+											if( $timeEnd < $timeStart ) $redEye = TRUE;										
+									?>
+										<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
+											<td class="BCST_date" >
+												<span><?php echo $eachShowingTime->StartDate; ?></span>
+												<input type="hidden" class="value" value="<?php echo $eachShowingTime->StartDate; ?>" />
+											</td>
+											<td class="BCST_time_start">	
+												<span><?php echo $eachShowingTime->StartTime; ?></span>
+												<input type="hidden" class="value" value="<?php echo $eachShowingTime->StartTime; ?>" />
+											</td>											
+											<td class="BCST_time_end">
+												<span><?php echo $eachShowingTime->EndTime; ?></span>
+												<input type="hidden" class="value" value="<?php echo $eachShowingTime->EndTime; ?>" />
+											</td>
+										</tr>
+									<?php
+											$x++;
+										}								
+									?>
+									<tbody>
+								</table>								
+							
+							
 							
 							<div>
 								<div class="KoreanPeninsula" >
@@ -140,7 +183,7 @@ $this->load->view('html-generic/doctype.inc');
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										In case of no more seats, more still permit selling?
+										In case of no more seats, still permit selling?
 									</span>
 									<span class="right" >
 										<input type="radio" id="id_seatNone_StillSell_YES" name="seatNone_StillSell" value="YES"  checked="true" />

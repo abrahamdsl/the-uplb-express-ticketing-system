@@ -12,7 +12,7 @@ class SeatCtrl extends CI_Controller {
 		$this->load->model('login_model');				
 		$this->load->model('MakeXML_model');				
 		$this->load->model('Seat_model');				
-		//if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
+		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
 	} //construct
 	
 	function index()

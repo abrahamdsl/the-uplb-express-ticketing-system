@@ -29,7 +29,7 @@ class Slot_model extends CI_Model {
 		for( $x = 0, ++$startingUniqueID; $x < $quantity; $x++, $startingUniqueID++ )
 		{			
 			$query_obj = $this->db->query( $sql_command, array(
-							$x + 1, //$startingUniqueID,
+							$x + 1, //$startingUniqueID,U
 							$eventID,
 							$showtimeID,
 							$ticketClass_GroupID,
@@ -45,6 +45,70 @@ class Slot_model extends CI_Model {
 		// CODE MISSING:  database commit
 		return true;
 	}//createSlots
+	
+	function freeSlotsBelongingToClasses( $ticketClasses )
+	{
+		/*
+			Created 06FEB2012-1855
+			
+			Only to be called during booking proceedings since the cookies
+			specified here are only made/avaialble during such.
+			
+			Parameter definition:
+			$ticketClasses			- an array of MYSQL_OBJs
+		*/
+		if( is_array( $ticketClasses ) === false or count( $ticketClasses ) < 1 ) return false; 
+		foreach( $ticketClasses as $singleClass )
+		{			
+			$explodedUUIDs;
+			$slotUUIDs_str;
+			
+			// get the cookie that contains the slot UUIDs
+			$slotUUIDs_str = $this->input->cookie( $singleClass->UniqueID."_slot_UUIDs" );	
+			if( $slotUUIDs_str === false ) continue;			
+			delete_cookie( $singleClass->UniqueID."_slot_UUIDs" );			
+			$explodedUUIDs = explode( '_', $slotUUIDs_str );		// explode via delimiter underscore
+			foreach( $explodedUUIDs as $uuid )
+			{				
+				$this->setSlotAsAvailable( $uuid );					// free slots
+			}
+		}
+	}//freeSlotsBelongingToClasses
+	
+	function getSlotsForBooking( $quantity, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )
+	{
+		/*
+			Created 05FEB2012-2104
+			
+			Created for Book Step2
+		*/
+		$x;
+		$slotsChosen = Array();
+		
+		// loop $quantity times to get desired slots
+		for( $x = 0; $x < $quantity; $x++ )
+		{
+			/*
+				We only need one slot at a time so that we if we get it, we can set it as 'BEING_BOOKED' immediately, minimizing
+				race-conditions side effect: i.e. you have selected then some other client's session might select that too.
+			*/
+			$sql_command = "SELECT * FROM `event_slot` WHERE `EventID` = ? AND `Showtime_ID` = ? AND `Ticket_Class_GroupID`";
+			$sql_command .= " = ? AND `Ticket_Class_UniqueID` = ? AND `Status` = 'AVAILABLE' LIMIT 1 ";
+			$result_arr = $this->db->query( $sql_command, array( $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID ) )->result();	
+			if( count( $result_arr ) != 1 )
+			{							
+				if( $x > 0 ) foreach( $slotsChosen as $sc ) $this->setSlotAsAvailable( $sc->UUID );
+				$slotsChosen = null;		// nullify and return false since no more X slots available
+				return false;
+			}else{
+				$this->setSlotAsBeingBooked( $result_arr[0]->UUID );
+				$slotsChosen[ $x ] = $result_arr[0];					// assign to be returned
+			}
+		}
+		
+		return $slotsChosen;
+	}//getSlotsForBooking
+	
 	
 	function getSlotsLastGroupID( $eventID = null, $showtimeID = null )
 	{
@@ -68,5 +132,37 @@ class Slot_model extends CI_Model {
 			return $lastInt;
 		}else return 0;		
 	}//getSlotsLastGroupID
+	
+	function setSlotAsAvailable( $uuid )
+	{
+		/*
+			Created 06FEB2012-1643
+			
+			Called when customer is in the process of and then cancelled booking and we want to restore
+			the slots temporarily reserved back to being avaialable.
+		*/
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'AVAILABLE', `Start_Contact` = NULL WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( $uuid ) );
+	}//setSlotAsAvailable
+	
+	function setSlotAsBeingBooked( $uuid )
+	{
+		/*
+			Created 05FEB2012-2123
+						
+		*/
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'BEING_BOOKED', `Start_Contact` = CURRENT_TIMESTAMP WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( $uuid ) );
+	}//setSlotAsBeingBooked
+	
+	function updateSlotLastContactTime( $uuid )
+	{
+		/*
+			ON-HOLD : Created 05FEB2012-2125
+						
+		*/
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'BEING_BOOKED' WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( $uuid ) );
+	}
 }//class
 ?>

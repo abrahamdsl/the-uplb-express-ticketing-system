@@ -1,0 +1,85 @@
+div.aci1_Book3Special
+{
+	border-bottom: 0px;
+}
+
+div.aci2_Book3Special{
+	border-top: 0px;
+}
+
+div#tabs{
+	padding: 2px;
+	width: 98%;
+	margin-left: 3px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+div#tabs div.ui-tabs-panel-Book3Special
+{
+	min-height: 50px;
+	height: auto;
+	overflow: auto;
+}
+div#tabs div div.left{	
+	float: left;
+	min-height: 238px;
+	min-width: 200px;
+	width: 50%;
+	height: 50%;
+	overflow: auto;
+	padding: 5px;
+	border-right: 3px solid rgb(216,228,214);
+}
+div#tabs div div.right{
+	min-width: 200px;
+	width: 46.5%;
+	float: right;
+	padding: 5px;
+}
+
+
+fieldset{
+	width: 90%;
+}
+
+fieldset div
+{
+	margin: 2px 0px 2px 0px;
+}
+
+fieldset legend.specialOnBook3{
+	background-color: rgb(74,173,48);
+}
+h3.ui-state-active{
+	/*background-color: rgb(233,92,65);*/
+}
+/* lalalala */
+fieldset div.row{
+	min-height: 1em; height: auto; overflow: auto;
+}
+fieldset div.row div.label{
+	float: left;
+	vertical-align: center;
+	margin-top: 0.5em;
+}
+fieldset div.row div.label span.critical{
+	color: red;
+	left:-10px;
+}
+
+fieldset div.row div.collection{
+	float:right
+}
+fieldset div.formErrorBookStep3Special
+{
+	text-align: center;
+	color: red;
+}
+p.criticalityIndicator{
+	min-width: 100px;
+	width: auto;
+	float: right;
+	margin-right: 30px;
+	color: red;
+	font-size: 0.9em;
+}
