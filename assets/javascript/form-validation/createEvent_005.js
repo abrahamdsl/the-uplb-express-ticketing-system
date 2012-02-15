@@ -28,11 +28,13 @@ function createSeatmapOnPage( args )
 		Created 30JAN2012
 	*/	
 	//display notice
+	console.log('start');
 	if( args["isOverlayDisplayedAlready"] === true ) modifyAlreadyDisplayedOverlay( 'notice' , 'please wait', 'Getting seat map info ...', false );
 	else{
 		displayOverlay( 'notice' , 'please wait', 'Getting seat map info, this may take up to a minute ...<br/><br/>' );
 	}
 	// ajax-time!
+	
 	var x = $.ajax({	
 		type: 'POST',
 		url: 'http://localhost/species/SeatCtrl/getMasterSeatmapData',
@@ -40,6 +42,7 @@ function createSeatmapOnPage( args )
 		data: { 'uniqueID': args["seatMapUniqueID"] },				
 		success: function(data){
 			alreadyConfiguredSeat = false;
+			console.log ('meow');
 			$(document).manipulateSeatAJAX( data );			// make now the HTML
 			lastUsedSeatmap =  args["seatMapUniqueID"];
 			$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
@@ -164,6 +167,16 @@ function sumTotalSlots()
 
 $(document).ready( function() {	
 	
+	$('#lassoWillDo').click( function(){
+		var opt1 = "SELECT";
+		var opt2 = "DESELECT";
+		var currentVal = $(this).val();
+		var newVal;
+		
+		newVal = ( currentVal == opt1 ) ? opt2 : opt1;
+		$(this).val( newVal );
+	});
+			
 	$('div[class="drop"]').click( function(){
 		$('#warningIndicator').html( $(this).attr('style') );
 		$('#warningIndicator').show();
@@ -173,7 +186,7 @@ $(document).ready( function() {
 	$('#seatMapPullDown').change( function(){
 		// called when user selects a seat map from the pull down list
 		var args = new Array();
-		
+				
 		if( $(this).val() == "null" ) return false;		// selects the blank entry, so don't do anything
 		args["seatMapUniqueID"] = $(this).val();		
 		if( args["seatMapUniqueID"] == lastUsedSeatmap ) return false;

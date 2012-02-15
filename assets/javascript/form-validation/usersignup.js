@@ -196,6 +196,9 @@
   {
 	/*
 		checks if the phone number is a valid one
+		
+		Modified 10FEB2012-0946 - Check for digit insufficiency moved earlier in the function.
+			Why did I place it so late ba?
 	*/
 	var allowedChars = "1234567890";
 	var y = theNumber.length;
@@ -203,11 +206,15 @@
 	var minLength;
 	
 	if ( whatPhone == "CELL" ) 
-		minLength = 10;			// for PH mobile phones the minimum num of chars goes like 091x1234567
+		minLength = 10;			// for PH mobile phones the minimum num of chars goes like 09xy1234567
 	else
 	if ( whatPhone == "LANDLINE" ) 
 		minLength = 7;			// 7 numbers only
-		    
+	else
+		return "INVALID PHONE NUMBER";
+	
+	if(y < minLength ) return "Insufficient digits";
+	
 	if( theNumber.lastIndexOf("+") > 0 ) return "The '+' sign is only allowed at the beginning";	
 	
 	if( theNumber[0] == "+") 	// means IDD 
@@ -220,8 +227,7 @@
 			minLength += 3;	   // same reasoning as above.
 	}
 	else x = 0;
-		
-	if(y < minLength ) return "Insufficient digits";
+			
 	
 	for ( ; x < y; x++) {	    
 		if( allowedChars.indexOf( theNumber[x] ) == -1 ) return "Invalid character(s) detected";
@@ -237,7 +243,7 @@ function isEmail_valid(theEmail) {
 		Inspired by Philippine Airlines' Online Booking Web Application.
 		Copyright PAL 2011.
 	*/
-	var allowedChars = "abcdefghijklmnopqrstuvxyz0123456789-.@_";
+	var allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789-.@_";
 	var atPos = theEmail.indexOf("@");
 	var stopPos = theEmail.lastIndexOf(".");
 	var ch;
@@ -369,6 +375,32 @@ function isEmail_valid(theEmail) {
 	return moodIndicator;		
   }//function updateFldMsg
   
+  function hideFldMsg( theField )
+  {
+	/*
+		Created 09FEB2012-1102 specifically for Book Step 3 Form validation.	
+		ASSUMPTIONS
+		* These are HTML elements, specified by IDs ending in "FldMsg"		
+		* The structure of the DOM is depedent on the bookStep3.php page		
+	*/
+	var spanField = 'span[id$="' + theField + 'FldMsg"]';
+	$(spanField).parent().hide();
+  }//hideFldMsg
+  
+  function displayFldMsg( theField, customMessage )
+  {
+	/*
+		Created 09FEB2012-1130. Specificially for Book Step 3 Form Validation.
+		An improved version of updateFldMsg() in that 
+		* this assumes that the field to display the error message is still hidden and thus we still have to show it
+		* you don't need the mood indicator anymore since we will only show this FldMsg element
+			if there is an error in the input
+	*/
+	var spanField = 'span[id$="' + theField + 'FldMsg"]';
+	$(spanField).html( customMessage );
+	$(spanField).parent().show();
+  }//displayFldMsg
+  
   function updateValidIndicator( theField, setWhat )
   {
 	/*
@@ -376,11 +408,14 @@ function isEmail_valid(theEmail) {
 		ASSUMPTION: these are HTML elements, specified by names ending in "_validate"						
 		
 		setWhat - boolean: { true | false }
+		
+		10FEB2012-0955 - Correction -  Utang na loob!!!!! For so long, it was 'if(true)' instead of 'if( setWhat )'!!!!!
 	*/	
 	var validityIndicator_Name = theField + "_validate";
-	var thisVI = document.getElementsByName( validityIndicator_Name )[0];
-	
-	if( true )
+	var thisVI = document.getElementsByName( validityIndicator_Name )[0];	
+	console.log( 'received '  + theField );
+	console.log( 'constructed ' +  validityIndicator_Name );
+	if( setWhat )
 	{
 		thisVI.value = "1";
 	}else{

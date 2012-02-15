@@ -1,0 +1,39 @@
+div.accordionImitation:first-child div#content div#bookingDetails{
+	min-height: 30px;
+}
+
+div.accordionImitation div#content div#containingClassTable
+{	
+	width: 45%;	
+	height: auto;
+	text-align: center;
+}
+
+div.accordionImitation div#content div#containingClassTable div.properInfo
+{
+	border: 2px solid rgb(255,153,0);
+	padding: 5px 5px 0px 5px;	
+	min-width: 60px;	
+	height: auto;	
+	text-align: center;
+}
+div.accordionImitation:first-child div#content div#containingClassTable div#bookingNumber{
+	font-size: 2.5em;
+	width: 40%;
+}
+div.accordionImitation:first-child div#content div#containingClassTable div#paymentDeadline{
+	font-size: 1.5em;	
+	width: 40%;
+}
+div.accordionImitation:first-child div#content div#containingClassTable div.caption
+{
+	width: 90%;
+	text-align: justify;
+	margin: 10px 0px 10px 10px;
+	border-bottom: 2px solid rgb(216,228,214);	
+}
+div#pChannelName{
+	width: 80%;
+	font-size: 1.5em;
+	margin-bottom: 10px;
+}

@@ -9,7 +9,8 @@ class SeatCtrl extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->helper('cookie');
-		$this->load->model('login_model');				
+		$this->load->model('Event_model');		
+		$this->load->model('login_model');		
 		$this->load->model('MakeXML_model');				
 		$this->load->model('Seat_model');				
 		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
@@ -87,6 +88,38 @@ class SeatCtrl extends CI_Controller {
 		$this->load->view( 'createSeat/allConfiguredNotice' , $data);			
 	}
 	
+	function getActualSeatsData()
+	{
+		/*
+			Created 12FEB2012-2258
+		*/
+		$masterSeatMapDetails;
+		$masterSeatMapProperData;						
+		$eventID = $this->input->cookie( 'eventID' );
+		$showtimeID = $this->input->cookie( 'showtimeID' );		
+		$showingTimeObj;
+		$seatMapUniqueID;
+		
+		$showingTimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
+		
+		// user is accessing via browser address bar, so not allowed
+		//if( $this->input->is_ajax_request() === false ) redirect('/');
+		
+		// no post data, so fail
+		if( $eventID === false or $showtimeID === false )
+		{
+			echo "INVALID_NO-POST-DATA";
+			return false;
+		}
+		
+		//get DB entries		
+		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );		
+		$seatMapProperData = $this->Seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
+						
+		echo $this->MakeXML_model->XMLize_SeatMap_Actual( $masterSeatMapDetails, $seatMapProperData );
+		return true;
+	}//getActualSeatsData(..)
+	
 	function getMasterSeatmapData()
 	{
 		/*
@@ -112,13 +145,48 @@ class SeatCtrl extends CI_Controller {
 		//get DB entries
 		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $uniqueID );
 		$masterSeatMapProperData = $this->Seat_model->getMasterSeatMapActualSeats( $uniqueID );
-		
-		//now make XML
-		//die( var_dump( $this->MakeXML_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData ) ));
-		
+						
 		echo $this->MakeXML_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
 		return true;
 	}// getMasterSeatmapData
 	
+	function areSeatsOccupied( )
+	{
+		/*
+			Created 13FEB2012-2000
+		*/
+		$matrices = $this->input->post( 'matrices' );		
+		$eventID = $this->input->post( 'eventID' );
+		$showtimeID = $this->input->post( 'showtimeID' );
+		$seatObj;
+		$matrices_tokenized;
+		
+		
+		// user is accessing via browser address bar, so not allowed
+		//if( $this->input->is_ajax_request() === false ) redirect('/');
+		
+		if( $matrices === false or $eventID === false or $showtimeID === false )
+		{
+			echo "INVALID|DATA-NEEDED";
+			return false;
+		}
+		$matrices_tokenized = explode( "-", $matrices );
+		foreach( $matrices_tokenized as $singleData )
+		{
+			$matrixInfo = explode( "_", $singleData );
+			$seatObj = $this->Seat_model->getSingleActualSeatData( $matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID );
+			if( $seatObj === false )
+			{
+				echo "INVALID|NO-SUCH-SEAT-EXISTS";
+				return false;
+			}
+			if( intval( $seatObj->Status) != 0 ){
+				echo "OK|FALSE|".$singleData;
+				return false;
+			}
+		}
+		echo "OK|TRUE";
+		return true;
+	}//areSeatsOccupied(..)
 }//class
 ?>

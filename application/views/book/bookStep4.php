@@ -19,9 +19,13 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<!--For overlay-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
+	
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
@@ -31,19 +35,27 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep4.js'; ?>"/></script>	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<!--For overlay-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!-- For overlay v2-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/></script>
+	<!-- seat manipulations -->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
+	
 </head>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
+		$this->load->view('html-generic/seatModal-client.inc');
+		
 ?>		
+<div id="gaga" style="display:none" > ngiyaw </div>
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -62,12 +74,10 @@ $this->load->view('html-generic/doctype.inc');
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
 			<div id="page_title" class="page_title_custom" >
-				Enter guest details
+				Pick seat
 			</div>
 			<div id="top_page_detail" >
-				Enter your details promptly. For one slot, you can opt to get the information from your profile.
-				For the others, if they have UPLB UXT Accounts too, you can enter their username and get their
-				info if they have this setting enabled.
+				Now, there's no more racing and haggling in line outside the auditorium to race for seats.
 				<br/>				
 			</div>			
 			
@@ -135,131 +145,62 @@ $this->load->view('html-generic/doctype.inc');
 					<?php
 						$slots = $this->input->cookie( 'slots_being_booked' );
 					?>
-					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step4' ?>" id="formMain">
+					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step5' ?>" id="formMain">
 					<div id="tabs">					
 						<ul>
-							<?php for( $x=0; $x< $slots; $x++ ) {?>
+							<?php 								
+								 for( $x=0, $y = count( $guests); $x< $y; $x++ ){
+							?>
 							<li><a href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
 							<?php } ?>
 						</ul>
-						<?php for( $x=0; $x< $slots; $x++ ) {?>
+						<?php $x=0;
+							foreach( $guests as $singleGuest) {
+						?>
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
 									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-firstName">First name</label>							
-											<span class="critical" >*</span>
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-firstName" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-firstName_validate" value="0" />
-										</div>									
+										<?php echo $singleGuest->Fname; ?>
 									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-firstNameFldMsg"></span>
-									</div>
+									<?php if( $singleGuest->Mname != "" ){ ?>
 									<div class="row" id="g<?php echo $x+1; ?>-middleNameFld">							
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-middleName">Middle name</label>
-											<!--<span class="critical" >*</span>-->
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-middleName" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-middleName_validate" value="1" />
-										</div>									
-									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-middleNameFldMsg"></span>
-									</div>
+										<?php echo $singleGuest->Mname; ?>
+									</div>									
+									<?php } ?>
 									<div class="row" id="g<?php echo $x+1; ?>-lastNameFld">							
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-lastName">Last name</label>
-											<span class="critical" >*</span>
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-lastName" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-lastName_validate" value="0" />
-										</div>									
+										<?php echo $singleGuest->Lname; ?>
 									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-lastNameFldMsg"></span>
+									<div class="row" id="g<?php echo $x+1; ?>-genderFld">							
+										<?php echo $singleGuest->Gender; ?>
+									</div>										
+									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
+										<?php echo $singleGuest->Cellphone; ?>
 									</div>
-									<div class="row" id="g<?php echo $x+1; ?>-genderFld">					
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-gender">Gender</label>							
-											<span class="critical" >*</span>
-										</div>
-						 				<div class="collection gender"  >
-											<input type="radio" name="g<?php echo $x+1; ?>-gender" value="MALE" />Male																				
-											<input type="radio" name="g<?php echo $x+1; ?>-gender" value="FEMALE" />Female
-											<input type="hidden" name="g<?php echo $x+1; ?>-gender_validate" value="0" />
-										</div>									
+									<?php if( $singleGuest->Landline != "" ){ ?>
+									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
+										<?php echo $singleGuest->Landline; ?>
 									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-genderFldMsg">Please select gender</span>
-									</div>
-									<input type="hidden" name="g<?php echo $x+1; ?>-accountNum" value="0" />
+									<?php } ?>
+									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
+										<?php echo $singleGuest->Email; ?>
+									</div>							
 								</fieldset>
 							</div>
 							<div class="right" >
 								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">electronic contact</legend>								
-									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-cellphone">Cellphone</label>
-											<span class="critical" >*</span>
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-cellphone" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-cellphone_validate" value="0" />
-										</div>									
-									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-cellphoneFldMsg"></span>
-									</div>
-																	
-									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-landline">Landline</label>							
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-landline" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-landline_validate" value="1" />
-										</div>									
-									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-landlineFldMsg"></span>
-									</div>
-									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
-										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-email_01">Email</label>
-											<span class="critical" >*</span>
-										</div>
-										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-email_01" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-email_01_validate" value="0" />
-										</div>									
-									</div>
-									<div class="msgContainer formErrorBookStep3Special" >	
-											<div class="icon"></div>
-											<span id="g<?php echo $x+1; ?>-email_01FldMsg"></span>
-									</div>
+									<legend class="field_grouping_bar specialOnBook3">seat</legend>	<!-- margin-left: 50%; margin-right: 50%; -->											
+									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
+									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="0" />
+									<input type="hidden" name="g<?php echo $x+1; ?>_uuid" value="<?php echo $singleGuest->UUID; ?>"   />
+									<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
+								</fieldset>
 							</div>
 						</div>		
-						<?php } ?>
+						<?php $x++; } ?>
 					</div>
-					</form>
-					<p class="criticalityIndicator" >
-						Fields with a red asterisk means they are needed.
-					</p>
+					</form>				
 				</div>
 			</div>
 			<!-- accordion end -->

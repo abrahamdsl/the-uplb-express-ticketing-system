@@ -139,6 +139,10 @@ function convertTimeTo12Hr( thisTime )
 	//now assemble
 }//convertTimeTo12Hr
 
+function deleteCookie(name) {
+    setCookie(name,"",-1);
+}
+
 function getCookie(c_name)
 {
 	/*
@@ -341,13 +345,13 @@ function isTimestampGreater( date1, time1, date2, time2, isShow_RedEye)
 	//now parse to int
 	for( x=0, y=time1_splitted.length; x < y; x++)
 	{
-		time1_splitted[x] = parseInt( time1_splitted[x] );
+		time1_splitted[x] = parseInt( time1_splitted[x] );	
 		//if( isNaN( time1_splitted[x] ) ) return false;
 	}
 	for( x=0, y=time2_splitted.length; x < y; x++)
 	{
 		time2_splitted[x] = parseInt( time2_splitted[x] );
-		//if( isNaN( time2_splitted[x] ) ) return false;
+		console.log ( time2_splitted[x] );		
 	}
 	timeStamp1.setHours( time1_splitted[0]  );
 	timeStamp1.setMinutes( time1_splitted[1]  );	

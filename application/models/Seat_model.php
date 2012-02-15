@@ -14,7 +14,7 @@ class Seat_model extends CI_Model {
 		parent::__construct();
 		$this->load->library('session');
 	}
-	
+			
 	function createDefaultSeats()
 	{
 		/*
@@ -62,9 +62,11 @@ class Seat_model extends CI_Model {
 			This is the first step, copy the entries of the seat map in the table `seats_default` to 
 			`seats_actual` then we just update the copied entries in the latter table when processing sent 
 			information to the server.
+			
+			Changed 13FEB2012-1235 -  Removed `Seat_map_UniqueID` as one of the selected columns
 		*/
-		$sql_command = "INSERT `seats_actual` (`Seat_map_UniqueID`, `Matrix_x`, `Matrix_y`, `Visual_row`, 
-				`Visual_col`, `Status`, `Comments`) SELECT * FROM `seats_default`	WHERE `Seat_map_UniqueID` = ? ";
+		$fields = "`Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Comments`";
+		$sql_command = "INSERT `seats_actual` ( ".$fields." ) SELECT ".$fields." FROM `seats_default`	WHERE `Seat_map_UniqueID` = ? ";
 				
 		return $this->db->query( $sql_command, array( $seatMapUniqueID ) );	
 	}//copyDefaultSeatsToActual(..)
@@ -111,20 +113,17 @@ class Seat_model extends CI_Model {
 		return $uniqueID;
 	}//generateAccountNumber
 
-	function getSingleMasterSeatMapData( $uniqueID )
+	function getEventSeatMapActualSeats( $eventID, $showtimeID )
 	{
 		/*
-			Created 28JAN2012-2222
-			
-			Simply gets a master seat map's info from table `seat_map`
-			
-			Returns a MySQL result object since we only need one.
+			Created 12FEB2012-2303
 		*/
-		$sql_command = "SELECT * FROM `seat_map` WHERE `UniqueID` = ?";
-		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
+		$sql_command = "SELECT `Matrix_x`,`Matrix_y`,`Visual_row`,`Visual_col`,`Ticket_Class_UniqueID`,`Status`,`Comments` ";
+		$sql_command .= "FROM `seats_actual` WHERE `EventID` = ?  AND `Showing_Time_ID` = ? ";
+		$arrayResult = $this->db->query( $sql_command, array( $eventID, $showtimeID ) )->result();
 		
-		return $arrayResult[0];
-	}// getSingleMasterSeatMap
+		return $arrayResult;
+	}// getEventSeatMapActualSeats(..)
 	
 	function getMasterSeatMapActualSeats( $uniqueID )
 	{
@@ -144,7 +143,36 @@ class Seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getMasterSeatMapActualSeats
-
+	
+	function getSingleMasterSeatMapData( $uniqueID )
+	{
+		/*
+			Created 28JAN2012-2222
+			
+			Simply gets a master seat map's info from table `seat_map`
+			
+			Returns a MySQL result object since we only need one.
+		*/
+		$sql_command = "SELECT * FROM `seat_map` WHERE `UniqueID` = ?";
+		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
+		
+		return $arrayResult[0];
+	}// getSingleMasterSeatMap
+	
+	function getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID )
+	{
+		/*
+			Created 13FEB2012-2009
+		*/
+		$sql_command = "SELECT * FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID ) )->result();
+		
+		if( count( $arr_result ) > 0 )
+			return $arr_result[0];
+		else
+			return false;
+	}//getSingleActualSeatData
+	
 	function getUsableSeatMaps( $requestedCapacity )
 	{
 		/*
@@ -170,6 +198,17 @@ class Seat_model extends CI_Model {
 		return $arrayResult;
 	}//getUsableSeatMaps
 	
+	function getVisualRepresentation( $matrix_x, $matrix_y, $eventID, $showtimeID )
+	{
+		/*
+			Created 14FEB2012-1822.
+			 
+			Returns the seat visualization of the form X-Y where X is the row and Y is the column
+		*/
+		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
+		return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
+	
+	}//getVisualRepresentation()
 	function insertSeatMapBaseInfo( $uniqueID = NULL )
 	{
 		/*
@@ -240,6 +279,29 @@ class Seat_model extends CI_Model {
 		// if there was one cell retrieved, then such seat map with the UniqueID exists
 		return ( $query->num_rows == 1 );
 	}//isSeatMapUniqueIDExistent
+	
+	function markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, $status )
+	{
+		$sql_command = "UPDATE `seats_actual` SET `Status` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ? ";
+		$sql_command .= " AND `Matrix_x` = ? AND `Matrix_y` = ?";
+		return $this->db->query( $sql_command, Array( $status, $eventID, $showtimeID, $matrix_x, $matrix_y ) );
+	}	
+	
+	function markSeatAsAssigned( $eventID, $showtimeID, $matrix_x, $matrix_y )
+	{	
+		/*
+			Created 14JAN2012-0909
+		*/
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '1' );
+	}//markSeatAsAssigned
+	
+	function markSeatAsAvailable( $eventID, $showtimeID, $matrix_x, $matrix_y )
+	{	
+		/*
+			Created 14JAN2012-0909
+		*/
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '0' );
+	}//markSeatAsAssigned
 	
 	function setSeatMapStatus( $seatMapUniqueID, $status )
 	{

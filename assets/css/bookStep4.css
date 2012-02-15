@@ -1,0 +1,28 @@
+input.seatChooser{
+	min-height: 20px; 
+	height: auto; 
+	min-width: 50px; 
+	width: auto;  
+	margin-left: 30%;
+	margin-top: 15%;	
+	border: 2px solid orange; 
+	padding: 10px 20px 10px 20px;
+	text-align: center; 
+	font-size: 1.5em;
+	background-color: white;
+}
+input.seatChooser:hover{
+	background-color: gray;
+}
+input.seatText{
+	height: auto; 	
+	width: 50%; 
+	display: none;
+	font-size: 3em;
+	border: 1px solid green; 
+	margin-left: 22%;
+	background-color: white;
+	margin-top: 5%;
+	padding: 10px 20px 10px 20px;
+	text-align: center; 
+}

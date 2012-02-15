@@ -7,7 +7,7 @@
 	<div id="seatSelectionLegend"  >
 		<span id="available" > Available / Still unassigned </span>		
 		<span id="assigned" > Assigned seats for this class </span>
-		<span  <!--id="occupiedByOther"-->  Any other color means occupied by other classes </span>
+		<span> <!--id="occupiedByOther"-->  Any other color means occupied by other classes </span>
 	</div>	
 		<div id="lassoInfoHolder" >
 			Lasso tool will <input type="button" class="ayokongDefaultAngItsuraNgButton" value="SELECT" id="lassoWillDo" /> 

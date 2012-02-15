@@ -17,7 +17,11 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>"/></script>	
+  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>"/></script>			
+	<script type="text/javascript">
+		$('div.metrotile a img').hover( function(){ alert('fuckyou' ); $(this).parent().css('background-color', 'black'); } );
+		$('div.metrotile a').click( function() { alert('wtf'); } );
+	</script>
 </head>
 <body>
 <div id="main_container">
@@ -52,8 +56,12 @@ $this->load->view('html-generic/doctype.inc');
 						if( $permissions->CUSTOMER )
 						{
 					?>					
-					<div id="ticketSelectionDiv">
-						<a href="EventCtrl/book">Ticket selection here</a>
+					<!--<div id="ticketSelectionDiv">
+						Ticket selection here
+					</div>-->
+					
+					<div class="metrotile" >
+							<a href="EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" class="center_purest" /></a>
 					</div>
 					<div>
 						Other functions

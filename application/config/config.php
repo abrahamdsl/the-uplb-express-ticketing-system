@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/species/';
-//$config['base_url']	= '';
+//$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/species/';
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------
@@ -181,7 +181,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 2;
 
 /*
 |--------------------------------------------------------------------------
@@ -242,7 +242,7 @@ $config['encryption_key'] = 'pokemon150';
 | 'sess_table_name'			= The name of the session database table
 | 'sess_match_ip'			= Whether to match the user's IP address when reading the session data
 | 'sess_match_useragent'	= Whether to match the User Agent when reading the session data
-| 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
+| 'sess_time_to_update'		= how many seconds between CI refreshing Session Information default 300
 |
 */
 $config['sess_cookie_name']		= 'ci_session';
@@ -253,7 +253,7 @@ $config['sess_use_database']	= FALSE;
 $config['sess_table_name']		= 'ci_sessions';
 $config['sess_match_ip']		= FALSE;
 $config['sess_match_useragent']	= TRUE;
-$config['sess_time_to_update']	= 300;
+$config['sess_time_to_update']	= 30;
 
 /*
 |--------------------------------------------------------------------------

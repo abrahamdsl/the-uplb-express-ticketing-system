@@ -36,9 +36,11 @@ class Account_model extends CI_Model {
 		
 		if( $transactionSuccess )
 		{
-			echo 'successfully inserted';
+			//echo 'successfully inserted';
+			log_message('debug', 'successfully inserted | new user creation');
 		}else{
-			echo 'something went wrong';			
+			//echo 'something went wrong';						
+			log_message('error', 'something went wrong during insertion | new user creation');
 		}
 	
 		return $transactionSuccess;

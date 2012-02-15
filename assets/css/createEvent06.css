@@ -31,7 +31,7 @@ div.KoreanPeninsula{
 }
 div.KoreanPeninsula span.left {
 	min-height: 34px;	
-	height: 34px;	
+	height: auto;	
 	overflow: auto;
 	float: left;
 	text-align: left;
@@ -39,9 +39,6 @@ div.KoreanPeninsula span.left {
 	margin-left: 15px;
 	padding-top: 10px;
 	font-size: 1.2em;
-	/*border-style: solid;
-	border-color: yellow;
-	border-width: 1px 1px 1px 1px;*/
 }
 span#special{
 	height: 50px;
@@ -50,7 +47,7 @@ span#special{
 
 div.KoreanPeninsula span.right{
 	min-height: 34px;	
-	height: 34px;	
+	height: auto;
 	overflow: visible;
 	float: left;
 	text-align: left;
@@ -125,6 +122,7 @@ span.innerRightChanging{
 	min-height: 50px; 
 	height: auto; 
 	width: 50%; 	
+	padding-top: 15px;
 	padding-top: 15px;
 	vertical-align: bottom;
 	border-style: solid;

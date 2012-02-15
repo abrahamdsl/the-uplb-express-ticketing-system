@@ -80,6 +80,7 @@ class CoordinateSecurity_model extends CI_Model {
 		$dbValue;
 				
 		$entity_raw = $this->getSingleActivity( $uuid );			// get a record from DB
+		if( $entity_raw === false ) return false;
 		$entity_type = strtolower( $entity_raw->VALUE_TYPE ); 		// get its type
 		// now determine what data type it is
 		if( $entity_type === "int" or $entity_type === "integer" )

@@ -103,47 +103,6 @@ $(document).ready(function()
 		});
 		//end of accepting if names are acceptable JS
 		/*
-			actionListener for changing of UPLB constituency		
-		*/
-		$("input[name='uplbConstituentBoolean']").change(function() {
-				var x = document.getElementsByName('uplbConstituentBoolean')[0];		// gets and assign a handle to the checkbox indicating UPLB constituency
-				var studentnumField = document.getElementsByName("studentNumber")[0];	// like above, handle too
-				var employeenumField = document.getElementsByName("employeeNumber")[0];	// like above, handle too			
-				var studentnumFldMsg;
-				var employeenumFldMsg;
-				var studentNumValidate;
-				var employeeNumValidate;
-				
-				
-				if( x.checked ) // if checkbox is not checked then suddenly selected, enables the fields and removes the "disabled" content
-				{				
-					studentnumField.disabled = "";
-					employeenumField.disabled = "";
-					studentnumField.value = "";
-					employeenumField.value = "";
-				}else{			
-					/* disables checkbox again and the "disabled" text is displayed at the field to help 
-						those using IE ( no visual indication input field is disabled, only cannot enter, unlike other browsers)
-					*/
-					studentnumField.value = "disabled";
-					employeenumField.value = "disabled";												
-					studentnumField.disabled = !x.checked;
-					employeenumField.disabled = !x.checked;
-					/* gets and assigns handle to the "Field Messages" for the student number and employee:
-						since we disable them earlier, we don't have the reason to let any error messages remain
-					*/				
-					studentnumFldMsg = document.getElementById("studentNumberFldMsg");
-					employeenumFldMsg = document.getElementById("employeeNumberFldMsg");
-					studentNumValidate = document.getElementsByName("studentNumber_validate")[0];
-					employeeNumValidate = document.getElementsByName("employeeNumber_validate")[0];
-					studentnumFldMsg.innerHTML = "";
-					employeenumFldMsg.innerHTML = "";				
-					studentNumValidate.value = -1;
-					employeeNumValidate.value = -1;
-				}						
-		} );
-		//end of UPLB constituency change detection JS
-		/*
 			actionListener for accepting if cellphone number is acceptable
 		*/
 		$("input[name='cellPhone']").change(function() {									
@@ -175,7 +134,7 @@ $(document).ready(function()
 												
 			func_result = isEmail_valid( own_trim(
 				$(this).attr("value") ) );
-	
+			
 			updateFldMsg( $(this).attr("name"), func_result, false );			
 		});
 		//end of email address acceptability detection JS
@@ -185,7 +144,7 @@ $(document).ready(function()
 		*/
 		$("input[name$='_addr']").change(function() {						
 			var func_result;
-											
+			console.log( 'sending .. ' +  $(this).attr("name") );								
 			updateFldMsg( $(this).attr("name"), "OK", false );			
 		});
 		/*
@@ -249,7 +208,8 @@ $(document).ready(function()
 			for( x = 0; x < validatorsQuantity; x++ )
 			{
 				if( array_of_Validators[x].value == "0" ) 
-				{					
+				{	
+					console.log( 'error on ' + array_of_Validators[x].name );
 					areAllOK = false;
 					break;
 				}

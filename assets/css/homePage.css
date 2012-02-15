@@ -1,3 +1,15 @@
+div.metrotile{
+	width: 120px; 
+	min-height: 120px; 
+	height: auto; 
+	background-color: rgb(193,58,0); 
+	padding: 15px; 
+	color: white; 
+	text-align: center;
+}
+div.metrotile:hover{
+	background-color: green;
+}
 .homePage_accordion_container
 {
 	width: 90%;
