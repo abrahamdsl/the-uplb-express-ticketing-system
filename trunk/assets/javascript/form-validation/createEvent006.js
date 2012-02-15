@@ -23,7 +23,7 @@ function getEarliestShowingTimeStartDate()
 		}
 	);
 	dates.sort( function(a,b){return a-b; } );	
-	return dates[0].toUTCString();
+	return dates[0].toUTCString().replace('-','/');
 }
 
 function getEarliestShowingTimeStartTime()
@@ -308,6 +308,7 @@ $(document).ready( function() {
 		}
 		if( !isShow_RedEye )
 		{
+			
 			if ( !isTimestampGreater( sellingDateStart, sellingTimeStart, sellingDateEnd, sellingTimeEnd, isShow_RedEye) )		//found in generalChecks.js
 			{				
 				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp is earlier than selling start timestamp." );		
@@ -315,15 +316,14 @@ $(document).ready( function() {
 			}		
 			var earliestST_Date = new Date( getEarliestShowingTimeStartDate() );
 			var earliestST_Time = new Date( getEarliestShowingTimeStartTime() );
-			var estD_str = earliestST_Date.getFullYear() + '-' + ( earliestST_Date.getMonth() + 1 ) + '-' + earliestST_Date.getDate();
-			var estT_str = earliestST_Time.getUTCHours() + ':' + earliestST_Time.getUTCMinutes();
-			
+			//	15FEB2012-1450 : Changed '-' to '/', Opera's JavaScript won't accept the dash
+			var estD_str = earliestST_Date.getFullYear() + '/' + ( earliestST_Date.getMonth() + 1 ) + '/' + earliestST_Date.getDate();
+			var estT_str = earliestST_Time.getUTCHours() + ':' + earliestST_Time.getUTCMinutes();			
 			if ( !isTimestampGreater( sellingDateEnd, sellingTimeEnd, estD_str,  estT_str ,isShow_RedEye) )		//found in generalChecks.js
 			{				
 				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp should be earlier than the earliest showing time ( " +  estD_str + " " +  estT_str  + " ). ");		
 				return false;
-			}
-			//console.log( 'pakpaktok ' + estD_str + '..' + estT_str );
+			}			
 		}
 		// END: validate online selling availability		
 		

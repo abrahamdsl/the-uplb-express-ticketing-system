@@ -9,7 +9,7 @@ $this->load->view('html-generic/doctype.inc');
 	$this->load->view('html-generic/head-title.inc');
 ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup-rev7.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	
 	<?php
@@ -101,7 +101,7 @@ $this->load->view('html-generic/doctype.inc');
 							<label class="label" for="middleName">Middle name</label>							
 							<div class="collection">
 								<input type="text" name="middleName" />
-								<input type="hidden" name="middleName_validate" value="0" />
+								<input type="hidden" name="middleName_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
@@ -149,7 +149,7 @@ $this->load->view('html-generic/doctype.inc');
 							<label class="label" for="landline">Landline Phone</label>							
 							<div class="collection">
 								<input type="text" name="landline" />
-								<input type="hidden" name="landline_validate" value="0" />
+								<input type="hidden" name="landline_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
@@ -171,9 +171,10 @@ $this->load->view('html-generic/doctype.inc');
 					<fieldset class="fieldsCollection">						
 						<legend class="field_grouping_bar">address</legend>
 						<div class="row" id="homeAndStreet_addrFld">							
-							<label class="label" for="homeAndStreet_addr">Home & Street</label>							
+							<label class="label" for="homeAndStreet_addr">Home &amp; Street</label>							
 							<div class="collection">
 								<input type="text" name="homeAndStreet_addr" />
+								<input type="hidden" name="homeAndStreet_addr_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
@@ -184,6 +185,7 @@ $this->load->view('html-generic/doctype.inc');
 							<label class="label" for="barangay_addr">Barangay</label>							
 							<div class="collection">
 								<input type="text" name="barangay_addr" />
+								<input type="hidden" name="barangay_addr_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
@@ -194,6 +196,7 @@ $this->load->view('html-generic/doctype.inc');
 							<label class="label" for="cityOrMun_addr">City/Municipality</label>							
 							<div class="collection">
 								<input type="text" name="cityOrMun_addr" />
+								<input type="hidden" name="cityOrMun_addr_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
@@ -204,6 +207,7 @@ $this->load->view('html-generic/doctype.inc');
 							<label class="label" for="province_addr">Province</label>							
 							<div class="collection">
 								<input type="text" name="province_addr" />
+								<input type="hidden" name="province_addr_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>

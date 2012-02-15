@@ -31,33 +31,7 @@ function postProcessStep3Buttons()
 	$( '#slot' ).attr( 'class', thisNewSlotClass ); 
 }
 
-function toggleStep3Buttons()
-{
-	/*
-		08JAN2012-1845
-	*/
-	/*var thisNewSlotClass;
-	var thisNewAdjustButtonsClass;
-	
-	if( step3ButtonsDisabled )
-	{
-		thisNewSlotClass = $('#slotEnabledClass').val();
-		thisNewAdjustButtonsClass = $('#adjustEnabledClass').val(); 
-	}else{
-		
-	}
-	step3ButtonsDisabled = !step3ButtonsDisabled; // reverse
-
-	*/
-}//enableStep3Buttons
-
-$(document).ready( function() {
-	/*
-		30DEC2011-1843
-		NO LOGIC YET FOR SERVER TIME OUTS/NO VALID REPLY for some period !!!
-	*/
-	
-	
+$(document).ready( function() {			
 	$("span#showtimeSelectionReal").hide();	//on body load
 	$("span#showtimeWaiting").hide();		//on body load
 	
@@ -75,8 +49,7 @@ $(document).ready( function() {
 		{
 			$("span#showtimeCustomError").hide();
 		}
-		
-	    		
+			    		
 		// get children of showing time selection and .remove() each
 		$('#showingTimeSelection').children().each( function(){
 			$(this).remove();
@@ -101,6 +74,7 @@ $(document).ready( function() {
 				var splitDetails = data.split('_');
 				if( splitDetails[0] == "ERROR" || splitDetails[0] == "INVALID" )
 				{
+					console.log( data );
 					$("span#showtimeDummy").hide();
 					$("span#showtimeCustomError").html( splitDetails[1] );
 					$("span#showtimeCustomError").show();					

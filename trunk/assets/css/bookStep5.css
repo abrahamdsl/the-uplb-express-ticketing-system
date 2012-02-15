@@ -1,0 +1,99 @@
+/*
+14FEB2012:1750 - DEPRECATED
+div.purchase{
+	width: 95%;	
+	border-bottom: 1px solid rgb(216,228,214);	
+}
+div.purchase span{
+	padding: 2px;
+}
+div.purchase span.quantity{
+	float: left;
+	margin-right: 10px;
+}
+div.purchase span.itemDetails{
+	float: left;
+}
+div.purchase span.cost{
+	float: right;
+}
+*/
+table.bStep5tbl{
+	width: 95%;	
+	border: 2px solid rgb(216,228,214);
+	padding: 5px;
+}
+table.bStep5tbl  thead{
+	font-size: 1.3em;
+}
+table.bStep5tbl  tbody tr{
+	border-bottom: 3px solid red;
+}
+
+table.bStep5tbl td{
+	margin: 3px;
+}
+table.bStep5tbl td:first-child{
+	width: 10%;
+	text-align: center;
+}
+table.bStep5tbl td:nth-child(2){
+	width: 20%;
+	text-align: center;
+}
+table.bStep5tbl td:nth-child(3){
+	width: 50%;
+}
+table.bStep5tbl td:last-child{
+	width: 20%;
+	text-align: center;
+}
+div#tabs{
+	display: none;
+}
+div#totalX{
+	position:absolute; bottom:0;	
+	text-align: center;
+}
+div#totalX span.cost{
+	float: right;
+	font-size: 2em;
+	text-align: center;	
+}
+div#totalX span#costproper{	
+	margin-right: 6%;
+}
+
+div#totalX table{
+	border: 0px;
+}
+span.sectionChief{
+	float:right; 
+	margin: 0px 10px 10px 0px; 
+	font-size: 1.5em; 
+	font-style: Italic;
+	clear: none;;
+}
+
+
+select.pChannel{
+	margin-right: 40px;
+}
+div.pChannelDetails{
+	display: none;
+	clear: both;
+	width: 98%;
+	left: -20px;
+}
+div.pChannelDetails div.row{
+	min-height: 1em; height: auto; overflow: auto;
+	border-bottom: 1px solid rgb(216,228,214);	
+}
+div.pChannelDetails div.row span:first-child{
+	float: left;
+	vertical-align: center;
+	margin-top: 0.5em;
+}
+div.pChannelDetails div.row span:nth-child(2){
+	float: right;	
+}

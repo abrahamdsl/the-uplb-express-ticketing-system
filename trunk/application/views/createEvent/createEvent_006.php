@@ -203,6 +203,19 @@ $this->load->view('html-generic/doctype.inc');
 										<label for="id_confirmationSeatReqd_NO">NO</label>
 									</span>
 								</div>
+								<div class="KoreanPeninsula" >
+									<span class="left" >
+										Payment Channels<br/>
+										( Contact the application administrator to add/delete payment channels ).
+									</span>
+									<span class="right" >
+										<?php foreach( $paymentChannels as $singleChannel ) {?>
+											<input type="checkbox" name="pChannel_<?php echo $singleChannel->UniqueID; ?>" value="<?php echo $singleChannel->UniqueID; ?>" checked="true" />										
+											<label for="pChannel_<?php echo $singleChannel->UniqueID; ?>"><?php echo $singleChannel->Name; ?></label>
+											<br/>
+										<?php } ?>
+									</span>
+								</div>
 							</div>							
 						</form>
 					</div>

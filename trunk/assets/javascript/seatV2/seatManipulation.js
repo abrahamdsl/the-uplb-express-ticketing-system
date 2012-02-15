@@ -24,10 +24,9 @@ function adjustColumnIndicators( rows, cols )
 	var x;
 	var adjustThis;
 	var concernedDiv_top;
-	var concernedDiv_bottom;
-	
+	var concernedDiv_bottom;	
 	for( x = 0; x < y; x++ )
-	{
+	{		
 		aisleIndex = aisles[x];		
 		$('table.textUnselectable div#top_' + aisleIndex).html( 'A' );
 		$('table.textUnselectable div#bottom_' + aisleIndex).html( 'A' );
@@ -76,17 +75,8 @@ function sortNumber(a,b)
 
 $(document).ready( function(){
 	
-			//lasso functionality manipulator
-			$('#lassoWillDo').click( function(){
-				var opt1 = "SELECT";
-				var opt2 = "DESELECT";
-				var currentVal = $(this).val();
-				var newVal;
-				
-				newVal = ( currentVal == opt1 ) ? opt2 : opt1;
-				$(this).val( newVal );
-			});
-			
+			//lasso functionality manipulator moved to createEvent_005.js 13FEB2012-1206
+						
 			// overlayv2 button
 			$('#overlayV2Button_OK').click( function(){					
 				$('a.modalCloseImg').click();
@@ -109,16 +99,28 @@ $(document).ready( function(){
 				var actualSeats; 
 				var totalCapacity;
 				var hallName;
+				var masterMap;
+				var ticketClassBeingBooked;	// for use only during book Step 4.
 				
 				$("#seatSelectionTable").children().remove();	// remove all content first
 				detailBranch = $(xmlData).find( 'details' );	// get detail branch of XML				
 				actualSeats = $(xmlData).find( 'dataproper' );	// get the dataproper branch								
-				rows = parseInt( detailBranch.find('rows').text() );
-				cols = parseInt( detailBranch.find('cols').text() );
-				usableCapacity = parseInt( detailBranch.find('usableCapacity').text() );				
-				hallName = detailBranch.find('name').text();								
-				$("span#hallSeatingCapacity").html( usableCapacity );
-				$("span#place").html( hallName );
+				
+				//now, if this is a master seat plan data (i.e., for create event step 5, do the ff)				
+				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;				
+				
+					rows = parseInt( detailBranch.find('rows').text() );
+					cols = parseInt( detailBranch.find('cols').text() );
+				if( masterMap ){
+					// these details are limited to create event step 5.
+					usableCapacity = parseInt( detailBranch.find('usableCapacity').text() );				
+					hallName = detailBranch.find('name').text();								
+					$("span#hallSeatingCapacity").html( usableCapacity );
+					$("span#place").html( hallName );
+				}else{
+					// means, we are in booking - picking  a seat
+					ticketClassBeingBooked = getCookie( 'ticketClassUniqueID' ); 
+				}
 				
 				/* insert the inner div on which we will attach the drag_drop_multi_select() function, and then the table
 				*/
@@ -148,7 +150,7 @@ $(document).ready( function(){
 				for(x=1, letter=65; x<rows+1; x++, letter++ )
 				{
 					for(y=0;y<cols;y++){
-						$(allTRs[x]).append('<td><div id="' + parseInt(x-1) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + '</span><span class="col" >'+  ' </span><input type="hidden" name="seat_' + parseInt(x-1) + '-' + y+ '" class="seatClass" value="0"  \/></div></td>');
+						$(allTRs[x]).append('<td><div id="' + parseInt(x-1) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + '</span><span class="col" >'+  ' </span><input type="hidden" name="seat_' + parseInt(x-1) + '-' + y+ '" class="seatClass" value="0"  /></div></td>');
 					}
 				}
 				// then, the right indicators
@@ -176,15 +178,28 @@ $(document).ready( function(){
 						****************************************						
 						.. then IT DOES NOT WORK. However, in the XML, when I change <col> to <colx>, it works!
 						I've tested it twice, in Google Chrome 11, for the meantime. Why is it so?
-					*/
+					*/					
 					var x = $(this).attr('x');
-					var y = $(this).attr('y');
+					var y = $(this).attr('y');					
 					var row = $(this).find('row').text();
 					var colx = $(this).find( 'colX' ).text();
 					var status = parseInt( $(this).find( 'status' ).text() );
+					var seatClass = parseInt( $(this).find( 'tClass' ).text() );
 					var concernedDiv = $('div#' + x + '_' + y);					
 					concernedDiv.children('span.row').html( row );
-					concernedDiv.children('span.col').html( colx );					
+					concernedDiv.children('span.col').html( colx );
+					if( masterMap === false ){						
+						if( ticketClassBeingBooked != seatClass )
+						{
+							concernedDiv.addClass( 'otherClass' );
+							concernedDiv.addClass( 'classRestricted' );
+							concernedDiv.removeClass( 'dropAvailable' );
+						}else{
+							if( status == 1 ){
+								concernedDiv.addClass( 'occupiedSameClass' );								
+							}
+						}
+					}	
 					if( status == -1 ){
 						addNewAisleToList( y );
 						concernedDiv.removeClass( 'ui-selectable' );
@@ -192,22 +207,24 @@ $(document).ready( function(){
 						concernedDiv.removeClass( 'ui-selected' );
 						concernedDiv.removeClass( 'dropAvailable' );
 						concernedDiv.addClass( 'dropUnavailable' );
-					}
+						concernedDiv.children("input.seatClass").val( "-1" );
+					}										
 				});
 				
 				// now call the function to be able to select these items
 				$('div#innerSeatDiv').drag_drop_multi_select({					
 					element_to_drag_drop_select:'div.dropAvailable',
 					elements_to_drop:'.list',
-					elements_to_cancel_select:'div.otherClass, .title, div.dropUnavailable',
+					elements_to_cancel_select:'div.otherClass, .title, div.dropUnavailable, div.otherGuest',
 					element_to_show_remainingSelectableSeatForClass: '#remainingSelectableSeatsForClass',
 					element_to_show_whileSelecting: '#whileSelectingIndicator',
 					element_to_show_FinishResult: '.items_selected',
 					element_to_show_Warning: '#warningIndicator',
 					otherClassIndicator: 'otherClass',
 					maxSeatsForClass: '#maxSeatsForClass',
+					lassoAvailable: masterMap,
 					lasso_indicator: '#lassoWillDo',					
-					retainPreviouslySelected: true
+					retainPreviouslySelected: true					
 				});
 				
 				// adjust column indicators to make way for aisles
@@ -216,8 +233,5 @@ $(document).ready( function(){
 				hideOverlay();
 				alreadyConfiguredSeat = true;				
 			}
-			
-			$('#armageddon').click( function(){
-				$(document).manipulateSeatAJAX( '' );			
-			});
+						
 		});

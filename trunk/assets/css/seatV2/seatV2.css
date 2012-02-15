@@ -66,7 +66,18 @@ div#innerSeatDiv{
 	overflow: hidden; 
 	display: none;
 }
-
+.classRestricted{
+	background-color: rgb(141,141,111);
+	color: rgb(64,70,56);
+}
+.occupiedSameClass{
+	background-color: rgb(0,144,221);
+	color: white;
+}
+.otherGuest{
+	background-color: rgb(238,145,8);
+	color: white;
+}
 .aisle{
 	background-color: inherit;	
 	border: 1px dashed white;

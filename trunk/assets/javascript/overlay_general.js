@@ -97,7 +97,7 @@ function hideOverlay()
 	/* if this overlay being hidden has YES or NO buttons,
 		hide the div holding such then set the indicator to false again.		
 	*/
-	setTimeout( null, 300 ); // to make sure the modal is out of the screen before proceeding 
+	setTimeout( function(){}, 300 ); // to make sure the modal is out of the screen before proceeding 
 	if( confirmX_noShow )
 	{
 		confirmX_noShow = false;

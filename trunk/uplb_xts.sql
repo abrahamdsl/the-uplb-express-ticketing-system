@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 04, 2012 at 03:29 PM
+-- Generation Time: Feb 15, 2012 at 07:11 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -18,6 +18,74 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `uplb_xts`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_details`
+--
+
+CREATE TABLE IF NOT EXISTS `booking_details` (
+  `bookingNumber` varchar(20) NOT NULL,
+  `EventID` int(11) NOT NULL,
+  `ShowingTimeUniqueID` int(11) NOT NULL,
+  `TicketClassGroupID` int(11) DEFAULT NULL,
+  `TicketClassUniqueID` int(11) NOT NULL,
+  `TotalCharges` int(11) DEFAULT '0',
+  `PaymentDeadline_Date` date DEFAULT NULL,
+  `PaymentDeadline_Time` time DEFAULT NULL,
+  `Status` varchar(100) NOT NULL DEFAULT 'BEING_BOOKED' COMMENT 'Values: "BEING_BOOKED", "PENDING-PAYMENT_NEW", ""PENDING-PAYMENT_MODIFY", ''PAID''',
+  `MadeBy` int(11) NOT NULL DEFAULT '-1' COMMENT 'references to `user`.`Accountnum`',
+  PRIMARY KEY (`bookingNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `booking_details`
+--
+
+INSERT INTO `booking_details` (`bookingNumber`, `EventID`, `ShowingTimeUniqueID`, `TicketClassGroupID`, `TicketClassUniqueID`, `TotalCharges`, `PaymentDeadline_Date`, `PaymentDeadline_Time`, `Status`, `MadeBy`) VALUES
+('3L73EC4', 143, 1, 1, 2, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 582327),
+('43LNDZC', 75, 1, 1, 1, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 742178),
+('5P9RS45', 143, 1, 1, 1, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 582327),
+('93JMLJR', 143, 1, 1, 1, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 582327),
+('DJ1I922', 143, 1, 1, 1, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 742178),
+('O947HZG', 143, 1, 1, 2, 0, NULL, NULL, 'PENDING-PAYMENT_NEW', 582327);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_guests`
+--
+
+CREATE TABLE IF NOT EXISTS `booking_guests` (
+  `UUID` varchar(37) NOT NULL,
+  `bookingNumber` varchar(20) NOT NULL,
+  `AccountNum` int(11) DEFAULT NULL,
+  `Fname` varchar(100) NOT NULL,
+  `Mname` varchar(100) DEFAULT NULL,
+  `Lname` varchar(100) NOT NULL,
+  `Gender` varchar(6) NOT NULL,
+  `Cellphone` varchar(30) DEFAULT NULL COMMENT 'we made this varchar to account for special valid symbols like ''+''',
+  `Landline` varchar(30) DEFAULT NULL COMMENT 'we made this varchar to account for special valid symbols like ''+''',
+  `Email` varchar(50) NOT NULL,
+  PRIMARY KEY (`UUID`),
+  UNIQUE KEY `bookingNumber` (`bookingNumber`,`Fname`,`Mname`,`Lname`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `booking_guests`
+--
+
+INSERT INTO `booking_guests` (`UUID`, `bookingNumber`, `AccountNum`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`) VALUES
+('2d1f19dd-57a6-11e1-9143-4cba9d4cadf0', '43LNDZC', 0, 'Josef', '', 'Llave', 'MALE', '9183981185', '', 'abbb@yahoo.com'),
+('5659fed9-578b-11e1-9143-4cba9d4cadf0', 'DJ1I922', 0, 'Abraham Darius', '', 'Llave', 'MALE', '9183981185', '', 'abbb@yahoo.com'),
+('5a049993-571f-11e1-9bc2-4cba9d4cadf0', '93JMLJR', 0, 'Korina', 'Kasuy', 'Sanchez', 'MALE', '9183981185', '', 'a@yahoo.com'),
+('68486196-571e-11e1-9bc2-4cba9d4cadf0', '3L73EC4', 0, 'Josef', '', 'Wojtyla', 'MALE', '9183981185', '', 'a@yahoo.com'),
+('68528b3b-571e-11e1-9bc2-4cba9d4cadf0', '3L73EC4', 0, 'Darlene', 'Antonino', 'Custodio', 'MALE', '9183981185', '', 'meowmeow@meow.com'),
+('f3b968f2-571f-11e1-9bc2-4cba9d4cadf0', 'O947HZG', 0, 'Myung Bak', '', 'Lee', 'MALE', '9202000722', '', 'leemb@gov.sk'),
+('fd2adea9-571d-11e1-9bc2-4cba9d4cadf0', '5P9RS45', 0, 'Jong Eun', '', 'Kim', 'MALE', '9183981185', '', 'kje@northkorea.gov.nk'),
+('fd359e33-571d-11e1-9bc2-4cba9d4cadf0', '5P9RS45', 0, 'Il Sung', '', 'Kim', 'MALE', '9202200722', '', 'kil@northkorea.gov.nk'),
+('fd3d8606-571d-11e1-9bc2-4cba9d4cadf0', '5P9RS45', 0, 'Jong Il', '', 'Kim', 'MALE', '9174180487', '', 'meowmeow@meow.nk');
 
 -- --------------------------------------------------------
 
@@ -38,7 +106,23 @@ CREATE TABLE IF NOT EXISTS `coordinate_security` (
 --
 
 INSERT INTO `coordinate_security` (`UUID`, `ACTIVITY_NAME`, `VALUE`, `VALUE_TYPE`) VALUES
-('4f2d44ea57b3d', 'CREATE_EVENT', 'JQXHR', 'string');
+('4f3a6de23e73b', 'CREATE_EVENT', 'JQXHR', 'string'),
+('4f3a6e3f2891e', 'BOOK', '3', 'int'),
+('4f3a6e96aff09', 'BOOK', '5', 'int'),
+('4f3a6f1e23f05', 'BOOK', '3', 'int'),
+('4f3a6f4a63c60', 'BOOK', '5', 'int'),
+('4f3a70a1a44eb', 'BOOK', '3', 'int'),
+('4f3a70dfd7e03', 'BOOK', '5', 'int'),
+('4f3a71cc835b2', 'BOOK', '3', 'int'),
+('4f3a71e1b6daa', 'BOOK', '5', 'int'),
+('4f3aa71404249', 'BOOK', '3', 'int'),
+('4f3aa721b9c49', 'BOOK', '5', 'int'),
+('4f3b2d0fed7ed', 'BOOK', '3', 'int'),
+('4f3b2d1aea825', 'BOOK', '5', 'int'),
+('4f3b4e98bf853', 'CREATE_EVENT', 'JQXHR', 'string'),
+('4f3b58ef1c7f0', 'BOOK', '3', 'int'),
+('4f3b5947738d8', 'BOOK', '3', 'int'),
+('4f3b595716f4d', 'BOOK', '5', 'int');
 
 -- --------------------------------------------------------
 
@@ -49,18 +133,20 @@ INSERT INTO `coordinate_security` (`UUID`, `ACTIVITY_NAME`, `VALUE`, `VALUE_TYPE
 CREATE TABLE IF NOT EXISTS `event` (
   `EventID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
+  `Location` varchar(255) DEFAULT 'D.L. Umali Hall',
   `Description` varchar(1000) NOT NULL,
   `FB_RSVP` varchar(255) DEFAULT NULL,
   `Temp` int(11) NOT NULL DEFAULT '100',
   PRIMARY KEY (`EventID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=724 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=144 ;
 
 --
 -- Dumping data for table `event`
 --
 
-INSERT INTO `event` (`EventID`, `Name`, `Description`, `FB_RSVP`, `Temp`) VALUES
-(723, 'The Kim Family Dynasty', 'echos', '', 100);
+INSERT INTO `event` (`EventID`, `Name`, `Location`, `Description`, `FB_RSVP`, `Temp`) VALUES
+(75, 'Katy Perry Live at UPLB', 'D.L. Umali Hall', 'echos', '', 100),
+(143, 'Unofficially Yours', 'D.L. Umali Hall', 'echos', '', 100);
 
 -- --------------------------------------------------------
 
@@ -75,9 +161,10 @@ CREATE TABLE IF NOT EXISTS `event_slot` (
   `Showtime_ID` int(11) NOT NULL,
   `Ticket_Class_GroupID` int(11) NOT NULL,
   `Ticket_Class_UniqueID` int(100) NOT NULL,
-  `Status` varchar(255) NOT NULL DEFAULT 'AVAILABLE',
-  `Assigned_To_User` int(11) DEFAULT NULL,
-  `Seat` int(11) DEFAULT NULL,
+  `Status` varchar(100) NOT NULL DEFAULT 'AVAILABLE' COMMENT 'Values: "AVAILABLE", "OFFLINE_SELLING", "BEING_BOOKED", "UNAVAILABLE", "BOOKED"',
+  `Assigned_To_User` varchar(37) DEFAULT NULL,
+  `Seat_x` int(11) DEFAULT NULL,
+  `Seat_y` int(11) DEFAULT NULL,
   `Sold_by` int(11) NOT NULL DEFAULT '0',
   `Start_Contact` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`EventID`,`Showtime_ID`,`Ticket_Class_GroupID`,`UniqueID`,`Ticket_Class_UniqueID`)
@@ -87,6 +174,367 @@ CREATE TABLE IF NOT EXISTS `event_slot` (
 -- Dumping data for table `event_slot`
 --
 
+INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
+('b7d9db4a-579f-11e1-9143-4cba9d4cadf0', 1, 75, 1, 1, 1, 'BEING_BOOKED', '2d1f19dd-57a6-11e1-9143-4cba9d4cadf0', 0, 15, 0, '2012-02-15 15:05:14'),
+('b4d0ab5d-579f-11e1-9143-4cba9d4cadf0', 1, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6c58d06-579f-11e1-9143-4cba9d4cadf0', 1, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7ee9562-579f-11e1-9143-4cba9d4cadf0', 2, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b4e76e47-579f-11e1-9143-4cba9d4cadf0', 2, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6cdfc93-579f-11e1-9143-4cba9d4cadf0', 2, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7fa1679-579f-11e1-9143-4cba9d4cadf0', 3, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b4f34e5d-579f-11e1-9143-4cba9d4cadf0', 3, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6d82369-579f-11e1-9143-4cba9d4cadf0', 3, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b800d8ea-579f-11e1-9143-4cba9d4cadf0', 4, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b4fbbd35-579f-11e1-9143-4cba9d4cadf0', 4, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6deebbc-579f-11e1-9143-4cba9d4cadf0', 4, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8080668-579f-11e1-9143-4cba9d4cadf0', 5, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b505e879-579f-11e1-9143-4cba9d4cadf0', 5, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6ec7dbe-579f-11e1-9143-4cba9d4cadf0', 5, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8137bec-579f-11e1-9143-4cba9d4cadf0', 6, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b50cb0c3-579f-11e1-9143-4cba9d4cadf0', 6, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6f6a812-579f-11e1-9143-4cba9d4cadf0', 6, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b81f5ca9-579f-11e1-9143-4cba9d4cadf0', 7, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5189ae4-579f-11e1-9143-4cba9d4cadf0', 7, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7028563-579f-11e1-9143-4cba9d4cadf0', 7, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b833b134-579f-11e1-9143-4cba9d4cadf0', 8, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b52106f7-579f-11e1-9143-4cba9d4cadf0', 8, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7094e44-579f-11e1-9143-4cba9d4cadf0', 8, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b83ddbef-579f-11e1-9143-4cba9d4cadf0', 9, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b527ceb3-579f-11e1-9143-4cba9d4cadf0', 9, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b711c9e3-579f-11e1-9143-4cba9d4cadf0', 9, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8450fc4-579f-11e1-9143-4cba9d4cadf0', 10, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b533aee7-579f-11e1-9143-4cba9d4cadf0', 10, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b718e385-579f-11e1-9143-4cba9d4cadf0', 10, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b853e9bb-579f-11e1-9143-4cba9d4cadf0', 11, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b53c2710-579f-11e1-9143-4cba9d4cadf0', 11, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7246c8d-579f-11e1-9143-4cba9d4cadf0', 11, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b85fd0ac-579f-11e1-9143-4cba9d4cadf0', 12, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b542ef72-579f-11e1-9143-4cba9d4cadf0', 12, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7304b48-579f-11e1-9143-4cba9d4cadf0', 12, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b86706ee-579f-11e1-9143-4cba9d4cadf0', 13, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b54d18cd-579f-11e1-9143-4cba9d4cadf0', 13, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b73ace40-579f-11e1-9143-4cba9d4cadf0', 13, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b86f155d-579f-11e1-9143-4cba9d4cadf0', 14, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5574768-579f-11e1-9143-4cba9d4cadf0', 14, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b742f2c2-579f-11e1-9143-4cba9d4cadf0', 14, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b875dcd9-579f-11e1-9143-4cba9d4cadf0', 15, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b55e0e3a-579f-11e1-9143-4cba9d4cadf0', 15, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b74b6a80-579f-11e1-9143-4cba9d4cadf0', 15, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b87d089f-579f-11e1-9143-4cba9d4cadf0', 16, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5684134-579f-11e1-9143-4cba9d4cadf0', 16, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b75232f5-579f-11e1-9143-4cba9d4cadf0', 16, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b88877a5-579f-11e1-9143-4cba9d4cadf0', 17, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5741928-579f-11e1-9143-4cba9d4cadf0', 17, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b75fc392-579f-11e1-9143-4cba9d4cadf0', 17, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b88f3f6f-579f-11e1-9143-4cba9d4cadf0', 18, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b57adf3f-579f-11e1-9143-4cba9d4cadf0', 18, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7668f1f-579f-11e1-9143-4cba9d4cadf0', 18, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b89b9be3-579f-11e1-9143-4cba9d4cadf0', 19, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b58c2b8e-579f-11e1-9143-4cba9d4cadf0', 19, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b770ba94-579f-11e1-9143-4cba9d4cadf0', 19, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8a3990f-579f-11e1-9143-4cba9d4cadf0', 20, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5929daa-579f-11e1-9143-4cba9d4cadf0', 20, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7777fca-579f-11e1-9143-4cba9d4cadf0', 20, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8aa5fd1-579f-11e1-9143-4cba9d4cadf0', 21, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5a037b6-579f-11e1-9143-4cba9d4cadf0', 21, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b783a259-579f-11e1-9143-4cba9d4cadf0', 21, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8b2d8cd-579f-11e1-9143-4cba9d4cadf0', 22, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5a6fd35-579f-11e1-9143-4cba9d4cadf0', 22, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b78d8bf2-579f-11e1-9143-4cba9d4cadf0', 22, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8bd06aa-579f-11e1-9143-4cba9d4cadf0', 23, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5af700b-579f-11e1-9143-4cba9d4cadf0', 23, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7945199-579f-11e1-9143-4cba9d4cadf0', 23, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8c3d585-579f-11e1-9143-4cba9d4cadf0', 24, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5bd003c-579f-11e1-9143-4cba9d4cadf0', 24, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b79b7ade-579f-11e1-9143-4cba9d4cadf0', 24, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8cc4a3f-579f-11e1-9143-4cba9d4cadf0', 25, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5c57bf3-579f-11e1-9143-4cba9d4cadf0', 25, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7a706ab-579f-11e1-9143-4cba9d4cadf0', 25, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8d827f7-579f-11e1-9143-4cba9d4cadf0', 26, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5cc29c0-579f-11e1-9143-4cba9d4cadf0', 26, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7adc290-579f-11e1-9143-4cba9d4cadf0', 26, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8def935-579f-11e1-9143-4cba9d4cadf0', 27, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5d30c64-579f-11e1-9143-4cba9d4cadf0', 27, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7b855ba-579f-11e1-9143-4cba9d4cadf0', 27, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8e773a9-579f-11e1-9143-4cba9d4cadf0', 28, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5deeb8f-579f-11e1-9143-4cba9d4cadf0', 28, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7c21bba-579f-11e1-9143-4cba9d4cadf0', 28, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8f34880-579f-11e1-9143-4cba9d4cadf0', 29, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5e76472-579f-11e1-9143-4cba9d4cadf0', 29, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7c8ec8d-579f-11e1-9143-4cba9d4cadf0', 29, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b8fa8660-579f-11e1-9143-4cba9d4cadf0', 30, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5f3426a-579f-11e1-9143-4cba9d4cadf0', 30, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b7d1c145-579f-11e1-9143-4cba9d4cadf0', 30, 75, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9028fbf-579f-11e1-9143-4cba9d4cadf0', 31, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b5ff1fd4-579f-11e1-9143-4cba9d4cadf0', 31, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9094f53-579f-11e1-9143-4cba9d4cadf0', 32, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6079b0c-579f-11e1-9143-4cba9d4cadf0', 32, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b910919d-579f-11e1-9143-4cba9d4cadf0', 33, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b61016f3-579f-11e1-9143-4cba9d4cadf0', 33, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b91dc298-579f-11e1-9143-4cba9d4cadf0', 34, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b61f5560-579f-11e1-9143-4cba9d4cadf0', 34, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b92728b9-579f-11e1-9143-4cba9d4cadf0', 35, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b62d2951-579f-11e1-9143-4cba9d4cadf0', 35, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b93055d5-579f-11e1-9143-4cba9d4cadf0', 36, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b63563dc-579f-11e1-9143-4cba9d4cadf0', 36, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b93a7c0e-579f-11e1-9143-4cba9d4cadf0', 37, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b63c296f-579f-11e1-9143-4cba9d4cadf0', 37, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b941c34e-579f-11e1-9143-4cba9d4cadf0', 38, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b644e711-579f-11e1-9143-4cba9d4cadf0', 38, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b949baa2-579f-11e1-9143-4cba9d4cadf0', 39, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b65081be-579f-11e1-9143-4cba9d4cadf0', 39, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b950849e-579f-11e1-9143-4cba9d4cadf0', 40, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b657494e-579f-11e1-9143-4cba9d4cadf0', 40, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b95b35be-579f-11e1-9143-4cba9d4cadf0', 41, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b665202f-579f-11e1-9143-4cba9d4cadf0', 41, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9632ac2-579f-11e1-9143-4cba9d4cadf0', 42, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b66d5133-579f-11e1-9143-4cba9d4cadf0', 42, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b969f140-579f-11e1-9143-4cba9d4cadf0', 43, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b67930b2-579f-11e1-9143-4cba9d4cadf0', 43, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9714094-579f-11e1-9143-4cba9d4cadf0', 44, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b67ffa91-579f-11e1-9143-4cba9d4cadf0', 44, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b97932c5-579f-11e1-9143-4cba9d4cadf0', 45, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b68875e1-579f-11e1-9143-4cba9d4cadf0', 45, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b97ffc47-579f-11e1-9143-4cba9d4cadf0', 46, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b68f3deb-579f-11e1-9143-4cba9d4cadf0', 46, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b98d8ff2-579f-11e1-9143-4cba9d4cadf0', 47, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b69ccc29-579f-11e1-9143-4cba9d4cadf0', 47, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9996c14-579f-11e1-9143-4cba9d4cadf0', 48, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6a3960d-579f-11e1-9143-4cba9d4cadf0', 48, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9a03719-579f-11e1-9143-4cba9d4cadf0', 49, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6ac0ff9-579f-11e1-9143-4cba9d4cadf0', 49, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9a8b08a-579f-11e1-9143-4cba9d4cadf0', 50, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b6bf0fab-579f-11e1-9143-4cba9d4cadf0', 50, 75, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9af77ae-579f-11e1-9143-4cba9d4cadf0', 51, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9b63dec-579f-11e1-9143-4cba9d4cadf0', 52, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9beba8e-579f-11e1-9143-4cba9d4cadf0', 53, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9c580a0-579f-11e1-9143-4cba9d4cadf0', 54, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9cc4a0f-579f-11e1-9143-4cba9d4cadf0', 55, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9d4ce0a-579f-11e1-9143-4cba9d4cadf0', 56, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9db9905-579f-11e1-9143-4cba9d4cadf0', 57, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9e7f8f3-579f-11e1-9143-4cba9d4cadf0', 58, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9efe698-579f-11e1-9143-4cba9d4cadf0', 59, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('b9f6ae4f-579f-11e1-9143-4cba9d4cadf0', 60, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba00179b-579f-11e1-9143-4cba9d4cadf0', 61, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba07a069-579f-11e1-9143-4cba9d4cadf0', 62, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba0e68d9-579f-11e1-9143-4cba9d4cadf0', 63, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba15c34a-579f-11e1-9143-4cba9d4cadf0', 64, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba1dabe0-579f-11e1-9143-4cba9d4cadf0', 65, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba24752d-579f-11e1-9143-4cba9d4cadf0', 66, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba2cec1d-579f-11e1-9143-4cba9d4cadf0', 67, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba33b2af-579f-11e1-9143-4cba9d4cadf0', 68, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba3a7bc1-579f-11e1-9143-4cba9d4cadf0', 69, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba4308d3-579f-11e1-9143-4cba9d4cadf0', 70, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba4d2229-579f-11e1-9143-4cba9d4cadf0', 71, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba548388-579f-11e1-9143-4cba9d4cadf0', 72, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba5c6445-579f-11e1-9143-4cba9d4cadf0', 73, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba632f8e-579f-11e1-9143-4cba9d4cadf0', 74, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba6ba6c3-579f-11e1-9143-4cba9d4cadf0', 75, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba72702d-579f-11e1-9143-4cba9d4cadf0', 76, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba7936f9-579f-11e1-9143-4cba9d4cadf0', 77, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('ba81b530-579f-11e1-9143-4cba9d4cadf0', 78, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bac28e1f-579f-11e1-9143-4cba9d4cadf0', 79, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb248ce0-579f-11e1-9143-4cba9d4cadf0', 80, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb3956cd-579f-11e1-9143-4cba9d4cadf0', 81, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb42f85a-579f-11e1-9143-4cba9d4cadf0', 82, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb49d31f-579f-11e1-9143-4cba9d4cadf0', 83, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb523af5-579f-11e1-9143-4cba9d4cadf0', 84, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb590366-579f-11e1-9143-4cba9d4cadf0', 85, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb60709c-579f-11e1-9143-4cba9d4cadf0', 86, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb6845da-579f-11e1-9143-4cba9d4cadf0', 87, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb743465-579f-11e1-9143-4cba9d4cadf0', 88, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb8001f5-579f-11e1-9143-4cba9d4cadf0', 89, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb86cbca-579f-11e1-9143-4cba9d4cadf0', 90, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb8e3bd9-579f-11e1-9143-4cba9d4cadf0', 91, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb960f02-579f-11e1-9143-4cba9d4cadf0', 92, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bb9cd478-579f-11e1-9143-4cba9d4cadf0', 93, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bba448d8-579f-11e1-9143-4cba9d4cadf0', 94, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbac18df-579f-11e1-9143-4cba9d4cadf0', 95, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbb2dfdc-579f-11e1-9143-4cba9d4cadf0', 96, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbba5583-579f-11e1-9143-4cba9d4cadf0', 97, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbc2242b-579f-11e1-9143-4cba9d4cadf0', 98, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbc8e975-579f-11e1-9143-4cba9d4cadf0', 99, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('bbd165d2-579f-11e1-9143-4cba9d4cadf0', 100, 75, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78bbb1f4-571d-11e1-9bc2-4cba9d4cadf0', 1, 143, 1, 1, 1, 'BEING_BOOKED', 'fd2adea9-571d-11e1-9bc2-4cba9d4cadf0', 0, 15, 0, '2012-02-14 22:22:37'),
+('736fc1d5-571d-11e1-9bc2-4cba9d4cadf0', 1, 143, 1, 1, 2, 'BEING_BOOKED', '68528b3b-571e-11e1-9bc2-4cba9d4cadf0', 6, 11, 0, '2012-02-14 22:26:26'),
+('77a5a9a2-571d-11e1-9bc2-4cba9d4cadf0', 1, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('768f9cf6-571d-11e1-9bc2-4cba9d4cadf0', 1, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78c5dde8-571d-11e1-9bc2-4cba9d4cadf0', 2, 143, 1, 1, 1, 'BEING_BOOKED', 'fd359e33-571d-11e1-9bc2-4cba9d4cadf0', 0, 16, 0, '2012-02-14 22:22:37'),
+('737d5bcd-571d-11e1-9bc2-4cba9d4cadf0', 2, 143, 1, 1, 2, 'BEING_BOOKED', '68486196-571e-11e1-9bc2-4cba9d4cadf0', 6, 12, 0, '2012-02-14 22:26:26'),
+('77afd1ce-571d-11e1-9bc2-4cba9d4cadf0', 2, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7699d7e2-571d-11e1-9bc2-4cba9d4cadf0', 2, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78d36e8f-571d-11e1-9bc2-4cba9d4cadf0', 3, 143, 1, 1, 1, 'BEING_BOOKED', 'fd3d8606-571d-11e1-9bc2-4cba9d4cadf0', 0, 17, 0, '2012-02-14 22:22:37'),
+('738c5076-571d-11e1-9bc2-4cba9d4cadf0', 3, 143, 1, 1, 2, 'BEING_BOOKED', 'f3b968f2-571f-11e1-9bc2-4cba9d4cadf0', 6, 9, 0, '2012-02-14 22:37:55'),
+('77c29796-571d-11e1-9bc2-4cba9d4cadf0', 3, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76a5a404-571d-11e1-9bc2-4cba9d4cadf0', 3, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78df4f07-571d-11e1-9bc2-4cba9d4cadf0', 4, 143, 1, 1, 1, 'BEING_BOOKED', '5a049993-571f-11e1-9bc2-4cba9d4cadf0', 0, 10, 0, '2012-02-14 22:32:58'),
+('7399b7cf-571d-11e1-9bc2-4cba9d4cadf0', 4, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77d3e5e1-571d-11e1-9bc2-4cba9d4cadf0', 4, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76b333b1-571d-11e1-9bc2-4cba9d4cadf0', 4, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78eb27f4-571d-11e1-9bc2-4cba9d4cadf0', 5, 143, 1, 1, 1, 'BEING_BOOKED', '5659fed9-578b-11e1-9143-4cba9d4cadf0', 0, 8, 0, '2012-02-15 11:56:59'),
+('73ae0bcd-571d-11e1-9bc2-4cba9d4cadf0', 5, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77e59cf7-571d-11e1-9bc2-4cba9d4cadf0', 5, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76bf1c0c-571d-11e1-9bc2-4cba9d4cadf0', 5, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78f55f05-571d-11e1-9bc2-4cba9d4cadf0', 6, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('73c26898-571d-11e1-9bc2-4cba9d4cadf0', 6, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77f2e583-571d-11e1-9bc2-4cba9d4cadf0', 6, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76cf2480-571d-11e1-9bc2-4cba9d4cadf0', 6, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78ff81ff-571d-11e1-9bc2-4cba9d4cadf0', 7, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('73d6cc3e-571d-11e1-9bc2-4cba9d4cadf0', 7, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77fe1d1f-571d-11e1-9bc2-4cba9d4cadf0', 7, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76e120d8-571d-11e1-9bc2-4cba9d4cadf0', 7, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('79107c2d-571d-11e1-9bc2-4cba9d4cadf0', 8, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('73e7e3de-571d-11e1-9bc2-4cba9d4cadf0', 8, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78109f0a-571d-11e1-9bc2-4cba9d4cadf0', 8, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76fdd4b1-571d-11e1-9bc2-4cba9d4cadf0', 8, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('791e0901-571d-11e1-9bc2-4cba9d4cadf0', 9, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('73fa5214-571d-11e1-9bc2-4cba9d4cadf0', 9, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('781ba280-571d-11e1-9bc2-4cba9d4cadf0', 9, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('770d13a1-571d-11e1-9bc2-4cba9d4cadf0', 9, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a09b11b-571d-11e1-9bc2-4cba9d4cadf0', 10, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7409f50a-571d-11e1-9bc2-4cba9d4cadf0', 10, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('782bb0df-571d-11e1-9bc2-4cba9d4cadf0', 10, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77173b84-571d-11e1-9bc2-4cba9d4cadf0', 10, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a179a17-571d-11e1-9bc2-4cba9d4cadf0', 11, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7429db83-571d-11e1-9bc2-4cba9d4cadf0', 11, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78377092-571d-11e1-9bc2-4cba9d4cadf0', 11, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('772695ea-571d-11e1-9bc2-4cba9d4cadf0', 11, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a48e063-571d-11e1-9bc2-4cba9d4cadf0', 12, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7439cb0c-571d-11e1-9bc2-4cba9d4cadf0', 12, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7841a0ba-571d-11e1-9bc2-4cba9d4cadf0', 12, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77340e90-571d-11e1-9bc2-4cba9d4cadf0', 12, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a57b045-571d-11e1-9bc2-4cba9d4cadf0', 13, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('744d6b2e-571d-11e1-9bc2-4cba9d4cadf0', 13, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('785292e7-571d-11e1-9bc2-4cba9d4cadf0', 13, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('77419dcd-571d-11e1-9bc2-4cba9d4cadf0', 13, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a65404a-571d-11e1-9bc2-4cba9d4cadf0', 14, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('745cb3e1-571d-11e1-9bc2-4cba9d4cadf0', 14, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7860222e-571d-11e1-9bc2-4cba9d4cadf0', 14, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7750fa12-571d-11e1-9bc2-4cba9d4cadf0', 14, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a6fa9b0-571d-11e1-9bc2-4cba9d4cadf0', 15, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7468d604-571d-11e1-9bc2-4cba9d4cadf0', 15, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('786a51d6-571d-11e1-9bc2-4cba9d4cadf0', 15, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('775b0d51-571d-11e1-9bc2-4cba9d4cadf0', 15, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a7995f6-571d-11e1-9bc2-4cba9d4cadf0', 16, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74782fd8-571d-11e1-9bc2-4cba9d4cadf0', 16, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7876662b-571d-11e1-9bc2-4cba9d4cadf0', 16, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('776541e1-571d-11e1-9bc2-4cba9d4cadf0', 16, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a8c42ea-571d-11e1-9bc2-4cba9d4cadf0', 17, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74892f76-571d-11e1-9bc2-4cba9d4cadf0', 17, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78856f42-571d-11e1-9bc2-4cba9d4cadf0', 17, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('777479f7-571d-11e1-9bc2-4cba9d4cadf0', 17, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7a9b9eac-571d-11e1-9bc2-4cba9d4cadf0', 18, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74afcd8e-571d-11e1-9bc2-4cba9d4cadf0', 18, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78930f9b-571d-11e1-9bc2-4cba9d4cadf0', 18, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('777ea813-571d-11e1-9bc2-4cba9d4cadf0', 18, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7aa5ad77-571d-11e1-9bc2-4cba9d4cadf0', 19, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74bf0291-571d-11e1-9bc2-4cba9d4cadf0', 19, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78a2712f-571d-11e1-9bc2-4cba9d4cadf0', 19, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7788d34d-571d-11e1-9bc2-4cba9d4cadf0', 19, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ab53207-571d-11e1-9bc2-4cba9d4cadf0', 20, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74d02480-571d-11e1-9bc2-4cba9d4cadf0', 20, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('78b183bb-571d-11e1-9bc2-4cba9d4cadf0', 20, 143, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('779815f3-571d-11e1-9bc2-4cba9d4cadf0', 20, 143, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7abf1aeb-571d-11e1-9bc2-4cba9d4cadf0', 21, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74e1036e-571d-11e1-9bc2-4cba9d4cadf0', 21, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7acca9cb-571d-11e1-9bc2-4cba9d4cadf0', 22, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('74f05caf-571d-11e1-9bc2-4cba9d4cadf0', 22, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7adde619-571d-11e1-9bc2-4cba9d4cadf0', 23, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('75011e66-571d-11e1-9bc2-4cba9d4cadf0', 23, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7aeb2d84-571d-11e1-9bc2-4cba9d4cadf0', 24, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('750d0de5-571d-11e1-9bc2-4cba9d4cadf0', 24, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7af8bde1-571d-11e1-9bc2-4cba9d4cadf0', 25, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('752567c4-571d-11e1-9bc2-4cba9d4cadf0', 25, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b084818-571d-11e1-9bc2-4cba9d4cadf0', 26, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('753410bb-571d-11e1-9bc2-4cba9d4cadf0', 26, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b122b9f-571d-11e1-9bc2-4cba9d4cadf0', 27, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('754d8317-571d-11e1-9bc2-4cba9d4cadf0', 27, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b218006-571d-11e1-9bc2-4cba9d4cadf0', 28, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('755cfe7d-571d-11e1-9bc2-4cba9d4cadf0', 28, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b2f0aed-571d-11e1-9bc2-4cba9d4cadf0', 29, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7599eb2a-571d-11e1-9bc2-4cba9d4cadf0', 29, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b3c900b-571d-11e1-9bc2-4cba9d4cadf0', 30, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('75ab8b21-571d-11e1-9bc2-4cba9d4cadf0', 30, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b46b970-571d-11e1-9bc2-4cba9d4cadf0', 31, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('75cc13c7-571d-11e1-9bc2-4cba9d4cadf0', 31, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b531962-571d-11e1-9bc2-4cba9d4cadf0', 32, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('75e46455-571d-11e1-9bc2-4cba9d4cadf0', 32, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b61e962-571d-11e1-9bc2-4cba9d4cadf0', 33, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('75f1f6ee-571d-11e1-9bc2-4cba9d4cadf0', 33, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b72d573-571d-11e1-9bc2-4cba9d4cadf0', 34, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7608bbf1-571d-11e1-9bc2-4cba9d4cadf0', 34, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b82342a-571d-11e1-9bc2-4cba9d4cadf0', 35, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('761905fd-571d-11e1-9bc2-4cba9d4cadf0', 35, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b8ca458-571d-11e1-9bc2-4cba9d4cadf0', 36, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76435027-571d-11e1-9bc2-4cba9d4cadf0', 36, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7b9d3455-571d-11e1-9bc2-4cba9d4cadf0', 37, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7657db06-571d-11e1-9bc2-4cba9d4cadf0', 37, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7baac4cb-571d-11e1-9bc2-4cba9d4cadf0', 38, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7668a211-571d-11e1-9bc2-4cba9d4cadf0', 38, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7bbca149-571d-11e1-9bc2-4cba9d4cadf0', 39, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7672d170-571d-11e1-9bc2-4cba9d4cadf0', 39, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7bfb0288-571d-11e1-9bc2-4cba9d4cadf0', 40, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('76820b3e-571d-11e1-9bc2-4cba9d4cadf0', 40, 143, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c110df1-571d-11e1-9bc2-4cba9d4cadf0', 41, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c2d76b4-571d-11e1-9bc2-4cba9d4cadf0', 42, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c49c02b-571d-11e1-9bc2-4cba9d4cadf0', 43, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c56451b-571d-11e1-9bc2-4cba9d4cadf0', 44, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c66ebe0-571d-11e1-9bc2-4cba9d4cadf0', 45, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c732ab2-571d-11e1-9bc2-4cba9d4cadf0', 46, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c84de36-571d-11e1-9bc2-4cba9d4cadf0', 47, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7c99318d-571d-11e1-9bc2-4cba9d4cadf0', 48, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ca74b1d-571d-11e1-9bc2-4cba9d4cadf0', 49, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7cb5e213-571d-11e1-9bc2-4cba9d4cadf0', 50, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7cc0bbb3-571d-11e1-9bc2-4cba9d4cadf0', 51, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ccaf77b-571d-11e1-9bc2-4cba9d4cadf0', 52, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ce2d5f0-571d-11e1-9bc2-4cba9d4cadf0', 53, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d000ca0-571d-11e1-9bc2-4cba9d4cadf0', 54, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d0d4262-571d-11e1-9bc2-4cba9d4cadf0', 55, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d175655-571d-11e1-9bc2-4cba9d4cadf0', 56, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d23e577-571d-11e1-9bc2-4cba9d4cadf0', 57, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d393d61-571d-11e1-9bc2-4cba9d4cadf0', 58, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d46b1c9-571d-11e1-9bc2-4cba9d4cadf0', 59, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d50defb-571d-11e1-9bc2-4cba9d4cadf0', 60, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d5b2c1f-571d-11e1-9bc2-4cba9d4cadf0', 61, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d6553f8-571d-11e1-9bc2-4cba9d4cadf0', 62, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d6f7d84-571d-11e1-9bc2-4cba9d4cadf0', 63, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d79a169-571d-11e1-9bc2-4cba9d4cadf0', 64, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d83d2ff-571d-11e1-9bc2-4cba9d4cadf0', 65, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d8e87fa-571d-11e1-9bc2-4cba9d4cadf0', 66, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7d9898a9-571d-11e1-9bc2-4cba9d4cadf0', 67, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7da27cfd-571d-11e1-9bc2-4cba9d4cadf0', 68, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7dace3f7-571d-11e1-9bc2-4cba9d4cadf0', 69, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7db6a388-571d-11e1-9bc2-4cba9d4cadf0', 70, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7dc0d6c3-571d-11e1-9bc2-4cba9d4cadf0', 71, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7de14ce8-571d-11e1-9bc2-4cba9d4cadf0', 72, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7df8bfcd-571d-11e1-9bc2-4cba9d4cadf0', 73, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7e3e34e0-571d-11e1-9bc2-4cba9d4cadf0', 74, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7e9c4778-571d-11e1-9bc2-4cba9d4cadf0', 75, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ed0ba8e-571d-11e1-9bc2-4cba9d4cadf0', 76, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7efc33d1-571d-11e1-9bc2-4cba9d4cadf0', 77, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7f66bcd6-571d-11e1-9bc2-4cba9d4cadf0', 78, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7fcbdb96-571d-11e1-9bc2-4cba9d4cadf0', 79, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('7ff9ba0e-571d-11e1-9bc2-4cba9d4cadf0', 80, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('801e216b-571d-11e1-9bc2-4cba9d4cadf0', 81, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('802ba046-571d-11e1-9bc2-4cba9d4cadf0', 82, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('803606e8-571d-11e1-9bc2-4cba9d4cadf0', 83, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('80497e14-571d-11e1-9bc2-4cba9d4cadf0', 84, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('811e9662-571d-11e1-9bc2-4cba9d4cadf0', 85, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('813ecb43-571d-11e1-9bc2-4cba9d4cadf0', 86, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('816675a4-571d-11e1-9bc2-4cba9d4cadf0', 87, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('817129b9-571d-11e1-9bc2-4cba9d4cadf0', 88, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('817b57f3-571d-11e1-9bc2-4cba9d4cadf0', 89, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('8194be95-571d-11e1-9bc2-4cba9d4cadf0', 90, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('81a0912b-571d-11e1-9bc2-4cba9d4cadf0', 91, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82318971-571d-11e1-9bc2-4cba9d4cadf0', 92, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82589b9d-571d-11e1-9bc2-4cba9d4cadf0', 93, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('826391a6-571d-11e1-9bc2-4cba9d4cadf0', 94, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82712ee2-571d-11e1-9bc2-4cba9d4cadf0', 95, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('829371b3-571d-11e1-9bc2-4cba9d4cadf0', 96, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82a437b6-571d-11e1-9bc2-4cba9d4cadf0', 97, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82ae3977-571d-11e1-9bc2-4cba9d4cadf0', 98, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82b85c5e-571d-11e1-9bc2-4cba9d4cadf0', 99, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('82c29048-571d-11e1-9bc2-4cba9d4cadf0', 100, 143, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -110,8 +558,138 @@ CREATE TABLE IF NOT EXISTS `grand_permission` (
 
 INSERT INTO `grand_permission` (`AccountNum_ID`, `ADMINISTRATOR`, `EVENT_MANAGER`, `RECEPTIONIST`, `CUSTOMER`, `FACULTY`) VALUES
 (582327, 1, 1, 0, 1, 0),
-(641378, 0, 0, 0, 1, 0),
-(771566, 0, 0, 0, 1, 0);
+(771566, 0, 0, 0, 1, 0),
+(742178, 0, 0, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE IF NOT EXISTS `payments` (
+  `UniqueID` int(11) NOT NULL AUTO_INCREMENT,
+  `bookingNumber` varchar(20) NOT NULL,
+  `amount` int(11) NOT NULL DEFAULT '0',
+  `processedBy` int(11) NOT NULL COMMENT 'This is just a reference to `user`->`AccountNum`',
+  `payment_mode` varchar(50) NOT NULL DEFAULT 'CASH-ON-DELIVERY' COMMENT 'Values: "CASH-ON-DELIVERY", "SITE-ACCOUNT", "PAYPAL"',
+  `Processed_Time` time NOT NULL,
+  `Processed_Date` date NOT NULL,
+  PRIMARY KEY (`UniqueID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `payments`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_channel`
+--
+
+CREATE TABLE IF NOT EXISTS `payment_channel` (
+  `UniqueID` int(11) NOT NULL,
+  `Type` varchar(100) NOT NULL DEFAULT 'COD' COMMENT 'COD | ONLINE ',
+  `Name` varchar(255) NOT NULL,
+  `Contact_Person` varchar(255) DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `Cellphone` varchar(50) DEFAULT NULL,
+  `Landline` varchar(50) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Comments` text,
+  PRIMARY KEY (`UniqueID`),
+  UNIQUE KEY `Name` (`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_channel`
+--
+
+INSERT INTO `payment_channel` (`UniqueID`, `Type`, `Name`, `Contact_Person`, `Location`, `Cellphone`, `Landline`, `Email`, `Comments`) VALUES
+(1, 'COD', 'Personal payment to Department of Humanities', NULL, 'CAS Annex 2 UPLB', '09181234567', '(043) 1234567', 'dhum@uplb.edu.ph', 'Office hours until 5PM only.'),
+(2, 'ONLINE', 'Online via Credit Card ( PayPal )', 'Abraham Darius Llave', NULL, '9183981185', NULL, 'abraham.darius.llave@gmail.com', NULL),
+(3, 'COD', 'LBC', NULL, NULL, NULL, NULL, NULL, 'Any LBC branch');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_channel_availability`
+--
+
+CREATE TABLE IF NOT EXISTS `payment_channel_availability` (
+  `EventID` int(11) NOT NULL,
+  `ShowtimeID` int(11) NOT NULL,
+  `PaymentChannel_UniqueID` int(11) NOT NULL,
+  `Comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`EventID`,`ShowtimeID`,`PaymentChannel_UniqueID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_channel_availability`
+--
+
+INSERT INTO `payment_channel_availability` (`EventID`, `ShowtimeID`, `PaymentChannel_UniqueID`, `Comment`) VALUES
+(75, 1, 1, 'Wala namang comment.'),
+(75, 1, 2, 'Wala namang comment.'),
+(143, 1, 1, NULL),
+(143, 1, 2, NULL),
+(143, 1, 3, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_channel_permission`
+--
+
+CREATE TABLE IF NOT EXISTS `payment_channel_permission` (
+  `AccountNum` int(11) NOT NULL,
+  `PaymentChannel_UniqueID` int(11) NOT NULL,
+  `Status` int(2) NOT NULL DEFAULT '1' COMMENT '0 - Denied | -1 - Suspended | 1 - Granted ',
+  `Comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`AccountNum`,`PaymentChannel_UniqueID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payment_channel_permission`
+--
+
+INSERT INTO `payment_channel_permission` (`AccountNum`, `PaymentChannel_UniqueID`, `Status`, `Comment`) VALUES
+(582327, 1, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchase`
+--
+
+CREATE TABLE IF NOT EXISTS `purchase` (
+  `UniqueID` int(11) NOT NULL AUTO_INCREMENT,
+  `BookingNumber` varchar(20) NOT NULL,
+  `Charge_type` varchar(255) NOT NULL DEFAULT 'TICKET' COMMENT '''TICKET'' | ''VAT'' | ''PROCESSING_FEE'' | ''CHANGE_SEAT'' | ''REBOOK''',
+  `Charge_type_Description` varchar(255) DEFAULT NULL,
+  `Quantity` int(5) NOT NULL DEFAULT '1',
+  `Amount` int(11) NOT NULL DEFAULT '0',
+  `Payment_UniqueID` int(11) NOT NULL COMMENT 'this determines if paid already. If this is 0 (int), then not yet.',
+  `Deadline_Date` date NOT NULL,
+  `Deadline_Time` time NOT NULL,
+  `Comments` varchar(255) NOT NULL,
+  PRIMARY KEY (`UniqueID`),
+  UNIQUE KEY `BookingNumber` (`BookingNumber`,`Charge_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `purchase`
+--
+
+INSERT INTO `purchase` (`UniqueID`, `BookingNumber`, `Charge_type`, `Charge_type_Description`, `Quantity`, `Amount`, `Payment_UniqueID`, `Deadline_Date`, `Deadline_Time`, `Comments`) VALUES
+(1, '5P9RS45', 'TICKET', 'VIP Class', 3, 600, 0, '2012-02-15', '17:00:00', ''),
+(2, '3L73EC4', 'TICKET', 'BUSINESS Class', 2, 300, 0, '2012-02-15', '17:00:00', ''),
+(3, '93JMLJR', 'TICKET', 'VIP Class', 1, 200, 0, '2012-02-15', '17:00:00', ''),
+(4, 'O947HZG', 'TICKET', 'BUSINESS Class', 1, 150, 0, '2012-02-15', '17:00:00', ''),
+(6, 'DJ1I922', 'TICKET', 'VIP Class', 1, 200, 0, '2012-02-15', '17:00:00', ''),
+(7, '43LNDZC', 'TICKET', 'VIP Class', 1, 1000, 0, '2012-02-15', '17:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -120,7 +698,6 @@ INSERT INTO `grand_permission` (`AccountNum_ID`, `ADMINISTRATOR`, `EVENT_MANAGER
 --
 
 CREATE TABLE IF NOT EXISTS `seats_actual` (
-  `Seat_map_UniqueID` int(11) NOT NULL,
   `EventID` int(11) NOT NULL,
   `Showing_Time_ID` int(11) NOT NULL,
   `SlotUUID` varchar(40) DEFAULT NULL,
@@ -132,13 +709,414 @@ CREATE TABLE IF NOT EXISTS `seats_actual` (
   `Ticket_Class_GroupID` int(100) DEFAULT NULL,
   `Ticket_Class_UniqueID` varchar(100) DEFAULT NULL,
   `Comments` text,
-  PRIMARY KEY (`Seat_map_UniqueID`,`EventID`,`Matrix_x`,`Matrix_y`,`Showing_Time_ID`)
+  PRIMARY KEY (`EventID`,`Matrix_x`,`Matrix_y`,`Showing_Time_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `seats_actual`
 --
 
+INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `SlotUUID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
+(75, 1, NULL, 0, 0, 'A', '1', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 1, 'A', '2', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 2, 'A', '3', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 3, 'A', '4', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 4, 'A', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 0, 6, 'A', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 7, 'A', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 8, 'A', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 9, 'A', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 10, 'A', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 11, 'A', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 12, 'A', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 13, 'A', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 0, 15, 'A', '14', 1, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 16, 'A', '15', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 17, 'A', '16', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 18, 'A', '17', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 0, 19, 'A', '18', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 0, 'B', '1', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 1, 'B', '2', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 2, 'B', '3', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 3, 'B', '4', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 4, 'B', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 1, 6, 'B', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 7, 'B', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 8, 'B', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 9, 'B', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 10, 'B', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 11, 'B', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 12, 'B', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 13, 'B', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 1, 15, 'B', '14', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 16, 'B', '15', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 17, 'B', '16', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 18, 'B', '17', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 1, 19, 'B', '18', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 0, 'C', '1', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 1, 'C', '2', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 2, 'C', '3', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 3, 'C', '4', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 4, 'C', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 2, 6, 'C', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 7, 'C', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 8, 'C', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 9, 'C', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 10, 'C', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 11, 'C', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 12, 'C', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 13, 'C', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 2, 15, 'C', '14', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 16, 'C', '15', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 17, 'C', '16', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 18, 'C', '17', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 2, 19, 'C', '18', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 0, 'D', '1', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 1, 'D', '2', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 2, 'D', '3', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 3, 'D', '4', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 4, 'D', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 3, 6, 'D', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 7, 'D', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 8, 'D', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 9, 'D', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 10, 'D', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 11, 'D', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 12, 'D', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 3, 15, 'D', '14', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 16, 'D', '15', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 17, 'D', '16', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 18, 'D', '17', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 3, 19, 'D', '18', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 0, 'E', '1', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 1, 'E', '2', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 2, 'E', '3', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 3, 'E', '4', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 4, 'E', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 4, 6, 'E', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 7, 'E', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 8, 'E', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 9, 'E', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 10, 'E', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 11, 'E', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 12, 'E', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 13, 'E', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 4, 15, 'E', '14', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 16, 'E', '15', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 17, 'E', '16', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 18, 'E', '17', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 4, 19, 'E', '18', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 0, 'F', '1', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 1, 'F', '2', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 2, 'F', '3', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 3, 'F', '4', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 4, 'F', '5', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 5, 6, 'F', '6', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 7, 'F', '7', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 8, 'F', '8', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 9, 'F', '9', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 10, 'F', '10', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 11, 'F', '11', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 12, 'F', '12', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 13, 'F', '13', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 5, 15, 'F', '14', 0, 1, '1', 'COMMENT'),
+(75, 1, NULL, 5, 16, 'F', '15', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 17, 'F', '16', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 18, 'F', '17', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 5, 19, 'F', '18', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 0, 'G', '1', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 1, 'G', '2', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 2, 'G', '3', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 3, 'G', '4', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 4, 'G', '5', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 6, 6, 'G', '6', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 7, 'G', '7', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 8, 'G', '8', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 9, 'G', '9', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 10, 'G', '10', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 11, 'G', '11', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 12, 'G', '12', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 13, 'G', '13', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 6, 15, 'G', '14', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 16, 'G', '15', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 17, 'G', '16', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 18, 'G', '17', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 6, 19, 'G', '18', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 0, 'H', '1', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 1, 'H', '2', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 2, 'H', '3', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 3, 'H', '4', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 4, 'H', '5', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 7, 6, 'H', '6', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 7, 'H', '7', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 8, 'H', '8', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 9, 'H', '9', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 10, 'H', '10', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 11, 'H', '11', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 12, 'H', '12', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 13, 'H', '13', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 7, 15, 'H', '14', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 16, 'H', '15', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 17, 'H', '16', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 18, 'H', '17', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 7, 19, 'H', '18', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 0, 'I', '1', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 1, 'I', '2', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 2, 'I', '3', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 3, 'I', '4', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 4, 'I', '5', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 8, 6, 'I', '6', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 7, 'I', '7', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 8, 'I', '8', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 9, 'I', '9', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 10, 'I', '10', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 11, 'I', '11', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 12, 'I', '12', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 13, 'I', '13', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 8, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 8, 15, 'I', '14', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 16, 'I', '15', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 17, 'I', '16', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 18, 'I', '17', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 8, 19, 'I', '18', 0, 1, '2', 'COMMENT'),
+(75, 1, NULL, 9, 0, 'J', '1', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 1, 'J', '2', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 2, 'J', '3', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 3, 'J', '4', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 4, 'J', '5', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 9, 6, 'J', '6', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 7, 'J', '7', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 8, 'J', '8', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 9, 'J', '9', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 10, 'J', '10', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 11, 'J', '11', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 12, 'J', '12', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 13, 'J', '13', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(75, 1, NULL, 9, 15, 'J', '14', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 16, 'J', '15', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 17, 'J', '16', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 18, 'J', '17', 0, 1, '3', 'COMMENT'),
+(75, 1, NULL, 9, 19, 'J', '18', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 0, 0, 'A', '1', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 1, 'A', '2', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 2, 'A', '3', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 3, 'A', '4', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 4, 'A', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 0, 6, 'A', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 7, 'A', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 8, 'A', '8', 1, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 9, 'A', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 10, 'A', '10', 1, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 11, 'A', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 12, 'A', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 13, 'A', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 0, 15, 'A', '14', 1, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 16, 'A', '15', 1, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 17, 'A', '16', 1, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 18, 'A', '17', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 0, 19, 'A', '18', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 0, 'B', '1', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 1, 'B', '2', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 2, 'B', '3', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 3, 'B', '4', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 4, 'B', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 1, 6, 'B', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 7, 'B', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 8, 'B', '8', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 9, 'B', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 10, 'B', '10', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 11, 'B', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 12, 'B', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 13, 'B', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 1, 15, 'B', '14', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 16, 'B', '15', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 17, 'B', '16', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 18, 'B', '17', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 1, 19, 'B', '18', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 0, 'C', '1', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 1, 'C', '2', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 2, 'C', '3', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 3, 'C', '4', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 4, 'C', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 2, 6, 'C', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 7, 'C', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 8, 'C', '8', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 9, 'C', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 10, 'C', '10', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 11, 'C', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 12, 'C', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 13, 'C', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 2, 15, 'C', '14', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 16, 'C', '15', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 17, 'C', '16', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 18, 'C', '17', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 2, 19, 'C', '18', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 0, 'D', '1', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 1, 'D', '2', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 2, 'D', '3', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 3, 'D', '4', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 4, 'D', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 3, 6, 'D', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 7, 'D', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 8, 'D', '8', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 9, 'D', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 10, 'D', '10', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 11, 'D', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 12, 'D', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 3, 15, 'D', '14', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 16, 'D', '15', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 17, 'D', '16', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 18, 'D', '17', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 3, 19, 'D', '18', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 0, 'E', '1', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 1, 'E', '2', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 2, 'E', '3', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 3, 'E', '4', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 4, 'E', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 4, 6, 'E', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 7, 'E', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 8, 'E', '8', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 9, 'E', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 10, 'E', '10', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 11, 'E', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 12, 'E', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 13, 'E', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 4, 15, 'E', '14', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 16, 'E', '15', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 17, 'E', '16', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 18, 'E', '17', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 4, 19, 'E', '18', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 0, 'F', '1', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 1, 'F', '2', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 2, 'F', '3', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 3, 'F', '4', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 4, 'F', '5', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 5, 6, 'F', '6', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 7, 'F', '7', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 8, 'F', '8', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 9, 'F', '9', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 10, 'F', '10', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 11, 'F', '11', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 12, 'F', '12', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 13, 'F', '13', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 5, 15, 'F', '14', 0, 1, '1', 'COMMENT'),
+(143, 1, NULL, 5, 16, 'F', '15', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 17, 'F', '16', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 18, 'F', '17', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 5, 19, 'F', '18', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 0, 'G', '1', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 1, 'G', '2', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 2, 'G', '3', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 3, 'G', '4', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 4, 'G', '5', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 6, 6, 'G', '6', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 7, 'G', '7', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 8, 'G', '8', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 9, 'G', '9', 1, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 10, 'G', '10', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 11, 'G', '11', 1, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 12, 'G', '12', 1, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 13, 'G', '13', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 6, 15, 'G', '14', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 16, 'G', '15', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 17, 'G', '16', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 18, 'G', '17', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 6, 19, 'G', '18', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 0, 'H', '1', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 7, 1, 'H', '2', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 2, 'H', '3', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 3, 'H', '4', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 4, 'H', '5', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 7, 6, 'H', '6', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 7, 'H', '7', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 8, 'H', '8', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 9, 'H', '9', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 10, 'H', '10', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 11, 'H', '11', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 12, 'H', '12', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 13, 'H', '13', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 7, 15, 'H', '14', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 16, 'H', '15', 0, 1, '2', 'COMMENT'),
+(143, 1, NULL, 7, 17, 'H', '16', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 7, 18, 'H', '17', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 7, 19, 'H', '18', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 0, 'I', '1', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 8, 1, 'I', '2', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 2, 'I', '3', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 3, 'I', '4', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 4, 'I', '5', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 8, 6, 'I', '6', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 7, 'I', '7', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 8, 'I', '8', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 9, 'I', '9', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 10, 'I', '10', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 11, 'I', '11', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 12, 'I', '12', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 13, 'I', '13', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 8, 15, 'I', '14', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 16, 'I', '15', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 17, 'I', '16', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 18, 'I', '17', 0, 1, '3', 'COMMENT'),
+(143, 1, NULL, 8, 19, 'I', '18', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 0, 'J', '1', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 1, 'J', '2', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 2, 'J', '3', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 3, 'J', '4', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 4, 'J', '5', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 5, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 9, 6, 'J', '6', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 7, 'J', '7', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 8, 'J', '8', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 9, 'J', '9', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 10, 'J', '10', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 11, 'J', '11', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 12, 'J', '12', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 13, 'J', '13', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 14, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
+(143, 1, NULL, 9, 15, 'J', '14', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 16, 'J', '15', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 17, 'J', '16', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 18, 'J', '17', 0, 1, '4', 'COMMENT'),
+(143, 1, NULL, 9, 19, 'J', '18', 0, 1, '4', 'COMMENT');
 
 -- --------------------------------------------------------
 
@@ -1294,7 +2272,7 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
   `NoMoreSeat_StillSell` tinyint(1) DEFAULT '0',
   `SeatRequiredOnConfirmation` tinyint(1) DEFAULT '0',
   `Location` varchar(255) DEFAULT NULL,
-  `seat_pattern` varchar(255) DEFAULT NULL,
+  `Seat_map_UniqueID` int(11) DEFAULT NULL COMMENT 'the seat pattern',
   `Slots` int(10) NOT NULL DEFAULT '0',
   `Ticket_Class_GroupID` int(10) NOT NULL DEFAULT '0',
   `Status` varchar(255) NOT NULL DEFAULT 'UNCONFIGURED',
@@ -1307,10 +2285,9 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 -- Dumping data for table `showing_time`
 --
 
-INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `seat_pattern`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
-(1, 723, '2012-02-27', '17:30:00', '2012-02-27', '20:30:00', 'RELATIVE_AFTER', 0, '10:00:00', '2012-02-04', '20:00:00', '2012-02-23', '22:00:00', 1, 1, NULL, NULL, 99, 1, 'CONFIGURED', NULL),
-(2, 723, '2012-02-28', '17:30:00', '2012-02-28', '20:30:00', 'RELATIVE_AFTER', 0, '10:00:00', '2012-02-04', '20:00:00', '2012-02-23', '22:00:00', 1, 1, NULL, NULL, 99, 1, 'CONFIGURED', NULL),
-(3, 723, '2012-02-29', '17:30:00', '2012-02-29', '20:30:00', 'RELATIVE_AFTER', 0, '10:00:00', '2012-02-04', '20:00:00', '2012-02-23', '22:00:00', 1, 1, NULL, NULL, 99, 1, 'CONFIGURED', NULL);
+INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `Seat_map_UniqueID`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
+(1, 75, '2012-02-29', '19:15:00', '2012-02-29', '23:15:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-02-15', '15:00:00', '2012-02-27', '16:50:00', 1, 1, NULL, 9610832, 180, 1, 'CONFIGURED', NULL),
+(1, 143, '2012-02-28', '17:15:00', '2012-02-28', '21:15:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-02-14', '17:00:00', '2012-02-28', '16:00:00', 1, 0, NULL, 9610832, 180, 1, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -1338,13 +2315,17 @@ CREATE TABLE IF NOT EXISTS `ticket_class` (
 
 INSERT INTO `ticket_class` (`EventID`, `GroupID`, `UniqueID`, `Name`, `Price`, `Slots`, `Privileges`, `Restrictions`, `priority`, `HoldingTime`) VALUES
 (0, -1, -1, 'BUSINESS', 0, 0, '', '', 2, '00:20:00'),
+(0, -1, -1, 'ECONOMY', 0, 0, '', '', 4, '00:20:00'),
 (0, -1, -1, 'REGULAR', 0, 0, '', '', 3, '00:20:00'),
-(0, -1, -1, 'STANDING', 0, 0, '', '', 4, '00:20:00'),
 (0, -1, -1, 'VIP', 0, 0, '', '', 1, '00:20:00'),
-(723, 1, 2, 'BUSINESS', 0, 30, 'IDK', 'IDY', 0, '00:20:00'),
-(723, 1, 3, 'REGULAR', 0, 19, 'IDK', 'IDY', 0, '00:20:00'),
-(723, 1, 4, 'STANDING', 0, 0, 'IDK', 'IDY', 0, '00:20:00'),
-(723, 1, 1, 'VIP', 0, 50, 'IDK', 'IDY', 0, '00:20:00');
+(75, 1, 2, 'BUSINESS', 500, 50, 'IDK', 'IDY', 0, '00:20:00'),
+(75, 1, 4, 'ECONOMY', 0, 0, 'IDK', 'IDY', 0, '00:20:00'),
+(75, 1, 3, 'REGULAR', 200, 30, 'IDK', 'IDY', 0, '00:20:00'),
+(75, 1, 1, 'VIP', 1000, 100, 'IDK', 'IDY', 0, '00:20:00'),
+(143, 1, 2, 'BUSINESS', 150, 40, 'IDK', 'IDY', 0, '00:20:00'),
+(143, 1, 4, 'ECONOMY', 50, 20, 'IDK', 'IDY', 0, '00:20:00'),
+(143, 1, 3, 'REGULAR', 100, 20, 'IDK', 'IDY', 0, '00:20:00'),
+(143, 1, 1, 'VIP', 200, 100, 'IDK', 'IDY', 0, '00:20:00');
 
 -- --------------------------------------------------------
 
@@ -1367,8 +2348,8 @@ CREATE TABLE IF NOT EXISTS `uplbconstituent` (
 
 INSERT INTO `uplbconstituent` (`AccountNum_ID`, `studentNumber`, `employeeNumber`) VALUES
 (582327, 200837120, NULL),
-(641378, 200837122, NULL),
-(771566, 200837121, NULL);
+(771566, 200837121, NULL),
+(742178, 201200001, NULL);
 
 -- --------------------------------------------------------
 
@@ -1402,7 +2383,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `addr_homestreet`, `addr_barangay`, `addr_cityMunicipality`, `addr_province`, `temp1`, `temp2`) VALUES
 (582327, 'abrahamdsl', '8sdk17a3', 'ABRAHAM', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
-(641378, 'wordchamp427', '', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL),
+(742178, 'northkorea', 'kimjongil', 'JONG IL', '', 'KIM', 'MALE', '9183981185', '0', 'KJE@NK.GOV', '199 J. LUNA', 'POBLACION', '', '', NULL, NULL),
 (771566, 'meowmeow', 'meowmeow', 'NYAN', 'S.', 'CAT', 'FEMALE', '9183981185', '0', 'ADS@YAHOO.COM', '', '', '', '', NULL, NULL),
 (807519, 'wordchamp427', 'alfredobula', 'EDRIARA ANN', 'SENO', 'LLAVE', 'MALE', '9183981185', '0', 'AB@YAHOO.COM', '', '', '', '', NULL, NULL);
 

@@ -10,9 +10,12 @@ class EventCtrl extends CI_Controller {
 		parent::__construct();	
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
+		$this->load->model('Booking_model');
 		$this->load->model('CoordinateSecurity_model');
 		$this->load->model('Event_model');
+		$this->load->model('Guest_model');
 		$this->load->model('MakeXML_model');
+		$this->load->model('Payment_model');
 		$this->load->model('Permission_model');
 		$this->load->model('Seat_model');		
 		$this->load->model('Slot_model');		
@@ -53,89 +56,89 @@ class EventCtrl extends CI_Controller {
 	}//book(..)
 	
 	function book_step2()
-	{
-		/*
-			Created 30DEC2011-1855
-		*/
-		$eligbilityIndicator = "CCDB7X";
-		$eventID = $this->input->post( 'events' );
-		$showtimeID = $this->input->post( 'showingTimes');
-		$slots = $this->input->post( 'slot' );
-		$slotDistributionAmongClasses = Array();
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();					
-		$eventInfo;
-		$cookie_names;
-		$cookie_values;
-		
-		// validate if form submitted has the correct data
-		if( $eventID === false or $showtimeID === false or $slots === false )
-		{
-			$data['error'] = "NO_DATA";			
-			$this->load->view( 'errorNotice', $data );
-		}
-		$showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 
-		if( $showtimeObj === false )
-		{
-			// no showing time exists
-			redirect('/');
-		}
-		$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $showtimeObj->Ticket_Class_GroupID );
-		if( $ticketClasses === false )
-		{
-			// no ticket classes exist
-			redirect('/');
-		}			
-		$eventInfo = $this->Event_model->getEventInfo( $eventID );		// get major info of this event
-		//Cookie part
-		$cookie_values = Array( 
-			$eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $eventInfo->Name, 
-			$showtimeObj->StartDate, $showtimeObj->StartTime, $showtimeObj->EndDate, $showtimeObj->EndTime,
-			intval( $slots ), $eventInfo->Location
-		);
-		$this->Event_model->setBookingCookies( $cookie_values );		
-		// now ticket classes proper
-		foreach( $ticketClasses as $singleClass )
-		{				
-			$serializedClass_Slot_UUID = "";
-							
-			$eachClassSlots = $this->Slot_model->getSlotsForBooking( $slots, $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $singleClass->UniqueID );				
-			if( $eachClassSlots === false ){
-				//IN future get near expiring, for now sold out
-				$slotDistributionAmongClasses[ $singleClass->Name ]  = false;
-				continue;
-			}
-			//serialize UUIDs of slot
-			foreach( $eachClassSlots  as $evSlot )
-			{
-				$serializedClass_Slot_UUID .= ($evSlot->UUID."_");
-			}
-			// truncate the last underscore
-			$serializedClass_Slot_UUID = substr( $serializedClass_Slot_UUID, 0, strlen( $serializedClass_Slot_UUID )-1 );	
-			//set UUIDs of the slots
-			$cookie = array(
-				'name'   => $singleClass->UniqueID."_slot_UUIDs",
-				'value'  => $serializedClass_Slot_UUID,
-				'expire' => '3600'				// change later to how long ticketclass hold time
-			);
-			$this->input->set_cookie($cookie);
-									
-			$slotDistributionAmongClasses[ $singleClass->Name ]  = true; // for view page						
-		}
-		/*
-			The next 3 variables have been set in cookies earlier. The problem is,
-			they aren't usable immediately, so just send directly to view the data and 
-			PHP will echo it.
-		*/
-		$data['ticketClasses'] = $ticketClasses;
-		$data['slots'] = $slots;
-		$data['eventInfo'] = $this->Event_model->getEventInfo( $eventID );
-		$data['showtimeObj'] = $showtimeObj;
-		$data['ticketClasses_presence'] = $slotDistributionAmongClasses;
-		$data['currentStep'] = 2;
-		$this->load->view( 'book/bookStep2', $data );
-		
-	}//book_step2(..)
-		
+   {
+      /*
+         Created 30DEC2011-1855
+      */
+      $eligbilityIndicator = "CCDB7X";
+      $eventID = $this->input->post( 'events' );
+      $showtimeID = $this->input->post( 'showingTimes');
+      $slots = $this->input->post( 'slot' );
+      $slotDistributionAmongClasses = Array();
+      $data['userData'] = $this->login_model->getUserInfo_for_Panel();               
+      $eventInfo;
+      $cookie_names;
+      $cookie_values;
+      
+      // validate if form submitted has the correct data
+      if( $eventID === false or $showtimeID === false or $slots === false )
+      {
+         $data['error'] = "NO_DATA";         
+         $this->load->view( 'errorNotice', $data );
+     }
+      $showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 
+      if( $showtimeObj === false )
+      {
+         // no showing time exists
+         redirect('/');
+      }
+      $ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $showtimeObj->Ticket_Class_GroupID );
+      if( $ticketClasses === false )
+      {
+         // no ticket classes exist
+         redirect('/');
+      }         
+      $eventInfo = $this->Event_model->getEventInfo( $eventID );      // get major info of this event
+      //Cookie part
+      $cookie_values = Array( 
+         $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $eventInfo->Name, 
+         $showtimeObj->StartDate, $showtimeObj->StartTime, $showtimeObj->EndDate, $showtimeObj->EndTime,
+         intval( $slots ), $eventInfo->Location, 'XXXXX', '-1'
+      );
+      $this->Event_model->setBookingCookies( $cookie_values );      
+      // now ticket classes proper
+      foreach( $ticketClasses as $singleClass )
+      {            
+         $serializedClass_Slot_UUID = "";
+                     
+         $eachClassSlots = $this->Slot_model->getSlotsForBooking( $slots, $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $singleClass->UniqueID );            
+         if( $eachClassSlots === false ){
+            //IN future get near expiring, for now sold out
+            $slotDistributionAmongClasses[ $singleClass->Name ]  = false;
+            continue;
+         }
+         //serialize UUIDs of slot
+         foreach( $eachClassSlots  as $evSlot )
+         {
+            $serializedClass_Slot_UUID .= ($evSlot->UUID."_");
+         }
+         // truncate the last underscore
+         $serializedClass_Slot_UUID = substr( $serializedClass_Slot_UUID, 0, strlen( $serializedClass_Slot_UUID )-1 );   
+         //set UUIDs of the slots
+         $cookie = array(
+            'name'   => $singleClass->UniqueID."_slot_UUIDs",
+            'value'  => $serializedClass_Slot_UUID,
+            'expire' => '3600'            // change later to how long ticketclass hold time
+         );
+         $this->input->set_cookie($cookie);
+                           
+         $slotDistributionAmongClasses[ $singleClass->Name ]  = true; // for view page                  
+      }
+      /*
+         The next 3 variables have been set in cookies earlier. The problem is,
+         they aren't usable immediately, so just send directly to view the data and 
+         PHP will echo it.
+      */
+      $data['ticketClasses'] = $ticketClasses;
+      $data['slots'] = $slots;
+      $data['eventInfo'] = $this->Event_model->getEventInfo( $eventID );
+      $data['showtimeObj'] = $showtimeObj;
+      $data['ticketClasses_presence'] = $slotDistributionAmongClasses;
+      $data['currentStep'] = 2;
+      $this->load->view( 'book/bookStep2', $data );
+      
+   }//book_step2(..) 
+				
 	function book_step3()
 	{		
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();					
@@ -146,8 +149,7 @@ class EventCtrl extends CI_Controller {
 		if( $uniqueID === false )
 		{
 			redirect('/');
-		}
-		
+		}		
 		$selectedTicketClass = $this->TicketClass_model->getSingleTicketClass( $eventID, $ticketClassGroupID, $uniqueID );
 		$allOtherClasses = $this->TicketClass_model->getTicketClassesExceptThisUniqueID( $eventID, $ticketClassGroupID, $uniqueID );
 		if( $selectedTicketClass === false /*or $allOtherClasses === false*/ ) // 08FEB2012-2145, turned into comment condition somewhat ambiguous
@@ -155,15 +157,22 @@ class EventCtrl extends CI_Controller {
 			redirect('/');
 		}
 		$this->Slot_model->freeSlotsBelongingToClasses( $allOtherClasses );		// since we now don't care about these, free so.
-		
-		
-		$data['currentStep'] = 3;
-		$this->load->view( 'book/bookStep3', $data);
-		
-		//die( var_dump( $_POST ) );
+		// now set the uniqueID of the ticketclass
+		$cookie = array(
+				'name'   => 'ticketClassUniqueID',
+				'value'  => $uniqueID,
+				'expire' => '3600'				// change later to how long ticketclass hold time
+		);
+		$this->input->set_cookie($cookie);
+			
+		$newSessionData = array(
+            'eligibilityIndicator'  =>  $this->CoordinateSecurity_model->createActivity( "BOOK", "3", "int" )
+        );
+		$this->session->set_userdata( $newSessionData );
+		redirect( 'EventCtrl/book_step3_forward' );
 	}//book_step3()
 	
-	function book_step3_cancel( )
+	function book_step3_cancel()
 	{
 		/*
 			Created 06FEB2012-1647
@@ -183,10 +192,231 @@ class EventCtrl extends CI_Controller {
 		// get ticket classes since we have reserved X slots for each ticket classes of the showing time bconcerned
 		$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $ticketClassGroupID );
 		$this->Slot_model->freeSlotsBelongingToClasses( $ticketClasses );
-		$this->Event_model->deleteBookingCookies();		
+		$this->Booking_model->deleteAllBookingInfo( $this->input->cookie( 'bookingNumber' ) );	// should be restricted to when cancelling on step 4 onwards
+		$this->Payment_model->deleteAllBookingPurchases( $this->input->cookie( 'bookingNumber' ) );	// should be restricted to when cancelling on step 4 onwards
+		$this->Event_model->deleteBookingCookies();	
 		echo "OK";
 		return true;
 	}//book_step3_cancel
+	
+	function book_step3_forward(){
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();	
+		$uuidEligibility;
+		
+		// start: access validity indicator
+		$uuidEligibility = $this->session->userdata( 'eligibilityIndicator' );
+		if(  $uuidEligibility === false or
+		    $this->CoordinateSecurity_model->isActivityEqual( $uuidEligibility, "3", "int" ) === false
+		){			
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		// end: access validity indicator
+	
+		$data['currentStep'] = 3;								
+		$this->load->view( 'book/bookStep3', $data);
+	}//book_step3_forward
+	
+	function book_step4()
+	{		
+		$slots = intval( $this->input->cookie( "slots_being_booked" ) );
+		$ticketClassUID = $this->input->cookie( 'ticketClassUniqueID' );
+		$guestUUIDs = $this->input->cookie( $ticketClassUID."_slot_UUIDs" );
+		$ticketClassObj = $this->TicketClass_model->getSingleTicketClass( 
+			$this->input->cookie( 'eventID' ), 
+			$this->input->cookie( 'ticketClassGroupID' ), 
+			$ticketClassUID
+		);
+		
+		$bookingNumber = $this->Booking_model->generateBookingNumber();
+		$bookingPaymentDeadline = $this->Event_model->getShowingTimePaymentDeadline( $this->input->cookie( 'eventID' ), $this->input->cookie( 'showtimeID' ));
+		// create booking "upper" details
+		$this->Booking_model->createBookingDetails( 
+			$bookingNumber,
+			$this->input->cookie( 'eventID' ),
+			$this->input->cookie( 'showtimeID' ),
+			$this->input->cookie( 'ticketClassGroupID' ),
+			$ticketClassUID,
+			$this->session->userData('accountNum')
+		);
+		// now, create entries for the charges.
+		$this->Payment_model->createPurchase( 
+			$bookingNumber,
+			"TICKET",
+			$ticketClassObj->Name." Class",
+			$slots,
+			intval($slots) * intval( $ticketClassObj->Price),
+			$bookingPaymentDeadline["date"],
+			$bookingPaymentDeadline["time"]
+		);
+		// now, insert form data submitted
+		for( $x = 0; $x < $slots; $x++ )
+		{
+			$identifier = "g".($x+1)."-";
+						
+			$this->Guest_model->insertGuestDetails(
+					$bookingNumber,
+					intval( $this->input->post( $identifier."accountNum" ) ),
+					$this->input->post( $identifier."firstName" ),					
+					$this->input->post( $identifier."middleName" ),					
+					$this->input->post( $identifier."lastName" ),					
+					$this->input->post( $identifier."gender" ),					
+					$this->input->post( $identifier."cellphone" ),					
+					$this->input->post( $identifier."landline" ),					
+					$this->input->post( $identifier."email_01" )
+			);
+		}
+		// now set the bookingNumber for cookie access
+		$cookie = array(
+				'name' => 'bookingNumber',
+				'value'  => $bookingNumber,
+				'expire' => 3600				// change later to how long ticketclass hold time
+		);
+		$this->input->set_cookie($cookie);
+		
+		$newSessionData = array(
+            'eligibilityIndicator'  =>  $this->CoordinateSecurity_model->createActivity( "BOOK", "4", "int" ),
+			'paymentDeadline_Date' => $bookingPaymentDeadline["date"],
+			'paymentDeadline_Time' => $bookingPaymentDeadline["time"]
+        );
+		$this->session->set_userdata( $newSessionData );
+		
+		redirect( 'EventCtrl/book_step4_forward' );
+	}//book_step4
+		
+	function book_step4_forward(){
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();	
+		$uuidEligibility;
+		$x = 0;
+		$ticketClassUID = $this->input->cookie( 'ticketClassUniqueID' );
+		$guestUUIDs = $this->input->cookie( $ticketClassUID."_slot_UUIDs" );
+		$guestUUIDs_tokenized = explode('_', $guestUUIDs );
+		
+		// start: access validity indicator
+		$uuidEligibility = $this->session->userdata( 'eligibilityIndicator' );
+		if(  $uuidEligibility === false or
+		    $this->CoordinateSecurity_model->isActivityEqual( $uuidEligibility, "4", "int" ) === false
+		){			
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		// end: access validity indicator
+	
+		$data['currentStep'] = 4;							
+		$data['guests'] = $this->Guest_model->getGuestDetails( $this->input->cookie( 'bookingNumber' ) );
+		foreach( $data['guests'] as $eachGuest )
+		{
+			$this->Slot_model->assignSlotToGuest(
+				$this->input->cookie( 'eventID' ),
+				$this->input->cookie( 'showtimeID' ),
+				$guestUUIDs_tokenized[ $x++ ],
+				$eachGuest->UUID
+			);
+		}				
+		$this->CoordinateSecurity_model->updateActivity( $this->session->userdata( 'eligibilityIndicator' ), '5' );
+		$this->load->view( 'book/bookStep4', $data);
+	}//book_step4_forward
+	
+	function book_step5()
+	{
+		/*
+			Created 13FEB2012-2334
+		*/
+		//die(var_dump( $_POST ));
+		$slots;
+		$x;
+		$uuidEligibility;
+		$sendSeatInfoToView = Array();
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();	
+		
+		// start: access validity indicator		
+		$slots =  $this->input->cookie( 'slots_being_booked' );				
+		$uuidEligibility = $this->session->userdata( 'eligibilityIndicator' );
+		if(  $uuidEligibility === false or
+		     $this->CoordinateSecurity_model->isActivityEqual( $uuidEligibility, "5", "int" ) === false or
+			 $slots === false or 
+			 count( $_POST ) < 2 
+		){			
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		// end: access validity indicator
+		
+		$slots = null;
+		$slots = intval( $this->input->cookie( 'slots_being_booked' ) );
+		for( $x = 0; $x < $slots; $x++ )
+		{
+			$seatMatrix = $this->input->post( "g".($x+1)."_seatMatrix" );
+			$seatMatrix_tokenized = explode( '_', $seatMatrix );
+			$guestUUID = $this->input->post(  "g".($x+1)."_uuid" );
+			$sendSeatInfoToView[ $guestUUID ] = $this->Seat_model->getVisualRepresentation(
+				$seatMatrix_tokenized[0], 
+				$seatMatrix_tokenized[1],
+				$this->input->cookie( 'eventID' ),
+				$this->input->cookie( 'showtimeID' )
+			); 
+			$this->Seat_model->markSeatAsAssigned(
+				$this->input->cookie( 'eventID' ),
+				$this->input->cookie( 'showtimeID' ),
+				$seatMatrix_tokenized[0], 
+				$seatMatrix_tokenized[1]
+			);
+			$this->Guest_model->assignSeatToGuest( $guestUUID, $seatMatrix_tokenized[0], $seatMatrix_tokenized[1] );
+			
+		}
+		$data['currentStep'] = 5;
+		$data['guests'] = $this->Guest_model->getGuestDetails( $this->input->cookie( 'bookingNumber' ) );
+		$data['paymentChannels'] = $this->Payment_model->getPaymentChannelsForEvent( $this->input->cookie( 'eventID' ), $this->input->cookie( 'showtimeID' ) );	
+		$data['purchases'] = $this->Payment_model->getUnpaidPurchases( $this->input->cookie( 'bookingNumber' ) );
+		$data['seatVisuals'] = $sendSeatInfoToView;
+		//die( var_dump( $_POST ) );
+		$this->load->view( 'book/bookStep5', $data );
+	}
+	
+	function book_step6()
+	{
+		//die( var_dump( $_POST ) );
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();	
+		
+		$paymentChannel = $this->input->post( 'paymentChannel' );
+		$paymentChannel_obj;
+		
+		// start: access validity indicator
+		if( $paymentChannel === false  )
+		{			
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		// start: end validity indicator
+		
+		$paymentChannel = null;
+		$paymentChannel = intval( $this->input->post( 'paymentChannel' ) );
+		$paymentChannel_obj =  $this->Payment_model->getSinglePaymentChannel(
+			$this->input->cookie( 'eventID' ),
+			$this->input->cookie( 'showtimeID' ),
+			$paymentChannel
+		);
+		$data['currentStep'] = 6;
+		$data['guests'] = $this->Guest_model->getGuestDetails( $this->input->cookie( 'bookingNumber' ) );
+		$data['singleChannel'] = $paymentChannel_obj;
+		$data['purchases'] = $this->Payment_model->getUnpaidPurchases( $this->input->cookie( 'bookingNumber' ) );
+		$this->Booking_model->markAsPendingPayment( $this->input->cookie( 'bookingNumber' ), "NEW" );
+		if( $paymentChannel_obj->Type == "COD" )
+		{
+			$this->load->view( 'book/bookStep6_COD', $data);
+		}else
+		if( $paymentChannel_obj->Type == "ONLINE" )
+		{
+			// later
+		}else{
+			die( 'Payment mode not yet supported.'  );
+		}
+		//switch( $paymentChannel )
+	}
 	
 	function create()
 	{				
@@ -500,6 +730,8 @@ class EventCtrl extends CI_Controller {
 		$beingConfiguredShowingTimes = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
 		foreach( $beingConfiguredShowingTimes as $eachSession )
 		{
+			//update the seat map of the showing time
+			$this->Event_model->setShowingTimeSeatMap( $this->input->post( 'seatmapUniqueID' ), $this->input->cookie( 'eventID' ), $eachSession->UniqueID );
 			// duplicate seat pattern to the table containing actual seats
 			$this->Seat_model->copyDefaultSeatsToActual( $this->input->post( 'seatmapUniqueID' ) );
 			// update the eventID and UniqueID of the newly duplicated seats
@@ -518,14 +750,13 @@ class EventCtrl extends CI_Controller {
 					$status;
 					$ticketClassUniqueID;
 					$sql_command = "UPDATE `seats_actual` SET `Status` = ? ";
-					$sql_command_End = "WHERE  `Seat_map_UniqueID` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? AND `Matrix_x` = ? AND `Matrix_y` = ?";
+					$sql_command_End = "WHERE `EventID` = ? AND `Showing_Time_ID` = ? AND `Matrix_x` = ? AND `Matrix_y` = ?";
 					if( $seatValue === "0" or $seatValue === false )
 					{
-						//unselected
+						//unselected / aisle
 						$status = -2;
 						$this->db->query( 	$sql_command.$sql_command_End, array(
-												$status,												
-												$this->input->post( 'seatmapUniqueID' ),
+												$status,																								
 												$this->input->cookie( 'eventID' ),
 												$eachSession->UniqueID,
 												$x,
@@ -537,8 +768,7 @@ class EventCtrl extends CI_Controller {
 						// no class assigned
 						$status = -1;
 						$this->db->query( 	$sql_command.$sql_command_End, array(
-												$status,												
-												$this->input->post( 'seatmapUniqueID' ),
+												$status,																								
 												$this->input->cookie( 'eventID' ),
 												$eachSession->UniqueID,
 												$x,
@@ -552,8 +782,7 @@ class EventCtrl extends CI_Controller {
 											array(
 												$status,
 												$eachSession->Ticket_Class_GroupID,
-												$ticketClassUniqueID,
-												$this->input->post( 'seatmapUniqueID' ),
+												$ticketClassUniqueID,												
 												$this->input->cookie( 'eventID' ),
 												$eachSession->UniqueID,
 												$x,
@@ -582,10 +811,11 @@ class EventCtrl extends CI_Controller {
 			Page access eligibility check
 		*/
 		// does UUID exist,  If not redirect.
-		if( $this->CoordinateSecurity_model->doesActivityExist( $this->input->post( 'uuid' ) ) === false ) redirect('/');		
+		//if( $this->CoordinateSecurity_model->doesActivityExist( $this->input->post( 'uuid' ) ) === false ) redirect('/');		
 		// UUID exists. Does activity indicator has valid value? If not redirect.
-		if( $this->CoordinateSecurity_model->isActivityEqual( $this->input->post( 'uuid' ), $pageEligibilityIndicator , "string" ) === false ) redirect('/' );
-		
+		//if( $this->CoordinateSecurity_model->isActivityEqual( $this->input->post( 'uuid' ), $pageEligibilityIndicator , "string" ) === false ) redirect('/' );
+	
+		$data['paymentChannels'] = $this->Payment_model->getPaymentChannels();
 		$data['beingConfiguredShowingTimes'] = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
 		$this->load->view('createEvent/createEvent_006', $data);				
@@ -593,10 +823,14 @@ class EventCtrl extends CI_Controller {
 	
 	function create_step7()
 	{
-		//echo( var_dump($_POST ) );
+		//die( var_dump($_POST ) );
 		// START: validation if correct page is being submitted
 		$correctPage = true;
 		$stillUnconfiguredEvents;
+		$beingConfiguredShowingTimes = $this->Event_model->getBeingConfiguredShowingTimes( $this->input->cookie( 'eventID' ) );
+		$paymentChannels = $this->Payment_model->getPaymentChannels();
+		$paymentChannelsPosted = Array(); 
+		$x = 0;
 		
 		if( !$this->input->post("hidden_selling_dateStart") ) $correctPage = false;
 		if( !$this->input->post("hidden_selling_dateEnd") ) $correctPage = false;
@@ -617,6 +851,26 @@ class EventCtrl extends CI_Controller {
 		{
 			echo "Create Step 7 Set Particulars Fail.";
 			die();
+		}
+		foreach( $paymentChannels as $singleChannel )
+		{
+			// if a payment channel was selected, its value in the array should be an integer or not boolean false
+			$paymentChannelsPosted[ $x++ ] = $this->input->post( 'pChannel_'.$singleChannel->UniqueID ); 
+		}
+		foreach( $paymentChannelsPosted as $eachPosted )
+		{
+			if( $eachPosted !== false )
+			{
+				foreach( $beingConfiguredShowingTimes as $singleBCST )
+				{
+					$this->Payment_model->addPaymentChannel_ToShowTime(
+						$this->input->cookie( 'eventID' ),
+						$singleBCST->UniqueID,
+						$eachPosted,
+						"Wala namang comment."
+					);
+				}			
+			}
 		}
 		$this->Event_model->stopShowingTimeConfiguration( $this->input->cookie( 'eventID' ) );	// now mark these as 'CONFIGURED'
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				

@@ -11,6 +11,15 @@ class Slot_model extends CI_Model {
 		parent::__construct();	
 	}
 	
+	function assignSlotToGuest( $eventID, $showtimeID, $uuid_Slot, $uuid_Guest )
+	{
+		/*
+			Created 14FEB2012-0847
+		*/	
+		$sql_command = "UPDATE `event_slot` SET `Assigned_To_User` = ? WHERE `EventID` = ? AND `Showtime_ID` = ? AND `UUID` = ?";
+		return $this->db->query( $sql_command, Array( $uuid_Guest, $eventID, $showtimeID, $uuid_Slot ) );
+	}//assignSlotToUser
+	
 	function createSlots( $quantity, $eventID, $showtimeID, 
 		$ticketClass_GroupID, $ticketClass_UniqueID  )
 	{
@@ -75,6 +84,18 @@ class Slot_model extends CI_Model {
 		}
 	}//freeSlotsBelongingToClasses
 	
+	function getSingleSlot( $UUID )
+	{
+		/*
+			Created 14FEB2012-1010
+			
+			An easy way to get the slots, so no hassle to deal with eventID, showtimeID and others.
+			Mostly useful for resetting availability, etc.
+		*/
+		$sql_command = "SELECT * FROM `event_slot` WHERE `UUID` = ? ";
+		return $this->db->query( $sql_command, Array( $UUID ) ); 
+	}//getSingleSlot
+	
 	function getSlotsForBooking( $quantity, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )
 	{
 		/*
@@ -132,7 +153,7 @@ class Slot_model extends CI_Model {
 			return $lastInt;
 		}else return 0;		
 	}//getSlotsLastGroupID
-	
+			
 	function setSlotAsAvailable( $uuid )
 	{
 		/*
@@ -141,7 +162,8 @@ class Slot_model extends CI_Model {
 			Called when customer is in the process of and then cancelled booking and we want to restore
 			the slots temporarily reserved back to being avaialable.
 		*/
-		$sql_command = "UPDATE `event_slot` SET `Status` = 'AVAILABLE', `Start_Contact` = NULL WHERE `UUID` = ?";
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'AVAILABLE', `Assigned_To_User` = NULL, `Seat_x` = NULL, ";
+		$sql_command .= " `Seat_y` = NULL, `Start_Contact` = NULL WHERE `UUID` = ?";
 		return $this->db->query( $sql_command, array( $uuid ) );
 	}//setSlotAsAvailable
 	
