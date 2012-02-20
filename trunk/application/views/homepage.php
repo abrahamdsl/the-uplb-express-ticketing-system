@@ -3,25 +3,21 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Home";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Home";
 	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
-
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>"/></script>			
-	<script type="text/javascript">
-		$('div.metrotile a img').hover( function(){ alert('fuckyou' ); $(this).parent().css('background-color', 'black'); } );
-		$('div.metrotile a').click( function() { alert('wtf'); } );
-	</script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
 </head>
 <body>
 <div id="main_container">
@@ -55,25 +51,31 @@ $this->load->view('html-generic/doctype.inc');
 					<?php
 						if( $permissions->CUSTOMER )
 						{
-					?>					
-					<!--<div id="ticketSelectionDiv">
-						Ticket selection here
-					</div>-->
-					
+					?>															
 					<div class="metrotile" >
-							<a href="EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" class="center_purest" /></a>
+							<a href="<?php echo base_url(); ?>EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" alt="Purchase ticket" /></a>
 					</div>
+					<div class="metrotile" >
+							<a  href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/switchschedule.png" alt="Switch schedule" /></a>
+					</div>
+					<div class="metrotile" >
+							<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/transhistory.png" alt="Transaction History" /></a>
+					</div>
+					<div class="metrotile" >
+							<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/inquiries.png" alt="Inquiries" /></a>
+					</div>
+					<!--
 					<div>
-						Other functions
+						
 						<img src="<?php echo base_url().'assets/images/customer-otherfunction-temp_all_horiz.png'; ?>" usemap="#customerMap" />					
 						<map name="customerMap">
 							<area shape="rect" coords="4,1,186,103" title="Edit my Reservations" alt="Edit my Reservations" href="<?php echo base_url().'booking/editBooking'; ?>" />
 							<area shape="rect" coords="188,1,371,103" title="View Transaction History" alt="View Transaction History" href="<?php echo base_url().'userAccountCtrl/viewTransactionHistory'; ?>" />
 							<area shape="rect" coords="373,1,554,103" title="Send a message to CS" alt="Send a message to CS" href="<?php echo base_url().'client/sendMessage'; ?>" />
 							<area shape="rect" coords="557,1,721,103" title="See your cash account" alt="See your cash account" href="<?php echo base_url().'client/cashAccountHome'; ?>" />
-						</map>
+						</map>						
 					</div>									
-					
+					-->
 					<?php
 						}else{
 					?>
@@ -88,8 +90,8 @@ $this->load->view('html-generic/doctype.inc');
 				?>
 				<h3><a href="#">Event Management</a></h3>
 				<div>
-					<img src="<?php echo base_url().'assets/images/event-manager_temp.png'; ?>"  usemap="#eventManagerMap"  />				
-					<map name="eventManagerMap" >
+					<img src="<?php echo base_url().'assets/images/event-manager_temp.png'; ?>"  usemap="#eventManagerMap" alt="eventmgrmap" />				
+					<map name="eventManagerMap" id="emap1" >
 						<area shape="rect" coords="6,7,176,101" title="Create Event" alt="Create Event" href="<?php echo base_url().'EventCtrl/create'; ?>" />
 						<area shape="rect" coords="188,7,358,101" title="Confirm Reservation" alt="Confirm Reservation" href="" />
 						<area shape="rect" coords="367,7,537,101" title="Modify Reservation" alt="Modify Reservation" href="" />
@@ -130,8 +132,8 @@ $this->load->view('html-generic/doctype.inc');
 				?>
 				<h3><a href="#">Administration</a></h3>
 				<div>					
-					<img src="<?php echo base_url().'assets/images/administrator-preliminary_all_horiz.png'; ?>" usemap="#administratorMap" />					
-						<map name="administratorMap">
+					<img src="<?php echo base_url().'assets/images/administrator-preliminary_all_horiz.png'; ?>" usemap="#administratorMap" alt="administrator" />					
+						<map name="administratorMap" id="emap2" >
 							<area shape="rect" coords="4,1,186,103" title="Create Seat Map" alt="Create Seat Map" href="<?php echo base_url().'SeatCtrl/create'; ?>" />							
 						</map>
 				</div>

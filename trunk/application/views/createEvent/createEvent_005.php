@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Create Event";
+	$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Create Event - Step 5";
 	$this->thisPage_menuCorrespond = "Create Event Step 5";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -16,7 +19,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	 <!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	 <!--For modal v1-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/> <!--For overlay v2 -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
 	<?php
@@ -29,17 +32,13 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_005.js'; ?>"></script>				
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 	<!-- For overlay v2-->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
 	<?php
 		$this->load->view('html-generic/seatV2_Essentials_Scripts.inc');
-	?>	
-	
-	<script type="text/javascript"	>
-		
-	</script>
+	?>		
 </head>
 <body>
 <?php
@@ -66,7 +65,7 @@ $this->load->view('html-generic/doctype.inc');
 			<div id="page_title">
 				Step 5: Configure ticket classes for ' <?php echo $_COOKIE['eventName']; ?> '
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction" >
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do 
 				<br/>
 				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -155,7 +154,7 @@ $this->load->view('html-generic/doctype.inc');
 											<td class="iNeedMoreSpace" >&nbsp;</td>											
 											<td class="iNeedMoreSpace" >&nbsp;</td>
 										</tr>
-									<tbody>
+									</tbody>
 								</table>								
 							</div>							
 						</div>
@@ -172,7 +171,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

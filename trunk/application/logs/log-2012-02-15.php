@@ -8647,3 +8647,5509 @@ DEBUG - 2012-02-15 07:11:24 --> UTF-8 Support Enabled
 DEBUG - 2012-02-15 07:11:24 --> URI Class Initialized
 DEBUG - 2012-02-15 07:11:24 --> Router Class Initialized
 ERROR - 2012-02-15 07:11:24 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:08 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:08 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:08 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:08 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:08 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:08 --> Router Class Initialized
+DEBUG - 2012-02-15 07:52:08 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 07:52:09 --> Output Class Initialized
+DEBUG - 2012-02-15 07:52:09 --> Security Class Initialized
+DEBUG - 2012-02-15 07:52:09 --> Input Class Initialized
+DEBUG - 2012-02-15 07:52:09 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 07:52:09 --> Language Class Initialized
+DEBUG - 2012-02-15 07:52:09 --> Loader Class Initialized
+DEBUG - 2012-02-15 07:52:09 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 07:52:09 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Controller Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Session Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 07:52:10 --> A session cookie was not found.
+DEBUG - 2012-02-15 07:52:10 --> Session routines successfully run
+DEBUG - 2012-02-15 07:52:10 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:10 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:10 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 07:52:10 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 07:52:10 --> Final output sent to browser
+DEBUG - 2012-02-15 07:52:10 --> Total execution time: 2.3697
+DEBUG - 2012-02-15 07:52:12 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:12 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:12 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:12 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:12 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:12 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:12 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:16 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:16 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Router Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Output Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Security Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Input Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 07:52:16 --> Language Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Loader Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 07:52:16 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Controller Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Session Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 07:52:16 --> Session routines successfully run
+DEBUG - 2012-02-15 07:52:16 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:16 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:17 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:17 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Router Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 07:52:17 --> Output Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Security Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Input Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 07:52:17 --> Language Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Loader Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 07:52:17 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Controller Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Session Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 07:52:17 --> Session routines successfully run
+DEBUG - 2012-02-15 07:52:17 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:17 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:17 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 07:52:17 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 07:52:17 --> Final output sent to browser
+DEBUG - 2012-02-15 07:52:17 --> Total execution time: 0.3679
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:18 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:18 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:18 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:18 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 07:52:24 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:24 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Router Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Output Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Security Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Input Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 07:52:24 --> Language Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Loader Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 07:52:24 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Controller Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Session Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 07:52:24 --> Session routines successfully run
+DEBUG - 2012-02-15 07:52:24 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:24 --> Model Class Initialized
+DEBUG - 2012-02-15 07:52:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 07:52:24 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 07:52:24 --> Final output sent to browser
+DEBUG - 2012-02-15 07:52:24 --> Total execution time: 0.2124
+DEBUG - 2012-02-15 07:52:40 --> Config Class Initialized
+DEBUG - 2012-02-15 07:52:40 --> Hooks Class Initialized
+DEBUG - 2012-02-15 07:52:40 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 07:52:40 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 07:52:40 --> URI Class Initialized
+DEBUG - 2012-02-15 07:52:40 --> Router Class Initialized
+ERROR - 2012-02-15 07:52:40 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 08:20:20 --> Config Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Hooks Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 08:20:20 --> URI Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Router Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 08:20:20 --> Output Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Security Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Input Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 08:20:20 --> Language Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Loader Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 08:20:20 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Controller Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Model Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Model Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Session Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 08:20:20 --> A session cookie was not found.
+DEBUG - 2012-02-15 08:20:20 --> Session routines successfully run
+DEBUG - 2012-02-15 08:20:20 --> Model Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 08:20:20 --> Model Class Initialized
+DEBUG - 2012-02-15 08:20:20 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 08:20:20 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 08:20:20 --> Final output sent to browser
+DEBUG - 2012-02-15 08:20:20 --> Total execution time: 0.2929
+DEBUG - 2012-02-15 08:33:58 --> Config Class Initialized
+DEBUG - 2012-02-15 08:33:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 08:33:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 08:33:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 08:33:58 --> URI Class Initialized
+DEBUG - 2012-02-15 08:33:58 --> Router Class Initialized
+ERROR - 2012-02-15 08:33:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:02:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:02:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:02:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:02:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:02:57 --> URI Class Initialized
+DEBUG - 2012-02-15 10:02:57 --> Router Class Initialized
+DEBUG - 2012-02-15 10:02:57 --> Output Class Initialized
+DEBUG - 2012-02-15 10:02:58 --> Security Class Initialized
+DEBUG - 2012-02-15 10:02:58 --> Input Class Initialized
+DEBUG - 2012-02-15 10:02:58 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:02:58 --> Language Class Initialized
+DEBUG - 2012-02-15 10:02:58 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:02:58 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:02:58 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:03:00 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:03:00 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:03:00 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:00 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:00 --> Session Class Initialized
+DEBUG - 2012-02-15 10:03:00 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:03:00 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:03:01 --> Session routines successfully run
+DEBUG - 2012-02-15 10:03:01 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:01 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:01 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:01 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:01 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:23 --> Config Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:03:23 --> URI Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Router Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Output Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Security Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Input Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:03:23 --> Language Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:03:23 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:03:23 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Session Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:03:23 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:03:23 --> Session routines successfully run
+DEBUG - 2012-02-15 10:03:23 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:23 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:23 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:27 --> Config Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:03:27 --> URI Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Router Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Output Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Security Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Input Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:03:27 --> Language Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:03:27 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:03:27 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:27 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:28 --> Session Class Initialized
+DEBUG - 2012-02-15 10:03:28 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:03:28 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:03:28 --> Session routines successfully run
+DEBUG - 2012-02-15 10:03:28 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:28 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:28 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:44 --> Config Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:03:44 --> URI Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Router Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Output Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Security Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Input Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:03:44 --> Language Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:03:44 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:03:44 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:03:45 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Session Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:03:45 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:03:45 --> Session routines successfully run
+DEBUG - 2012-02-15 10:03:45 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:03:45 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Model Class Initialized
+DEBUG - 2012-02-15 10:03:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:04:46 --> Config Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:04:46 --> URI Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Router Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Output Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Security Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Input Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:04:46 --> Language Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:04:46 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:04:46 --> Model Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Model Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Session Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:04:46 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:04:46 --> Session routines successfully run
+DEBUG - 2012-02-15 10:04:46 --> Model Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:04:46 --> Model Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Model Class Initialized
+DEBUG - 2012-02-15 10:04:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:47 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:47 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Router Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 10:09:47 --> Output Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Security Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Input Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:09:47 --> Language Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:09:47 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Session Class Initialized
+DEBUG - 2012-02-15 10:09:47 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:09:47 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:09:47 --> Session routines successfully run
+DEBUG - 2012-02-15 10:09:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:09:48 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 10:09:48 --> Final output sent to browser
+DEBUG - 2012-02-15 10:09:48 --> Total execution time: 0.4955
+DEBUG - 2012-02-15 10:09:49 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:49 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:49 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:54 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:54 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Router Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Output Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Security Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Input Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:09:54 --> Language Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:09:54 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Session Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:09:54 --> Session routines successfully run
+DEBUG - 2012-02-15 10:09:54 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:54 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:54 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:56 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:56 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Router Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 10:09:56 --> Output Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Security Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Input Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:09:56 --> Language Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:09:56 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Session Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:09:56 --> Session routines successfully run
+DEBUG - 2012-02-15 10:09:56 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:56 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:56 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:09:56 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 10:09:56 --> Final output sent to browser
+DEBUG - 2012-02-15 10:09:56 --> Total execution time: 0.5272
+DEBUG - 2012-02-15 10:09:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:57 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:57 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:57 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:57 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:57 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:57 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:57 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:57 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:57 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:57 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:58 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:58 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:58 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Router Class Initialized
+ERROR - 2012-02-15 10:09:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:09:58 --> Config Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:09:58 --> URI Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Router Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Output Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Security Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Input Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:09:58 --> Language Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:09:58 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Session Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:09:58 --> Session routines successfully run
+DEBUG - 2012-02-15 10:09:58 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:58 --> Model Class Initialized
+DEBUG - 2012-02-15 10:09:58 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:09:58 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 10:09:58 --> Final output sent to browser
+DEBUG - 2012-02-15 10:09:58 --> Total execution time: 0.2233
+DEBUG - 2012-02-15 10:10:10 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:10 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 10:10:10 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:10 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:10 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:10 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:10:10 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:10 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:10 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:10 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:10:10 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 10:10:10 --> Final output sent to browser
+DEBUG - 2012-02-15 10:10:10 --> Total execution time: 0.2291
+DEBUG - 2012-02-15 10:10:11 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:11 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:11 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:11 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:11 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:11 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:11 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:14 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:14 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:14 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:14 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:15 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:15 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:15 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:15 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 10:10:15 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:15 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:15 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:15 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:15 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:10:15 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 10:10:15 --> Final output sent to browser
+DEBUG - 2012-02-15 10:10:15 --> Total execution time: 0.2491
+DEBUG - 2012-02-15 10:10:15 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:15 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:16 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:17 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Hooks Class Initialized
+ERROR - 2012-02-15 10:10:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:17 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:17 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:18 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:18 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:18 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:18 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:19 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:19 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:10:19 --> File loaded: application/views/createEvent/createEvent_001.php
+DEBUG - 2012-02-15 10:10:19 --> Final output sent to browser
+DEBUG - 2012-02-15 10:10:19 --> Total execution time: 0.6935
+DEBUG - 2012-02-15 10:10:19 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 10:10:19 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:19 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Utf8 Class Initialized
+ERROR - 2012-02-15 10:10:19 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:19 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:19 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:19 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:19 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 10:10:19 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:31 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:31 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:31 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:31 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:31 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:31 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:10:32 --> File loaded: application/views/createEvent/createEvent_002.php
+DEBUG - 2012-02-15 10:10:32 --> Final output sent to browser
+DEBUG - 2012-02-15 10:10:32 --> Total execution time: 1.1865
+DEBUG - 2012-02-15 10:10:33 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:33 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Router Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Output Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Security Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Input Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:10:33 --> Language Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:10:33 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:10:33 --> Session routines successfully run
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:10:33 --> Model Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Session class already loaded. Second attempt ignored.
+ERROR - 2012-02-15 10:10:33 --> 404 Page Not Found --> EventCtrl/css
+DEBUG - 2012-02-15 10:10:33 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:33 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:33 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:33 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:33 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:33 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:33 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:34 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:34 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:34 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:50 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:50 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:50 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:58 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:58 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:10:58 --> Config Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:10:58 --> URI Class Initialized
+DEBUG - 2012-02-15 10:10:58 --> Router Class Initialized
+ERROR - 2012-02-15 10:10:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:16 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:16 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Router Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Output Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Security Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Input Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:11:16 --> Language Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:11:16 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:11:16 --> Session routines successfully run
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:11:16 --> File loaded: application/views/createEvent/createEvent_003.php
+DEBUG - 2012-02-15 10:11:16 --> Final output sent to browser
+DEBUG - 2012-02-15 10:11:16 --> Total execution time: 0.4881
+DEBUG - 2012-02-15 10:11:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:17 --> Router Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> URI Class Initialized
+ERROR - 2012-02-15 10:11:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:17 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:17 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:17 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:17 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:17 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:25 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:25 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:25 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:25 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:25 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:26 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:26 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:30 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:30 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Router Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Output Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Security Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Input Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:11:30 --> Language Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:11:30 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:11:30 --> Session routines successfully run
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:30 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:11:31 --> File loaded: application/views/createEvent/createEvent_004.php
+DEBUG - 2012-02-15 10:11:31 --> Final output sent to browser
+DEBUG - 2012-02-15 10:11:31 --> Total execution time: 1.3343
+DEBUG - 2012-02-15 10:11:31 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:31 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:31 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:42 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:42 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Router Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Output Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Security Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Input Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:11:42 --> Language Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:11:42 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:11:43 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:11:43 --> Session routines successfully run
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:43 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:43 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/seatV2_Essentials_Scripts.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/overlayv2_freeform.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 10:11:44 --> File loaded: application/views/createEvent/createEvent_005.php
+DEBUG - 2012-02-15 10:11:44 --> Final output sent to browser
+DEBUG - 2012-02-15 10:11:44 --> Total execution time: 1.3555
+DEBUG - 2012-02-15 10:11:44 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:44 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:44 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:44 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:44 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:44 --> Router Class Initialized
+ERROR - 2012-02-15 10:11:44 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:11:48 --> Config Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:11:48 --> URI Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Router Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Output Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Security Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Input Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:11:48 --> Language Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:11:48 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:11:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Session Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:11:48 --> Session routines successfully run
+DEBUG - 2012-02-15 10:11:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Model Class Initialized
+DEBUG - 2012-02-15 10:11:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:11:49 --> Final output sent to browser
+DEBUG - 2012-02-15 10:11:49 --> Total execution time: 0.9359
+DEBUG - 2012-02-15 10:12:07 --> Config Class Initialized
+DEBUG - 2012-02-15 10:12:07 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:12:07 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:12:07 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:12:07 --> URI Class Initialized
+DEBUG - 2012-02-15 10:12:07 --> Router Class Initialized
+ERROR - 2012-02-15 10:12:07 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 10:15:40 --> Config Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:15:41 --> URI Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Router Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Output Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Security Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Input Class Initialized
+DEBUG - 2012-02-15 10:15:41 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:15:41 --> Language Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:15:42 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:15:42 --> Model Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Model Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Session Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:15:42 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:15:42 --> Session routines successfully run
+DEBUG - 2012-02-15 10:15:42 --> Model Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:15:42 --> Model Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Model Class Initialized
+DEBUG - 2012-02-15 10:15:42 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:17:21 --> Config Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:17:21 --> URI Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Router Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Output Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Security Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Input Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:17:21 --> Language Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:17:21 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:17:21 --> Model Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Model Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Session Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:17:21 --> A session cookie was not found.
+DEBUG - 2012-02-15 10:17:21 --> Session routines successfully run
+DEBUG - 2012-02-15 10:17:21 --> Model Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:17:21 --> Model Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Model Class Initialized
+DEBUG - 2012-02-15 10:17:21 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:25 --> Config Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:20:25 --> URI Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Router Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Output Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Security Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Input Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:20:25 --> Language Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:20:25 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:20:25 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Session Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:20:25 --> Session routines successfully run
+DEBUG - 2012-02-15 10:20:25 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:25 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:25 --> Final output sent to browser
+DEBUG - 2012-02-15 10:20:25 --> Total execution time: 0.2965
+DEBUG - 2012-02-15 10:20:34 --> Config Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 10:20:34 --> URI Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Router Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Output Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Security Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Input Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 10:20:34 --> Language Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Loader Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 10:20:34 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Controller Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 10:20:34 --> Session routines successfully run
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:20:34 --> Model Class Initialized
+DEBUG - 2012-02-15 10:20:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 10:21:05 --> Final output sent to browser
+DEBUG - 2012-02-15 10:21:05 --> Total execution time: 30.8726
+DEBUG - 2012-02-15 11:21:08 --> Config Class Initialized
+DEBUG - 2012-02-15 11:21:08 --> Hooks Class Initialized
+DEBUG - 2012-02-15 11:21:08 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 11:21:08 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 11:21:08 --> URI Class Initialized
+DEBUG - 2012-02-15 11:21:08 --> Router Class Initialized
+DEBUG - 2012-02-15 11:21:09 --> Output Class Initialized
+DEBUG - 2012-02-15 11:21:09 --> Security Class Initialized
+DEBUG - 2012-02-15 11:21:09 --> Input Class Initialized
+DEBUG - 2012-02-15 11:21:09 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 11:21:10 --> Language Class Initialized
+DEBUG - 2012-02-15 11:21:10 --> Loader Class Initialized
+DEBUG - 2012-02-15 11:21:10 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 11:21:11 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Controller Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Model Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Model Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Session Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 11:21:13 --> Session routines successfully run
+DEBUG - 2012-02-15 11:21:13 --> Model Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 11:21:13 --> Model Class Initialized
+DEBUG - 2012-02-15 11:21:13 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 11:21:13 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 11:21:14 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 11:21:14 --> Final output sent to browser
+DEBUG - 2012-02-15 11:21:14 --> Total execution time: 6.5612
+DEBUG - 2012-02-15 15:12:34 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Router Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:12:35 --> Output Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Security Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Input Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:12:35 --> Language Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:12:35 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:12:35 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Session Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:12:37 --> A session cookie was not found.
+DEBUG - 2012-02-15 15:12:37 --> Session routines successfully run
+DEBUG - 2012-02-15 15:12:37 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:37 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:37 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:12:37 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 15:12:37 --> Final output sent to browser
+DEBUG - 2012-02-15 15:12:37 --> Total execution time: 3.6279
+DEBUG - 2012-02-15 15:12:44 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:44 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Router Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Output Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Security Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Input Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:12:44 --> Language Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:12:44 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Session Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:12:44 --> Session routines successfully run
+DEBUG - 2012-02-15 15:12:44 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:44 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:44 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:45 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:45 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Router Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:12:45 --> Output Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Security Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Input Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:12:45 --> Language Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:12:45 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Session Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:12:45 --> Session routines successfully run
+DEBUG - 2012-02-15 15:12:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:12:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:12:45 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:12:45 --> Final output sent to browser
+DEBUG - 2012-02-15 15:12:45 --> Total execution time: 0.4179
+DEBUG - 2012-02-15 15:12:46 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:46 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:46 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:46 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:48 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Router Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:12:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:49 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:49 --> Config Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:12:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:12:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:12:49 --> Router Class Initialized
+ERROR - 2012-02-15 15:12:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:19:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:19:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:19:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:19:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:19:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:19:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:19:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:45 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:45 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Router Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:31:45 --> Output Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Security Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Input Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:31:45 --> Language Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:31:45 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Session Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:31:45 --> Session routines successfully run
+DEBUG - 2012-02-15 15:31:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:31:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:31:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:31:45 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:31:45 --> Final output sent to browser
+DEBUG - 2012-02-15 15:31:45 --> Total execution time: 0.5329
+DEBUG - 2012-02-15 15:31:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Router Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Hooks Class Initialized
+ERROR - 2012-02-15 15:31:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:48 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:48 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:48 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:48 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:48 --> URI Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Router Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Config Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:31:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:31:48 --> URI Class Initialized
+ERROR - 2012-02-15 15:31:48 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:31:48 --> Router Class Initialized
+ERROR - 2012-02-15 15:31:48 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:25 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:25 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Router Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:32:25 --> Output Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Security Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Input Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:32:25 --> Language Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:32:25 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Model Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Model Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Session Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:32:25 --> Session routines successfully run
+DEBUG - 2012-02-15 15:32:25 --> Model Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:32:25 --> Model Class Initialized
+DEBUG - 2012-02-15 15:32:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:32:26 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:32:26 --> Final output sent to browser
+DEBUG - 2012-02-15 15:32:26 --> Total execution time: 0.2551
+DEBUG - 2012-02-15 15:32:26 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:26 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:26 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:26 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:26 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:26 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:26 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:27 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:27 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:27 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:27 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Router Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Config Class Initialized
+ERROR - 2012-02-15 15:32:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:27 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:27 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:27 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:27 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:27 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:27 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:30 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:32:30 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Config Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Router Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:32:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:32:30 --> URI Class Initialized
+DEBUG - 2012-02-15 15:32:30 --> Router Class Initialized
+ERROR - 2012-02-15 15:32:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:30 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:30 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Router Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:35:30 --> Output Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Security Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Input Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:35:30 --> Language Class Initialized
+DEBUG - 2012-02-15 15:35:30 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:35:31 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Model Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Model Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Session Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:35:31 --> Session routines successfully run
+DEBUG - 2012-02-15 15:35:31 --> Model Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:35:31 --> Model Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:35:31 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:35:31 --> Final output sent to browser
+DEBUG - 2012-02-15 15:35:31 --> Total execution time: 0.2309
+DEBUG - 2012-02-15 15:35:31 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:31 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:31 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:31 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:31 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:35:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:35:32 --> Router Class Initialized
+ERROR - 2012-02-15 15:35:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:03 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:03 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Router Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:36:03 --> Output Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Security Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Input Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:36:03 --> Language Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:36:03 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Model Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Model Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Session Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:36:03 --> Session routines successfully run
+DEBUG - 2012-02-15 15:36:03 --> Model Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:36:03 --> Model Class Initialized
+DEBUG - 2012-02-15 15:36:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:36:03 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:36:03 --> Final output sent to browser
+DEBUG - 2012-02-15 15:36:03 --> Total execution time: 0.2328
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:04 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:04 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:04 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:22 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:22 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:22 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:36:22 --> Config Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:36:22 --> URI Class Initialized
+DEBUG - 2012-02-15 15:36:22 --> Router Class Initialized
+ERROR - 2012-02-15 15:36:22 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:45:59 --> Config Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:45:59 --> URI Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Router Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:45:59 --> Output Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Security Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Input Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:45:59 --> Language Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:45:59 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Model Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Model Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Session Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:45:59 --> Session routines successfully run
+DEBUG - 2012-02-15 15:45:59 --> Model Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:45:59 --> Model Class Initialized
+DEBUG - 2012-02-15 15:45:59 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:45:59 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:45:59 --> Final output sent to browser
+DEBUG - 2012-02-15 15:45:59 --> Total execution time: 0.4016
+DEBUG - 2012-02-15 15:46:00 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:00 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:00 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:00 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:00 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:00 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:00 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:01 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:01 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:01 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:01 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:01 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Router Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:01 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 15:46:01 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:01 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:01 --> Router Class Initialized
+DEBUG - 2012-02-15 15:46:01 --> URI Class Initialized
+ERROR - 2012-02-15 15:46:01 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:01 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:01 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:22 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:22 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:22 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:46:22 --> Config Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:46:22 --> URI Class Initialized
+DEBUG - 2012-02-15 15:46:22 --> Router Class Initialized
+ERROR - 2012-02-15 15:46:22 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:32 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:32 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Router Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:47:32 --> Output Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Security Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Input Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:47:32 --> Language Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:47:32 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Model Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Model Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Session Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:47:32 --> Session routines successfully run
+DEBUG - 2012-02-15 15:47:32 --> Model Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:47:32 --> Model Class Initialized
+DEBUG - 2012-02-15 15:47:32 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:47:32 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:47:32 --> Final output sent to browser
+DEBUG - 2012-02-15 15:47:32 --> Total execution time: 0.5061
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:33 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:33 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:33 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:47:37 --> Router Class Initialized
+DEBUG - 2012-02-15 15:47:37 --> URI Class Initialized
+ERROR - 2012-02-15 15:47:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:47:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:47:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:35 --> Router Class Initialized
+DEBUG - 2012-02-15 15:48:35 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:48:36 --> Output Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Security Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Input Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:48:36 --> Language Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:48:36 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Model Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Model Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Session Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:48:36 --> Session routines successfully run
+DEBUG - 2012-02-15 15:48:36 --> Model Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:48:36 --> Model Class Initialized
+DEBUG - 2012-02-15 15:48:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:48:36 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:48:36 --> Final output sent to browser
+DEBUG - 2012-02-15 15:48:36 --> Total execution time: 0.3688
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:37 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:37 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:37 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:49 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:48:49 --> Config Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:48:49 --> URI Class Initialized
+DEBUG - 2012-02-15 15:48:49 --> Router Class Initialized
+ERROR - 2012-02-15 15:48:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:34 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:34 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Router Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:49:34 --> Output Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Security Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Input Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:49:34 --> Language Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:49:34 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Model Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Model Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Session Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:49:34 --> Session routines successfully run
+DEBUG - 2012-02-15 15:49:34 --> Model Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:49:34 --> Model Class Initialized
+DEBUG - 2012-02-15 15:49:34 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:49:34 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:49:34 --> Final output sent to browser
+DEBUG - 2012-02-15 15:49:34 --> Total execution time: 0.2628
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+DEBUG - 2012-02-15 15:49:35 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 15:49:35 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:49:36 --> Config Class Initialized
+DEBUG - 2012-02-15 15:49:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:49:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:49:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:49:36 --> URI Class Initialized
+DEBUG - 2012-02-15 15:49:36 --> Router Class Initialized
+ERROR - 2012-02-15 15:49:36 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:41 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:41 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Router Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:56:41 --> Output Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Security Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Input Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:56:41 --> Language Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:56:41 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Model Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Model Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Session Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:56:41 --> Session routines successfully run
+DEBUG - 2012-02-15 15:56:41 --> Model Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:56:41 --> Model Class Initialized
+DEBUG - 2012-02-15 15:56:41 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:56:41 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:56:41 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:56:42 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:56:42 --> Final output sent to browser
+DEBUG - 2012-02-15 15:56:42 --> Total execution time: 0.2544
+DEBUG - 2012-02-15 15:56:42 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:42 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:42 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:56:43 --> Config Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:56:43 --> URI Class Initialized
+DEBUG - 2012-02-15 15:56:43 --> Router Class Initialized
+ERROR - 2012-02-15 15:56:43 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:45 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:45 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Router Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:57:45 --> Output Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Security Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Input Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:57:45 --> Language Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:57:45 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Session Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:57:45 --> Session routines successfully run
+DEBUG - 2012-02-15 15:57:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:57:45 --> Model Class Initialized
+DEBUG - 2012-02-15 15:57:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:57:45 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:57:45 --> Final output sent to browser
+DEBUG - 2012-02-15 15:57:45 --> Total execution time: 0.2249
+DEBUG - 2012-02-15 15:57:46 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:46 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:46 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:46 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:57:47 --> Config Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:57:47 --> URI Class Initialized
+DEBUG - 2012-02-15 15:57:47 --> Router Class Initialized
+ERROR - 2012-02-15 15:57:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:54 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:54 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Router Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 15:58:54 --> Output Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Security Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Input Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 15:58:54 --> Language Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Loader Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 15:58:54 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Controller Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Model Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Model Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Session Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 15:58:54 --> Session routines successfully run
+DEBUG - 2012-02-15 15:58:54 --> Model Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:58:54 --> Model Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 15:58:54 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 15:58:54 --> Final output sent to browser
+DEBUG - 2012-02-15 15:58:54 --> Total execution time: 0.2218
+DEBUG - 2012-02-15 15:58:54 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 15:58:55 --> Config Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 15:58:55 --> URI Class Initialized
+DEBUG - 2012-02-15 15:58:55 --> Router Class Initialized
+ERROR - 2012-02-15 15:58:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:48 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:48 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Router Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:00:48 --> Output Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Security Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Input Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:00:48 --> Language Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:00:48 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Session Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:00:48 --> Session routines successfully run
+DEBUG - 2012-02-15 16:00:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:00:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:00:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:00:48 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 16:00:48 --> Final output sent to browser
+DEBUG - 2012-02-15 16:00:48 --> Total execution time: 0.2370
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:00:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:00:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:00:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:00:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:33 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:33 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Router Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:01:33 --> Output Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Security Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Input Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:01:33 --> Language Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:01:33 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Model Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Model Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Session Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:01:33 --> Session routines successfully run
+DEBUG - 2012-02-15 16:01:33 --> Model Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:01:33 --> Model Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:01:33 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 16:01:33 --> Final output sent to browser
+DEBUG - 2012-02-15 16:01:33 --> Total execution time: 0.2316
+DEBUG - 2012-02-15 16:01:33 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:33 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:33 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:34 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:34 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:34 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:34 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:34 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:34 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:34 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:34 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:34 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:34 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:34 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:34 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:01:38 --> Config Class Initialized
+DEBUG - 2012-02-15 16:01:38 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:01:38 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:01:38 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:01:38 --> URI Class Initialized
+DEBUG - 2012-02-15 16:01:38 --> Router Class Initialized
+ERROR - 2012-02-15 16:01:38 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:07 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:07 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:07 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:07 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:07 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:07 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:07 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:41 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:41 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Router Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:02:41 --> Output Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Security Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Input Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:02:41 --> Language Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:02:41 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Model Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Model Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Session Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:02:41 --> Session routines successfully run
+DEBUG - 2012-02-15 16:02:41 --> Model Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:02:41 --> Model Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:02:41 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 16:02:41 --> Final output sent to browser
+DEBUG - 2012-02-15 16:02:41 --> Total execution time: 0.2628
+DEBUG - 2012-02-15 16:02:41 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:41 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:41 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:42 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:42 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:42 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:42 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:42 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:42 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:42 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:42 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:42 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:42 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:42 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:42 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:54 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:54 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:55 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:02:55 --> Config Class Initialized
+DEBUG - 2012-02-15 16:02:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:02:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:02:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:02:55 --> URI Class Initialized
+DEBUG - 2012-02-15 16:02:55 --> Router Class Initialized
+ERROR - 2012-02-15 16:02:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:04:40 --> Config Class Initialized
+DEBUG - 2012-02-15 16:04:40 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:04:40 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:04:40 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:04:40 --> URI Class Initialized
+DEBUG - 2012-02-15 16:04:40 --> Router Class Initialized
+ERROR - 2012-02-15 16:04:40 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:12:54 --> Config Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:12:54 --> URI Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Router Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Output Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Security Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Input Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:12:54 --> Language Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:12:54 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:12:54 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Model Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Model Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Session Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:12:55 --> Session routines successfully run
+DEBUG - 2012-02-15 16:12:55 --> Model Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:12:55 --> Model Class Initialized
+DEBUG - 2012-02-15 16:12:55 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:12:55 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 16:12:55 --> Final output sent to browser
+DEBUG - 2012-02-15 16:12:55 --> Total execution time: 1.4070
+DEBUG - 2012-02-15 16:46:31 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:31 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:31 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:46:32 --> Output Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> Security Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> Input Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:46:32 --> Language Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:46:32 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:46:33 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Session Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:46:36 --> A session cookie was not found.
+DEBUG - 2012-02-15 16:46:36 --> Session routines successfully run
+DEBUG - 2012-02-15 16:46:36 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:36 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:46:37 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 16:46:37 --> Final output sent to browser
+DEBUG - 2012-02-15 16:46:37 --> Total execution time: 6.5625
+DEBUG - 2012-02-15 16:46:46 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:46 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Output Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Security Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Input Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:46:46 --> Language Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:46:46 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Session Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:46:46 --> Session routines successfully run
+DEBUG - 2012-02-15 16:46:46 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:46 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:48 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:48 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:46:48 --> Output Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Security Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Input Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:46:48 --> Language Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:46:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:48 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Session Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:46:48 --> Session routines successfully run
+DEBUG - 2012-02-15 16:46:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:48 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:48 --> Session class already loaded. Second attempt ignored.
+ERROR - 2012-02-15 16:46:48 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:46:48 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 16:46:48 --> Final output sent to browser
+DEBUG - 2012-02-15 16:46:48 --> Total execution time: 0.5291
+DEBUG - 2012-02-15 16:46:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:49 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:49 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 16:46:49 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:50 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:50 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:50 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:50 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:50 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:51 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:51 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:51 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:55 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:55 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:55 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:55 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:55 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:46:56 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:56 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Router Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Output Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Security Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Input Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:46:56 --> Language Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:46:56 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Session Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:46:56 --> Session routines successfully run
+DEBUG - 2012-02-15 16:46:56 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:56 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:56 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:46:56 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:57 --> Model Class Initialized
+DEBUG - 2012-02-15 16:46:57 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:46:58 --> Config Class Initialized
+DEBUG - 2012-02-15 16:46:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:46:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:46:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:46:58 --> URI Class Initialized
+DEBUG - 2012-02-15 16:46:58 --> Router Class Initialized
+ERROR - 2012-02-15 16:46:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:02 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:02 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:02 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:02 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:02 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:03 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:03 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:07 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:07 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:07 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:07 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:07 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:07 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:47:08 --> File loaded: application/views/book/bookStep2.php
+DEBUG - 2012-02-15 16:47:08 --> Final output sent to browser
+DEBUG - 2012-02-15 16:47:08 --> Total execution time: 1.3690
+DEBUG - 2012-02-15 16:47:09 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:09 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:09 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:09 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:09 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:09 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:09 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:14 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:14 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:14 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:14 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:14 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:14 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:14 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:15 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:15 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:15 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:15 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:47:15 --> File loaded: application/views/book/bookStep3.php
+DEBUG - 2012-02-15 16:47:15 --> Final output sent to browser
+DEBUG - 2012-02-15 16:47:15 --> Total execution time: 0.4504
+DEBUG - 2012-02-15 16:47:16 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:16 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:16 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:16 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:16 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:16 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:16 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:16 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:16 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:17 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:21 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:21 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:21 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:21 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:21 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:21 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 16:47:21 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:21 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> Final output sent to browser
+DEBUG - 2012-02-15 16:47:22 --> Total execution time: 0.6676
+DEBUG - 2012-02-15 16:47:22 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:22 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 16:47:22 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:22 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:22 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:22 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:22 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:47:22 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 16:47:22 --> Final output sent to browser
+DEBUG - 2012-02-15 16:47:22 --> Total execution time: 0.2603
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:23 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:23 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:23 --> Router Class Initialized
+ERROR - 2012-02-15 16:47:23 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 16:47:26 --> Config Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Hooks Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 16:47:26 --> URI Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Router Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Output Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Security Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Input Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 16:47:26 --> Language Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Loader Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 16:47:26 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Controller Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Session Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 16:47:26 --> Session routines successfully run
+DEBUG - 2012-02-15 16:47:26 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:26 --> Model Class Initialized
+DEBUG - 2012-02-15 16:47:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 16:47:26 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 16:47:26 --> Final output sent to browser
+DEBUG - 2012-02-15 16:47:26 --> Total execution time: 0.2377
+DEBUG - 2012-02-15 17:01:32 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Router Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:01:33 --> Output Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Security Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Input Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:01:33 --> Language Class Initialized
+DEBUG - 2012-02-15 17:01:33 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:01:34 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:01:34 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:01:34 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:01:34 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:35 --> Session Class Initialized
+DEBUG - 2012-02-15 17:01:35 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:01:35 --> A session cookie was not found.
+DEBUG - 2012-02-15 17:01:35 --> Session routines successfully run
+DEBUG - 2012-02-15 17:01:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:01:35 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 17:01:35 --> Final output sent to browser
+DEBUG - 2012-02-15 17:01:35 --> Total execution time: 3.1387
+DEBUG - 2012-02-15 17:01:38 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:38 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:38 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:38 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:38 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:38 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:38 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:44 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:44 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:44 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:45 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Router Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Output Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Security Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Input Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:01:45 --> Language Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:01:45 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:01:45 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Session Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:01:48 --> Session routines successfully run
+DEBUG - 2012-02-15 17:01:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:49 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:49 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Router Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:01:49 --> Output Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Security Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Input Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:01:49 --> Language Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:01:49 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Session Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:01:49 --> Session routines successfully run
+DEBUG - 2012-02-15 17:01:49 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:49 --> Model Class Initialized
+DEBUG - 2012-02-15 17:01:49 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:01:49 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:01:49 --> Final output sent to browser
+DEBUG - 2012-02-15 17:01:49 --> Total execution time: 0.3009
+DEBUG - 2012-02-15 17:01:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Router Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:50 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:01:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:53 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:53 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:53 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:53 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:53 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:53 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:53 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:01:58 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:58 --> Config Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Router Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:01:58 --> URI Class Initialized
+DEBUG - 2012-02-15 17:01:58 --> Router Class Initialized
+ERROR - 2012-02-15 17:01:58 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:01:58 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Router Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:02:50 --> Output Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Security Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Input Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:02:50 --> Language Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:02:50 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Model Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Model Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Session Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:02:50 --> Session routines successfully run
+DEBUG - 2012-02-15 17:02:50 --> Model Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:02:50 --> Model Class Initialized
+DEBUG - 2012-02-15 17:02:50 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:02:50 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:02:50 --> Final output sent to browser
+DEBUG - 2012-02-15 17:02:50 --> Total execution time: 0.2922
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:51 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:51 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:51 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:51 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:02:55 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> Config Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:55 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:02:55 --> Router Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> URI Class Initialized
+DEBUG - 2012-02-15 17:02:55 --> Router Class Initialized
+ERROR - 2012-02-15 17:02:55 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:02:55 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:19 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:19 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Router Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:03:19 --> Output Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Security Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Input Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:03:19 --> Language Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:03:19 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Model Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Model Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Session Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:03:19 --> Session routines successfully run
+DEBUG - 2012-02-15 17:03:19 --> Model Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:03:19 --> Model Class Initialized
+DEBUG - 2012-02-15 17:03:19 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:03:19 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:03:19 --> Final output sent to browser
+DEBUG - 2012-02-15 17:03:19 --> Total execution time: 0.5852
+DEBUG - 2012-02-15 17:03:20 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:20 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Router Class Initialized
+ERROR - 2012-02-15 17:03:20 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:20 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:20 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Router Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Config Class Initialized
+ERROR - 2012-02-15 17:03:20 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:20 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:20 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Router Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:20 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:20 --> Router Class Initialized
+ERROR - 2012-02-15 17:03:20 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:03:20 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:20 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:21 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Router Class Initialized
+ERROR - 2012-02-15 17:03:21 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:21 --> Router Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:21 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Router Class Initialized
+ERROR - 2012-02-15 17:03:21 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:03:21 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:03:21 --> Config Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:03:21 --> URI Class Initialized
+DEBUG - 2012-02-15 17:03:21 --> Router Class Initialized
+ERROR - 2012-02-15 17:03:21 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:52 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:52 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Router Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:04:52 --> Output Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Security Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Input Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:04:52 --> Language Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:04:52 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Model Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Model Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Session Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:04:52 --> Session routines successfully run
+DEBUG - 2012-02-15 17:04:52 --> Model Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:04:52 --> Model Class Initialized
+DEBUG - 2012-02-15 17:04:52 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:04:52 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:04:52 --> Final output sent to browser
+DEBUG - 2012-02-15 17:04:52 --> Total execution time: 0.8742
+DEBUG - 2012-02-15 17:04:53 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:53 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:53 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:53 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:53 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:53 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:53 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:53 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:53 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:53 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:53 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:53 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:53 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:54 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:54 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:54 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:54 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:54 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:54 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:54 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:04:56 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Config Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:56 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:04:56 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Router Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> URI Class Initialized
+DEBUG - 2012-02-15 17:04:56 --> Router Class Initialized
+ERROR - 2012-02-15 17:04:56 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:04:56 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:16 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:16 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:16 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:17 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:17 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:17 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:17 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:17 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:17 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:17 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:17 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:18 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:18 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:18 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:19 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:19 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:19 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:19 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:20 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:20 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:20 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:23 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:23 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:23 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:23 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:23 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:23 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:23 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:24 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:24 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:24 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:24 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:24 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:27 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:27 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:27 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:27 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:27 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:27 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:35 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:35 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:35 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:35 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:35 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:05:36 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:05:37 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:05:37 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:05:37 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:05:37 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:05:37 --> File loaded: application/views/book/bookStep2.php
+DEBUG - 2012-02-15 17:05:37 --> Final output sent to browser
+DEBUG - 2012-02-15 17:05:37 --> Total execution time: 1.3796
+DEBUG - 2012-02-15 17:05:37 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:37 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:37 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:45 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:45 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:45 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:45 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:45 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:45 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:45 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:46 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Output Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Security Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Input Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:05:46 --> Language Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:05:46 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:05:46 --> Session routines successfully run
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> Model Class Initialized
+DEBUG - 2012-02-15 17:05:46 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:05:46 --> File loaded: application/views/book/bookStep3.php
+DEBUG - 2012-02-15 17:05:46 --> Final output sent to browser
+DEBUG - 2012-02-15 17:05:46 --> Total execution time: 0.5973
+DEBUG - 2012-02-15 17:05:47 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:47 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:47 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:47 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Router Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:47 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:05:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:05:47 --> Config Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:05:47 --> URI Class Initialized
+DEBUG - 2012-02-15 17:05:47 --> Router Class Initialized
+ERROR - 2012-02-15 17:05:47 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:04 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:04 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:04 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:04 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:04 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:05 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:05 --> Total execution time: 0.3855
+DEBUG - 2012-02-15 17:07:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:07:05 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:05 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:05 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:05 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:05 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:07:05 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:05 --> Total execution time: 0.2440
+DEBUG - 2012-02-15 17:07:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:05 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:05 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:05 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:06 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:06 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:06 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:06 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:06 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:06 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:06 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:06 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:06 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:06 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:06 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:06 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:09 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:09 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:09 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:09 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:09 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:09 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:09 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:09 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:09 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 17:07:09 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:09 --> Total execution time: 0.2720
+DEBUG - 2012-02-15 17:07:15 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:15 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:07:15 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:15 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:16 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:16 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:16 --> A session cookie was not found.
+DEBUG - 2012-02-15 17:07:16 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:16 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:16 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:16 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:16 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 17:07:16 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:16 --> Total execution time: 0.2539
+DEBUG - 2012-02-15 17:07:28 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:28 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:28 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:28 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:28 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:28 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:28 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:07:28 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:28 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:28 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:28 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:28 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:28 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:29 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:07:29 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:29 --> Total execution time: 0.2237
+DEBUG - 2012-02-15 17:07:30 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:30 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:30 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:30 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:30 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:30 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:30 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:30 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:30 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:30 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 17:07:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:31 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:31 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:31 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:31 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:31 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:32 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:32 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:32 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:32 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:32 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:32 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:33 --> URI Class Initialized
+ERROR - 2012-02-15 17:07:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:33 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Config Class Initialized
+ERROR - 2012-02-15 17:07:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:33 --> URI Class Initialized
+ERROR - 2012-02-15 17:07:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:33 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:33 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:33 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:36 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:36 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:36 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:39 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:39 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:39 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:39 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:39 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:39 --> File loaded: application/views/book/bookStep2.php
+DEBUG - 2012-02-15 17:07:39 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:39 --> Total execution time: 0.6060
+DEBUG - 2012-02-15 17:07:40 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:40 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:40 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:40 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:40 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:40 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:40 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:47 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:47 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:47 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:47 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:47 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:48 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Router Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Output Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Security Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Input Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:07:48 --> Language Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:07:48 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:07:48 --> Session routines successfully run
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> Model Class Initialized
+DEBUG - 2012-02-15 17:07:48 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:07:48 --> File loaded: application/views/book/bookStep3.php
+DEBUG - 2012-02-15 17:07:48 --> Final output sent to browser
+DEBUG - 2012-02-15 17:07:48 --> Total execution time: 0.4677
+DEBUG - 2012-02-15 17:07:49 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:49 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:49 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:07:50 --> Config Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:07:50 --> URI Class Initialized
+DEBUG - 2012-02-15 17:07:50 --> Router Class Initialized
+ERROR - 2012-02-15 17:07:50 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:29 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:29 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:29 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:29 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:29 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:29 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:29 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:35 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:35 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Output Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Security Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Input Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:12:35 --> Language Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:12:35 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Session Class Initialized
+DEBUG - 2012-02-15 17:12:35 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:12:35 --> A session cookie was not found.
+DEBUG - 2012-02-15 17:12:35 --> Session routines successfully run
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:12:36 --> Output Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Security Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Input Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:12:36 --> Language Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:12:36 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Session Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:12:36 --> Session routines successfully run
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:12:36 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:12:36 --> Final output sent to browser
+DEBUG - 2012-02-15 17:12:36 --> Total execution time: 0.2802
+DEBUG - 2012-02-15 17:12:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:36 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> UTF-8 Support Enabled
+ERROR - 2012-02-15 17:12:36 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:36 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:36 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:36 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:12:36 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:37 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:37 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:37 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:37 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:37 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:40 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:40 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Output Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Security Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Input Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:12:40 --> Language Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:12:40 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:12:40 --> Session routines successfully run
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:40 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:40 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:41 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:41 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:41 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:41 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:41 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:41 --> Router Class Initialized
+ERROR - 2012-02-15 17:12:41 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:12:46 --> Config Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:12:46 --> URI Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Router Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Output Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Security Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Input Class Initialized
+DEBUG - 2012-02-15 17:12:46 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:12:46 --> Language Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:12:47 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:12:47 --> Session routines successfully run
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:12:47 --> Model Class Initialized
+DEBUG - 2012-02-15 17:12:47 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:00 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Router Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Output Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Security Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Input Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:13:00 --> Language Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:13:00 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:13:00 --> Session routines successfully run
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:00 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:13:00 --> File loaded: application/views/book/bookStep2.php
+DEBUG - 2012-02-15 17:13:00 --> Final output sent to browser
+DEBUG - 2012-02-15 17:13:00 --> Total execution time: 0.8258
+DEBUG - 2012-02-15 17:13:01 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:01 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:01 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:01 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:01 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:01 --> Router Class Initialized
+ERROR - 2012-02-15 17:13:01 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:13:14 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:14 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Router Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Output Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Security Class Initialized
+DEBUG - 2012-02-15 17:13:14 --> Input Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:13:15 --> Language Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:13:15 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:13:15 --> Session routines successfully run
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:15 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/jquery-core_choiceB.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:13:15 --> File loaded: application/views/book/bookStep2.php
+DEBUG - 2012-02-15 17:13:15 --> Final output sent to browser
+DEBUG - 2012-02-15 17:13:15 --> Total execution time: 0.6089
+DEBUG - 2012-02-15 17:13:16 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:16 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:16 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:16 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:16 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:16 --> Router Class Initialized
+ERROR - 2012-02-15 17:13:16 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:13:24 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:24 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:24 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:24 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:24 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:24 --> Router Class Initialized
+DEBUG - 2012-02-15 17:13:24 --> Output Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Security Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Input Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:13:25 --> Language Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:13:25 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:13:25 --> Session routines successfully run
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:25 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:25 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:26 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Router Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Output Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Security Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Input Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:13:26 --> Language Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:13:26 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:13:26 --> Session routines successfully run
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> Model Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/baseURLforJS.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/overlay_general.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/bookProgressIndicator.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:13:26 --> File loaded: application/views/book/bookStep3.php
+DEBUG - 2012-02-15 17:13:26 --> Final output sent to browser
+DEBUG - 2012-02-15 17:13:26 --> Total execution time: 0.5145
+DEBUG - 2012-02-15 17:13:26 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:26 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:26 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Router Class Initialized
+ERROR - 2012-02-15 17:13:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:13:27 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:27 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Router Class Initialized
+ERROR - 2012-02-15 17:13:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:13:27 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:27 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:27 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Router Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:27 --> Router Class Initialized
+ERROR - 2012-02-15 17:13:27 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:13:27 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:13:59 --> Config Class Initialized
+DEBUG - 2012-02-15 17:13:59 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:13:59 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:13:59 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:13:59 --> URI Class Initialized
+DEBUG - 2012-02-15 17:13:59 --> Router Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Output Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Security Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Input Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:14:00 --> Language Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:14:00 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:14:01 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Session Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:14:01 --> Session routines successfully run
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:01 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:14:01 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:01 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:02 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:02 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:03 --> Final output sent to browser
+DEBUG - 2012-02-15 17:14:03 --> Total execution time: 4.0587
+DEBUG - 2012-02-15 17:14:03 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:03 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Router Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:14:03 --> Output Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Security Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Input Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:14:03 --> Language Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:14:03 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Session Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:14:03 --> Session routines successfully run
+DEBUG - 2012-02-15 17:14:03 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:03 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:03 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:14:04 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:14:04 --> Final output sent to browser
+DEBUG - 2012-02-15 17:14:04 --> Total execution time: 0.4934
+DEBUG - 2012-02-15 17:14:04 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:04 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Router Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:04 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:04 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:04 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:14:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:14:04 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:14:04 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:04 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:04 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:04 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:14:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:05 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:14:05 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:05 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:05 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:05 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:14:07 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:07 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:07 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:07 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:07 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:07 --> Router Class Initialized
+DEBUG - 2012-02-15 17:14:07 --> Output Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Security Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Input Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:14:08 --> Language Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:14:08 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Session Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:14:08 --> Session routines successfully run
+DEBUG - 2012-02-15 17:14:08 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:08 --> Model Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:14:08 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 17:14:08 --> Final output sent to browser
+DEBUG - 2012-02-15 17:14:08 --> Total execution time: 0.2989
+DEBUG - 2012-02-15 17:14:08 --> Config Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:14:08 --> URI Class Initialized
+DEBUG - 2012-02-15 17:14:08 --> Router Class Initialized
+ERROR - 2012-02-15 17:14:08 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:29 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:29 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Router Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Output Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Security Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Input Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:21:29 --> Language Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:21:29 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:21:29 --> Session routines successfully run
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Helper loaded: cookie_helper
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:29 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:29 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:30 --> Final output sent to browser
+DEBUG - 2012-02-15 17:21:30 --> Total execution time: 1.2126
+DEBUG - 2012-02-15 17:21:30 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:30 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Router Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> No URI present. Default controller set.
+DEBUG - 2012-02-15 17:21:30 --> Output Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Security Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Input Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:21:30 --> Language Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:21:30 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Session Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:21:30 --> Session routines successfully run
+DEBUG - 2012-02-15 17:21:30 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:30 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:30 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/userInfo-bar.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:21:30 --> File loaded: application/views/homepage.php
+DEBUG - 2012-02-15 17:21:30 --> Final output sent to browser
+DEBUG - 2012-02-15 17:21:30 --> Total execution time: 0.2746
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:31 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:31 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:31 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:31 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:33 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Router Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:33 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:33 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:33 --> 404 Page Not Found --> assets
+ERROR - 2012-02-15 17:21:33 --> 404 Page Not Found --> assets
+DEBUG - 2012-02-15 17:21:36 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:36 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Router Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Output Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Security Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Input Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-15 17:21:36 --> Language Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Loader Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Helper loaded: url_helper
+DEBUG - 2012-02-15 17:21:36 --> Database Driver Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Controller Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Session Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Helper loaded: string_helper
+DEBUG - 2012-02-15 17:21:36 --> Session routines successfully run
+DEBUG - 2012-02-15 17:21:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:36 --> Model Class Initialized
+DEBUG - 2012-02-15 17:21:36 --> Session class already loaded. Second attempt ignored.
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/doctype.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/segoefont_loader.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/head-title.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/jquery-core.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/headerimage.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/menu-bar.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/html-generic/footer.inc
+DEBUG - 2012-02-15 17:21:36 --> File loaded: application/views/loginPage.php
+DEBUG - 2012-02-15 17:21:36 --> Final output sent to browser
+DEBUG - 2012-02-15 17:21:36 --> Total execution time: 0.2331
+DEBUG - 2012-02-15 17:21:37 --> Config Class Initialized
+DEBUG - 2012-02-15 17:21:37 --> Hooks Class Initialized
+DEBUG - 2012-02-15 17:21:37 --> Utf8 Class Initialized
+DEBUG - 2012-02-15 17:21:37 --> UTF-8 Support Enabled
+DEBUG - 2012-02-15 17:21:37 --> URI Class Initialized
+DEBUG - 2012-02-15 17:21:37 --> Router Class Initialized
+ERROR - 2012-02-15 17:21:37 --> 404 Page Not Found --> assets

@@ -3,7 +3,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Login";
+	$this->pageTitle = "Login";
 	$this->thisPage_menuCorrespond = "HOME";	
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -50,7 +50,7 @@ $this->load->view('html-generic/doctype.inc');
 				Login
 			</div>
 			<div style="padding-left:10px; clear: both">
-				Login to start enjoying the UPLB experience ... Acho cho cho chooo choo choooo... lorem ipsum bla bla bla
+				Login to access services.
 			</div>				
 			<div id="left_content">					
 				<div class="text_box">

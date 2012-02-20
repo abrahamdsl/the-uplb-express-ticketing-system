@@ -2,8 +2,12 @@ $(document).ready( function(){
 	
 	$('#buttonOK').click( function(){	
 		if( $('input[name="selectThisClass"]:checked').size() < 1 )
-		{
-			displayOverlay( 'error' , 'are you kidding me?', "Please select a ticket class to continue." );				
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'are you kidding me?',
+			   message: 'Please select a ticket class to continue.'
+			});
 			return false;
 		}
 		

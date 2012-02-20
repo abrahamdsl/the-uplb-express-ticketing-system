@@ -26,3 +26,27 @@ span#showtimeDummy{
 span#showtimeCustomError{
 	color: red;
 }
+span.rightSpecialHere{
+	float: right;
+	min-height: 15px;
+	min-width: 100px;
+	height: auto;	
+	width: 49%;
+	overflow: auto;
+	text-align: center;
+	margin-left: 15px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-style: solid;
+	border-color: #D8E4D6;
+	border-width: 0px 0px 0px 2px;
+}
+span#showtimeWaiting{
+	display: none;
+}
+span#howtimeSelectionReal{
+	display: none;
+}
+span select{
+	width: 80%;
+}

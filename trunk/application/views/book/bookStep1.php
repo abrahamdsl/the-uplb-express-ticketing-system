@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -20,21 +23,21 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
-	<!--For overlay-->
+	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>"/></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>" ></script>				
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
   	
 </head>
 <body>
@@ -84,9 +87,9 @@ $this->load->view('html-generic/doctype.inc');
 									<span class="left" >
 										Step 1: Select an event
 									</span>
-									<span class="right" id="right_inner" >	
+									<span class="rightSpecialHere" >
 										<span class="center_purest">
-											<select id="eventSelection" name="events" class="center_purest" style="width: 80%;" >
+											<select id="eventSelection" name="events" class="center_purest"  >
 													<option value="NULL" >
 														<?php
 															if( count ($configuredEventsInfo ) > 0 ){
@@ -114,17 +117,18 @@ $this->load->view('html-generic/doctype.inc');
 									<span class="left" >
 										Step 2: Select a showing time
 									</span>
-									<span class="right" id="right_inner" >
-										<span id="showtimeDummy" >
-											<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="messenger" name="messenger" value="Select an event first" disabled="true" /><br/>
+									<span class="rightSpecialHere" >
+										<span id="showtimeDummy" class="center_purest" >										
+											<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="messenger" name="messenger" value="Select an event first" disabled="disabled" style="width: 80%;"  /><br/>										
 										</span>
-										<span id="showtimeCustomError" >											
+										<span id="showtimeCustomError" class="center_purest" >											
 										</span>
-										<span id="showtimeWaiting" hidden="true"  >										
-											<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" />
+										<span id="showtimeWaiting" class="center_purest"  >										
+											<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" alt="ajax_loader" />
 										</span>
-										<span id="showtimeSelectionReal" hidden="true" >
-											<select id="showingTimeSelection" name="showingTimes" class="center_purest" style="width: 80%;" >
+										<span id="showtimeSelectionReal" class="center_purest" >
+											<select id="showingTimeSelection" name="showingTimes" class="center_purest" >
+												<option value="NULL" >Dummy content</option>
 											</select>
 										</span>
 										
@@ -134,10 +138,10 @@ $this->load->view('html-generic/doctype.inc');
 									<span class="left" >
 										Step 3: Select the quantity
 									</span>
-									<span class="right"  id="right_inner" >										
-										<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="slot" name="slot" value="1"  disabled="true" /><br/>
-										<input type="button" value="-" id="reduceSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="true" />								
-										<input type="button" value="+" id="addSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="true" />								
+									<span class="rightSpecialHere" >
+										<input type="text" class="commonality ayokongDefaultAngItsuraNgButton disabled" id="slot" name="slot" value="1"  disabled="disabled" /><br/>
+										<input type="button" value="-" id="reduceSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="disabled" />								
+										<input type="button" value="+" id="addSlots" class="adjustButtons ayokongDefaultAngItsuraNgButton disabled" disabled="disabled" />								
 									</span>
 								</div>								
 							</div>							

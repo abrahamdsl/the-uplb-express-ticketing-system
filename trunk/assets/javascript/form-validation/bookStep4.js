@@ -5,32 +5,35 @@ function createSeatmapOnPage( args )
 	/*
 		Created 13FEB2012-1202
 	*/	
-	//display notice
-	if( args["isOverlayDisplayedAlready"] === true ) modifyAlreadyDisplayedOverlay( 'notice' , 'please wait', 'Getting seat map info ...', false );
-	else{
-		displayOverlay( 'notice' , 'please wait', 'Getting seat map info, this may take up to a minute ...<br/><br/>' );
-	}
+	//display notice	
+	$.fn.nextGenModal({
+	   msgType: 'ajax',
+	   title: 'please wait',
+	   message: 'Getting seat map info, this may take up to a minute ...'
+	});
 	// ajax-time!
 	var x = $.ajax({	
 		type: 'POST',
 		url: CI.base_url + '/SeatCtrl/getActualSeatsData',
 		timeout: 50000,
-		/*data: { 'uniqueID': args["seatMapUniqueID"] },*/	// data is determined by the cookies
+		/*data: { 'uniqueID': args["seatMapUniqueID"] },*/	// data is determined by the cookies, erase this on finality
 		success: function(data){
-			alreadyConfiguredSeat = false;
-			setTimeout( function(){}, 800 );				// the request might be too fast thus the overlay/modal v1 won't operate correctly.
-			$(document).manipulateSeatAJAX( data );			// make now the HTML			
-			//$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
+			alreadyConfiguredSeat = false;			
+			$(document).manipulateSeatAJAX( data );			// make now the HTML						
 		}
 	});	
-	x.fail(	function(jqXHR, textStatus) { 
-				//revertSeatMapPulldown();
-				modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false ); 				
+	x.fail(	function(jqXHR, textStatus) { 							
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'Connection timeout',
+				   message: 'It seems you have lost your internet connection. Please try again.'
+				});
+
 				return false;
 	} ) ;	
 }
 
-function formSubmit( args ){
+function formSubmit( ){
 	var slots = parseInt( ( getCookie('slots_being_booked')) ); 
 	var x;		
 	var y;
@@ -38,12 +41,13 @@ function formSubmit( args ){
 	var matrix_visual= [];
 	var matrix_count = [];
 	var ajaxObj;
-	
-	if( args["isOverlayDisplayedAlready"] === true ) modifyAlreadyDisplayedOverlay( 'notice' , 'please wait', 'Verifying seat availability ...', false );
-	else
-		displayOverlay( 'notice' , 'please wait', 'Verifying seat availability ...', false );
-	
-	setTimeout( function(){}, 1000 );
+		
+	$.fn.nextGenModal({
+	   msgType: 'ajax',
+	   title: 'please wait',
+	   message: 'Verifying seat availability ...'
+	});
+		
 	
 		// get seat matrix data
 		for( x = 0; x< slots; x++ )
@@ -63,8 +67,7 @@ function formSubmit( args ){
 						'eventID' : getCookie( 'eventID' ),
 						'showtimeID' : getCookie( 'showtimeID' )
 				},
-				success: function(data){
-						console.log( data );
+				success: function(data){						
 						if( data.startsWith("OK") )
 						{
 							resultData = data.split('|');
@@ -75,22 +78,34 @@ function formSubmit( args ){
 								$('div#' + resultData[2] ).addClass( 'occupiedSameClass' );
 								$('div#' + resultData[2] ).unbind();
 								guestConcerned = parseInt( matrix_count[ resultData[2] ] );
-								manipulateGuestSeat( "DESELECT", resultData[2] )
-								modifyAlreadyDisplayedOverlay( 'error' , 'You were overtaken', 'Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[2] ] + ' (Guest ' + matrix_count[ resultData[2] ] + ').<br/><br/> Please choose another seat.', false ); 								
+								manipulateGuestSeat( "DESELECT", resultData[2] )								
+								$.fn.nextGenModal({
+								   msgType: 'error',
+								   title: 'You were overtaken',
+								   message: 'Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[2] ] + ' (Guest ' + matrix_count[ resultData[2] ] + ').<br/><br/> Please choose another seat.'
+								});
 								return false;
 							}else{
 								$('input[type!="hidden"]').attr( 'disabled', 'disabled' );	
 								document.forms[0].submit();
 							}
-						}else{
-							modifyAlreadyDisplayedOverlay( 'error' , 'Internal server error', 'Something went wrong. Please try again.<br/><br/> ' + data, false ); 				
+						}else{							
+							$.fn.nextGenModal({
+								   msgType: 'error',
+								   title: 'Internal server error',
+								   message: 'Something went wrong. Please try again.<br/><br/> ' + data
+							});
 							stillLoop = false;
 							return false;
 						}
 				}
 			});	
 			ajaxObj.fail(	function(jqXHR, textStatus) { 		
-						modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false ); 				
+						$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'Connection timeout',
+							   message: 'It seems you have lost your internet connection. Please try again. <br/<br/>' + textStatus
+						});
 						return false;
 			});				
 }
@@ -185,8 +200,7 @@ $(document).ready( function(){
 		var y;
 		var seatMatrixIdentifier;
 		var guestWithoutSeats = [];
-		var message;
-		var args = [] ;
+		var message;		
 		
 		for( x=0, y=0; x < slots; x++ )
 		{
@@ -198,16 +212,20 @@ $(document).ready( function(){
 		}
 		
 		if( y > 0 )
-		{
-			args["isOverlayDisplayedAlready"] = true;
+		{			
 			message = "Are you sure you don't want to select seat for the following guest(s)? <br/><br/> ";
 			for( x = 0; x < y; x++ ){
 				message += ( guestWithoutSeats[x] + '| ' + $('div#g' + guestWithoutSeats[x] + '-firstNameFld').html() + ' ' + $('div#g' + guestWithoutSeats[x] + '-lastNameFld').html()  + '<br/>' );				
-			}
-			displayOverlay_confirm_NoCloseOnChoose( 'warning' , 'Confirm', 'formSubmit', args, null, null, message );			
-		}else{
-			args["isOverlayDisplayedAlready"] = false;
-			formSubmit( args );
+			}			
+			$.fn.nextGenModal({
+				   msgType: 'warning',
+				   title: 'confirm',
+				   closeOnChoose: false,
+				   message: message,
+				   yesFunctionCall: 'formSubmit'
+			});
+		}else{			
+			formSubmit();
 		}
 		guestWithoutSeats = null;
 	});

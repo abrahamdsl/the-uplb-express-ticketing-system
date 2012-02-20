@@ -5,23 +5,34 @@ class Login_model extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper('cookie');
 		$this->load->library('session');
 	}
-
-	// DEPRECATED 28 Nov 2011 1645
-	//function check_and_Act_On_Login($redirectTo = NULL, $loadThisView = NULL, $data = NULL)
+	
+	function deleteUserCookies()
+	{
+		/*
+			Created 19FEB2012-1357
+		*/
+		delete_cookie( 'firstName' );
+		delete_cookie(  "middleName" );
+		delete_cookie( "lastName" );
+		delete_cookie( "accountNum" );
+	}
 	
 	function getUserInfo_for_Panel()
 	{
 		/*  24NOV2011 1144 | Taken from Redbana Internship Project, then edited
 			made | abe | 15JUN2011_2343			
+			
+			* Deprecated as of 19FEB2012-1349: Retained here until all calls to this from other files have been deleted. Delete on finish. 
 		*/
 		
 		return array(
-						   'accountNum' => $this->session->userData('accountNum'),
-						   'lastName' => $this->session->userData('lastName'), 
-						   'firstName' => $this->session->userData('firstName'),
-						   'middleName' => $this->session->userData('middleName')
+						   'accountNum' => 0,
+						   'lastName' => 0,
+						   'firstName' => 0,
+						   'middleName' => 0,
 		);	
 	}
 	
@@ -37,8 +48,7 @@ class Login_model extends CI_Model {
 		$data['logged_in'] = FALSE;
 		$this->session->set_userdata($data);
 		
-		$this->session->sess_destroy();
-				
+		$this->session->sess_destroy();			
 	}
 	
 	function setUserSession( $accountNum, $name  )
@@ -51,15 +61,20 @@ class Login_model extends CI_Model {
 			$accountNum - int var
 			
 			ASSUMPTION: all data passed here are already 'escaped'
+			
+			* Changed 19FEB2012-1348: We now only set accountNum in the session cookie. The names have their own cookies.				
 		*/
-		$data['firstName'] = $name['first'];
-		$data['middleName'] = $name['middle'];
-		$data['lastName'] = $name['last'];
+		$cookieValidity = 3600 * 24;				// this means the cookie is valid for 24 hours.		
 		$data['accountNum'] = $accountNum;
 		$data['logged_in'] = TRUE;
 		
 		$this->session->set_userdata($data);
 		
+		// now set cookies, mainly for user bar
+		$this->input->set_cookie( "firstName", $name['first'] , $cookieValidity );
+		$this->input->set_cookie( "middleName", $name['middle'] , $cookieValidity );
+		$this->input->set_cookie( "lastName", $name['last'] , $cookieValidity );
+		$this->input->set_cookie( "accountNum", $accountNum , $cookieValidity );
 		return true;
 	}
 	

@@ -1,3 +1,8 @@
+/*
+17FEB2012-1242: I am thinking of merging this with CreateEvent_005.js
+*/
+
+
 var aisles = new Array();
 var aisleCount = 0;
 
@@ -28,8 +33,9 @@ function adjustColumnIndicators( rows, cols )
 	for( x = 0; x < y; x++ )
 	{		
 		aisleIndex = aisles[x];		
-		$('table.textUnselectable div#top_' + aisleIndex).html( 'A' );
+		$('table.textUnselectable div#top_' + aisleIndex).html( 'A' );		// mark them as aisle
 		$('table.textUnselectable div#bottom_' + aisleIndex).html( 'A' );
+		// from the div to the right until end, adjust
 		for( ++aisleIndex; aisleIndex < cols; aisleIndex++ )
 		{
 			concernedDiv_top = $('table.textUnselectable div#top_' + aisleIndex );			// get handle to top indicator
@@ -46,9 +52,12 @@ function adjustColumnIndicators( rows, cols )
 			}
 		}
 	}
-}
+}//adjustColumnIndicators
 
 function isColAlreadyListed( value, low, high ){
+		/*
+			Basically just binary-searches if the aisle specified is already in the array.
+		*/
        var mid;
 	   
 	   if (high < low) return false; // not found
@@ -59,7 +68,7 @@ function isColAlreadyListed( value, low, high ){
            return isColAlreadyListed(value, mid+1, high);
        else
            return true; // found
-}
+}// isColAlreadyListed
 
 function nullifyAisleCount()
 {
@@ -84,6 +93,7 @@ $(document).ready( function(){
 				
 			//Set the default function
 			$.fn.drag_drop_multi_select.defaults.after_drop_action = function($item,$old,$new,e,ui){
+				// 17FEB2012-1244 : I see no apparent use or I just forgot.
 				// Possible param $item_instance, $old_container, $new_container, event, helper
 				var $target = $(e.target);
 				$target.find('ul').append($item);
@@ -107,14 +117,13 @@ $(document).ready( function(){
 				actualSeats = $(xmlData).find( 'dataproper' );	// get the dataproper branch								
 				
 				//now, if this is a master seat plan data (i.e., for create event step 5, do the ff)				
-				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;				
-				
-					rows = parseInt( detailBranch.find('rows').text() );
-					cols = parseInt( detailBranch.find('cols').text() );
+				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;								
+				rows = parseInt( detailBranch.find('rows').text() );
+				cols = parseInt( detailBranch.find('cols').text() );
 				if( masterMap ){
 					// these details are limited to create event step 5.
 					usableCapacity = parseInt( detailBranch.find('usableCapacity').text() );				
-					hallName = detailBranch.find('name').text();								
+					hallName = detailBranch.find('name').text();
 					$("span#hallSeatingCapacity").html( usableCapacity );
 					$("span#place").html( hallName );
 				}else{
@@ -124,9 +133,9 @@ $(document).ready( function(){
 				
 				/* insert the inner div on which we will attach the drag_drop_multi_select() function, and then the table
 				*/
-				$("div#seatSelectionTable").append('<div class="list" id="innerSeatDiv" style="overflow:none;" ><table class="textUnselectable"></table></div>');	
+				$("div#seatSelectionTable").append('<div class="list" id="innerSeatDiv"><table class="textUnselectable"></table></div>');	
 				
-				// insert so much rows, +2 than the num of rows of the seats, for the top and bottom column guides
+				// insert so much rows, +2 than the num of rows of the seats, so there's the space for the top and bottom column guides
 				for(x=0; x<rows+2; x++)
 				{
 					$("div#seatSelectionTable div#innerSeatDiv table").append('<tr></tr>');				
@@ -157,7 +166,7 @@ $(document).ready( function(){
 				for(y=1, letter=65;y<=rows;y++, letter++){
 						$(allTRs[y]).append('<td><div class="guide left" id="right_' + y + '" >' + itoa(letter) +'</div></td>');	// itoa() found in generalChecks.js					
 				}
-				
+				// now do put the actual seats - represented by divs
 				actualSeats.find('seat').each( function(){		
 					/*
 						09FEB2012-0214 : In connection with Issue 25 in Google Code / "Why still compute the rows and cols when it's in the XML?".
@@ -165,7 +174,7 @@ $(document).ready( function(){
 						
 						However, if we have the XML structure
 						*************************************
-							<seat x="i" y"j" >
+							<seat x="i" y="j" >
 								<row>a</row>
 								<col>b</col>
 								<status>c</col>
@@ -211,7 +220,9 @@ $(document).ready( function(){
 					}										
 				});
 				
-				// now call the function to be able to select these items
+				/*  
+					Now call the function that makes the seat operations possible.
+				*/
 				$('div#innerSeatDiv').drag_drop_multi_select({					
 					element_to_drag_drop_select:'div.dropAvailable',
 					elements_to_drop:'.list',
@@ -230,7 +241,7 @@ $(document).ready( function(){
 				// adjust column indicators to make way for aisles
 				adjustColumnIndicators( rows, cols );
 				nullifyAisleCount();
-				hideOverlay();
+				$.fn.nextGenModal.hideModal();
 				alreadyConfiguredSeat = true;				
 			}
 						

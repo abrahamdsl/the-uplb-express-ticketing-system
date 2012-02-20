@@ -1,6 +1,6 @@
 <div id="basic-modal-content-freeform" >
 	<input type="hidden" name="uniqueID" id="seatMapUID" value="0" />
-	<input type="hidden" name="seatMap_isMaster" id="seatMap_isMaster_indicator value="0" />
+	<input type="hidden" name="seatMap_isMaster" id="seatMap_isMaster_indicator" value="0" />
 	<div id="SeatV2Title" ><span id="titleProper" >Assign seats to <span id="seatClass"></span> class</span><span id="place" ></span></div>
 	<div id="whileSelectingIndicator" >Selecting <span id="quantityBeingSelected" class="items_being_selected" >0</span> seats out of <span id="remainingSelectableSeatsForClass"></span> max</div>	
 	<div id="warningIndicator" ></div>

@@ -144,6 +144,20 @@ class Seat_model extends CI_Model {
 		return $arrayResult;
 	}// getMasterSeatMapActualSeats
 	
+	function getSeats_User( $guests )
+	{
+		/*
+			Created 19FEB2012-1712
+			
+			Param definition: $guests - array of guests' MYSQL OBJ OF table `booking_guests`
+		*/
+		if( !is_array( $guests ) ) return false;
+		foreach( $guests as $singleGuest )
+		{
+		
+		}
+	}//getSeats_User
+	
 	function getSingleMasterSeatMapData( $uniqueID )
 	{
 		/*
@@ -172,6 +186,16 @@ class Seat_model extends CI_Model {
 		else
 			return false;
 	}//getSingleActualSeatData
+	
+	function getSingleActualSeatData_ByClientUUID( $UUID )
+	{
+		/*
+			Created 19FEB2012-1716 ON-HOLD
+			
+			Gets from `seats_actual` the record specified using the client's UUID (found in `booking_guests` table )
+		*/
+		$sql_command = "SELECT FROM `seats_actual` where ";
+	}//getSingleActualSeatData_ByClientUUID
 	
 	function getUsableSeatMaps( $requestedCapacity )
 	{

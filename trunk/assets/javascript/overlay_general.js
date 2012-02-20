@@ -18,10 +18,17 @@ function decideOverlayTitleColor( type )
 	//created 31DEC2011-1625
 	var typeLowered = type.toLowerCase();
 	var classH1;
+	var yesNoSection = 'div#overlayEssentialButtonsArea';
+	var okayOnlySection = 'div#overlayEssentialButtonsArea_OkayOnly';
+	
+	//$('div[id^="overlayEssentialButtonsArea"').hide();				// hide first both of button sections
 	
 	switch( typeLowered )
 	{
-		case "error":   classH1 = "error"; break;
+		case "error":   
+			classH1 = "error"; 
+			//$( okayOnlySection ).show();
+			break;
 		case "notice":  classH1 = "okay"; confirmX_noShow = true; break;
 		case "okay":    classH1 = "okay"; break;
 		case "warning": classH1 = "warning"; break;		

@@ -10,8 +10,13 @@ $(document).ready(function()
 	{
 		$('#buttonOK').click( function(){
 			var decision;
-			
-			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure you have selected the appropriate showings?" );																					
+						
+			$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: 'Confirm',
+			   message:  "Are you sure you have selected the appropriate showings?",
+			   yesFunctionCall: 'formSubmit'
+			});
 		}); //buttonOK click
 		
 		$('input[class="selectDeselectBtns"]').click( function(){			

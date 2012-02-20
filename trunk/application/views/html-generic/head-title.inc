@@ -1,2 +1,1 @@
-<title><?php echo $this->pageTitle; ?></title>
-
+	<title><?php echo $this->pageTitle; ?> - The UPLB Express Ticketing System</title>

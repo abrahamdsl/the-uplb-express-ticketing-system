@@ -23,8 +23,12 @@ $(document).ready( function(){
 	});
 	
 	$('a#buttonOK').click( function(){
-		if( $('select[name="paymentChannel"] option:selected').val() == "NULL" ){
-			displayOverlay('error','input needed','Please select payment method first.');
+		if( $('select[name="paymentChannel"] option:selected').val() == "NULL" ){			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'input needed',
+			   message: 'Please select payment method first.'
+			});
 			return false;
 		}
 		document.forms[0].submit();

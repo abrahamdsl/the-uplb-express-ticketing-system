@@ -24,7 +24,7 @@ class SeatCtrl extends CI_Controller {
 	function create()
 	{
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
-		$this->load->view( 'createSeat/createSeat_Step1' , $data);
+		$this->load->view( 'createSeat/createSeat_step1' , $data);
 	}
 	
 	function create_step2()
@@ -58,7 +58,7 @@ class SeatCtrl extends CI_Controller {
 		// end: temp
 		
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
-		$this->load->view( 'createSeat/createSeat_Step2' , $data);
+		$this->load->view( 'createSeat/createSeat_step2' , $data);
 	}
 	
 	function create_step3()

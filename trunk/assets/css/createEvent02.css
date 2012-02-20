@@ -4,6 +4,7 @@ div#cEvent02_container{
 	overflow: auto;
 	width: inherit;
 	padding: 15px;
+	text-align: center;
 }
 
 div.starboardSide{
@@ -62,5 +63,8 @@ span.particularEntries{
 	float: left;
 	width: 99%;
 	clear: both;
+}
 
+span#redEye{
+	float: left; margin-right: 5px; clear:none
 }

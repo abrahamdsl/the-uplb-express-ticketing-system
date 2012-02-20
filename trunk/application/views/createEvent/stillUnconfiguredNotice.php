@@ -3,7 +3,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Create Event";
+	$this->pageTitle = "Create Event - Still Unconfigured";
 	$this->thisPage_menuCorrespond = "Create Event Step 6";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');

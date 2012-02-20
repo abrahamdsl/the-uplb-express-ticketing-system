@@ -153,8 +153,12 @@ $(document).ready( function() {
 		});			
 		requestST_POST.fail( function( jqXHR, textStatus ){
 			$("span#showtimeWaiting").hide();
-			$("span#showtimeDummy").show();
-			displayOverlay( 'error' , 'Connection timeout','It seems you have lost your internet connection. Please try again.<br/><br/>' , false );
+			$("span#showtimeDummy").show();		
+			$.fn.nextGenModal({
+				msgType: 'error', 
+				title: 'Connection timeout',
+				message: 'It seems you have lost your internet connection. Please try again.<br/><br/>'
+			});
 		});
 		
 	});
@@ -165,14 +169,22 @@ $(document).ready( function() {
 		
 		$( selector_ChangeThis ).focus();
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'bad expectation', "Only numbers allowed for slots!" );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Only numbers allowed for slots!'
+			});
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
 		if( parseInt(thisVal) == 10 )
-		{
-			displayOverlay( 'error' , 'restriction', "Only 10 slots can be booked at a time." );
+		{		
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'restriction',
+			   message: 'Only 10 slots can be booked at a time.'
+			});
 			return false;
 		}		
 		/* now, sum them up
@@ -190,13 +202,21 @@ $(document).ready( function() {
 		$( selector_ChangeThis ).focus();
 		if( !isInt( thisVal ) )
 		{
-			displayOverlay( 'error' , 'bad expectation', "Only numbers allowed for slots!" );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Only numbers allowed for slots!'
+			});
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
 		if( parseInt(thisVal) == 1 )
-		{
-			displayOverlay( 'error' , 'error', "Minimum of 1 slot!" );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Minimum of 1 slot!'
+			});
 			return false;
 		}		
 		/* now, sum them up
@@ -222,19 +242,32 @@ $(document).ready( function() {
 		*/
 		if( !isInt( $(this).val() ) )
 		{			
-			displayOverlay( 'error' , 'bad expectation', "Only numbers allowed for slots!" );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Only numbers allowed for slots!'
+			});
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
 		if( parseFloat( $(this).val() ) > 10 )
 		{			
-			displayOverlay( 'error' , 'restriction', "Only 10 slots can be booked at a time." );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'restriction',
+			   message: 'Only 10 slots can be booked at a time.'
+			});
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
 		if( parseFloat( $(this).val() ) < 1 )
-		{			
-			displayOverlay( 'error' , 'error', "Minimum of 1 slot!" );
+		{						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'restriction',
+			   message: 'Minimum of 1 slot!'
+			});
+
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
@@ -244,13 +277,21 @@ $(document).ready( function() {
 		var selectedEventID =  $('select#eventSelection option:selected').val();
 		var selectedSchedule = $('select#showingTimeSelection option:selected').val();
 		if( selectedEventID == "NULL"  )
-		{
-			displayOverlay( 'error' , 'error', "Please select an event first." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'input needed',
+			   message: 'Please select an event first.'
+			});
 			return false;
 		}
 		if( selectedSchedule == "NULL" )
-		{
-			displayOverlay( 'error' , 'error', "Please select a showing time first." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'input needed',
+			   message: 'Please select a showing time first.'
+			});
 			return false;
 		}
 		

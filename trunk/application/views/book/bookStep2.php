@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -18,23 +21,23 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
-	<!--For overlay-->
+	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep2.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep2.js'; ?>" ></script>
 	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 </head>
 <body>
 <?php
@@ -70,7 +73,7 @@ $this->load->view('html-generic/doctype.inc');
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Select now</div>
 					<div id="content">	
-						<div id="bookingDetails" >							
+						<div class="bookingDetails" >							
 							<div class="top">		
 								<input type="hidden" id="startDate" value="<?php echo $showtimeObj->StartDate ?>" />
 								<input type="hidden" id="endDate" value="<?php echo $showtimeObj->EndDate ?>" />
@@ -116,7 +119,7 @@ $this->load->view('html-generic/doctype.inc');
 							</div>
 							
 						</div>
-						<div id="containingClassTable" >
+						<div class="containingClassTable" >
 							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3' ?>" id="formMain">							
 								<table class="center_purest schedulesCentral">
 									<thead>
@@ -167,7 +170,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div id="misc" style=" clear:both;"></div>
+			<div id="misc" class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

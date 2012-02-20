@@ -162,15 +162,23 @@ $(document).ready( function(){
 					if( appendedNames[appended] == undefined ) 	    // if not yet exists in the array, go assign 1
 					{
 						appendedNames[appended] = x+1;
-					}else{											// name already exists so, dead.
-						displayOverlay( "error", "duplicate names not allowed", "Guest " + appendedNames[appended] + " and Guest " + parseInt(x+1) + " have same names!" );
+					}else{											// name already exists so, dead.					
+						$.fn.nextGenModal({
+						   msgType: "error",
+						   title: 'duplicate names not allowed',
+						   message: "Guest " + appendedNames[appended] + " and Guest " + parseInt(x+1) + " have same names!"
+						});
 						return false;
 					}					
 				}
 				$('input[type="hidden"][name$="validate"]').attr('disabled', 'disabled'); // since these are just validity indicators no need to submit
 				document.forms[0].submit();
-			}else{
-				displayOverlay( "error", "error", "There are still invalid entries in your guest form. Please correct them." );
+			}else{				
+				$.fn.nextGenModal({
+				   msgType: "error",
+				   title: "error",
+				   message: "There are still invalid entries in your guest form. Please correct them."
+				});
 			}
 		});
 });

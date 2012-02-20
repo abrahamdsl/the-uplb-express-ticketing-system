@@ -7,6 +7,6 @@
 	*Excanvas by Google Inc 2006 (c)
 	 Apache License v2.0
 -->
-<script src="<?php echo base_url();?>assets/jquery/jquery.event.drag-2.0.min.js"></script>
-	<script src="<?php echo base_url();?>assets/jquery/jquery.event.drop-2.0.min.js"></script>
-	<script src="<?php echo base_url();?>assets/javascript/google/excanvas.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/jquery/jquery.event.drag-2.0.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/jquery/jquery.event.drop-2.0.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/javascript/google/excanvas.min.js"></script>

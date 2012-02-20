@@ -20,7 +20,11 @@ $(document).ready( function ()
 		thisVal = $("#id_slots").val();
 		if( !isInt( thisVal ) )
 		{
-			displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: "Invalid number of slots"
+			});			
 			return;
 		}
 		$("#id_slots").val( parseInt(thisVal) + 1);		
@@ -29,15 +33,23 @@ $(document).ready( function ()
 	$("#reduceSlots").click( function() {
 		thisVal = $("#id_slots").val();
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );	
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: "Invalid number of slots"
+			});
 			return;
 		}
 		$("#id_slots").val( parseInt(thisVal) - 1);		
 	});
 	
-	$("#buttonReset").click( function() {						
-			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+	$("#buttonReset").click( function() {									
+			$.fn.nextGenModal({
+			   msgType: 'okay',
+			   title: 'Not yet :-)',
+			   message: 'Feature coming later'
+			});
 	});
 	
 	$("#buttonOK").click( function() {						
@@ -57,23 +69,40 @@ $(document).ready( function ()
 			}
 			
 			if( !atLeastOneCheckBoxSelected )
-			{
-				displayOverlay( 'error' , 'info required', "Please select at least one showing time to configure." );					
+			{				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title:  'info required',
+				   message: "Please select at least one showing time to configure."
+				});
 				return;
 			}
 			
 			thisVal = $("#id_slots").val();
 			if( !isInt( thisVal ) )
-			{
-				displayOverlay( 'error' , 'bad expectation', "Invalid number of slots" );	
-				return;
+			{							
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: "Invalid number of slots"
+				});
+					return;
 			}
 			if( thisVal < 1 )
-			{				
-				displayOverlay( 'error' , 'bad expectation', "As in zero slot? Are you kidding me?" );
+			{								
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: "As in zero slot? Are you kidding me?" 
+				});
 				return;
-			}
-			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure these are what you want to configure now?" );																		
+			}			
+			$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: 'Confirm',
+			   message: "Are you sure these are what you want to configure now?",
+			   yesFunctionCall: 'formSubmit'
+			});
 			
 			
 	});
