@@ -118,8 +118,12 @@ $(document).ready(function()
 			ask for some form submit confirmation here
 		*/
 	
-		$("#buttonReset").click( function() {						
-			displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );									
+		$("#buttonReset").click( function() {									
+			$.fn.nextGenModal({
+			   msgType: 'okay',
+			   title: 'Not yet :-)',
+			   message: 'Feature coming later' 
+			});
 		});
 		
 		/*
@@ -131,18 +135,30 @@ $(document).ready(function()
 			var decision = false;
 			
 			if( timeFrames == "" )
-			{
-				displayOverlay( 'error' , 'info required', "We cannot proceed if you don't have time frames specified." );										
+			{				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'info required',
+				   message: "We cannot proceed if you don't have time frames specified."
+				});
 				return;
 			}
 			
 			if( dateFrames == "" )
 			{
-				displayOverlay( 'error' , 'info required', "We cannot proceed if you don't have date frames specified." );						
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'info required',
+				   message: "We cannot proceed if you don't have date frames specified."
+				});
 				return;
-			}
-						
-			displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard." );																		
+			}								
+			$.fn.nextGenModal({
+			   msgType:  'warning',
+			   title:  'Confirm',
+			   message: "Are you sure that you are correct in what you have entered?\n\nYou can only change these after finishing the wizard." ,
+			   yesFunctionCall: 'formSubmit'
+			});
 		});
 		
 		$("#addTimeBtn").click( function()
@@ -163,14 +179,22 @@ $(document).ready(function()
 				
 				//check first if they are not blank
 				if( $('#timepicker_start').val() == "" )
-				{					
-					displayOverlay( 'error' , 'info required', "Enter time start!" );						
+				{														
+					$.fn.nextGenModal({
+					   msgType: 'error',
+					   title: 'info required',
+					   message: 'Enter time start!'
+					});
 					return false;
 				}
 				
 				if( $('#timepicker_end').val() == "" )
 				{
-					displayOverlay( 'error' , 'info required', "Enter time end!" );						
+					$.fn.nextGenModal({
+					   msgType: 'error',
+					   title: 'info required',
+					   message: 'Enter time end!'
+					});
 					return false;
 				}
 				
@@ -184,16 +208,24 @@ $(document).ready(function()
 				
 				// if invalid time string is submitted, difference_in_Millisecs would be NaN
 				if( isNaN(difference_in_Millisecs) )
-				{
-					displayOverlay( 'error' , 'misunderstanding', "Incorrect time format!" );						
+				{					
+					$.fn.nextGenModal({
+					   msgType: 'error',
+					   title: 'misunderstanding',
+					   message:  "Incorrect time format!" 
+					});
 					return;
 				}
 																
 				if( !isShow_RedEye )
 				{
 					if( difference_in_Millisecs < 0 )
-					{						
-						displayOverlay( 'error' , 'bad expectation', "Not a Red Eye show but end time is earlier than showing time!" );						
+					{												
+						$.fn.nextGenModal({
+						   msgType: 'error',
+						   title: 'bad expectation',
+						   message:   "Not a Red Eye show but end time is earlier than showing time!"
+						});						
 						return;
 					}					
 				}				
@@ -205,8 +237,12 @@ $(document).ready(function()
 				for( x=0, y=timeFrames_obj.length ; x < y ; x++ )			
 				{					
 					if( timeFrames_obj[x].innerHTML == addThisTimeframe )
-					{
-						displayOverlay( 'error' , 'bad expectation', "Time exists already!" );						
+					{					
+						$.fn.nextGenModal({
+						   msgType: 'error',
+						   title: 'bad expectation',
+						   message:  "Time exists already!"
+						});	
 						return;
 					}															
 				}
@@ -241,21 +277,34 @@ $(document).ready(function()
 			var add_me;
 			
 			if( dateChosen == "" )	// blank, alert!
-			{
-				displayOverlay( 'error' , 'info required', "Please choose a date." );						
+			{				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'info required',
+				   message: "Please choose a date." 
+				});
 				return;
 			}
 			
 			if( dateChosen_splitted.length != 3 )
-			{
-				displayOverlay( 'error' , 'misunderstanding', "Invalid date." );						
+			{				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'info required',
+				   message: "Invalid date."
+				});
+				return;
 			}
 			
 			for( x=0; x < 3; x++ )	// array length should be fixed at 3: mm/dd/yyyy
 			{
 				if( !isInt(dateChosen_splitted[x]) )	// found at javascript/form-validation/generalChecks.js
-				{					
-					displayOverlay( 'error' , 'bad expectation', "Invalid characters detected." );			
+				{											
+					$.fn.nextGenModal({
+					   msgType: 'error',
+					   title: 'bad expectation',
+					   message: "Invalid characters detected." 
+					});
 					return;
 				}
 			}
@@ -267,8 +316,12 @@ $(document).ready(function()
 			for( x=0, y=dateFrames_obj.length ; x < y ; x++ )			// now check the existing timeframe to see if something exists already
 			{															
 					if( $(dateFrames_obj[x]).val() == dateChosen )
-					{					
-						displayOverlay( 'error' , 'Date exists already', "Please specify another date." );	
+					{											
+						$.fn.nextGenModal({
+						   msgType: 'error',
+						   title: 'Date exists already',
+						   message: "Please specify another date."
+						});
 						return;
 					}					
 			}
@@ -309,8 +362,14 @@ $(document).ready(function()
 				userFriendlyValue =  convertDateMonth_toText( thisVal.toString() );
 			}else{
 				userFriendlyValue = thisVal;
-			}					
-			displayOverlay_confirm( 'warning' , 'Confirm', 'deleteSelectedShowingTimeInfo', new Array( optionFor ), null, null, 'Do you want to delete the following?<br/><br/> ' + userFriendlyValue  );																								
+			}								
+			$.fn.nextGenModal({
+			   msgType: 'warning' ,
+			   title: 'Confirm',
+			   message: 'Do you want to delete the following?<br/><br/> ' + userFriendlyValue,
+			   yesFunctionCall: 'deleteSelectedShowingTimeInfo',
+			   yFC_args: new Array( optionFor )
+			});
 		}); //double clicking an option to delete
 	}
 );

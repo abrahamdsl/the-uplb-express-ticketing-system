@@ -93,6 +93,7 @@ function convertTimeTo12Hr( thisTime )
 		Accepts time in the format of HH:MM:SS or HH:MM
 		
 		Changed 05FEB2012-1241 : Does not return second part if it's "00"
+		Changed 19FEB2012-1653 : Specified base 10 for parseInt
 	*/
 	var timeLen;
 	var splitLen;
@@ -110,7 +111,7 @@ function convertTimeTo12Hr( thisTime )
 	splitted = thisTime.split( splitter );
 	splitLen = splitted.length;
 	if( (splitLen == 2 || splitLen == 3) == false ) return false;	
-	hourPart = parseInt( splitted[0] );	
+	hourPart = parseInt( splitted[0], 10 );		
 	switch( hourPart )
 	{
 		case 13: hourPart_STR="01" ; break
@@ -124,7 +125,7 @@ function convertTimeTo12Hr( thisTime )
 		case 21: hourPart_STR="09" ; break
 		case 22: hourPart_STR="10" ; break
 		case 23: hourPart_STR="11" ; break
-		case 0:
+		case 0: 
 		case 24: hourPart_STR="12" ; break
 		default: hourPart_STR = splitted[0]; break;
 	}
@@ -351,7 +352,6 @@ function isTimestampGreater( date1, time1, date2, time2, isShow_RedEye)
 	for( x=0, y=time2_splitted.length; x < y; x++)
 	{
 		time2_splitted[x] = parseInt( time2_splitted[x] );
-		console.log ( time2_splitted[x] );		
 	}
 	timeStamp1.setHours( time1_splitted[0]  );
 	timeStamp1.setMinutes( time1_splitted[1]  );	

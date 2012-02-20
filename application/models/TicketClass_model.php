@@ -46,13 +46,11 @@ class TicketClass_model extends CI_Model {
 			
 			Obvious purpose isn't it? :-)
 			BTW, an EventID of 0 in table `ticket_class` signifies that such class is a default			
-		*/
-		//$query_obj = $this->db->get_where( 'ticket_class' , array( 'eventID' => 0 ) );
-		$sql = ("SELECT * FROM `ticket_class` where `eventID` = ? ORDER BY `priority` ASC");
+		*/		
+		$sql = ("SELECT * FROM `ticket_class` where `eventID` = '0' ORDER BY `priority` ASC");
 		
-		$query_obj = $this->db->query($sql, array( 'eventID' => 0 ) );
-		return $query_obj->result( );
-		
+		$query_obj = $this->db->query( $sql );
+		return $query_obj->result( );		
 	}//getDefaultTicketClasses()
 		
 	function getLastTicketClassGroupID( $eventID = null )

@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Create Event";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Create Event - Step 4";
 	$this->thisPage_menuCorrespond = "Create Event Step 4";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -15,7 +18,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>" /> <!-- needed for accordion -->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>" />
-	<!--For overlay-->
+	<!--For modal v1-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
@@ -29,10 +32,9 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_004.js'; ?>" ></script>			
-		<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 </head>
-<body>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
@@ -56,7 +58,7 @@ $this->load->view('html-generic/doctype.inc');
 			<div id="page_title">
 				Step 4: Choose showing times of ' <?php echo $_COOKIE['eventName']; ?> '
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction" >
 				Select the showings you want to configure. <br/>
 				If you have left anything unselected, you will be asked again at the end of this wizard.
 				<br/>
@@ -96,20 +98,20 @@ $this->load->view('html-generic/doctype.inc');
 												<input type="checkbox" name="<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" id="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" />
 											</td>	
 											<td >
-												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" /><?php echo $eachShowingTime->StartDate; ?></label><br/>
+												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" ><?php echo $eachShowingTime->StartDate; ?></label><br/>
 											</td>
 											<td>	
-												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" /><?php echo $eachShowingTime->StartTime; ?></label><br/>
+												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" ><?php echo $eachShowingTime->StartTime; ?></label><br/>
 											</td>											
 											<td>
-												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" <?php if($redEye){ ?>class="redEye"<?php }; ?> /><?php echo $eachShowingTime->EndTime; ?></label><br/>
+												<label for="ch_<?php echo $eachShowingTime->StartDate."x".str_replace( ':', '_' , $eachShowingTime->StartTime )."-".str_replace( ':', '_' , $eachShowingTime->EndTime );  ?>" <?php if($redEye){ ?>class="redEye"<?php }; ?> ><?php echo $eachShowingTime->EndTime; ?></label><br/>
 											</td>
 										</tr>
 									<?php
 											$x++;
 										}								
 									?>
-									<tbody>
+									</tbody>
 								</table>
 								<span class="buttonsAtBottom" >
 									<input type="button" value="Check all" class="selectDeselectBtns" id="checkAll" />
@@ -132,7 +134,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

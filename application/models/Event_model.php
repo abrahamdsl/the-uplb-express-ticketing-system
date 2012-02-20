@@ -41,9 +41,11 @@ class Event_model extends CI_Model {
 	function constructMatrix( )
 	{	/*
 			Created 11DEC2011-1632
+			
+			Changed | 19FEB2012-1421 | Dates and times are now being got in Session data, formerly was post.
 		*/
-		$timeFrames = $this->input->post( 'timeFrames_hidden' );
-		$dates = $this->input->post( 'dateFrames_hidden' );
+		$timeFrames = $this->session->userdata( 'timeFrames_hidden' );
+		$dates = $this->session->userdata( 'dateFrames_hidden' );
 		
 		// tokenize
 		$timeFrames_array = explode("|", $timeFrames);
@@ -74,6 +76,7 @@ class Event_model extends CI_Model {
 		$data = array(
 			'eventID' => $eventID,
 			'Name' => $this->input->post( 'eventName' ),
+			'Location' => $this->input->post( 'location' ),
 			'Description' => "echos",
 			'FB_RSVP' => $this->input->post( 'eventFBRSVP' ),
 			'temp' => 100
@@ -90,23 +93,26 @@ class Event_model extends CI_Model {
 		
 	}//createEvent_basic
 	
-	function createShowings( $event_LastUniqueID = null )
+	function createShowings( $event_LastUniqueID = null, $eventID = null )
 	{ 
 		/*
 			created 11DEC2011-1943
-		*/
-		// just checking the index so I don't think it is not safe to 
-		// directly access POST instead of the CI way
+			
+			Changed 19FEB2012 1432: New param $eventID / In the DB query below, substituted direct cookie access to just the $eventID parameter.
+				It seems this is more secure and adhering to SE principles.
+		*/		
 		$showingTime_raw;
 		$timeFrame;
 		$dateEnd;
 		$insertResult = FALSE;
 
-		if( !is_int( $event_LastUniqueID ) ){
-			if( $event_LastUniqueID == null ) return false;
-		}
+		if( !is_int( $event_LastUniqueID ) and ( $event_LastUniqueID == null )  ) return false;
+		if( !is_int( $eventID ) and ( $eventID == null )  ) return false;
+		
 		
 		// CODE MISSING: database checkpoint
+		// just checking the index so I don't think it is not safe to 
+		// directly access POST instead of the CI way
 		foreach( $_POST as $key => $val )
 		{	
 			/* Variable $key is of the form [ YYYY/MM/DDxHH:MM_-_HH:MM ]
@@ -134,7 +140,7 @@ class Event_model extends CI_Model {
 			//now insert			
 			$insertResult = $this->insertShowingInstance( 
 				++$event_LastUniqueID,				// uniqueID, i.e., identifier of this showing time of a certain event
-				$this->input->cookie('eventID'), 	// eventID, to reference to 'event' table
+				$eventID							, 	// eventID, to reference to 'event' table
 				$showingTime_raw[0],				// start date
 				$showingTime_raw[1][0],				// start time
 				$dateEnd,							// obviously
@@ -157,13 +163,18 @@ class Event_model extends CI_Model {
 		
 		// delete showing times
 		$query_obj1 = $this->db->delete( 'showing_time', array( 'eventID' => $eventID  ) );
-		// delete ticket class
-		//$sql = "DELETE FROM `ticket_class` WHERE `";
+		// delete ticket class		
 		$query_obj2 = $this->db->delete( 'ticket_class', array( 'EventID' => $eventID  ) );
+		// delete event slot
+		$query_obj3 = $this->db->delete( 'event_slot', array( 'EventID' => $eventID  ) );
+		// delete pchannel
+		$query_obj4 = $this->db->delete( 'payment_channel_availability', array( 'EventID' => $eventID  ) );
+		// delete seats
+		$query_obj5 = $this->db->delete( 'seats_actual', array( 'EventID' => $eventID  ) );
 		// finally, from the event table
-		$query_obj3 = $this->db->delete( 'event', array( 'eventID' => $eventID  ) );
+		$query_obj6 = $this->db->delete( 'event', array( 'eventID' => $eventID  ) );
 		
-		return ( $query_obj1 and $query_obj2 and $query_obj3 );
+		return ( $query_obj1 and $query_obj2 and $query_obj3 and $query_obj4 and $query_obj5 and $query_obj6 );
 	} // deleteAllEventInfo
 	
 	function deleteBookingCookies()
@@ -350,10 +361,11 @@ class Event_model extends CI_Model {
 			$currentTime;
 			$currentDate;
 			$deadline = Array( "date" => '2011-01-01', "time" => "00:00:01" );
-
+			
 			date_default_timezone_set('Asia/Manila');
 			$currentDate = date( 'Y-m-d' );
 			$currentTime = date( 'H:i:s' );
+			log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline: '.$currentDate." - ".$currentTime );
 			$showtime = $this->getSingleShowingTime( $eventID, $uniqueID );			
 			if( $showtime === false ) return false;
 			switch( $showtime->Book_Completion_Option )
@@ -381,7 +393,8 @@ class Event_model extends CI_Model {
 				case "RELATIVE_AFTER":
 						$BCT_exploded = explode( ":", $showtime->Book_Completion_Time );		// tokenize
 						// get the time equivalent in millisecs since 1970? of the currenttime, then let's add the hours and mins
-						$deadline["time"] = date( 'H:i', strtotime( '+'.$BCT_exploded[0].' hour +'.$BCT_exploded[1]." min ", strtotime($currentTime ) ) ); 
+						$deadline["time"] = date( 'H:i', strtotime( '+'.$BCT_exploded[0].' hour +'.$BCT_exploded[1]." min ", strtotime( $currentTime ) ) ); 
+						log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline computed:'.$deadline["time"] );
 						// now it's current date's turn and we add the number of days
 						$deadline["date"] = date( 'Y-m-d', strtotime( '+'.$showtime->Book_Completion_Days.' day', strtotime( $currentDate ) ) );	// now add
 						break;

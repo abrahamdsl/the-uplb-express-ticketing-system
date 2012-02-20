@@ -2,6 +2,9 @@
 $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
+<?php
+$this->load->view('html-generic/metadata.inc');
+?>
 <!--
 **** WARNING 18JAN2012-2037
 *
@@ -16,7 +19,6 @@ $this->load->view('html-generic/doctype.inc');
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
-
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
@@ -24,21 +26,20 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<!--For overlay-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>"/></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>		
 	<?php
 		$this->load->view('html-generic/seatEssentials.inc');
 	?>
 	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript.js'; ?>"/></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript2.js'; ?>"/></script>			
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript.js'; ?>" ></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript2.js'; ?>" ></script>			
+	<!--For modal v1-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 </head>
 <body>
 <?php
@@ -83,7 +84,7 @@ $this->load->view('html-generic/doctype.inc');
 											{
 										?>
 												<td class="legend">													
-													<input type="text" name="label_up_number" disabled="true" value="<?php echo $x+1; ?>" />
+													<input type="text" name="label_up_number" disabled="disabled" value="<?php echo $x+1; ?>" />
 													<?php //echo $x+1; ?>
 												</td>
 										<?php
@@ -98,8 +99,8 @@ $this->load->view('html-generic/doctype.inc');
 									<tr>
 										<td class="legend" >
 											<!--<input type="hidden" name="label_real_left_letter" value="<?php echo chr($indicator); ?>" />
-												<input type="type" name="label_pesentation_left_y" disabled="true" value="<?php echo chr($indicator); ?>" />-->
-												<input type="text" name="label_letter" disabled="true" value="<?php echo chr($indicator); ?>" />											
+												<input type="type" name="label_pesentation_left_y" disabled="disabled" value="<?php echo chr($indicator); ?>" />-->
+												<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />											
 										</td>
 										<?php for( $y = 0; $y < $cols; $y++ ){ ?>
 											<td>
@@ -112,7 +113,7 @@ $this->load->view('html-generic/doctype.inc');
 										<?php } ?>
 										<td class="legend" >
 											<!--<input type="hidden" name="real_label_right" value="<?php echo chr($indicator); ?>" /> -->
-											<input type="text" name="label_letter" disabled="true" value="<?php echo chr($indicator); ?>" />											
+											<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />											
 										</td>
 									</tr>
 									<?php } ?>	
@@ -124,7 +125,7 @@ $this->load->view('html-generic/doctype.inc');
 										?>
 												<td class="legend">
 													<!--<input type="hidden" name="label_real_down_x" value="<?php echo $x+1; ?>" />-->
-													<input type="text" name="label_down_number" disabled="true" value="<?php echo $x+1; ?>" />
+													<input type="text" name="label_down_number" disabled="disabled" value="<?php echo $x+1; ?>" />
 													<?php //echo $x+1; ?>
 												</td>
 										<?php
@@ -141,7 +142,7 @@ $this->load->view('html-generic/doctype.inc');
 					Area for seat legend here. Later
 				</div>
 				<div id="essentialButtonsArea">
-							<a onClick="document.pressed=this.value" class="button" id="buttonOK" ><span class="icon">Next</span></a>							
+							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>							
 				</div>	
 			</div>
 			

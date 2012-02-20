@@ -1,6 +1,6 @@
 <div id="basic-modal-content-freeform" >
 	<input type="hidden" name="uniqueID" id="seatMapUID" value="0" />
-	<input type="hidden" name="seatMap_isMaster" id="seatMap_isMaster_indicator value="0" />
+	<input type="hidden" name="seatMap_isMaster" id="seatMap_isMaster_indicator" value="0" />
 	<div id="SeatV2Title" >
 		<span id="titleProper" >Choose seat <!--for <span id="eventName"></span>--></span>
 		<span class="eventWhen" ></span>

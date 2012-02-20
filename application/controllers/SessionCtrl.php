@@ -35,7 +35,7 @@ class SessionCtrl extends CI_Controller {
 		*/
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
-
+	
 		if(  $this->Account_model->isUserExistent( $username, $password )
 		) //if something was submitted, this will return true
 		{
@@ -43,7 +43,7 @@ class SessionCtrl extends CI_Controller {
 				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
 				$this->Account_model->getUser_Names( $this->input->post('username') )
 			);
-			//$this->userHome();
+			//$this->userHome();			
 			redirect('/');
 		}else{			
 			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
@@ -61,7 +61,8 @@ class SessionCtrl extends CI_Controller {
 			it is better to separate it and there.
 		*/
 		$this->login_model->logout();
-		$this->index();
+		$this->login_model->deleteUserCookies();
+		redirect('/');
 	} //logout
 
 }//class

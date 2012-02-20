@@ -18,6 +18,22 @@ div.purchase span.cost{
 	float: right;
 }
 */
+a.toggleGuestInfo{
+	margin-left: 30px;
+	width: 40px;
+	height: 14px;
+	color: white;
+	background-color: rgb(73,133,39);
+	cursor: pointer;
+	padding: 5px;
+}
+div.paymentDetailsContent{
+	height: auto;
+	overflow: auto;
+}
+div.paymentDetailsContent div.bookingDetails{	
+	position: relative
+}
 table.bStep5tbl{
 	width: 95%;	
 	border: 2px solid rgb(216,228,214);

@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Create Event";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Create Event - Step 6";
 	$this->thisPage_menuCorrespond = "Create Event Step 6";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -17,7 +20,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
-	<!--For overlay-->
+	<!--For modal v1-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
@@ -25,17 +28,17 @@ $this->load->view('html-generic/doctype.inc');
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.datepicker.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.timepicker.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006_pickerBoot.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006.js'; ?>"/></script>				
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>		  	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.datepicker.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.timepicker.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006_pickerBoot.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>" ></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent006.js'; ?>" ></script>				
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
 </head>
 <body>
 <?php
@@ -52,15 +55,13 @@ $this->load->view('html-generic/doctype.inc');
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>			
-    </div>
-        
-    
+    </div>            
     <div id="main_content" >    	
     	<div id="centralContainer">           		   
 			<div id="page_title">
 				Step 6: Configure some other options for ' <?php echo $_COOKIE['eventName']; ?> '
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction" >
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do 
 				<br/>
 				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -132,7 +133,7 @@ $this->load->view('html-generic/doctype.inc');
 											$x++;
 										}								
 									?>
-									<tbody>
+									</tbody>
 								</table>								
 							
 							
@@ -151,7 +152,7 @@ $this->load->view('html-generic/doctype.inc');
 										<!--this red eye indicator is used by some function in createEvent_002.js that is being called from here,
 											so we include it here so that such JS file won't malfunction because of this single element's absence
 										-->
-										<input type="hidden" name="redEyeIndicator" id="id_redEyeIndicator" alt="This indicates that show starts today but ends the next day, i.e. 0800PM but 1230AM which is the next day.">
+										<input type="hidden" name="redEyeIndicator" id="id_redEyeIndicator" alt="This indicates that show starts today but ends the next day, i.e. 0800PM but 1230AM which is the next day." />
 										<!--<label for="redEyeIndicator">Red Eye Deadline?</label> -->
 									</span>
 
@@ -169,14 +170,14 @@ $this->load->view('html-generic/doctype.inc');
 												<option value="3" >After X days and hours of booking time</option>											
 											</select>
 										</span>
-										<br/>
-										<span id="right_inner_RelativeAfterBookingDay" class="innerRightChanging" hidden="true" >											
+										<br/><br/>
+										<span id="right_inner_RelativeAfterBookingDay" class="innerRightChanging" > <!--hidden="true"--> 
 												<input type="text" class="textInputSize grayGuide" id="relative_days" name="numOfDays_relative" value="Days" />												
 										</span>		
 										<span id="right_inner_fixedSameDay" class="innerRightChanging" >
 											<input type="text" id="fixedTime"  class="textInputSize_Larger grayGuide" name="bookCompletionTime" value="Put time here" />
 										</span>
-										<span id="right_inner_fixedAfterBookingDay" class="innerRightChanging"  hidden="true" >
+										<span id="right_inner_fixedAfterBookingDay" class="innerRightChanging" > <!--hidden="true"--> 
 											<input type="text" class="textInputSize_Larger grayGuide" id="numOfDays" name="numOfDays_fixed" value="Number of days after" />
 										</span>																			
 									</span>
@@ -186,7 +187,7 @@ $this->load->view('html-generic/doctype.inc');
 										In case of no more seats, still permit selling?
 									</span>
 									<span class="right" >
-										<input type="radio" id="id_seatNone_StillSell_YES" name="seatNone_StillSell" value="YES"  checked="true" />
+										<input type="radio" id="id_seatNone_StillSell_YES" name="seatNone_StillSell" value="YES"  checked="checked" />
 										<label for="id_seatNone_StillSell_YES">YES</label>
 										<input type="radio" id="id_seatNone_StillSell_NO" name="seatNone_StillSell" value="NO" />
 										<label for="id_seatNone_StillSell_NO">NO</label>
@@ -197,7 +198,7 @@ $this->load->view('html-generic/doctype.inc');
 										Seat required during confirmation?
 									</span>
 									<span class="right" >
-										<input type="radio" id="id_confirmationSeatReqd_YES" name="confirmationSeatReqd" value="YES" checked="true" />
+										<input type="radio" id="id_confirmationSeatReqd_YES" name="confirmationSeatReqd" value="YES" checked="checked" />
 										<label for="id_confirmationSeatReqd_YES">YES</label>
 										<input type="radio" id="id_confirmationSeatReqd_NO" name="confirmationSeatReqd" value="NO" />
 										<label for="id_confirmationSeatReqd_NO">NO</label>
@@ -210,8 +211,8 @@ $this->load->view('html-generic/doctype.inc');
 									</span>
 									<span class="right" >
 										<?php foreach( $paymentChannels as $singleChannel ) {?>
-											<input type="checkbox" name="pChannel_<?php echo $singleChannel->UniqueID; ?>" value="<?php echo $singleChannel->UniqueID; ?>" checked="true" />										
-											<label for="pChannel_<?php echo $singleChannel->UniqueID; ?>"><?php echo $singleChannel->Name; ?></label>
+											<input type="checkbox" id="id_pChannel_<?php echo $singleChannel->UniqueID; ?>" name="pChannel_<?php echo $singleChannel->UniqueID; ?>" value="<?php echo $singleChannel->UniqueID; ?>" checked="checked" />											
+											<label for="id_pChannel_<?php echo $singleChannel->UniqueID; ?>"><?php echo $singleChannel->Name; ?></label>
 											<br/>
 										<?php } ?>
 									</span>
@@ -226,7 +227,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

@@ -12,13 +12,23 @@ function banishSeat( seatInputIndicator )
 
 function formSubmit()
 {
+	$.fn.nextGenModal({
+		msgType: 'ajax',
+		title: 'please wait...',
+		message: 'Submitting seat info..'
+	});
 	document.forms[0].submit();
 }
 
 
 $(document).ready( function(){
-	$( '#buttonOK' ).click( function(){		
-		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, "Are you sure you have modified the seat map according to your whims?" );																					
+	$( '#buttonOK' ).click( function(){				
+		$.fn.nextGenModal({
+		   msgType: 'warning',
+		   title: 'confirm',
+		   message: "Are you sure you have modified the seat map according to your whims?",
+		   yesFunctionCall: 'formSubmit'
+		});
 	});
 
 	$('td.legend input[name^="label_up"]').change( function(){
@@ -60,8 +70,12 @@ $(document).ready( function(){
 			{
 				thisOpposite = "down";
 			}else{
-				thisOpposite = "up";
-				displayOverlay( 'okay', 'not yet', 'Making of vertical aisle feature by clicking on the bottom column indicators coming later.  :-)' );
+				thisOpposite = "up";				
+				$.fn.nextGenModal({
+				   msgType: 'okay',
+				   title: 'not yet',
+				   message: 'Making of vertical aisle feature by clicking on the bottom column indicators coming later.  :-)'
+				});
 				return false
 			}			
 			thisOpposite = 'input[name="label_' + thisOpposite + '_number"][value="' + destroyThis + '"]';			
@@ -73,8 +87,12 @@ $(document).ready( function(){
 			destroyThis = atoi( $(thisIndicator).val() );		// found in generalChecks.js
 			y = $('#cols').val();
 			z = $('#rows').val();			
-			z_handle = $('#rows_touchable');*/					
-			displayOverlay( 'okay', 'not yet', 'Making of horizontal aisle feature (might be) coming later.  :-)' );
+			z_handle = $('#rows_touchable');*/								
+			$.fn.nextGenModal({
+				   msgType: 'okay',
+				   title: 'not yet',
+				   message: 'Making of horizontal aisle feature (might be) coming later.  :-)'
+				});
 			return false;
 		}else{
 			alert('error: "up" or "down" only needed');

@@ -1,8 +1,33 @@
-/*copied from http://www.zdnet.com/blog/btl/microsofts-windows-phone-7-potential-marketing-pitch-im-a-phone-too/37399?tag=nl.e539 18 AUG 2011 */
-body{font:normal 75%/1.7 "Segoe UI",sans-serif;color:#252525;background:#15293e url(http://localhost/CS150/images/bg-test.png) repeat-x 0 135px; padding-bottom: 10px; }
+/**
+*	Body All CSS 	
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*	
+*	The CSS document for formatting that is common across all pages
+*   of the application.
+*
+*	CSS 2.1 compliant except for #main_container 's box-shadows, which is CSS 3 compliant.
+*/
 
+/*copied from http://www.zdnet.com/blog/btl/microsofts-windows-phone-7-potential-marketing-pitch-im-a-phone-too/37399?tag=nl.e539 18 AUG 2011 */
+body{
+	font:normal 75%/1.7 sans-serif; 
+	font-family: "Segoe UI",  Helvetica, Arial, Verdana; 
+	color:#252525;background:#15293e url('../images/bg-test.png') repeat-x 0 0px fixed; 
+	padding-bottom: 10px; 
+}
 input, select{
 	font-family: "Segoe UI", Verdana, Arial, Tahoma;
+}
+
+img{ 
+	border: none;
+}
+div#logo a{
+	border-width: 0px;
 }
 /*start:userSignup*/
 .center_pure{
@@ -38,7 +63,7 @@ input, select{
 	padding: 10px 10px 10px 0;
 	background-color: rgb(229,227,228);
 	color: rgb(117,108,111);
-	text-align: justified;
+	text-align: justify;
 	width: 50% ;		
     margin-left: auto ;
     margin-right: auto ;
@@ -65,8 +90,7 @@ input, select{
 
 div.centralContainer{
 	min-height: 60%;
-	height: 61%;
-	
+	height: 61%;	
 	padding-bottom: 15px;
 }
 
@@ -114,14 +138,34 @@ div.centralContainer{
 
 
 #main_container{
-	min-height: 90%;
+	min-height: 540px;
 	margin: 0 auto;
 	width:900px;
 	background-color:#FFFFFF;
 	overflow: visible;
+	position: relative;
+	padding-bottom: 100px;
+	/*The succeeding part is for the drop shadows. */
+	 box-shadow: 2px 2px 19px #aaa;
+	-o-box-shadow: 2px 2px 19px #aaa;
+	-webkit-box-shadow: 2px 2px 19px #aaa;
+	-moz-box-shadow: 2px 2px 19px #aaa;
+
+	/* For IE 5.5 - 7 */
+	/* for IE4 - IE7 */
+/*	filter:
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=1, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=90, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=180, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=270, Color=#C4C4C4);
+	-ms-filter: "
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=1, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=90, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=180, Color=#C4C4C4),
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=270, Color=#C4C4C4)";*/
 }
 
-div #page_title
+div#page_title
 {
 	clear: both;
 	font-family: "Segoe UI Light", Arial;
@@ -131,6 +175,9 @@ div #page_title
 	color: rgb(79,79,79);
 }
 
+div#instruction{
+	padding-left:10px; clear: both
+} 
 
 /*start:bloat alert, 18AUG2011*/
 #menu_bar{
@@ -177,7 +224,12 @@ padding: 0px 5px 0px 5px;
 
 #graynavbar {    
 	CLEAR: both;
-	BORDER-BOTTOM: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; PADDING-BOTTOM: 8px; PADDING-LEFT: 17px; WIDTH: 864px; PADDING-RIGHT: 17px; BACKGROUND: url('../images/user-bg.png') #fefefe repeat-x; HEIGHT: 12px; OVERFLOW: hidden; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; PADDING-TOP: 8px; -moz-border-radius-bottomleft: 2px; -moz-border-radius-bottomright: 2px; -moz-border-radius-topleft: 2px; -moz-border-radius-topright: 2px;
+	BORDER-BOTTOM: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; PADDING-BOTTOM: 8px; PADDING-LEFT: 17px; WIDTH: 864px; PADDING-RIGHT: 17px; BACKGROUND: url('../images/user-bg.png') #fefefe repeat-x; HEIGHT: 12px; OVERFLOW: hidden; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; PADDING-TOP: 8px; 
+	/*
+		19FEB2012-1321 - Deemed to not exist by W3C CSS Validator, but still
+		finding where this might be used. Remove later if no silbi.
+		-moz-border-radius-bottomleft: 2px; -moz-border-radius-bottomright: 2px; -moz-border-radius-topleft: 2px; -moz-border-radius-topright: 2px;
+	*/
 	background-color: rgb(238,238,238);
 }
 #graynavbar a{    color:#5F5F5F;     font-weight:bold;     text-decoration:none;     color:#5f5f5f}
@@ -188,14 +240,59 @@ padding: 0px 5px 0px 5px;
 #graynavbar h2, #graynavbar li{    float:left;     font-size:1em;     line-height:16px;     font-weight:bold;     list-style:none;     margin-right:5px;     margin-bottom:0;     margin-top:0;     padding-top:0;     padding-bottom:0}
 #graynavbar li img{    vertical-align:middle}
 
-#footer{
+div#footer{
+	/* This makes the footer at the bottom of the div#main_container. Such div's position however, must be set to "relative"*/
+	position:absolute; 
+	bottom:0;	
+	width: 880px;
 	color: rgb(193, 193, 193);
 	background: url('../images/footer-bg.png') repeat-y;
 	padding: 5px 10px 5px 10px;
 	text-align: center;	
 }
 
+div#footer div.standards{
+	width: 19%; 
+	min-height: 77px; 
+	float: left; 
+	z-index: 50; 
+	position: absolute; 
+	padding-top: 40px; 
+	text-align: left;	
+}
+div#footer div.standards img{
+	height: 31px;
+	width: 88px;
+	/*border: none;*/
+}
+div#footer div.noteproper{
+	width: 100%; float: right;
+}
+
 .fieldErrorNotice{
 	font-size: 0.8em;
 	color: red;
+	display: none;
+}
+
+/*
+	Added 19FEB2012-1217
+	Tranferred from bookStep3.css
+*/
+p.criticalityIndicator{
+	min-width: 100px;
+	width: auto;
+	float: right;
+	margin-right: 30px;
+	color: red;
+	font-size: 0.9em;
+}
+span.critical{
+	color: red;
+	left:-10px;
+	padding-left: 3px;
+}
+
+div.buttonfooterSeparator{
+	clear: both;
 }

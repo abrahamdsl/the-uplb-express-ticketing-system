@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -23,7 +26,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
-	<!--For overlay-->
+	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
@@ -31,21 +34,21 @@ $this->load->view('html-generic/doctype.inc');
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep6.js'; ?>"/></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep6.js'; ?>" ></script>			
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 	<!-- For overlay v2-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
 	<!-- seat manipulations -->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
@@ -54,10 +57,8 @@ $this->load->view('html-generic/doctype.inc');
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
-		$this->load->view('html-generic/seatModal-client.inc');
-		
-?>		
-<div id="gaga" style="display:none" > ngiyaw </div>
+		$this->load->view('html-generic/seatModal-client.inc');		
+?>
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -86,9 +87,9 @@ $this->load->view('html-generic/doctype.inc');
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container bookStep2_main_div_custom" >
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
-					<div id="title">Event Details</div>
-					<div id="content">	
-						<div id="bookingDetails" >
+					<div class="title">Event Details</div>
+					<div class="content">	
+						<div class="bookingDetails" >
 							<?php
 								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
 							?>
@@ -131,7 +132,7 @@ $this->load->view('html-generic/doctype.inc');
 								<?php echo $this->input->cookie( 'location' ); ?>								
 							</div>														
 						</div>
-						<div id="containingClassTable" class="center_purest" >
+						<div class="containingClassTable center_purest" >
 							<div id="bookingNumber" class="properInfo center_purest" >
 								<?php echo $this->input->cookie( 'bookingNumber' ); ?>
 							</div>
@@ -159,16 +160,18 @@ $this->load->view('html-generic/doctype.inc');
 					</div>
 				</div>
 				<div class="accordionImitation aci2_Book3Special" >
-					<div id="title" class="part2" >Payment details</div>
-					<div id="content" style="height: auto; overflow: auto;">	
-							<div id="bookingDetails" style="position: relative" >
+					<div class="title part2" >Payment details</div>
+					<div class="content paymentDetailsContent" >	
+							<div class="bookingDetails" >
 								<span class="sectionChief" >Billing Summary</span>																																								
 								<table id="billingSummary" class="bStep5tbl center_purest" >
 									<thead>
-										<td > Quantity</td>
-										<td > Item</td>
-										<td > Description</td>
-										<td > Cost</td>
+										<tr>
+											<td > Quantity</td>
+											<td > Item</td>
+											<td > Description</td>
+											<td > Cost</td>
+										</tr>
 									</thead>
 									<tbody>
 										<?php
@@ -200,7 +203,7 @@ $this->load->view('html-generic/doctype.inc');
 									</tbody>
 								</table>								
 								
-								<div id="totalX" class="purchase" class="center_purest" >																																											
+								<div id="totalX" class="purchase center_purest" >																																											
 									<table id="total" class="bStep5tbl center_purest">
 										<tbody>
 											<tr>
@@ -208,12 +211,12 @@ $this->load->view('html-generic/doctype.inc');
 												<td>&nbsp;</td>
 												<td>Total (in PHP)</td>
 												<td><span class="cost"></span><span class="cost" ><?php echo $this->session->userdata( "totalCharges" ); ?></span></td>
-											<tr/>											
+											</tr>											
 										</tbody>
 									</table>
 								</div>
 							</div>
-							<div id="containingClassTable" style="text-align: center;" >																
+							<div class="containingClassTable" >
 								<span class="sectionChief" >Payment mode</span>																														
 								<div id="pc<?php echo $singleChannel->UniqueID; ?>_details" class="pChannelDetails" >
 									<div id="pChannelName" class="properInfo center_purest" >
@@ -260,7 +263,7 @@ $this->load->view('html-generic/doctype.inc');
 					</div>
 				</div>
 				<div class="accordionImitation" >
-					<div id="title" >Guest Details </div>
+					<div class="title" >Guest Details </div>
 					<?php
 						$slots = $this->input->cookie( 'slots_being_booked' );
 					?>					
@@ -309,8 +312,8 @@ $this->load->view('html-generic/doctype.inc');
 							<div class="right" >
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">seat</legend>
-									<!--<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ]; ?>" disabled="disabled"   />									
-									-->
+									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ]; ?>" disabled="disabled"   />									
+									<!-- -->
 								</fieldset>								
 							</div>
 						</div>		
@@ -322,7 +325,7 @@ $this->load->view('html-generic/doctype.inc');
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Home</span></a>
 			</div>	
-			<div id="misc" style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

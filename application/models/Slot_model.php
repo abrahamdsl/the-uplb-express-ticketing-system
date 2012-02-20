@@ -93,7 +93,26 @@ class Slot_model extends CI_Model {
 			Mostly useful for resetting availability, etc.
 		*/
 		$sql_command = "SELECT * FROM `event_slot` WHERE `UUID` = ? ";
-		return $this->db->query( $sql_command, Array( $UUID ) ); 
+		return $this->db->query( $sql_command, Array( $UUID ) )->result(); 
+	}//getSingleSlot
+	
+	
+	function getSlotAssignedToUser( $UUID )
+	{
+		/*
+			Created 19FEB2012-1735
+			
+			Obviously...
+			
+			Returns MYSQL Obj on okay, BOOLEAN FALSE on fail.
+		*/
+		$sql_command = "SELECT * FROM `event_slot` WHERE `Assigned_To_User` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array( $UUID ) )->result(); 
+		
+		if( count( $arr_result ) > 0 )
+			return $arr_result[0];
+		else
+			return false;
 	}//getSingleSlot
 	
 	function getSlotsForBooking( $quantity, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )

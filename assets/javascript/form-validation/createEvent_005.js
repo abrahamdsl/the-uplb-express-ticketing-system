@@ -13,8 +13,12 @@ function checkSlotsTotal( theObject)
 	var Total = $('#totalSlotsChosen').val() ;
 	
 	if( Total > parseInt( $("#maxSlot").val() ) )
-	{		
-		displayOverlay( 'error' , 'error', "Total slots of all classes exceeds maximum allowed." );												
+	{				
+		$.fn.nextGenModal({
+		   msgType: 'error',
+		   title: 'error',
+		   message: 'Total slots of all classes exceeds maximum allowed.'
+		});
 		theObject.val( $('#lastFocus').val() );		// restore the former value
 		sumTotalSlots();							// recompute total again		
 		return false;
@@ -27,30 +31,32 @@ function createSeatmapOnPage( args )
 	/*
 		Created 30JAN2012
 	*/	
-	//display notice
-	console.log('start');
-	if( args["isOverlayDisplayedAlready"] === true ) modifyAlreadyDisplayedOverlay( 'notice' , 'please wait', 'Getting seat map info ...', false );
-	else{
-		displayOverlay( 'notice' , 'please wait', 'Getting seat map info, this may take up to a minute ...<br/><br/>' );
-	}
-	// ajax-time!
-	
+	//display notice	
+	$.fn.nextGenModal({
+	   msgType: 'ajax',
+	   title: 'please wait',
+	   message: 'Getting seat map info, this may take up to a minute ...<br/><br/>'
+	});
+	// ajax-time!	
 	var x = $.ajax({	
 		type: 'POST',
-		url: 'http://localhost/species/SeatCtrl/getMasterSeatmapData',
+		url: CI.base_url + 'SeatCtrl/getMasterSeatmapData',
 		timeout: 50000,
 		data: { 'uniqueID': args["seatMapUniqueID"] },				
 		success: function(data){
-			alreadyConfiguredSeat = false;
-			console.log ('meow');
+			alreadyConfiguredSeat = false;			
 			$(document).manipulateSeatAJAX( data );			// make now the HTML
 			lastUsedSeatmap =  args["seatMapUniqueID"];
 			$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
 		}
 	});	
 	x.fail(	function(jqXHR, textStatus) { 
-				revertSeatMapPulldown();
-				modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false ); 				
+				revertSeatMapPulldown();			
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'Connection timeout',
+				   message: 'It seems you have lost your internet connection. Please try again.'
+				});
 				return false;
 	} ) ;	
 }
@@ -59,8 +65,12 @@ function formSubmitPreCheck()
 {
 	// created 13JAN2012-1130
 	if( parseInt( $('#totalSlotsChosen').val() ) == 0 )
-	{
-		displayOverlay( 'error' , 'are you kidding me', "Please enter at least one slot in at least one ticket class, else click Cancel to configure this event later." );	
+	{		
+		$.fn.nextGenModal({
+		   msgType: 'error',
+		   title: 'are you kidding me',
+		   message: 'Please enter at least one slot in at least one ticket class, else click Cancel to configure this event later.'
+		});
 		return false;		
 	}	
 	return true;
@@ -73,35 +83,44 @@ function formSubmit( args )
 	/*
 		Try to submit ticket classes info first.
 	*/
-	// display modal/overlay
-	if( args["isOverlayDisplayedAlready"] === true )
-		modifyAlreadyDisplayedOverlay( 'notice' , 'processing', 'Submitting ticket classes info ...', false );	
-	else
-		displayOverlay( 'notice' , 'processing', 'Submitting ticket classes info ...' );	
+
+	$.fn.nextGenModal({
+	   msgType: 'ajax',
+	   title: 'processing',
+	   message: 'Submitting ticket classes info ...'
+	});
 	// now, ajax-time!		
 	var ticketClassPOST = $.ajax({	
 		type: 'POST',
 		url: $('form#formMain').attr('action'),
-		timeout: 30000,
+		timeout: 50000,
 		data:  $('form#formMain').serialize(),
 		success: function(data){								
-			//	Now try to submit seats									
-			modifyAlreadyDisplayedOverlay( 'notice' , 'processing', 'Submitting seat assignments ...', false );	
+			//	Now try to submit seats				
+			$.fn.nextGenModal({
+			   msgType: 'ajax',
+			   title: 'processing',
+			   message: 'Submitting seat assignments ...'
+			});
 			var seatsPOST = $.ajax({	
 				type: 'POST',
 				url: $('form#seatAssignments').attr('action'),
-				timeout: 45000,
+				timeout: 72000,
 				data:  $('form#seatAssignments').serialize() + '&seatmapUniqueID=' + $('select#seatMapPullDown option:selected').val(),	// add seatmap id too since it's not within the form
 				success: function(data){					
 					$('input#eligibility').val( data );					
-					hideOverlay();						
+					$.fn.nextGenModal.hideModal();
 					$("form#id_forwarder").submit();
 					return [ this ];
 				}
 			});	
 			seatsPOST.fail( 
-				function(jqXHR, textStatus) { 
-						modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false );
+				function(jqXHR, textStatus) { 						
+						$.fn.nextGenModal({
+						   msgType: 'error',
+						   title: 'Connection timeout',
+						   message: 'It seems you have lost your internet connection. Please try again.<br/><br/><br/>' + textStatus
+						});
 						return false;
 				}
 			);
@@ -110,7 +129,11 @@ function formSubmit( args )
 	// fail handler
 	ticketClassPOST.fail( 
 		function(jqXHR, textStatus) { 				
-				modifyAlreadyDisplayedOverlay( 'error' , 'Connection timeout', 'It seems you have lost your internet connection. Please try again.', false );
+				$.fn.nextGenModal({
+						   msgType: 'error',
+						   title: 'Connection timeout',
+						   message: 'It seems you have lost your internet connection. Please try again.<br/><br/><br/>' + textStatus
+				});
 				return false;
 		}
 	);		
@@ -190,12 +213,18 @@ $(document).ready( function() {
 		if( $(this).val() == "null" ) return false;		// selects the blank entry, so don't do anything
 		args["seatMapUniqueID"] = $(this).val();		
 		if( args["seatMapUniqueID"] == lastUsedSeatmap ) return false;
-		if( alreadyConfiguredSeat ){
-			args["isOverlayDisplayedAlready"] = true;
-			displayOverlay_confirm_NoCloseOnChoose( 'warning' , 'Confirm', 'createSeatmapOnPage', args, 'revertSeatMapPulldown', null, "Your previous seat assignments would be erased. Continue?");			
+		if( alreadyConfiguredSeat ){			
+			$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: 'Confirm',
+			   message: "Your previous seat assignments would be erased. Continue?",
+			   yesFunctionCall:  'createSeatmapOnPage',
+			   nFC_args: args,
+			   noFunctionCall: 'revertSeatMapPulldown',
+			   closeOnChoose: false
+			});
 		}
-		else{
-			args["isOverlayDisplayedAlready"] = false;
+		else{			
 			createSeatmapOnPage( args );			
 		}
 	});
@@ -216,8 +245,12 @@ $(document).ready( function() {
 		var thisClassAssignedSeatQuantity;
 		
 		if( isNaN( parseInt( seatMapUniqueID ) ) )
-		{
-			displayOverlay( 'error' , 'first and foremost', 'Please choose a seat map first.' );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'first and foremost',
+			   message: 'Please choose a seat map first.'
+			});
 			return false;
 		}
 		thisClassSlots = parseInt( $( '#id_slot_' + thisClass).val() );
@@ -225,7 +258,11 @@ $(document).ready( function() {
 		$('#basic-modal-content-freeform').find('.items_selected').html( thisClassAssignedSeatQuantity );		
 		if( isNaN( thisClassSlots ) || thisClassSlots < 1 )
 		{
-			displayOverlay( 'error' , 'input needed', 'Please enter at least 1 slot for ' + thisClass + ' class ' );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'input needed',
+			   message: 'Please enter at least 1 slot for ' + thisClass + ' class '
+			});
 			return false;
 		}
 		
@@ -272,8 +309,12 @@ $(document).ready( function() {
 		);				
 	});
 	
-	$('input[id^="id_privilege_"]').click( function() {
-		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+	$('input[id^="id_privilege_"]').click( function() {					
+		$.fn.nextGenModal({
+		   msgType: 'okay',
+		   title: 'Not yet :-)',
+		   message: 'Feature coming later'
+		});
 	});
 	
 	$('input[id^="addSlots_"]').click( function() {	
@@ -284,8 +325,12 @@ $(document).ready( function() {
 		
 		$( selector_ChangeThis ).focus();
 		if( !isInt( thisVal ) )
-		{			
-			displayOverlay( 'error' , 'error', "Invalid slot quantity." );										
+		{						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid slot quantity.'
+			});
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
@@ -311,18 +356,30 @@ $(document).ready( function() {
 		var thisVal = $( selector_ChangeThis ).val();		
 		
 		if( !isInt( thisVal ) )
-		{			
-			displayOverlay( 'error' , 'error',"Invalid number of slots." );
+		{						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of slots.'
+			});
 			return false;
 		}		
 		if( parseInt(thisVal) == 0 ) 
-		{
-			displayOverlay( 'error' , 'bad expectation',"Minimum slots is zero." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Minimum slot should be zero.'
+			});
 			return false;
 		}
 		if( $('input#seatAssigned_' + thisClass ).val() == thisVal )
-		{
-			displayOverlay( 'error' , 'error',"You have assigned " + thisVal + " seats for this class, so you cannot easily reduce the slots. Deselect some seats first and try again." );
+		{		
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: "You have assigned " + thisVal + " seats for this class, so you cannot easily reduce the slots. Deselect some seats first and try again." 
+			});
 			return false;
 		}
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);
@@ -336,8 +393,12 @@ $(document).ready( function() {
 		var thisVal = $( selector_ChangeThis ).val();		
 		
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'error',"Invalid number of slots." );
+		{		
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of slots.'
+			});
 			return;
 		}				
 		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
@@ -348,13 +409,22 @@ $(document).ready( function() {
 		var selector_ChangeThis = "#id_price_" + thisClass;		
 		var thisVal = $( selector_ChangeThis ).val();				
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'error',"Invalid number of slots." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of slots.'
+			});
 			return;
 		}		
 		if( parseInt(thisVal) == 0 ) 
-		{
-			displayOverlay( 'error' , 'bad expectation',"Minimum price is zero." );return;
+		{		
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Minimum price is zero.'
+			});
+			return;
 		}		
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
 	});
@@ -365,13 +435,21 @@ $(document).ready( function() {
 		var thisVal = $( selector_ChangeThis ).val();		
 		
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'error',"Invalid number of minutes for holding time." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of minutes for holding time.'
+			});
 			return false;
 		}
 		if( thisVal == 59 )
-		{
-			displayOverlay( 'error' , 'error',"Maximum holding time is 59 minutes." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: "Maximum holding time is 59 minutes."
+			});
 			return false;
 		}
 		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
@@ -384,12 +462,20 @@ $(document).ready( function() {
 		
 		if( !isInt( thisVal ) )
 		{
-			displayOverlay( 'error' , 'error',"Invalid number of holding time." );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of minutes for holding time.'
+			});
 			return false;
 		}		
 		if( parseInt(thisVal) == 2 ) 
-		{
-			displayOverlay( 'error' , 'bad expectation',"Minimum holding time is two minutes." );return;
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: "Minimum holding time is two minutes."
+			});
 			return false;
 		}
 		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
@@ -397,14 +483,22 @@ $(document).ready( function() {
 	
 	$('input[name^="price"]').blur( function()	{
 		if( !isFloat( $(this).val() ) )
-		{
-			displayOverlay( 'error' , 'bad expectation',"Price not valid." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: "Price not valid."
+			});
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
 		if( parseFloat( $(this).val() ) < 0 )
-		{			
-			displayOverlay( 'error' , 'bad expectation','Negative amount not allowed.' );
+		{						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: "Negative amount not allowed."
+			});
 			$(this).val( $('#lastFocus').val() );
 			return false;
 		}
@@ -415,10 +509,15 @@ $(document).ready( function() {
 		var thisClass = giveMeClass( $(this).attr("name") );
 		var thisVal = $(this).val();
 		var currentlyAssignedSeats;
+		var longMsg;
 		
 		if( !isInt( thisVal ) )
-		{
-			displayOverlay( 'error' , 'error', "Invalid slot quantity." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: "Invalid slot quantity."
+			});
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
@@ -426,7 +525,12 @@ $(document).ready( function() {
 		currentlyAssignedSeats = parseInt( $('input#seatAssigned_' + thisClass ).val() );
 		if( currentlyAssignedSeats > parseInt(thisVal) )
 		{
-			displayOverlay( 'error' , 'error',"You have assigned " + currentlyAssignedSeats + " seats for this class, so you cannot easily reduce the slots. Deselect some seats first and try again." );
+			longMsg = "You have assigned " + currentlyAssignedSeats + " seats for this class, so you cannot easily reduce the slots. Deselect some seats first and try again." ;
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'duh duh duh duhhhhhh',
+			   message: longMsg
+			});
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
@@ -443,37 +547,57 @@ $(document).ready( function() {
 		
 		if( !isInt( thisVal ) )
 		{
-			displayOverlay( 'error' , 'error',"Invalid number of holding time." );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: 'Invalid number of minutes for holding time.'
+			});
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}						
 		if( parseInt(thisVal) < 2 ) 
 		{
-			displayOverlay( 'error' , 'bad expectation',"Minimum holding time is two minutes." );
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: "Minimum holding time is two minutes."
+			});
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
 		if( parseInt(thisVal) >= 59 )
-		{
-			displayOverlay( 'error' , 'error',"Maximum holding time is 59 minutes." );
+		{			
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: "Maximum holding time is 59 minutes." 
+			});
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
 	}); //$('input[name^="holdingTime"]').blur(..)
 	
-	$("#buttonReset").click( function() {		
-		displayOverlay( 'okay' , 'Not yet :-)', 'Feature coming later' );						
+	$("#buttonReset").click( function() {				
+		$.fn.nextGenModal({
+			   msgType: 'okay',
+			   title: 'Not yet :-)',
+			   message: 'Feature coming later' 
+			});		
 		return false;
 	});
 	
 	$("#buttonOK").click( function() {
 		var args = new Array();
-	
-		args["isOverlayDisplayedAlready"] = true;		
-		if( formSubmitPreCheck() ){
-			displayOverlay_confirm_NoCloseOnChoose( 'warning' , 'Confirm', 'formSubmit', args, 'hideOverlay', null, "Are you sure you have configured them?");													
-		}
-		return false;
+				
+		if( formSubmitPreCheck() === false ) return false;					
+		$.fn.nextGenModal({
+		   msgType: 'warning',
+		   title: 'Confirm',
+		   message: "Are you sure you have configured them?",
+		   yesFunctionCall:  'formSubmit',
+		   yFC_args: args,
+		   closeOnChoose: false
+		});		
 	});
 	
 	/*$('input[name^="slot"]').change(		

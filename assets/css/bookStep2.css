@@ -13,11 +13,13 @@ div.bookStep2_main_div_custom
 {
 	clear: both;
 }
-div#containingClassTable
+div.containingClassTable
 {
+	min-width: 327px;
+	width: 48%;
 	float: right;
 }
-div#bookingDetails{
+div.bookingDetails{
 	float: left;
 	min-height: 238px;
 	min-width: 200px;
@@ -26,27 +28,28 @@ div#bookingDetails{
 	overflow: auto;
 	padding: 5px;
 	border-right: 3px solid rgb(216,228,214);
+	position: relative;
 }
-div#bookingDetails div{	
+div.bookingDetails div{	
 	/*height: 45%;*/
 	width: 95%;
 	height: auto;
 	overflow: auto;
 	border: 0px solid orange;
 }
-div#bookingDetails div.top{
+div.bookingDetails div.top{
 	/*border-bottom: 2px solid rgb(216,228,214); */
 	clear: right;		
 	height: auto;
 	overflow: auto;
 }
-div#bookingDetails div.top div{
+div.bookingDetails div.top div{
 	min-height: 60px;
 	height: auto;
 	overflow: hidden;
 	text-align: center;
 }
-div#bookingDetails div.top div span.deed{
+div.bookingDetails div.top div span.deed{
 	float: right;
 	font-size: 1.1em;
 	font-family: "Segoe UI Light", "Segoe UI", Verdana, Arial, Tahoma;
@@ -54,33 +57,33 @@ div#bookingDetails div.top div span.deed{
 	margin-right: 15px;	
 	padding-top: 6px;
 }
-div#bookingDetails div.top div span.contentproper_time{
+div.bookingDetails div.top div span.contentproper_time{
 	clear: both;
 	font-size: 1.5em;
 	float: left;
 	margin-left: 15px;
 	left: -20px;
 }
-div#bookingDetails div.top div span.contentproper_date{
+div.bookingDetails div.top div span.contentproper_date{
 	margin-left: 15px;
 	clear: left;
 	float: left;
 	font-size: 1.1em;
 	font-style: Italic;
 }
-div#bookingDetails div.top div{
+div.bookingDetails div.top div{
 	width: 45%;
 	border-width: 1px 1px 2px 2px;
 	border-style: solid;
 	border-color:	rgb(216,228,214);
 }
-div#bookingDetails div.top div.start{
+div.bookingDetails div.top div.start{
 	float: left;	
 }
-div#bookingDetails div.top div.end{	
+div.bookingDetails div.top div.end{	
 	float: right;	
 }
-div#bookingDetails div.bdtitle{
+div.bookingDetails div.bdtitle{
 	font-size: 2.3em;
 	font-style: Italic;
 	float: right;	
@@ -91,6 +94,6 @@ div#bookingDetails div.bdtitle{
 	border-style: solid;
 	border-color: rgb(216,228,214);
 }
-div#bookingDetails div.bottom{
+div.bookingDetails div.bottom{
 	clear: right;
 }

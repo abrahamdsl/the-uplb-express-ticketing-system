@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -21,7 +24,7 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
-	<!--For overlay-->
+	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
@@ -29,21 +32,21 @@ $this->load->view('html-generic/doctype.inc');
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep4.js'; ?>"/></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep4.js'; ?>" ></script>	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 	<!-- For overlay v2-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
 	<!-- seat manipulations -->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
@@ -55,7 +58,6 @@ $this->load->view('html-generic/doctype.inc');
 		$this->load->view('html-generic/seatModal-client.inc');
 		
 ?>		
-<div id="gaga" style="display:none" > ngiyaw </div>
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -86,7 +88,7 @@ $this->load->view('html-generic/doctype.inc');
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 					<div id="title">Event Details</div>
 					<div id="content">	
-						<div id="bookingDetails" >
+						<div class="bookingDetails" >
 							<?php
 								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
 							?>
@@ -134,14 +136,14 @@ $this->load->view('html-generic/doctype.inc');
 								</p>
 							</div>														
 						</div>
-						<div id="containingClassTable" >
+						<div class="containingClassTable" >
 							Remaining time here?<br/><br/>
 							Or the "get-from-profile" feature.
 						</div>
 					</div>
 				</div>
 				<div class="accordionImitation aci2_Book3Special" >
-					<div id="title" class="part2" >Guest Details</div>
+					<div class="title part2" >Guest Details</div>
 					<?php
 						$slots = $this->input->cookie( 'slots_being_booked' );
 					?>
@@ -190,7 +192,7 @@ $this->load->view('html-generic/doctype.inc');
 							</div>
 							<div class="right" >
 								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">seat</legend>	<!-- margin-left: 50%; margin-right: 50%; -->											
+									<legend class="field_grouping_bar specialOnBook3">seat</legend>	
 									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
 									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="0" />
 									<input type="hidden" name="g<?php echo $x+1; ?>_uuid" value="<?php echo $singleGuest->UUID; ?>"   />
@@ -208,7 +210,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div id="misc" style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

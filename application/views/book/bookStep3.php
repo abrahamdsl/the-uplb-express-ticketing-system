@@ -3,7 +3,10 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Book a Ticket/Post Reservation";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -20,25 +23,25 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
-	<!--For overlay-->
+	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 </head>
 <body>
 <?php
@@ -76,7 +79,7 @@ $this->load->view('html-generic/doctype.inc');
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 					<div id="title">Event Details</div>
 					<div id="content">	
-						<div id="bookingDetails" >
+						<div class="bookingDetails" >
 							<?php
 								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
 							?>
@@ -124,14 +127,14 @@ $this->load->view('html-generic/doctype.inc');
 								</p>
 							</div>														
 						</div>
-						<div id="containingClassTable" >
+						<div class="containingClassTable" >
 							Remaining time here?<br/><br/>
 							Or the "get-from-profile" feature.
 						</div>
 					</div>
 				</div>
 				<div class="accordionImitation aci2_Book3Special" >
-					<div id="title" class="part2" >Guest Details</div>
+					<div class="part2 title" >Guest Details</div>
 					<?php
 						$slots = $this->input->cookie( 'slots_being_booked' );
 					?>
@@ -149,11 +152,11 @@ $this->load->view('html-generic/doctype.inc');
 									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
 									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-firstName">First name</label>							
+											<label class="label" for="id_g<?php echo $x+1; ?>-firstName" >First name</label>							
 											<span class="critical" >*</span>
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-firstName" />
+											<input type="text" name="g<?php echo $x+1; ?>-firstName" id="id_g<?php echo $x+1; ?>-firstName" />
 											<input type="hidden" name="g<?php echo $x+1; ?>-firstName_validate" value="0" />
 										</div>									
 									</div>
@@ -163,12 +166,11 @@ $this->load->view('html-generic/doctype.inc');
 									</div>
 									<div class="row" id="g<?php echo $x+1; ?>-middleNameFld">							
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-middleName">Middle name</label>
-											<!--<span class="critical" >*</span>-->
+											<label class="label" for="id_g<?php echo $x+1; ?>-middleName">Middle name</label>											
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-middleName" />
-											<input type="hidden" name="g<?php echo $x+1; ?>-middleName_validate" value="1" />
+											<input type="text" name="g<?php echo $x+1; ?>-middleName" id="id_g<?php echo $x+1; ?>-middleName" />
+											<input type="hidden" name="g<?php echo $x+1; ?>-middleName_validate" id="id_g<?php echo $x+1; ?>-middleName_validate" value="1" />
 										</div>									
 									</div>
 									<div class="msgContainer formErrorBookStep3Special" >	
@@ -177,11 +179,11 @@ $this->load->view('html-generic/doctype.inc');
 									</div>
 									<div class="row" id="g<?php echo $x+1; ?>-lastNameFld">							
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-lastName">Last name</label>
+											<label class="label" for="id_g<?php echo $x+1; ?>-lastName">Last name</label>
 											<span class="critical" >*</span>
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-lastName" />
+											<input type="text" name="g<?php echo $x+1; ?>-lastName" id="id_g<?php echo $x+1; ?>-lastName" />
 											<input type="hidden" name="g<?php echo $x+1; ?>-lastName_validate" value="0" />
 										</div>									
 									</div>
@@ -191,7 +193,7 @@ $this->load->view('html-generic/doctype.inc');
 									</div>
 									<div class="row" id="g<?php echo $x+1; ?>-genderFld">					
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-gender">Gender</label>							
+											<span>Gender</span>
 											<span class="critical" >*</span>
 										</div>
 						 				<div class="collection gender"  >
@@ -212,11 +214,11 @@ $this->load->view('html-generic/doctype.inc');
 									<legend class="field_grouping_bar specialOnBook3">electronic contact</legend>								
 									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-cellphone">Cellphone</label>
+											<label class="label" for="id_g<?php echo $x+1; ?>-cellphone">Cellphone</label>
 											<span class="critical" >*</span>
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-cellphone" />
+											<input type="text" name="g<?php echo $x+1; ?>-cellphone" id="id_g<?php echo $x+1; ?>-cellphone" />
 											<input type="hidden" name="g<?php echo $x+1; ?>-cellphone_validate" value="0" />
 										</div>									
 									</div>
@@ -227,10 +229,10 @@ $this->load->view('html-generic/doctype.inc');
 																	
 									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-landline">Landline</label>							
+											<label class="label" for="id_g<?php echo $x+1; ?>-landline">Landline</label>							
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-landline" />
+											<input type="text" name="g<?php echo $x+1; ?>-landline" id="id_g<?php echo $x+1; ?>-landline" />
 											<input type="hidden" name="g<?php echo $x+1; ?>-landline_validate" value="1" />
 										</div>									
 									</div>
@@ -240,11 +242,11 @@ $this->load->view('html-generic/doctype.inc');
 									</div>
 									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
 										<div class="label" >
-											<label class="label" for="g<?php echo $x+1; ?>-email_01">Email</label>
+											<label class="label" for="id_g<?php echo $x+1; ?>-email_01">Email</label>
 											<span class="critical" >*</span>
 										</div>
 										<div class="collection" >
-											<input type="text" name="g<?php echo $x+1; ?>-email_01" />
+											<input type="text" name="g<?php echo $x+1; ?>-email_01" id="id_g<?php echo $x+1; ?>-email_01" />
 											<input type="hidden" name="g<?php echo $x+1; ?>-email_01_validate" value="0" />
 										</div>									
 									</div>
@@ -252,14 +254,15 @@ $this->load->view('html-generic/doctype.inc');
 											<div class="icon"></div>
 											<span id="g<?php echo $x+1; ?>-email_01FldMsg"></span>
 									</div>
+								</fieldset>
 							</div>
 						</div>		
 						<?php } ?>
 					</div>
 					</form>
-					<p class="criticalityIndicator" >
-						Fields with a red asterisk means they are needed.
-					</p>
+<?php
+	$this->load->view( 'html-generic/criticalreminder.inc' );
+?>					
 				</div>
 			</div>
 			<!-- accordion end -->
@@ -267,7 +270,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div id="misc" style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

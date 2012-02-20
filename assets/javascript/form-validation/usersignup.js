@@ -413,8 +413,7 @@ function isEmail_valid(theEmail) {
 	*/	
 	var validityIndicator_Name = theField + "_validate";
 	var thisVI = document.getElementsByName( validityIndicator_Name )[0];	
-	console.log( 'received '  + theField );
-	console.log( 'constructed ' +  validityIndicator_Name );
+
 	if( setWhat )
 	{
 		thisVI.value = "1";

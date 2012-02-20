@@ -104,7 +104,7 @@ $(document).ready( function() {
 		$(this).attr( 'class', "textInputSize" );	// make the class so that regular black, not italicized text will appear		
 		//copy the new value to hidden counterpart
 		$( 'input[name="' + hiddenCounterpart + '"]' ).val( newVal );
-		//display in user friendly size
+		//display in user friendly format
 		$(this).val( convertDateMonth_toText( newVal ) );
 	});
 	
@@ -175,13 +175,21 @@ $(document).ready( function() {
 		
 		if( newVal != $('#numOfDays_caption').val() ){	
 			$(this).attr( 'class', $('#lastFocus_class').val() );
-			if( !isInt( newVal ) ){
-				displayOverlay( 'error' , 'error', "Invalid number of days" );				
+			if( !isInt( newVal ) ){				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: 'Invalid number of days'
+				});
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}
-			if( parseInt( newVal ) < 1 ) {
-				displayOverlay( 'error' , 'error', "Minimum of 1 day for this. " );				
+			if( parseInt( newVal ) < 1 ) {				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: 'Minimum of 1 day for this.'
+				});					
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}
@@ -257,8 +265,12 @@ $(document).ready( function() {
 		
 		if( newVal != "Days" ){	
 			$(this).attr( 'class', $('#lastFocus_class').val() );
-			if( !isInt( newVal ) ){
-				displayOverlay( 'error' , 'error', "Invalid number of days" );				
+			if( !isInt( newVal ) ){				
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'error',
+				   message: 'Invalid number of days'
+				});
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}			
@@ -291,27 +303,47 @@ $(document).ready( function() {
 		var earliestST_Time;
 		
 		if( !isDateValid( sellingDateStart ) ) {
-			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Date Start." );									
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Invalid Selling Date Start'
+			});	
 			return false;
 		}
-		if( !isDateValid( sellingDateEnd ) ) {			
-			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Date End" );			
+		if( !isDateValid( sellingDateEnd ) ) {						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Invalid Selling Date End'
+			});	
 			return false;
 		}
-		if( !isTimeValid( sellingTimeStart ) ){			
-			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Time Start" );			
+		if( !isTimeValid( sellingTimeStart ) ){						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Invalid Selling Time Start'
+			});			
 			return false;
 		}
-		if( !isTimeValid( sellingTimeEnd ) ) {			
-			displayOverlay( 'error' , 'bad expectation', "Invalid Selling Time End" );			
+		if( !isTimeValid( sellingTimeEnd ) ) {						
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'bad expectation',
+			   message: 'Invalid Selling Time End'
+			});
 			return false;
 		}
 		if( !isShow_RedEye )
 		{
 			
 			if ( !isTimestampGreater( sellingDateStart, sellingTimeStart, sellingDateEnd, sellingTimeEnd, isShow_RedEye) )		//found in generalChecks.js
-			{				
-				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp is earlier than selling start timestamp." );		
+			{								
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: 'Selling end timestamp is earlier than selling start timestamp.'
+				});
 				return false;
 			}		
 			var earliestST_Date = new Date( getEarliestShowingTimeStartDate() );
@@ -320,8 +352,12 @@ $(document).ready( function() {
 			var estD_str = earliestST_Date.getFullYear() + '/' + ( earliestST_Date.getMonth() + 1 ) + '/' + earliestST_Date.getDate();
 			var estT_str = earliestST_Time.getUTCHours() + ':' + earliestST_Time.getUTCMinutes();			
 			if ( !isTimestampGreater( sellingDateEnd, sellingTimeEnd, estD_str,  estT_str ,isShow_RedEye) )		//found in generalChecks.js
-			{				
-				displayOverlay( 'error' , 'bad expectation', "Selling end timestamp should be earlier than the earliest showing time ( " +  estD_str + " " +  estT_str  + " ). ");		
+			{								
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'bad expectation',
+				   message: 'Selling end timestamp should be earlier than the earliest showing time ( " +  estD_str + " " +  estT_str  + " ). '
+				});
 				return false;
 			}			
 		}
@@ -334,33 +370,58 @@ $(document).ready( function() {
 		// REFACTORING HOTSPOT!!!!
 		{
 			case "1":	if( !isTimeValid( $('#fixedTime').val() ) ){
-							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message: 'Invalid time specified for payment deadline.'
+							});
 							return false;
 						}						
 						break;			
-			case "2":	if( !isTimeValid( $('#fixedTime').val() ) ){
-							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
+			case "2":	if( !isTimeValid( $('#fixedTime').val() ) ){							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message: 'Invalid time specified for payment deadline.'
+							});
 							return false;
 						}		
 						numOfDays = parseInt( $('#numOfDays').val() );
-						if( isNaN( numOfDays ) || numOfDays < 1 ){
-							displayOverlay( 'error' , 'error', "Invalid number of days for payment deadline" );										
+						if( isNaN( numOfDays ) || numOfDays < 1 ){							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message: 'Invalid number of days for payment deadline'
+							});
 							return false;
 						}						
 						break;
 			case "3":   numOfDays = parseInt( $('#relative_days').val() );
-						if( isNaN( numOfDays ) || numOfDays < 0 ){
-							displayOverlay( 'error' , 'error', "Invalid number of days for payment deadline" );										
+						if( isNaN( numOfDays ) || numOfDays < 0 ){							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message:  "Invalid number of days for payment deadline"
+							});
 							return false;
 						}						
-						if( !isTimeValid( $('#fixedTime').val() ) ){
-							displayOverlay( 'error' , 'error', "Invalid time specified for payment deadline." );										
+						if( !isTimeValid( $('#fixedTime').val() ) ){							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message: '"Invalid time specified for payment deadline.'
+							});
 							return false;
 						}		
 						break;
 		}
 		//END: validate deadline of payment
-		displayOverlay_confirm( 'warning' , 'Confirm', 'formSubmit', null, null, null, "Are you sure that these entries are correct? Please check one more time." );		
+		$.fn.nextGenModal({
+		   msgType: 'warning',
+		   title: 'confirm',
+		   message: 'Are you sure that these entries are correct? Please check one more time.',
+		   yesFunctionCall: 'formSubmit',
+		});		
 	});
 	
 });

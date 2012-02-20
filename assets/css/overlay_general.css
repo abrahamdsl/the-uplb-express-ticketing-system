@@ -15,6 +15,7 @@
 	left: 0px;
 	right: 0px;
 	z-index: 100;
+	display: none;
 }
 .box{
 	position: fixed;
@@ -61,4 +62,10 @@ a.overlayButton{
 }
 a.overlayButton:hover{
 	background-color: rgb(209,72,14);
+}
+div.ovButtons{
+	display: none;
+}
+div#ajax_loader{
+	text-align: center;
 }

@@ -3,8 +3,11 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Home";
-	$this->thisPage_menuCorrespond = "Create Event Step 3";
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
+	$this->pageTitle = "Create Event - Step 3";
+	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
@@ -13,23 +16,23 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
-	<!--For overlay-->
+	<!--For modal v1-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
-	?>		
+	?>
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
-	?>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_003.js'; ?>"/></script>			
+	?>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/createEvent_003.js'; ?>" ></script>			
 	
-	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 </head>
 <body>
 <?php
@@ -54,21 +57,20 @@ $this->load->view('html-generic/doctype.inc');
 			<div id="page_title">
 				Step 3: Creating Event ' <?php echo $_COOKIE['eventName']; ?> '
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction" >
 				Choose which showing times is for which dates.
 				<br/>
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
-				<form method="post"  action="<?php echo base_url().'EventCtrl/create_step4' ?>" name="formLogin" id="formMain">
-					<!-- <input type="hidden" name="cEvent003uplbxts" value="9024028541021312" /> -->
+				<form method="post"  action="<?php echo base_url().'EventCtrl/create_step4' ?>" name="formLogin" id="formMain">					
 					<div id="tabs">
 					<ul>						
 						<?php
 						foreach( $scheduleMatrix as $key => $val )
 							{
 						?>
-							<li><a href="#<?php echo str_replace( array('/',' '), '_' , $key ); ?>"><?php echo $key?></a></li>
+							<li><a href="#d-<?php echo str_replace( array('/',' '), '_' , $key ); ?>"><?php echo $key?></a></li>
 						<?php
 							}
 						?>
@@ -77,20 +79,20 @@ $this->load->view('html-generic/doctype.inc');
 						foreach(  $scheduleMatrix as $key => $val )
 						{
 					?>
-							<div id="<?php echo str_replace( array('/',' '), '_' , $key ); ?>">
+							<div id="d-<?php echo str_replace( array('/',' '), '_' , $key ); ?>">
 								<?php
 									foreach( $val as $xy  )
 									{										
 								?>
 									<p>
-										<input type="checkbox" id="ch_<?php echo str_replace( array('/',' '), '_' , $key )."_".str_replace( array('/',' '), '_' , $xy );;?>" name="<?php echo $key."x".$xy;?>" />
-										<label for="ch_<?php echo str_replace( array('/',' '), '_' , $key )."_".str_replace( array('/',' '), '_' , $xy );;?>"><?php echo $xy; ?></label><br/>
+										<input type="checkbox" id="ch_d-<?php echo str_replace( array('/',' '), '_' , $key )."_".str_replace( array('/',' '), '_' , $xy );;?>" name="<?php echo $key."x".$xy;?>" />
+										<label for="ch_d-<?php echo str_replace( array('/',' '), '_' , $key )."_".str_replace( array('/',' '), '_' , $xy );;?>"><?php echo $xy; ?></label><br/>
 									</p>
 								<?php
 									}
 								?>
-								<input type="button" value="Check all" class="selectDeselectBtns" id="checkAll__<?php echo str_replace( array('/',' '), '_' , $key ); ?>"/>
-								<input type="button" value="Uncheck all" class="selectDeselectBtns" id="UncheckAll__<?php echo str_replace( array('/',' '), '_' , $key ); ?>"/>
+								<input type="button" value="Check all" class="selectDeselectBtns" id="checkAll__d-<?php echo str_replace( array('/',' '), '_' , $key ); ?>"/>
+								<input type="button" value="Uncheck all" class="selectDeselectBtns" id="UncheckAll__d-<?php echo str_replace( array('/',' '), '_' , $key ); ?>"/>
 							</div>
 					<?php
 						}
@@ -104,7 +106,7 @@ $this->load->view('html-generic/doctype.inc');
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
-			<div style=" clear:both;"></div>
+			<div class="buttonfooterSeparator" ></div>
 		</div>		
     </div><!--end of main content-->
 	

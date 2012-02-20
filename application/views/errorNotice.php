@@ -86,7 +86,7 @@ $this->load->view('html-generic/doctype.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Home</span></a>														
-							<a class="button" id="buttonReset" ><span class="icon">Back</span></a>
+							<!--<a class="button" id="buttonReset" ><span class="icon">Back</span></a>-->
 			</div>	
 			<div id="misc" style=" clear:both;"></div>
 		</div>		
