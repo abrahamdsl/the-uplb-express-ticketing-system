@@ -30,7 +30,8 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep2.js'; ?>" ></script>
 	
 	<?php			
@@ -113,6 +114,9 @@ $this->load->view('html-generic/metadata.inc');
 								<?php echo $eventInfo->Location; ?>
 								<br/>
 								<br/>
+								<?php
+									$slots = $this->input->cookie( 'slots_being_booked' );
+								?>
 								<p>
 									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
 								</p>
@@ -147,7 +151,7 @@ $this->load->view('html-generic/metadata.inc');
 													<?php echo ( intval($TCD->Price) * intval( $slots ) ); ?>
 												</td>
 												<td>
-													<?php if( $ticketClasses_presence[$TCD->Name] === true){  ?>
+													<?php if( $this->input->cookie( $TCD->UniqueID."_slot_UUIDs" ) !== false ){  ?>
 														<input type="radio" name="selectThisClass" value="<?php echo $TCD->UniqueID; ?>" />
 													<?php }else{ ?>
 														SOLD OUT

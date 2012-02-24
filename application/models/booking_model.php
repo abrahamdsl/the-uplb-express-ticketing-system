@@ -43,14 +43,18 @@ class Booking_model extends CI_Model {
 		return $errorIndicator;
 	}
 	
-	private function isBookingNumberInUse( $bNumber )
+	function doesBookingNumberExist( $bNumber )
 	{
-		/*Created 10FEB2012-2355*/
+		/*
+			Created 10FEB2012-2355
+			
+			22FEB2012-2152: Renamed from 'isBookingNumberInUse' to 'doesBookingNumberExist', so private tag removed
+		*/
 		$sql_command = "SELECT `EventID` from `booking_details` WHERE `bookingNumber` = ?";
 		$arr_result = $this->db->query( $sql_command, array( $bNumber) )->result();
 		
 		return ( count($arr_result) === 1 );
-	}//isBookingNumberInUse
+	}//doesBookingNumberExist
 	
 	function generateBookingNumber()
 	{
@@ -127,11 +131,33 @@ class Booking_model extends CI_Model {
 					$bNumber[$x] = $inQuestion;
 				}			
 			}
-		}while( $this->isBookingNumberInUse( $bNumber ) );
+		}while( $this->doesBookingNumberExist( $bNumber ) );
 				
 		return $bNumber;
 	}//generateBookingNumber
 
+	function getBookingDetails( $bNumber )
+	{
+		/*
+			Created 22FEB2012-2252
+		*/
+		$sql_command = "SELECT * FROM `booking_details` where `bookingNumber` = ?";
+		$arr_result = $this->db->query( $sql_command, array( $bNumber ) )->result();
+		if( count( $arr_result ) == 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}//getBookingDetails(..)
+	
+	function markAsPaid( $bNumber )
+	{
+		/*
+			Created 23FEB2012-0048
+		*/
+		$sql_command = "UPDATE `booking_details` SET `Status`= 'PAID' WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $bNumber ) );
+	}//markAsPaid(..)
+	
 	function markAsPendingPayment( $bNumber, $type )
 	{
 		/*
@@ -143,4 +169,6 @@ class Booking_model extends CI_Model {
 		$sql_command = "UPDATE `booking_details` SET `Status`= 'PENDING-PAYMENT_".$type."' WHERE `bookingNumber` = ?";
 		return $this->db->query( $sql_command, Array( $bNumber ) );
 	}// markAsPendingPayment
+	
+	
 } //modelhbhg

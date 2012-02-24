@@ -196,6 +196,16 @@ class Slot_model extends CI_Model {
 		return $this->db->query( $sql_command, array( $uuid ) );
 	}//setSlotAsBeingBooked
 	
+	function setSlotAsBooked( $uuid )
+	{
+		/*
+			Created 22FEB2012-2038
+						
+		*/
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'BOOKED', `Start_Contact` = NULL WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( $uuid ) );
+	}//setSlotAsBooked
+	
 	function updateSlotLastContactTime( $uuid )
 	{
 		/*

@@ -219,8 +219,9 @@ $(document).ready( function() {
 			   title: 'Confirm',
 			   message: "Your previous seat assignments would be erased. Continue?",
 			   yesFunctionCall:  'createSeatmapOnPage',
-			   nFC_args: args,
+			   yFC_args: args,
 			   noFunctionCall: 'revertSeatMapPulldown',
+			   nFC_args: args,
 			   closeOnChoose: false
 			});
 		}

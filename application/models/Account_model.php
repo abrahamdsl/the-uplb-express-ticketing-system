@@ -127,6 +127,49 @@ class Account_model extends CI_Model {
 		return( $userInfo_obj->num_rows == 1 ); 			
 	}
 	
+	function isUserAuthorizedPaymentAgency( $accountNum, $eventID, $showtimeID, $pChannelID )
+	{
+		/*
+			Created 23FEB2012-0138
+			
+			Checks if a user has permissions to confirm a client's booking/reservation.
+		*/		
+		$returnThis = Array(
+			'value' => false,
+			'status' => null,
+			'comment' => ''
+		);
+		$sql_command = "SELECT * FROM `payment_channel_permission` WHERE `AccountNum` = ? AND";
+		$sql_command .= " `EventID` = ? AND `ShowtimeID` = ? AND `PaymentChannel_UniqueID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( 
+				$accountNum, $eventID, $showtimeID, $pChannelID		
+			))->result();
+		if( count($arr_result) < 1 ){
+			$returnThis['comment'] .= "NON-EXISTENT IN PERMISSIONS DATABASE";
+			return $returnThis;
+		}else{
+			switch( intval( $arr_result[0]->Status ) )
+			{
+				// okay
+				case 1: $returnThis['value'] = true;
+						$returnThis['status'] = 1;
+						break;
+				// suspended
+				case -1: $returnThis['value'] = false;
+						$returnThis['status'] = -1;
+						$returnThis['comment'] = "SUSPENDED ";
+						break;
+				// denied ( isn't it redundant )
+				case 0:  $returnThis['value'] = false;
+						$returnThis['status'] = 0;
+						$returnThis['comment'] = "DENIED ";
+						break;
+			}
+			$returnThis['comment'] .= $arr_result[0]->Comment;
+			return $returnThis;
+		}
+	}//isUserAuthorizedPaymentAgency(..)
+	
 	function generateAccountNumber()
 	{
 		$accountNum;

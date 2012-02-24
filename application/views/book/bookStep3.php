@@ -34,8 +34,10 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -142,7 +144,7 @@ $this->load->view('html-generic/metadata.inc');
 					<div id="tabs">					
 						<ul>
 							<?php for( $x=0; $x< $slots; $x++ ) {?>
-							<li><a href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
+							<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
 							<?php } ?>
 						</ul>
 						<?php for( $x=0; $x< $slots; $x++ ) {?>
@@ -253,6 +255,28 @@ $this->load->view('html-generic/metadata.inc');
 									<div class="msgContainer formErrorBookStep3Special" >	
 											<div class="icon"></div>
 											<span id="g<?php echo $x+1; ?>-email_01FldMsg"></span>
+									</div>
+									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
+										
+											<?php
+												if( ( $x+1 ) != 1 )
+												{
+											?>
+												<div class="leftInr" >
+													<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
+												</div>
+											<?php
+												}													
+												if( ( $slots-1 ) != $x ) 
+												{
+											?>
+												<div class="rightInr">
+													<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
+												</div>
+											<?php
+												}
+											?>											
+										
 									</div>
 								</fieldset>
 							</div>
