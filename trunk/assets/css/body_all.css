@@ -145,7 +145,11 @@ div.centralContainer{
 	overflow: visible;
 	position: relative;
 	padding-bottom: 100px;
-	/*The succeeding part is for the drop shadows. */
+	/*
+		Thanks to http://stackoverflow.com/questions/3467452/css-shadows-all-four-sides-of-div
+		The succeeding part is for the drop shadows. 
+	*/
+	/*CSS3 capable browsers */
 	 box-shadow: 2px 2px 19px #aaa;
 	-o-box-shadow: 2px 2px 19px #aaa;
 	-webkit-box-shadow: 2px 2px 19px #aaa;
@@ -153,7 +157,7 @@ div.centralContainer{
 
 	/* For IE 5.5 - 7 */
 	/* for IE4 - IE7 */
-/*	filter:
+	filter:
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=1, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=90, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=180, Color=#C4C4C4),
@@ -176,7 +180,8 @@ div#page_title
 }
 
 div#instruction{
-	padding-left:10px; clear: both
+	padding-left:10px; clear: both;
+	margin-bottom: 15px;
 } 
 
 /*start:bloat alert, 18AUG2011*/

@@ -38,8 +38,10 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep4.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -153,7 +155,7 @@ $this->load->view('html-generic/metadata.inc');
 							<?php 								
 								 for( $x=0, $y = count( $guests); $x< $y; $x++ ){
 							?>
-							<li><a href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
+							<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
 							<?php } ?>
 						</ul>
 						<?php $x=0;
@@ -187,7 +189,7 @@ $this->load->view('html-generic/metadata.inc');
 									<?php } ?>
 									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
 										<?php echo $singleGuest->Email; ?>
-									</div>							
+									</div>																
 								</fieldset>
 							</div>
 							<div class="right" >
@@ -197,6 +199,27 @@ $this->load->view('html-generic/metadata.inc');
 									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="0" />
 									<input type="hidden" name="g<?php echo $x+1; ?>_uuid" value="<?php echo $singleGuest->UUID; ?>"   />
 									<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
+									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
+										
+											<?php
+												if( ( $x+1 ) != 1 )
+												{
+											?>
+												<div class="leftInr" >
+													<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
+												</div>
+											<?php
+												}													
+												if( ( $slots-1 ) != $x ) 
+												{
+											?>
+												<div class="rightInr">
+													<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
+												</div>
+											<?php
+												}
+											?>										
+									</div>	
 								</fieldset>
 							</div>
 						</div>		

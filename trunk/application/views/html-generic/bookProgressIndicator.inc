@@ -1,5 +1,8 @@
 				<table id="bookProgressIndicator" class="center_purest" cellspacing="0px" >
-					<tr>						
+					<tr>
+						<?php
+							$currentStep = $this->session->userdata( 'createEvent_step' );
+						?>
 						<td <?php if( $currentStep >= 1 ) echo 'class="passed"'; ?>  >
 							<span class="step" >1</span>
 							<span class="caption" >Select Showing Time</span>

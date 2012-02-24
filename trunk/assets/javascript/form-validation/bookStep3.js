@@ -1,7 +1,7 @@
 $(document).ready( function(){
 		/* since we hide all error divs by default, show the one for the gender on load since
 			no gender is selected on load	*/
-		$('span[id$="genderFldMsg"]').parent().show();
+		$('span[id$="genderFldMsg"]').parent().show();		
 		
 		$.fn.isFieldRequired = function()
 		{

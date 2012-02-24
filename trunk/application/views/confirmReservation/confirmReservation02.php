@@ -24,13 +24,10 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>			
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
-	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>		
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
@@ -39,13 +36,12 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionOnloadRitual.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionDataCleanup.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep6.js'; ?>" ></script>			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionOnloadRitual.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionDataCleanup.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/confirmReservation02.js'; ?>" ></script>	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -60,8 +56,7 @@ $this->load->view('html-generic/metadata.inc');
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');
-		$this->load->view('html-generic/seatModal-client.inc');		
+		$this->load->view('html-generic/overlay_general.inc');		
 ?>
 <div id="main_container">
 	<div id="header">    	    	        
@@ -77,14 +72,11 @@ $this->load->view('html-generic/metadata.inc');
     </div>            
     <div id="main_content" >    	
     	<div id="centralContainer">
-<?php			
-			$this->load->view( 'html-generic/bookProgressIndicator.inc');
-?>		
 			<div id="page_title" class="page_title_custom" >
 				Confirmation
 			</div>
 			<div id="top_page_detail" >
-				Thank you for using the application. Have fun.
+				Click Confirm at the bottom of the page to confirm this reservation.
 				<br/>				
 			</div>			
 			
@@ -141,8 +133,7 @@ $this->load->view('html-generic/metadata.inc');
 								<?php echo $this->input->cookie( 'bookingNumber' ); ?>
 							</div>
 							<div class="caption center_purest">
-								This is your booking reference number. The only thing you need when paying for your ticket(s), well,
-								aside from your money.
+								Booking reference number
 							</div>
 							<div id="paymentDeadline" class="properInfo center_purest" >
 								<input type="hidden" id="pDead_Date" value="<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>" />
@@ -155,9 +146,8 @@ $this->load->view('html-generic/metadata.inc');
 									<?php echo $this->session->userdata( 'paymentDeadline_Time' ); ?>
 								</span>								
 							</div>
-							<div class="center_purest caption ">
-								Deadline for payment of your tickets else they will be forfeited. We advise
-								you be at the collecting agency 15 minutes before the deadline.
+							<div class="center_purest caption" id="deadlineCaption" >
+								Deadline for ticket payments.
 							</div>
 							
 						</div>
@@ -214,7 +204,7 @@ $this->load->view('html-generic/metadata.inc');
 												<td>&nbsp;</td>
 												<td>&nbsp;</td>
 												<td>Total (in PHP)</td>
-												<td><span class="cost"></span><span class="cost" ><?php echo $this->session->userdata( "totalCharges" ); ?></span></td>
+												<td id="value_proper"><span class="cost" ><?php echo $this->session->userdata( "totalCharges" ); ?></span></td>
 											</tr>											
 										</tbody>
 									</table>
@@ -265,7 +255,7 @@ $this->load->view('html-generic/metadata.inc');
 								</div>								
 							</div>
 					</div>
-				</div>
+				</div>				
 				<div class="accordionImitation" >
 					<div class="title" >Guest Details </div>
 					<?php
@@ -347,7 +337,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
-							<a class="button" id="buttonOK" ><span class="icon">Home</span></a>
+							<a class="button" id="buttonOK" ><span class="icon">Confirm</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		

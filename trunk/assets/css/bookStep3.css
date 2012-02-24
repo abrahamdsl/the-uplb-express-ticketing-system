@@ -92,3 +92,14 @@ p.criticalityIndicator{
 div.gender{
 	padding-top: 6px;
 }
+
+div.anchorBelow{	
+	position: absolute; bottom: 0; min-width: 316px; width: auto;
+}
+
+div.anchorBelow div.leftInr{
+	float: left;
+}
+div.anchorBelow div.rightInr{
+	float: right;
+}

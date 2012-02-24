@@ -33,7 +33,7 @@ $(document).ready(function()
 				locationHandle.parent().siblings("span.NameRequired").show();
 				allOK++;				
 			}
-			
+			console.log('fff');
 			if( allOK < 1 ) document.forms[0].submit();			
 		});
 						
