@@ -6,7 +6,7 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Purchase Ticket";
+	$this->pageTitle = "Change Showing Time - Manage Booking";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -21,6 +21,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
@@ -32,7 +33,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>				
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -64,10 +65,10 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
 			<div id="page_title">
-				Book a ticket | Post a Reservation
+				Manage Booking - Change showing time
 			</div>
 			<div style="padding-left:10px; clear: both">
-				The fun starts here.
+				Please select a new showing time
 				<br/>				
 			</div>			
 			<!-- accordion start -->			
@@ -80,27 +81,17 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="slotDisabledClass" value="commonality disabled" />
 						<input type="hidden" id="adjustEnabledClass" value="adjustButtons enabled" />
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
+						<input type="hidden" id="excludeShowingTime" value="<?php echo $existingShowtimeID; ?>" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/book_step2' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'EventCtrl/manageBooking_changeTicketClass' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Step 1: Select an event
+										Event Name
 									</span>
-									<span class="rightSpecialHere" >									
+									<span class="rightSpecialHere" >																			
 										<span class="center_purest" >
-											<select id="eventSelection" name="events" class="center_purest"  >
-													<option value="NULL" >
-														<?php
-															if( count ($configuredEventsInfo ) > 0 ){
-														?>
-																Select Event
-														<?php
-															}else{
-														?>
-																No events found at this time
-														<?php } ?>
-													</option>
+											<select id="eventSelection" name="events" class="center_purest"  >												
 												<?php
 													foreach(  $configuredEventsInfo as $singleEvent )
 													{
@@ -112,10 +103,54 @@ $this->load->view('html-generic/metadata.inc');
 											</select>
 										</span>
 									</span>
+								</div>								
+								<div class="KoreanPeninsula" >
+									<span class="left captionCurrent" >
+										Current showing time selected
+									</span>
+									<span class="rightSpecialHere" >
+										<table class="center_purest schedulesCentral">
+											<thead>
+												<tr>											
+													<td class="iNeedMostSpace" >Date</td>
+													<td class="iNeedMoreSpace" >Time Start</td>
+													<!-- <td>&nbsp;</td> -->
+													<td class="iNeedMoreSpace" >Time End</td>
+												</tr>
+											</thead>
+											<tbody>
+											<?php
+											
+													$x = 2;		
+													// determine if this is a red-eye show
+													$redEye = FALSE;													
+													$dateStart = strtotime( $currentShowingTime->StartDate );
+													$timeStart = strtotime( $currentShowingTime->StartTime );
+													$timeEnd = strtotime( $currentShowingTime->EndTime );													
+													/*$TSSplit = explode(':', $currentShowingTime->StartTime );
+													$showingTimeTotal = strtotime( '+'.$TSSplit[0].' hour +'.$TSSplit[1].' min +'.$TSSplit[2].' sec' , $dateStart);
+													*/
+													if( $timeEnd < $timeStart ) $redEye = TRUE;										
+											?>
+												<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
+													<td class="BCST_date" >
+														<span><?php echo date('Y-M-d', $dateStart); ?></span>														
+													</td>
+													<td class="BCST_time_start">	
+														<span><?php echo date('h:i:s A', $timeStart); ?></span>														
+													</td>											
+													<td class="BCST_time_end">
+														<span><?php echo date('h:i:s A', $timeEnd); ?></span>														
+													</td>
+												</tr>
+										
+											</tbody>
+										</table>
+									</span>
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Step 2: Select a showing time
+										Step 1: Select a showing time
 									</span>
 									<span class="rightSpecialHere" >
 										<span id="showtimeDummy" class="center_purest" >										
@@ -136,12 +171,11 @@ $this->load->view('html-generic/metadata.inc');
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Step 3: Select the quantity
+										Quantity
 									</span>
 									<span class="rightSpecialHere" >
-										<input type="text" class="commonality disabled" id="slot" name="slot" value="1"  disabled="disabled" /><br/>
-										<input type="button" value="-" id="reduceSlots" class="adjustButtons disabled" disabled="disabled" />								
-										<input type="button" value="+" id="addSlots" class="adjustButtons disabled" disabled="disabled" />								
+										<input type="text" class="commonality disabled" id="slot" name="slot_visual" value="1" style="background-color: white; color: black;" disabled="disabled" /><br/>									
+										<input type="hidden" name="slot" value="1" ><br/>									
 									</span>
 								</div>								
 							</div>							

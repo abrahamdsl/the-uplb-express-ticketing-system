@@ -1,5 +1,6 @@
 var guestConcerned = -1;
-
+var isModeManageBookingChooseSeat;
+				
 function createSeatmapOnPage( args )
 {
 	/*
@@ -37,33 +38,48 @@ function formSubmit( ){
 	var slots = parseInt( ( getCookie('slots_being_booked')) ); 
 	var x;		
 	var y;
-	var matrices = "";	
+	var matrices = "";		// serialized seat identifiers to be sent to the server to check if occupied
 	var matrix_visual= [];
 	var matrix_count = [];
 	var ajaxObj;
-		
+	
+	
 	$.fn.nextGenModal({
 	   msgType: 'ajax',
 	   title: 'please wait',
 	   message: 'Verifying seat availability ...'
 	});
-		
-	
+			
 		// get seat matrix data
 		for( x = 0; x< slots; x++ )
 		{				
 			var matrix = $('input[name="g' + parseInt( x + 1 )  + '_seatMatrix"]').val();			
+			/*
+				These two arrays are used in case of sudden 'you-were-overtaken' error. See line 104.
+			*/
 			matrix_visual[ matrix ] = $('input[name="g' + parseInt( x + 1 )  + '_seatVisual"]').val();			
 			matrix_count[ matrix ] = parseInt( x + 1 );
-			matrices += ( matrix + '-' );
+			if( isModeManageBookingChooseSeat )
+			{
+				/*
+					When user is managing his booking - changing seat(s), then check first
+					if he chose a new seat before appending to the 'matrices' string.
+				*/
+				var matrix_old = $('input[name="g' + parseInt( x + 1 )  + '_seatMatrix_old"]').val();			
+				if( matrix != matrix_old ) matrices += ( matrix + '-' );
+			}else{
+				matrices += ( matrix + '-' );
+			}
+			
 		}		
-				
+		if( matrices.length > 0 ) // check for these seats if occupied
+		{			
 			ajaxObj = $.ajax({	
 				type: 'POST',
 				aynsc: false,
 				url: CI.base_url + 'SeatCtrl/areSeatsOccupied',
 				timeout: 50000,
-				data: { 'matrices' : matrices.substring( 0, matrices.length-1 ),
+				data: { 'matrices' : matrices.substring( 0, matrices.length-1 ), // substring removes the trailing dash
 						'eventID' : getCookie( 'eventID' ),
 						'showtimeID' : getCookie( 'showtimeID' )
 				},
@@ -78,12 +94,17 @@ function formSubmit( ){
 								$('div#' + resultData[2] ).addClass( 'occupiedSameClass' );
 								$('div#' + resultData[2] ).unbind();
 								guestConcerned = parseInt( matrix_count[ resultData[2] ] );
-								manipulateGuestSeat( "DESELECT", resultData[2] )								
+								manipulateGuestSeat( "DESELECT", resultData[2] );
+								if( isModeManageBookingChooseSeat )
+								{
+									makeSeatUsedByThisBookingAvailable();	// in seatManipulation.js - fallback to the previously selected seats
+								}
 								$.fn.nextGenModal({
 								   msgType: 'error',
 								   title: 'You were overtaken',
 								   message: 'Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[2] ] + ' (Guest ' + matrix_count[ resultData[2] ] + ').<br/><br/> Please choose another seat.'
 								});
+								
 								return false;
 							}else{
 								$('input[type!="hidden"]').attr( 'disabled', 'disabled' );	
@@ -108,6 +129,13 @@ function formSubmit( ){
 						});
 						return false;
 			});				
+		}else{
+			/*
+				This will be only executed when user is managing his booking - changing seat(s).
+				He did not choose a new seat so just submit
+			*/
+			document.forms[0].submit();
+		}
 }
 function manipulateGuestSeat( mode, matrixInfo )
 {						
@@ -126,7 +154,7 @@ function manipulateGuestSeat( mode, matrixInfo )
 	
 	if( mode == 'SELECT' )
 	{	
-		divConcerned = $('div#' + matrixInfo );
+		divConcerned = $('div#' + matrixInfo );		
 		if( seatMatrixSelected != "0" )
 		{	//seat assigned now to guest
 			$( 'div#' + seatMatrixSelected ).removeClass( 'ui-selected' );		// remove first the old seat
@@ -144,9 +172,39 @@ function manipulateGuestSeat( mode, matrixInfo )
 	}
 }//manipulateGuestSeat( .. )
 
+function postChooseCleanup()
+{
+	/*
+		Created 03MAR2012-1313
+		
+		Moved from the 'onClose' function of the seat_modal open function
+	*/
+	var chosenSeat = $('#basic-modal-content-freeform').find('.ddms_selected');
+	if( chosenSeat.size() > 0 )
+	{
+		chosenSeat.each( function()
+		{
+			$( this).removeClass( 'ddms_selected' );
+			$( this ).addClass( 'otherGuest' );								
+		});
+	}else{
+		manipulateGuestSeat( "DESELECT", "" );
+	}
+	guestConcerned = -1;
+}//postChooseCleanup(..)
+
 $(document).ready( function(){
 	var args = [];	
 	args["isOverlayDisplayedAlready"] = false;
+	/*
+		Added 03MAR2012-1221. This determines if the reason why we are in this page
+		is the user already booked and he wants to change seats. This variable
+		is important as later, in this function, its value will be accessed to see to
+		remove the "occuppied" status on the seats of the guests on this booking.
+		
+		Also found in seatManipulation.js
+	*/
+	isModeManageBookingChooseSeat = ($( 'input#manageBookingChooseSeat' ).val() == "1" );
 	createSeatmapOnPage( args );
 	
 	$('input[type="button"][class="seatChooser"]').click( function(){
@@ -176,18 +234,7 @@ $(document).ready( function(){
 				},
 				onClose: function(){							
 							$('#warningIndicator').hide();														
-							chosenSeat = $('#basic-modal-content-freeform').find('.ddms_selected');
-							if( chosenSeat.size() > 0 )
-							{
-								chosenSeat.each( function()
-								{
-									$( this).removeClass( 'ddms_selected' );
-									$( this ).addClass( 'otherGuest' );								
-								});
-							}else{
-								manipulateGuestSeat( "DESELECT", "" );
-							}
-							guestConcerned = -1;
+							postChooseCleanup();							
 							$.modal.close();						
 				}
 			}

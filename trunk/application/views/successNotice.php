@@ -1,6 +1,6 @@
 <?php
 /**
-*	Generic Error Notice Page
+*	Generic Success Notice Page
 * 	Created 03MAR2012-1521
 *	Part of "The UPLB Express Ticketing System"
 *   Special Problem of Abraham Darius Llave / 2008-37120
@@ -12,7 +12,6 @@
    
 *	By the way, here are the variables to be passed to here from the controller:
 
-	$error - STRING - REQUIRED - What type of error. If "CUSTOM", then custom message should be displayed.
 	$theMessage	- STRING - REQUIRED - As in the message you want the user to see.
 	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 
 				*Non-presence and value TRUE indicates automatic redirection to homepage.	
@@ -27,7 +26,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "Operation Result Message";
+	$this->pageTitle = "Success";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -49,7 +48,6 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>	
-	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/errorNotice.js'; ?>"/></script>-->
 	<script type="text/javascript" />
 			$(document).ready( function(){
 				$('#buttonReset').click( function(){
@@ -100,30 +98,16 @@ $this->load->view('html-generic/doctype.inc');
     <div id="main_content" >    	
     	<div id="centralContainer">
 			<div id="page_title" class="page_title_custom" >
-				Error
+				Success
 			</div>						
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
 				<div class="accordionImitation cEvent04_container errorNotice_div_custom">
 					<div id="title"></div>
-					<div id="content">
-						<?php if( $error == "UNAUTHORIZED_ACCESS" ){ ?>
-							<p>
-								You are trying to access a page which requires authentication 
-								beforehand, but of course, you are denied.
-							</p>
-						<?php }else ?>
-						<?php if( $error == "NO_DATA" ){ ?>
-							<p>
-								You are trying to access a page which
-								submitted data beforehand, but of course, you are denied.
-							</p>
-						<?php }else ?>
-						<?php if( $error == "CUSTOM" ){ ?>
-							<p>
-								<?php echo $theMessage; ?>
-							</p>
-						<?php } ?>
+					<div id="content">						
+						<p>
+							<?php echo $theMessage; ?>
+						</p>						
 						<?php if( !isset( $redirect) or $redirect === true ){ ?>
 						<p>
 							Redirecting you to the homepage....

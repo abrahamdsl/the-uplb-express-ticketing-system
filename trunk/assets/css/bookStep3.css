@@ -40,6 +40,7 @@ div#tabs div div.right{
 
 fieldset{
 	width: 90%;
+	margin-bottom: 10px;
 }
 
 fieldset div
@@ -93,8 +94,8 @@ div.gender{
 	padding-top: 6px;
 }
 
-div.anchorBelow{	
-	position: absolute; bottom: 0; min-width: 316px; width: auto;
+div.anchorBelow{		
+	position: absolute; bottom: 0; min-width: 316px; min-height: 15px; width: auto; height; auto;
 }
 
 div.anchorBelow div.leftInr{
@@ -102,4 +103,8 @@ div.anchorBelow div.leftInr{
 }
 div.anchorBelow div.rightInr{
 	float: right;
+}
+input.getuserinfoBtn{
+	padding: 10px;
+	border: 1px solid rgb(206,170,82);
 }

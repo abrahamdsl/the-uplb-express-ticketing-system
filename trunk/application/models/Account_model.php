@@ -132,13 +132,25 @@ class Account_model extends CI_Model {
 		/*
 			Created 23FEB2012-0138
 			
-			Checks if a user has permissions to confirm a client's booking/reservation.
+			Checks if a user has permissions to confirm a client's booking/reservation
+			using the specified payment method.
 		*/		
 		$returnThis = Array(
 			'value' => false,
 			'status' => null,
 			'comment' => ''
 		);
+		/*
+			By default, the $pChannelID equals zero means that this is the payment
+			channel "AUTOMATIC_CONFIRMATION_SINCE_FREE".
+		*/
+	
+		if( intval($pChannelID) === 0 )
+		{
+			$returnThis['value'] = true;
+			$returnThis['status'] = 1;
+			return $returnThis;
+		}
 		$sql_command = "SELECT * FROM `payment_channel_permission` WHERE `AccountNum` = ? AND";
 		$sql_command .= " `EventID` = ? AND `ShowtimeID` = ? AND `PaymentChannel_UniqueID` = ?";
 		$arr_result = $this->db->query( $sql_command, Array( 
@@ -221,6 +233,48 @@ class Account_model extends CI_Model {
 		
 		return $query;
 	}
-			
+	
+	function getUserInfoByAccountNum( $accountNum )
+	{
+		/*
+			Created 26FEB2012-2021
+		*/
+		$sql_command = "SELECT * FROM `user` WHERE `AccountNum` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $accountNum ) )->result();
+		
+		if( count( $arr_result ) === 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}// getUserInfoByAcctNum
+
+	function getUserInfoByUsername( $username )
+	{
+		/*
+			Created 29FEB2012-2117
+		*/
+		$sql_command = "SELECT * FROM `user` WHERE `username` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $username ) )->result();
+		
+		if( count( $arr_result ) === 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}// getUserInfoByAcctNum	
+	
+	function getUserUPLBConstituencyData( $accountNum )
+	{
+		/*
+			Created 26FEB2012-2021
+		*/
+		$sql_command = "SELECT * FROM `uplbconstituent` WHERE `AccountNum_ID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $accountNum ) )->result();
+		
+		if( count( $arr_result ) === 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}
+	
 }//class
 ?>

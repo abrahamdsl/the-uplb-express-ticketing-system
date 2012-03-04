@@ -1,7 +1,11 @@
 				<table id="bookProgressIndicator" class="center_purest" cellspacing="0px" >
 					<tr>
 						<?php
-							$currentStep = $this->session->userdata( 'createEvent_step' );
+							$currentStep = $this->session->userdata( 'book_step' );							
+							if( $currentStep === FALSE )
+							{
+								$currentStep = $this->session->userdata( 'activity_stage' );
+							}
 						?>
 						<td <?php if( $currentStep >= 1 ) echo 'class="passed"'; ?>  >
 							<span class="step" >1</span>

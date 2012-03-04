@@ -1,0 +1,27 @@
+div.manageLeft{
+	float: left;
+	min-height: 238px;
+	min-width: 200px;
+	width: 50%;
+	height: 50%;
+	overflow: auto;
+	padding: 5px;
+	border-right: 3px solid rgb(216,228,214);
+	position: relative;
+}
+div.manageRight
+{
+	border: 1px solid blue;
+	min-width: 327px;
+	width: 48%;
+	float: right;
+}
+div.specialOnMB01{
+	font-size: 1em;
+}
+div.bottomspecialOnMB01{
+	text-align: center;
+}
+div.bottomspecialOnMB01 ul{
+	list-style-type: none;
+}

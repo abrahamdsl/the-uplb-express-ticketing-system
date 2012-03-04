@@ -93,6 +93,9 @@ div.bookingDetails div.bdtitle{
 	border-width: 2px 0px 2px 0px;
 	border-style: solid;
 	border-color: rgb(216,228,214);
+	min-height: 80px;
+	height: auto;
+	overflow; auto;
 }
 div.bookingDetails div.bottom{
 	clear: right;

@@ -8,6 +8,7 @@ class userAccountCtrl extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
+		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
 	}
 	
@@ -27,7 +28,41 @@ class userAccountCtrl extends CI_Controller {
 		}	
 	}//index
 	
+	function getUserInfoForBooking()
+	{
+		/*
+			Created 26FEB2012-2026
+		*/
+		$mainInfo;
+		$username;
+		$accountNum = false;
 		
+		if( $this->input->is_ajax_request() === false ) redirect('/');				
+		
+		$username = $this->input->post( 'username' );						
+		if( $username === "DEFAULT" )
+		{
+			$accountNum = $this->session->userdata( 'accountNum' );
+			$mainInfo = $this->Account_model->getUserInfoByAccountNum( $accountNum );
+		}else{		
+			$mainInfo = $this->Account_model->getUserInfoByUsername( $username );	
+			if( $mainInfo !== false ) $accountNum = intval($mainInfo->AccountNum);
+		}
+		if( $mainInfo === FALSE )
+		{	
+			echo "ERROR_NO-USER-FOUND";
+			return false;
+		}
+		if( $mainInfo->BookableByFriend == 0 or $mainInfo->BookableByFriend == false )
+		{
+			echo "ERROR_NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF";
+			return false;
+		}
+		$uplbConstituencyInfo = $this->Account_model->getUserUPLBConstituencyData($accountNum );				
+		echo $this->MakeXML_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );		
+		return true;	
+	}//getUserInfoForBooking
+	
 	function newUserWelcome()
 	{
 		$step;

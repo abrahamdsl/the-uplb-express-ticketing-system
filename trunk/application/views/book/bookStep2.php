@@ -32,8 +32,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep2.js'; ?>" ></script>
-	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep2.js'; ?>" ></script>	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -120,8 +119,7 @@ $this->load->view('html-generic/metadata.inc');
 								<p>
 									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
 								</p>
-							</div>
-							
+							</div>							
 						</div>
 						<div class="containingClassTable" >
 							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3' ?>" id="formMain">							

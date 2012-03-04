@@ -84,6 +84,35 @@ class Slot_model extends CI_Model {
 		}
 	}//freeSlotsBelongingToClasses
 	
+	function getBeingBookedSlots( $eventID, $showtimeID )
+	{
+		/*
+			Created 01MAR2012-1154
+		*/
+		$sql_command = "SELECT * FROM `event_slot` WHERE `EventID` = ? AND `Showtime_ID` = ?";
+		$sql_command .= " AND `Status` = 'BEING_BOOKED' ";
+		$arr_result = $this->db->query( $sql_command, Array( $eventID, $showtimeID  ) )->result(); 
+		if( count( $arr_result ) > 0 )
+			return $arr_result;
+		else
+			return false;
+	}//getBeingBookedSlots
+	
+	function getSeatAssignedToUser( $UUID )
+	{
+		/*
+			Created 02MAR2012-2110
+			
+			Returns only the MATRIX REPRESENTATION (not the visual representation).
+		*/
+		$slotObj = $this->getSlotAssignedToUser( $UUID );
+		if( $slotObj === false ) return false;
+		return Array(
+			'Matrix_x' => $slotObj->Seat_x,
+			'Matrix_y' => $slotObj->Seat_y
+		);
+	}//getSeatAssignedToUser( ..)
+	
 	function getSingleSlot( $UUID )
 	{
 		/*
@@ -114,7 +143,7 @@ class Slot_model extends CI_Model {
 		else
 			return false;
 	}//getSingleSlot
-	
+			
 	function getSlotsForBooking( $quantity, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )
 	{
 		/*
@@ -172,7 +201,30 @@ class Slot_model extends CI_Model {
 			return $lastInt;
 		}else return 0;		
 	}//getSlotsLastGroupID
+	
+	function isSlotBeingBookedLapsedHoldingTime( $slotObj, $ticketClassObj )
+	{
+		/*
+			Created 01MAR2012-1214
 			
+			Take note: function strtotime returns the number of seconds since 
+			January 1 1970 00:00:00 UTC or 08:00:00 UTC+8/PST/Manila Time
+		*/	
+		date_default_timezone_set('Asia/Manila');
+		$holdingTimeSplitted = explode(':', $ticketClassObj->HoldingTime );
+		$holdingTimeAdjustment = '+'.intval($holdingTimeSplitted[0]).' day +'.intval($holdingTimeSplitted[1]);
+		$holdingTimeAdjustment .= ' min +'.intval($holdingTimeSplitted[2]).' sec';
+		
+		$slotLapseTimeStamp = strtotime(  			
+			$holdingTimeAdjustment,
+			strtotime( $slotObj->Start_Contact )
+		);
+		
+		$currentTimeStamp = strtotime( date("Y-m-d H:i") );	// get the current time
+	
+		return ( $currentTimeStamp > $slotLapseTimeStamp );
+	}//isSlotBeingBookedLapsedHoldingTime(..)
+	
 	function setSlotAsAvailable( $uuid )
 	{
 		/*
@@ -205,6 +257,16 @@ class Slot_model extends CI_Model {
 		$sql_command = "UPDATE `event_slot` SET `Status` = 'BOOKED', `Start_Contact` = NULL WHERE `UUID` = ?";
 		return $this->db->query( $sql_command, array( $uuid ) );
 	}//setSlotAsBooked
+	
+	function setSlotAsPendingPayment( $uuid )
+	{
+		/*
+			Created 22FEB2012-2038
+						
+		*/
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'RESERVED-PENDING_PAYMENT', `Start_Contact` = NULL WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( $uuid ) );
+	}//setSlotAsPendingPayment
 	
 	function updateSlotLastContactTime( $uuid )
 	{

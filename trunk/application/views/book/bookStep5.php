@@ -26,10 +26,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<!--For modal v1-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
-	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>		
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
@@ -48,20 +45,11 @@ $this->load->view('html-generic/metadata.inc');
 	?>	
 	<!--For modal v1-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
-	<!-- For overlay v2-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
-	<!-- seat manipulations -->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
-	
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');
-		$this->load->view('html-generic/seatModal-client.inc');
-		
+		$this->load->view('html-generic/overlay_general.inc');				
 ?>		
-<div id="gaga" style="display:none" > ngiyaw </div>
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -171,8 +159,7 @@ $this->load->view('html-generic/metadata.inc');
 											<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 											<td>
 											<?php
-												$thisItemAmount = intval($singlePurchase->Amount); 
-												$totalCharges += $thisItemAmount;
+												$thisItemAmount = floatval($singlePurchase->Amount); 												
 												if ( $thisItemAmount < 0 )
 													echo '('.$thisItemAmount.')';
 												else
@@ -180,12 +167,7 @@ $this->load->view('html-generic/metadata.inc');
 											?>
 											</td>
 										</tr>												
-										<?php } 
-											// now set this to be accessible on the server side
-											$thisNewSessData = Array(
-												"totalCharges" => $totalCharges
-											);
-											$this->session->set_userdata( $thisNewSessData );
+										<?php } 											
 										?>
 									</tbody>
 								</table>								

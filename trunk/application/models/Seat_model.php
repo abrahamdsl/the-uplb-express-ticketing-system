@@ -222,17 +222,38 @@ class Seat_model extends CI_Model {
 		return $arrayResult;
 	}//getUsableSeatMaps
 	
+	/*
+		ON HOLD !!!!!!
+		
+	function getMatrixRepresentation( $matrix_x, $matrix_y, $eventID, $showtimeID )
+	{
+		/*
+			Created 02MAR2012-2105
+			
+			Returns the matrix identifiers of the specifiedseat visualization of the string form 
+			"X-Y" where X is the row and Y is the column
+		*/
+		/*$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
+		return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
+	//getMatrixRepresentation(..)*/
+	
 	function getVisualRepresentation( $matrix_x, $matrix_y, $eventID, $showtimeID )
 	{
 		/*
 			Created 14FEB2012-1822.
 			 
-			Returns the seat visualization of the form X-Y where X is the row and Y is the column
+			Returns the seat visualization of the string form 
+			"X-Y" where X is the row and Y is the column
 		*/
 		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
-		return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
+		if( $seatObj === false )
+			return false;
+		else
+			return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
 	
 	}//getVisualRepresentation()
+		
+	
 	function insertSeatMapBaseInfo( $uniqueID = NULL )
 	{
 		/*

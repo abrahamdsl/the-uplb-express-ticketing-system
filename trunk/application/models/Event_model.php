@@ -224,10 +224,14 @@ class Event_model extends CI_Model {
 			
 			10FEB2012-2255 |  Added "ticketClassGroupID"
 			11FEB2012-0024 |  Added "bookingNumber"
+			29FEB2012-1238 | Added 'purchases_identifiers', 'visualseat_data'
 		*/	
 		return ( Array( 
-			"eventID", "showtimeID", "ticketClassGroupID", "eventName", "startDate", "startTime", 
-			"endDate", "endTime", "slots_being_booked", "location", "bookingNumber", "ticketClassUniqueID") );
+			"eventID", "showtimeID", "ticketClassGroupID", "eventName", "startDate", 
+			"startTime", "endDate", "endTime", "slots_being_booked", "location", "bookingNumber",
+			 "ticketClassUniqueID", "purchases_identifiers", "visualseat_data"
+			) 
+		);
 	}//getBookingCookieNames()
 	
 	function getConfiguredShowingTimes( $eventID = NULL , $validToday = false )
@@ -258,6 +262,8 @@ class Event_model extends CI_Model {
 			$dateToday = date( 'Y-m-d ' );			
 			$timeToday = date( 'H:i:s' );
 			
+			// review 01MAR2012-2235 -  and why you didn't use constant CURRENT_TIMESTAMP but instead
+			// $dateToday and $timeToday pa?
 			$sql = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND `Status` = 'CONFIGURED' AND 
 					CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= ? AND
 					CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= ?;";
@@ -266,13 +272,14 @@ class Event_model extends CI_Model {
 					$dateToday.$timeToday,					
 					$dateToday.$timeToday
 				)
-			);
-			
+			);			
 		}
 		
 		$result_arr = $query_obj->result();
-		
-		return $result_arr;		
+		if( count($result_arr) > 0 )
+			return $result_arr;		
+		else
+			return false;
 	}//getConfiguredShowingTimes(..)
 	
 	function getEventInfo( $eventID )
@@ -505,6 +512,13 @@ class Event_model extends CI_Model {
 		else return false;		
 	}//isRedEye(..)
 	
+	function isShowtimeOnlyOne( $eventID )
+	{
+		$showtimesObj = $this->getConfiguredShowingTimes( $eventID , TRUE );
+		if( $showtimesObj === false ) return false;
+		return ( count($showtimesObj) === 1 );
+	}
+	
 	function processShowingTimeRepresentation_SQL( $thisShowingTimeName = "" )
 	{
 		/*	 
@@ -665,6 +679,15 @@ class Event_model extends CI_Model {
 		);		
 		return $query_result;
 	}//setParticulars
+	
+	function setSessionActivity( $name, $stage )
+	{
+		/*
+			Created 02MAR2012-2055
+		*/
+		$this->session->set_userdata( 'activity_name', $name );
+		$this->session->set_userdata( 'activity_stage', $stage );
+	}//setSessionActivity()
 	
 	function setShowingTimeConfigStat( $eventID = NULL, $thisScheduleString = NULL, $newStat = "UNCONFIGURED" )
 	{

@@ -73,8 +73,7 @@ $(document).ready( function() {
 			success: function(data){										  // function to handle afterwards
 				var splitDetails = data.split('_');
 				if( splitDetails[0] == "ERROR" || splitDetails[0] == "INVALID" )
-				{
-					console.log( data );
+				{					
 					$("span#showtimeDummy").hide();
 					$("span#showtimeCustomError").html( splitDetails[1] );
 					$("span#showtimeCustomError").show();					
@@ -150,7 +149,7 @@ $(document).ready( function() {
 				$("span#showtimeWaiting").hide();
 				enableStep3Buttons();				
 			}//function		
-		});			
+		});//ajax
 		requestST_POST.fail( function( jqXHR, textStatus ){
 			$("span#showtimeWaiting").hide();
 			$("span#showtimeDummy").show();		

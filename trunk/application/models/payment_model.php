@@ -116,13 +116,18 @@ class Payment_model extends CI_Model {
 			return $arr_result;
 	}//getUnpaidPurchases
 	
-	function getPaymentChannels()
+	function getPaymentChannels( $includeZero = FALSE )
 	{
 		/*
 			Created 15FEB2012-1409 | Gets all entries in the `payment_channel` table.
 			This use is mostly in Create Event Step 6.
+			
+			Modified 28FEB2012-1052: Added $includeZero parameter. BOOLEAN.
+				The parameter is expected to be true when we are to include the payment Channel
+				"FREE" because the ticket cost is zero.
 		*/
-		$sql_command = "SELECT * FROM `payment_channel` WHERE 1";
+		$quantifier = ( $includeZero === TRUE ) ? " 1" : " `UniqueID` > 0 ";
+		$sql_command = "SELECT * FROM `payment_channel` WHERE ".$quantifier;
 		$arr_result = $this->db->query( $sql_command )->result();
 		if( count($arr_result) > 0 )
 			return $arr_result;
@@ -130,7 +135,7 @@ class Payment_model extends CI_Model {
 			return false;
 	}//getPaymentChannels()
 	
-	function getPaymentChannelsForEvent( $eventID, $showtimeID )
+	function getPaymentChannelsForEvent( $eventID, $showtimeID, $includeFree = FALSE )
 	{
 		$sql_command = "SELECT * FROM `payment_channel_availability` INNER JOIN `payment_channel` ON ";
 		$sql_command .= "`payment_channel`.`UniqueID` = `payment_channel_availability`.`PaymentChannel_UniqueID` where ";
@@ -141,6 +146,18 @@ class Payment_model extends CI_Model {
 		if( count( $arr_result ) < 1 )
 			return false;
 		else
+			/*
+				Factory default: If UniqueID of a payment channel is zero - it means, automatic confirmation/payment
+				of a booking since there's no charge/fees to be paid.
+				
+				So here, if the calling funciton specified to not include the free payment channel,
+				detect if the UniqueID of first payment channel gotten from the query earlier
+				is zero, and if so, unset from the array to be returned
+			*/
+			if( !$includeFree ){
+				if( intval($arr_result[0]->UniqueID) === 0 )
+					unset( $arr_result[0] );		
+			}
 			return $arr_result;
 	}//getPaymentChannelsForEvent
 	
@@ -149,7 +166,8 @@ class Payment_model extends CI_Model {
 		/*
 			Created 14FEB2012-1850
 		*/
-		$arr_result = $this->getPaymentChannelsForEvent( $eventID, $showtimeID );
+		$arr_result = $this->getPaymentChannelsForEvent( $eventID, $showtimeID, TRUE );
+		if( $arr_result === false ) return false;
 		foreach( $arr_result as $singleChannel )
 		{
 			if( intval($singleChannel->UniqueID) === $uniqueID  ) return $singleChannel;
@@ -157,25 +175,32 @@ class Payment_model extends CI_Model {
 		return false;
 	}// getSinglePaymentChannel(..)
 	
-	function getSumTotalOfUnpaid( $bookingNumber, $purchases = null )
+	function getSinglePurchase( $bookingNumber, $uniqueID )
+	{
+		/*
+			Created 29FEB2012-1129
+		*/
+		$sql_command = "SELECT * FROM `purchase` WHERE `BookingNumber` =? AND `UniqueID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $bookingNumber, $uniqueID ) )->result();
+		
+		if( count( $arr_result ) ==1 )
+			return $arr_result[0];
+		else
+			return false;
+	}// getSinglePurchase(..)
+	
+	function getSumTotalOfUnpaid( $bookingNumber, $purchases = Array() )
 	{
 		/*
 			Created 23FEB2012-0031
 		*/
-		$amount = 0;
-		
-		if( $purchases === null )
-		{
-			// get from database using $bookingNumber
-		}
-		foreach( $purchases as $singlePurchase )
-		{
-			$amount += floatval( $singlePurchase->Amount );
-		}
-		
-		return $amount;
-	}// getSumTotalOfUnpaid
 	
+		if( count( $purchases ) > 0 )		
+			$purchases = $this->getUnpaidPurchases( $bookingNumber ); // get from database using $bookingNumber		
+				
+		return $this->sumTotalCharges( $purchases );
+	}// getSumTotalOfUnpaid
+		
 	function setAsPaid( $bookingNumber, $uniqueID, $paymentUniqueID )
 	{
 		/*
@@ -195,4 +220,19 @@ class Payment_model extends CI_Model {
 		$sql_command = "UPDATE `purchase` SET `Payment_Channel_ID` = ? WHERE `Payment_UniqueID` = 0 AND `BookingNumber` = ?";
 		return $this->db->query( $sql_command, Array( $pChannel, $bNumber ) );
 	}
+	
+	function sumTotalCharges( $unpaidPurchasesArray )
+	{
+		/*
+			Created 28FEB2012-1034
+			
+			Basically, receives array of MYSQL_OBJs returned by $this->getUnpaidPurchases(..) and sums 
+			the total. This computation is moved from bookStep5.php to here.						
+		*/
+		$totalCharges = 0;
+		
+		foreach( $unpaidPurchasesArray as $singlePurchase ) $totalCharges += floatval($singlePurchase->Amount);	
+		
+		return $totalCharges;
+	}//sumTotalCharges(..)
 }//class

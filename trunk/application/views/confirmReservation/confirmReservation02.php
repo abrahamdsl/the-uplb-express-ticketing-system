@@ -6,7 +6,7 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Purchase Ticket";
+	$this->pageTitle = "Confirm Reservation";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -26,8 +26,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>			
 	<!--For modal v1-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
@@ -46,13 +45,7 @@ $this->load->view('html-generic/metadata.inc');
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
-	<!-- For overlay v2-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
-	<!-- seat manipulations -->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
-	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>			
 </head>
 <body>
 <?php
@@ -306,7 +299,7 @@ $this->load->view('html-generic/metadata.inc');
 							<div class="right" >
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">seat</legend>
-									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ]; ?>" disabled="disabled"   />									
+									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ][ 'visual_rep' ]; ?>" disabled="disabled"   />									
 									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
 										
 											<?php
@@ -338,6 +331,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Confirm</span></a>
+							<a class="button" id="buttonReset" ><span class="icon">Home</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		
