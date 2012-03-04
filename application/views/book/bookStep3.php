@@ -37,6 +37,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep3GetUserInfo.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>" ></script>
 	<?php			
@@ -130,8 +131,7 @@ $this->load->view('html-generic/metadata.inc');
 							</div>														
 						</div>
 						<div class="containingClassTable" >
-							Remaining time here?<br/><br/>
-							Or the "get-from-profile" feature.
+							Remaining time here?<br/><br/>							
 						</div>
 					</div>
 				</div>
@@ -151,7 +151,10 @@ $this->load->view('html-generic/metadata.inc');
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
 								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
+									<legend class="field_grouping_bar specialOnBook3">personal</legend>
+									<div style="text-align: center" >								
+										<input type="button" id="g<?php echo $x+1; ?>-chooseSeat" class="ayokongDefaultAngItsuraNgButton getuserinfoBtn"  value="Get user details from profile" />
+									</div>
 									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
 										<div class="label" >
 											<label class="label" for="id_g<?php echo $x+1; ?>-firstName" >First name</label>							
@@ -210,6 +213,7 @@ $this->load->view('html-generic/metadata.inc');
 									</div>
 									<input type="hidden" name="g<?php echo $x+1; ?>-accountNum" value="0" />
 								</fieldset>
+								
 							</div>
 							<div class="right" >
 								<fieldset>
@@ -227,8 +231,7 @@ $this->load->view('html-generic/metadata.inc');
 									<div class="msgContainer formErrorBookStep3Special" >	
 											<div class="icon"></div>
 											<span id="g<?php echo $x+1; ?>-cellphoneFldMsg"></span>
-									</div>
-																	
+									</div>																
 									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
 										<div class="label" >
 											<label class="label" for="id_g<?php echo $x+1; ?>-landline">Landline</label>							
@@ -277,6 +280,35 @@ $this->load->view('html-generic/metadata.inc');
 												}
 											?>											
 										
+									</div>
+								</fieldset>
+								<fieldset>
+									<legend class="field_grouping_bar specialOnBook3">uplb constituency</legend>
+									<div class="row" id="g<?php echo $x+1; ?>-studentNumFld" >
+										<div class="label" >
+											<label class="label" for="id_g<?php echo $x+1; ?>-studentNum">Student number</label>											
+										</div>
+										<div class="collection" >
+											<input type="text" name="g<?php echo $x+1; ?>-studentNum" id="id_g<?php echo $x+1; ?>-studentNum" />
+											<input type="hidden" name="g<?php echo $x+1; ?>-studentNum_validate" value="0" />
+										</div>									
+									</div>
+									<div class="msgContainer formErrorBookStep3Special" >	
+											<div class="icon"></div>
+											<span id="g<?php echo $x+1; ?>-studentNumFldMsg"></span>
+									</div>
+									<div class="row" id="g<?php echo $x+1; ?>-empNum" >
+										<div class="label" >
+											<label class="label" for="id_g<?php echo $x+1; ?>-cellphone">Employee number</label>											
+										</div>
+										<div class="collection" >
+											<input type="text" name="g<?php echo $x+1; ?>-empNum" id="id_g<?php echo $x+1; ?>-empNum" />
+											<input type="hidden" name="g<?php echo $x+1; ?>-empNum_validate" value="0" />
+										</div>									
+									</div>
+									<div class="msgContainer formErrorBookStep3Special" >	
+											<div class="icon"></div>
+											<span id="g<?php echo $x+1; ?>-empNumFldMsg"></span>
 									</div>
 								</fieldset>
 							</div>

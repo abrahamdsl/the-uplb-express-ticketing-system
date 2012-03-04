@@ -39,6 +39,24 @@ class TicketClass_model extends CI_Model {
 		return $this->db->insert( 'ticket_class', $data );
 	}//createTicketClasses(..)
 	
+	function getHoldingTime( $eventID, $groupID, $uniqueID )
+	{
+		/*
+			Created 01MAR2012-1140
+		*/
+		$ticketClassObj = $this->getSingleTicketClass( $eventID, $groupID, $uniqueID );
+		if( $ticketClassObj === false ) return false;
+		/*
+			For now, holding time is from 2 minutes to 59 minutes only so
+			from the database column `HoldingTime` which is of the form 'HH:MM:SS'
+			we explode it via ':' and only get the MM which is in the resulting array index 1;
+			If there is a change in this limitation, then this algorithm in getting the holding
+			time should be also changed.
+		*/
+		$holdingTimeSplitted = explode(':', $ticketClassObj->HoldingTime );		
+		return intval( $holdingTimeSplitted[1] );
+	}//getHoldingTime
+	
 	function getDefaultTicketClasses()
 	{
 		/*
@@ -81,7 +99,7 @@ class TicketClass_model extends CI_Model {
 		/*
 			Created 06FEB2012-1850
 			
-			Returns MYSQL_OBJ
+			Returns MYSQL_OBJ or BOOLEAN FALSE
 		*/
 		$commonTC = $this->getTicketClasses( $eventID, $groupID );
 		if( $commonTC === false ) return false;
@@ -93,6 +111,23 @@ class TicketClass_model extends CI_Model {
 		return false;
 	}//getSingleTicketClass
 	
+	function getSingleTicketClassName( $eventID, $groupID, $uniqueID ){
+		/*
+			Created 06FEB2012-1850
+			
+			Created for EventCtrl/manageBooking.
+			This is used instead of SQL joins or straight call from there 
+			to $this->getTicketClass - kinda more expensive in terms of processing power
+			and storage.			
+			Returns MYSQL_OBJ or BOOLEAN FALSE
+		*/
+		$singleClassObj = $this->getSingleTicketClass( $eventID, $groupID, $uniqueID );
+		if( $singleClassObj === false )
+			return "UNDEFINED";
+		else
+			return $singleClassObj->Name;
+	}//getSingleTicketClassName(..)
+	
 	function getTicketClasses( $eventID, $groupID )
 	{
 		/*
@@ -100,6 +135,8 @@ class TicketClass_model extends CI_Model {
 			
 			05FEB2012-2056: Added returning of boolean false if no entry found.
 		*/
+		$devFriendlyArray = Array();
+		
 		if( $eventID == null || $groupID == null  ) return false;
 		
 		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `GroupID` = ? ";
@@ -107,7 +144,11 @@ class TicketClass_model extends CI_Model {
 		$array_result = $query_obj->result();
 		
 		if( count( $array_result ) < 1 ) return false;
-		return $array_result;
+		foreach( $array_result as $singleClass )
+		{
+			$devFriendlyArray[ $singleClass->UniqueID ] = $singleClass;
+		}
+		return $devFriendlyArray;
 	}//getTicketClasses
 	
 	function getTicketClassesExceptThisUniqueID( $eventID, $groupID, $uniqueID )
@@ -124,6 +165,25 @@ class TicketClass_model extends CI_Model {
 		if( count( $array_result ) < 1 ) return false;
 		return $array_result;
 	}//getTicketClassesExceptThisUniqueID
+	
+	function isThereFreeTicketClass( $eventID )
+	{
+		/*
+			Created 28FEB2012-1103
+			
+			Selects showing times and ticket classes of a showing time being 
+			configured, inner joins them and sees if there is at least
+			one ticket class being offered for free.
+		*/	
+		$sql_command = "SELECT * FROM `showing_time` INNER JOIN `ticket_class` ON `showing_time`.`EventID` = `ticket_class`.`EventID`";
+		$sql_command .= " AND `showing_time`.`Ticket_Class_GroupID` = `ticket_class`.`GroupID` WHERE";
+		$sql_command .= " `showing_time`.`Status` = 'BEING_CONFIGURED' AND `ticket_class`.`EventID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $eventID ) )->result();
+		
+		if( count( $arr_result) < 1 ) return false;
+		foreach( $arr_result as $singleJoinedRecord ) if( floatval($singleJoinedRecord->Price) === 0.0 ) return true;		
+		return false;
+	}//isThereFreeTicketClass(..)
 	
 	function makeArray_NameAsKey( $ticketClasses )
 	{

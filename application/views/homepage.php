@@ -15,11 +15,29 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
+	<!--For modal v1-->	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
+	<!--For modal v1-->	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" >		
+		$(document).ready( function(){
+			$('a.notyet').click( function(){
+				$.fn.nextGenModal({
+				   msgType: 'okay',
+				   title: 'Not yet :-)',
+				   message: 'Feature coming later'
+				});
+			});
+		});
+	</script>
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>	
 <div id="main_container">
 	<div id="header">    	    	        
 		<?php
@@ -56,13 +74,13 @@ $this->load->view('html-generic/metadata.inc');
 							<a href="<?php echo base_url(); ?>EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" alt="Purchase ticket" /></a>
 					</div>
 					<div class="metrotile" >
-							<a  href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/switchschedule.png" alt="Switch schedule" /></a>
+							<a href="<?php echo base_url()."EventCtrl/manageBooking"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/managebooking.png" alt="Manage Booking" /></a>
 					</div>
 					<div class="metrotile" >
-							<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/transhistory.png" alt="Transaction History" /></a>
+							<a class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/transhistory.png" alt="Transaction History" /></a>
 					</div>
 					<div class="metrotile" >
-							<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/inquiries.png" alt="Inquiries" /></a>
+							<a  class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/inquiries.png" alt="Inquiries" /></a>
 					</div>
 					<!--
 					<div>
@@ -90,10 +108,19 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Event Management</a></h3>
 				<div>
+					<div class="metrotile" >
+							<a href="<?php echo base_url(); ?>EventCtrl/create"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createevent.png" alt="Create Event" /></a>
+					</div>
+					<div class="metrotile" >
+							<a class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-modifyevent.png" alt="Modify Event" /></a>
+					</div>
+					<div class="metrotile" >
+							<a href="<?php echo base_url(); ?>EventCtrl/confirm" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-confirmreservation.png" alt="Confirm Reservation" /></a>
+					</div>
 					<img src="<?php echo base_url().'assets/images/event-manager_temp.png'; ?>"  usemap="#eventManagerMap" alt="eventmgrmap" />				
 					<map name="eventManagerMap" id="emap1" >
 						<area shape="rect" coords="6,7,176,101" title="Create Event" alt="Create Event" href="<?php echo base_url().'EventCtrl/create'; ?>" />
-						<area shape="rect" coords="188,7,358,101" title="Confirm Reservation" alt="Confirm Reservation" href="<?php echo base_url(); ?>EventCtrl/confirm" />
+						<area shape="rect" coords="188,7,358,101" title="Confirm Reservation" alt="Confirm Reservation"  />
 						<area shape="rect" coords="367,7,537,101" title="Modify Reservation" alt="Modify Reservation" href="" />
 						<area shape="rect" coords="545,7,715,101" title="Modify Event" alt="Modify Event" href="<?php echo base_url().'EventCtrl/manage'; ?>" />
 						<area shape="rect" coords="6,106,176,200" title="Modify Ticket Classes" alt="Modify Ticket Classes" href="" />
@@ -162,7 +189,7 @@ $this->load->view('html-generic/metadata.inc');
 					} // ender for administrator
 				?>
 				<h3><a href="#">Announcements</a></h3>
-				<div>					
+				<div>										
 					<p>
 					Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
 					ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit

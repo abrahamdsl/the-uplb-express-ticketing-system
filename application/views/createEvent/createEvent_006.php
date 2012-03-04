@@ -93,8 +93,7 @@ $this->load->view('html-generic/metadata.inc');
 							<input type="hidden" name="hidden_selling_timeStart" value="" />
 							<input type="hidden" name="hidden_selling_dateEnd" value="" />
 							<input type="hidden" name="hidden_selling_timeEnd" value="" />
-							<!-- end-->							
-							
+							<!-- end-->														
 								<table class="center_purest schedulesCentral">
 									<thead>
 										<tr>											

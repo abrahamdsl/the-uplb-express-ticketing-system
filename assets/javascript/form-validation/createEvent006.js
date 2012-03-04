@@ -345,18 +345,24 @@ $(document).ready( function() {
 				   message: 'Selling end timestamp is earlier than selling start timestamp.'
 				});
 				return false;
-			}		
+			}
+			
 			var earliestST_Date = new Date( getEarliestShowingTimeStartDate() );
 			var earliestST_Time = new Date( getEarliestShowingTimeStartTime() );
+			var UTCMinutes = earliestST_Time.getUTCMinutes();
+			if( UTCMinutes < 10 )
+			{
+				UTCMinutes = '0' + UTCMinutes;
+			}
 			//	15FEB2012-1450 : Changed '-' to '/', Opera's JavaScript won't accept the dash
 			var estD_str = earliestST_Date.getFullYear() + '/' + ( earliestST_Date.getMonth() + 1 ) + '/' + earliestST_Date.getDate();
-			var estT_str = earliestST_Time.getUTCHours() + ':' + earliestST_Time.getUTCMinutes();			
+			var estT_str = earliestST_Time.getUTCHours() + ':' + UTCMinutes;			
 			if ( !isTimestampGreater( sellingDateEnd, sellingTimeEnd, estD_str,  estT_str ,isShow_RedEye) )		//found in generalChecks.js
 			{								
 				$.fn.nextGenModal({
 				   msgType: 'error',
 				   title: 'bad expectation',
-				   message: 'Selling end timestamp should be earlier than the earliest showing time ( " +  estD_str + " " +  estT_str  + " ). '
+				   message: 'Selling end timestamp ( ' + estD_str + ' ' + estT_str + ' ) should be earlier than the earliest <br/> showing time ( '+  estD_str + " " +  estT_str  + ' ). '
 				});
 				return false;
 			}			

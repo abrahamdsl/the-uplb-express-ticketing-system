@@ -8,6 +8,15 @@ function formSubmit()
 
 $(document).ready( function () 
 {
+	/*
+		If there is only one showing time specified, choose
+		it automatically.
+	*/
+	if( $('input[type="checkbox"][id^="ch_"]').size() == 1 )
+	{
+		$('input[type="checkbox"][id^="ch_"]').attr( 'checked', 'checked' );		
+	}
+	
 	$("#checkAll").click( function() {
 		$('input[type="checkbox"]').attr( "checked", true );
 	}); //checkAll button click
@@ -100,7 +109,7 @@ $(document).ready( function ()
 			$.fn.nextGenModal({
 			   msgType: 'warning',
 			   title: 'Confirm',
-			   message: "Are you sure these are what you want to configure now?",
+			   message: "Are you sure these are what you want to configure now and you have specified the number of slots correctly?",
 			   yesFunctionCall: 'formSubmit'
 			});
 			

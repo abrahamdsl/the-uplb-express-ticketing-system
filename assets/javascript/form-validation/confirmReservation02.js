@@ -1,3 +1,9 @@
+var confirmed = false;
+
+function goHome(){
+	window.location = CI.base_url;
+}
+
 function formSubmit()
 {
 	var x = $.ajax({	
@@ -23,6 +29,8 @@ function formSubmit()
 				});
 				$('div#paymentDeadline').html( 'CONFIRMED' );
 				$('div#deadlineCaption').html( 'Congratulations. Enjoy the show.' );
+				confirmed = true;
+				$('a#buttonOK').remove();
 			}else
 			if( response[0].startsWith( 'ERROR' ) )
 			{
@@ -42,14 +50,13 @@ function formSubmit()
 				return false;
 		}
 	});	
-
 }
 
 $(document).ready( function(){
 	$(document).makeTimestampFriendly();
 	$(document).bookConclusionOnloadRitual();
 	
-	$('#buttonOK').click( function(){		
+	$('a#buttonOK').click( function(){		
 		$.fn.nextGenModal({
 				   msgType: 'warning',
 				   title: 'confirm',
@@ -57,5 +64,19 @@ $(document).ready( function(){
 				   yesFunctionCall: 'formSubmit',
 				   closeOnChoose: false
 				});	
+	});
+	
+	$('a#buttonReset').click( function(){		
+		if( !confirmed )
+		{
+			$.fn.nextGenModal({
+				   msgType: 'warning',
+				   title: 'leaving already?',
+				   message: 'Are you sure you want to leave this page without confirming this reservation?',
+				   yesFunctionCall: 'goHome',
+			});
+		}else{
+			goHome();
+		}
 	});
 });

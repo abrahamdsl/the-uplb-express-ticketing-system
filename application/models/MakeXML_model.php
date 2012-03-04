@@ -36,7 +36,7 @@ class MakeXML_model extends CI_Model {
         if(!file_exists($tempFile)){
             return $tempFile;		
 	    }else{
-		    return createTempfile();
+		    return $this->createTempfile();
 		}
    }// createTempFile(..)
    
@@ -103,6 +103,59 @@ class MakeXML_model extends CI_Model {
 		
 	}// XMLize_ConfiguredShowingTimes(..)
 	
+	function XMLize_UserInfoForBooking( $mainInfo = FALSE, $uplbConstituencyInfo = FALSE )
+	{
+		/*
+			Created 26FEB2012-2030
+		*/
+		$XMLfile = $this->createTempFile();
+		$fp;
+			
+		$fp = fopen( $XMLfile, "w" );
+		if( $fp != NULL )
+		{
+			// Initiate class
+			$xml = new xml_writer;
+			$xml->setRootName( 'user' );
+			$xml->initiate();
+			
+			//output main details - name, bla bla
+			// start branch 1 ( main details)			
+			$xml->startBranch( 'main_info' );
+				// start branch 1-1 name
+				$xml->startBranch( 'name' );
+					$xml->addNode(  'first', $mainInfo->Fname );
+					if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
+					$xml->addNode(  'last', $mainInfo->Lname );
+				$xml->endBranch();
+				$xml->addNode(  'gender', $mainInfo->Gender );
+				$xml->addNode(  'cellphone', $mainInfo->Cellphone );
+				if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
+					$xml->addNode(  'landline', $mainInfo->Landline );	
+				$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
+				$xml->endBranch();
+			if( $uplbConstituencyInfo !== FALSE )
+			{
+				//start branch 2
+				$xml->startBranch( 'uplb_info' );
+				if( strlen($uplbConstituencyInfo->studentNumber) > 0 )
+					$xml->addNode(  'student', $uplbConstituencyInfo->studentNumber );
+				if( strlen($uplbConstituencyInfo->employeeNumber) > 0 )
+					$xml->addNode(  'employee', $uplbConstituencyInfo->employeeNumber );					
+				//end branch 2
+				$xml->endBranch();
+			}
+			$xmlContent = $xml->getXml();
+		}else{
+			echo "ERROR_Cannot write to disk on server";
+		}
+		fclose( $fp );
+		echo $xmlContent;
+		return true;
+	}// XMLize_UserInfoForBooking
+	 
+	 
+	 
 	function XMLize_SeatMap_Actual( $masterSeatMapDetails, $actualSeatsData )
 	{
 		/* created 12FEB2012-2256
@@ -189,7 +242,8 @@ class MakeXML_model extends CI_Model {
 		
 		if( !is_array( $masterSeatMapProperData ) )
 		{
-			return "INVALID_DATA";
+			 echo "ERROR_INVALID_DATA";
+			 return false;
 		}
 		
 		$fp = fopen( $XMLfile, "w" );

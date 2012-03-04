@@ -162,11 +162,11 @@ div.centralContainer{
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=90, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=180, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=270, Color=#C4C4C4);
-	-ms-filter: "
+	-ms-filter:
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=1, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=90, Color=#C4C4C4),
 		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=180, Color=#C4C4C4),
-		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=270, Color=#C4C4C4)";*/
+		progid:DXImageTransform.Microsoft.Shadow(Strength=9, Direction=270, Color=#C4C4C4);
 }
 
 div#page_title
@@ -300,4 +300,18 @@ span.critical{
 
 div.buttonfooterSeparator{
 	clear: both;
+}
+/*
+	27FEB2012-1635 - Moved from createEvent05.css - testing if it's better  here
+*/
+.ayokongDefaultAngItsuraNgButton{
+	text-align: center;	
+	border-style: none; 
+	border-width: 0px; 	
+	font-family: "Segoe UI", "Lucida Grande", Arial, Verdana;
+}
+.ayokongDefaultAngItsuraNgButton:hover{
+	background-color: rgb(73,133,39);
+	color: white;
+	
 }

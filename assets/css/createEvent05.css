@@ -1,6 +1,8 @@
 .commonality{
 	width: 75%;
 }
+/*
+	27FEB2012-1635 - Moved to body_all.css - testing if it's better be there.
 .ayokongDefaultAngItsuraNgButton{
 	text-align: center;	
 	border-style: none; 
@@ -10,7 +12,7 @@
 .ayokongDefaultAngItsuraNgButton:hover{
 	background-color: rgb(73,133,39);
 	color: white;
-	
+*/	
 }
 input.even{
 	background-color: rgb(243,241,242);

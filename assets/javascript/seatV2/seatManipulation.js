@@ -4,6 +4,7 @@
 
 
 var aisles = new Array();
+var existingGuestSeatData = new Array();
 var aisleCount = 0;
 
 function addNewAisleToList( colNum )
@@ -53,6 +54,70 @@ function adjustColumnIndicators( rows, cols )
 		}
 	}
 }//adjustColumnIndicators
+
+function assembleExistingGuestSeatData(){
+	/*
+		Created 03MAR2012-1228
+		Only used during Change Booking - Change seat.
+		
+		Gets existing seat data from the page, stores it in
+		the globally accessible Array 'existingGuestSeatData'
+		
+		Needs JQuery.
+	*/	
+	var guestCount = getCookie( 'slots_being_booked' );
+	var x;
+	var y;
+	
+	for( x = 1; x <= guestCount; x++ )
+	{
+		var guestUUID = $( 'input[name="g' + x + '_uuid"]' ).val();
+		var matrixRep = $( 'input[name="g' + x + '_seatMatrix_old"]' ).val();
+		existingGuestSeatData[ x-1 ] = new Array();
+		existingGuestSeatData[ x-1 ]['matrixRep'] =  matrixRep;
+		existingGuestSeatData[ x-1 ]['uuid'] =  guestUUID;		
+	}
+}//assembleExistingGuestSeatData(..)
+
+function isSeatUsedByThisBooking( matrix_x, matrix_y ){
+	/*
+		Created 03MAR2012-1237
+		
+		Checks if the seat specified by the matrix indicators, belongs
+		to the guests in this booking.
+	*/
+	var y = existingGuestSeatData.length;
+	var x;
+	var compareThis = matrix_x + "_" + matrix_y;
+	
+	for( x = 0; x<y; x++ )
+	{
+		if( existingGuestSeatData[x]['matrixRep'] == compareThis ) return true;
+	}
+	return false;
+}//isSeatUsedByThisBooking(..)
+
+function makeSeatUsedByThisBookingAvailable(){
+	/*
+		Created 03MAR2012-1250
+		
+		Removes the 'occupiedSameClass' tag on the seats used by this booking
+	*/
+	var y = existingGuestSeatData.length;
+	var x;	
+	var divID;
+	
+	for( x = 0; x<y; x++ )
+	{
+		guestConcerned = ( x + 1 );
+		divID = existingGuestSeatData[x]['matrixRep'];		
+		$('div#seatSelectionTable div#' + divID).removeClass( 'occupiedSameClass' );		
+		$('div#seatSelectionTable div#' + divID).trigger('click.ddms_item_clicked');
+		manipulateGuestSeat( "SELECT", divID );
+		$('div#seatSelectionTable div#' + divID).addClass( 'otherGuest' );		
+		//postChooseCleanup();		
+	}
+}// makeSeatUsedByThisBooking(..)
 
 function isColAlreadyListed( value, low, high ){
 		/*
@@ -111,11 +176,26 @@ $(document).ready( function(){
 				var hallName;
 				var masterMap;
 				var ticketClassBeingBooked;	// for use only during book Step 4.
+				var isModeManageBookingChooseSeat;
+				
+				/*
+					Added 03MAR2012-1221. This determines if the reason why we are in this page
+					is the user already booked and he wants to change seats. This variable
+					is important as later, in this function, its value will be accessed to see to
+					remove the "occuppied" status on the seats of the guests on this booking.
+					
+					Also found in bookStep4.js
+				*/
+				isModeManageBookingChooseSeat = ($( 'input#manageBookingChooseSeat' ).val() == "1" );				
+				if( isModeManageBookingChooseSeat )
+				{
+					assembleExistingGuestSeatData();
+				}
 				
 				$("#seatSelectionTable").children().remove();	// remove all content first
 				detailBranch = $(xmlData).find( 'details' );	// get detail branch of XML				
 				actualSeats = $(xmlData).find( 'dataproper' );	// get the dataproper branch								
-				
+								
 				//now, if this is a master seat plan data (i.e., for create event step 5, do the ff)				
 				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;								
 				rows = parseInt( detailBranch.find('rows').text() );
@@ -205,7 +285,10 @@ $(document).ready( function(){
 							concernedDiv.removeClass( 'dropAvailable' );
 						}else{
 							if( status == 1 ){
-								concernedDiv.addClass( 'occupiedSameClass' );								
+								/*if( !isModeManageBookingChooseSeat )
+								{*/
+									concernedDiv.addClass( 'occupiedSameClass' );
+								//}
 							}
 						}
 					}	
@@ -219,7 +302,10 @@ $(document).ready( function(){
 						concernedDiv.children("input.seatClass").val( "-1" );
 					}										
 				});
-				
+				/*
+					Remove the occupied mark from the seats that belongs to this booking.					
+				*/
+				if( isModeManageBookingChooseSeat ) makeSeatUsedByThisBookingAvailable();
 				/*  
 					Now call the function that makes the seat operations possible.
 				*/

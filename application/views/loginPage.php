@@ -3,6 +3,9 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
+$this->load->view('html-generic/metadata.inc');
+?>
+<?php
 	$this->pageTitle = "Login";
 	$this->thisPage_menuCorrespond = "HOME";	
 	$this->load->view('html-generic/segoefont_loader.inc');	
@@ -11,25 +14,16 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/loginPage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
 	?>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>"/></script>	
-	<script type="text/javascript">
-		$(document).ready( function(){
-		if( $.browser.msie )
-		{
-			var versionTokenized = $.browser.version.split('.');
-			if( parseInt( versionTokenized[0] ) < 9 )
-			{
-				alert("OMG!!! You are using Internet Explorer. What's worse, it's earlier than version 9.\n\n\nWell, please expect this web application to be buggy while using this browser. \n\nPlease use other recent browsers as soon as possible.");
-			}
-		}		
-		});
-	</script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/anti-ie.js'; ?>" ></script>					
 </head>
 <body>
 <div id="main_container">
@@ -67,7 +61,7 @@ $this->load->view('html-generic/doctype.inc');
 							<input type="hidden" name="password_validate" value="0" />
 						</div>                                     
 						<div id="essentialButtonsArea">
-							<a onClick="document.pressed=this.value" class="button button2" id="buttonOK" ><span class="icon">Log me in</span></a>																										
+							<a class="button button2" id="buttonOK" ><span class="icon">Log me in</span></a>																										
 						</div>												
 					</form>
 				</div><!--text_box-->
@@ -93,16 +87,57 @@ $this->load->view('html-generic/doctype.inc');
 						</ul>
 					<?php								
 						}else{
-							echo "&nbsp";
+							echo "&nbsp;";
 						}
 					?>
 				</div>				
 				<div class="signup_div">
-					<h3 style="float:left">No account yet?</h3>
-					<a href="<?php echo base_url().'/userAccountCtrl/userSignup'; ?>" class="button" id="buttonOK" ><span class="icon">Sign up</span></a>						
+					<h3 style="float:left;">No account yet?</h3>
+					<a href="<?php echo base_url().'/userAccountCtrl/userSignup'; ?>" class="button" id="buttonOK2" ><span class="icon">Sign up</span></a>						
 				</div>
 				
 			</div><!-- left content -->
+			<div style="width: 50%; float: right; border-left: 2px solid orange; margin-right: 10px; padding: 10px 10px 10px 30px; position: relative; top: -60px;" >
+				<h3>Hi!</h3>
+				<p>
+					Thank you for testing this web application. You may use the following accounts in accessing the application if you don't want to try the sign-up process
+					now.										
+				</p>
+				<table class="center_purest" style="padding: 10px;">
+					<thead style="font-size: 1.2em;" >
+						<tr>
+							<td>Username</td>
+							<td>&nbsp;</td>
+							<td>Password</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>sampleuser01</td>
+							<td> | </td>
+							<td>southkorea</td>
+						</tr>
+						<tr>
+							<td>sampleuser02</td>
+							<td> | </td>
+							<td>northkorea</td>
+						</tr>
+						<tr>
+							<td>sampleuser03</td>
+							<td> | </td>
+							<td>tokyojapan</td>
+						</tr>
+						<tr>
+							<td>sampleuser04</td>
+							<td> | </td>
+							<td>washingtonusa</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>
+					Booking tutorial <a href="http://abrahamdslx.blogspot.com/2012/02/booking-event-in-uxt.html">here.</a>
+				</p>
+			</div>
 		</div><!--end of centralContainer-->			
 		<div style=" clear:both;"></div>
     </div><!--end of main content-->
