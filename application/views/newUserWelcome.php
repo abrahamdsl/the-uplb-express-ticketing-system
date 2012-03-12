@@ -45,14 +45,8 @@ $this->load->view('html-generic/doctype.inc');
 				To start using the site, please click Start.
 				We hope you enjoy the services we offer. <br/>
 				Have a nice day! </br/>
-				<br/><br/>
-				By the way, your account number is:				
-			</div>			
-				<div class="comingSoon highlightMe center_purest"  >
-					<span>
-						<h1><?php echo $userData['accountNum']; ?></h1>
-					</span>					
-				</div>		
+				<br/><br/>					
+			</div>							
 				<div id="essentialButtonsArea">
 								<a href="<?php echo base_url().'SessionCtrl/' ?>" class="button" id="buttonOK" ><span class="icon">Start</span></a>						
 				</div>		

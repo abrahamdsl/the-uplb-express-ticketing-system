@@ -1,4 +1,8 @@
 <?php
+	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
+	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 2 );
+?>
+<?php
 $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
@@ -6,7 +10,7 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Purchase Ticket";
+	$this->pageTitle = ($isActivityManageBooking) ? "Change Ticket Class" : "Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -60,12 +64,35 @@ $this->load->view('html-generic/metadata.inc');
 <?php			
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
+
 			<div id="page_title" class="page_title_custom" >
+			<?php if( $isActivityManageBooking ) {?>
+				Manage Booking<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+			<?php } ?>	
 				Select Ticket Class
 			</div>
 			<div id="top_page_detail" >
+				<?php if( $isActivityManageBooking ) 
+				{
+						$slotAvailable = $this->input->cookie( 'is_there_slot_in_same_tclass' );
+						if( $slotAvailable === false or intval( $slotAvailable ) === 1  )
+						{
+				?>				
+					The ticket class you have selected in your current booking has been automatically selected. If the same class in this showing
+					time is more expensive than in your current showing time, or you have selected
+					a new class, you will have to pay the amount difference.
+				<?php 
+						}else{
+				?>
+					There are no more slots for the ticket class you have selected in your current booking. Please choose another
+					another one. Please note that you will have to pay the amount difference, if any.
+				<?php 	} ?>
+				<br/><br/>
+				<?php }else{ ?>				
 				Please select ticket class. There might be additional charges or even discounts at the payment page.
 				<br/>				
+				<?php } ?>				
 			</div>			
 			
 			<!-- accordion start -->			
@@ -119,10 +146,25 @@ $this->load->view('html-generic/metadata.inc');
 								<p>
 									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
 								</p>
+								<?php if( $isActivityManageBooking ) {?>
+								<table class="center_purest" >
+									<tr>
+										<td>Ticket class of your current booking:</td>
+										<td> <?php echo $existingTCName; ?></td>
+									</tr>
+									<tr>
+										<td style="width: 85%;" >Total payments for your current booking:</td>
+										<td>PHP <?php echo $existingPayments; ?></td>
+									</tr>								
+								</table>
+								<?php } ?>
 							</div>							
 						</div>
-						<div class="containingClassTable" >
-							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3' ?>" id="formMain">							
+						<div class="containingClassTable" >							
+							<?php
+								 //$actionFunction = ( $isActivityManageBooking ) ? "manageBooking_changeShowingTime_process2" : "book_step3";								
+							?>
+							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3'; ?>" id="formMain">		
 								<table class="center_purest schedulesCentral">
 									<thead>
 										<tr>
@@ -146,11 +188,18 @@ $this->load->view('html-generic/metadata.inc');
 													<?php echo $TCD->Price; ?>
 												</td>
 												<td>
-													<?php echo ( intval($TCD->Price) * intval( $slots ) ); ?>
+													<?php echo ( floatval($TCD->Price) * intval( $slots ) ); ?>
 												</td>
 												<td>
-													<?php if( $this->input->cookie( $TCD->UniqueID."_slot_UUIDs" ) !== false ){  ?>
-														<input type="radio" name="selectThisClass" value="<?php echo $TCD->UniqueID; ?>" />
+													<?php if( $this->input->cookie( $TCD->UniqueID."_slot_UUIDs" ) !== false )
+														  {  $selectedIndicator = "";
+															 if( $isActivityManageBooking and intval($TCD->UniqueID) === intval( $bookingObj->TicketClassUniqueID ) )
+															 {
+																 $selectedIndicator = 'checked="checked"';
+															 }
+															
+													?>
+														<input type="radio" name="selectThisClass" value="<?php echo $TCD->UniqueID; ?>" <?php echo  $selectedIndicator; ?> />
 													<?php }else{ ?>
 														SOLD OUT
 													<?php } ?>

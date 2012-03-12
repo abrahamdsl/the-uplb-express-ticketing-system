@@ -80,7 +80,7 @@ class Account_model extends CI_Model {
 		$data = array(	
 			'AccountNum' => $accountNum,
 			'username' => strtolower( $this->input->post( 'username' ) ),
-			'password' => $this->input->post('password'),
+			'password' => hash( 'whirlpool', $this->input->post('password') ),
 			'Fname' => strtoupper( $this->input->post( 'firstName' ) ),
 			'Mname' => strtoupper( $this->input->post( 'middleName' ) ),
 			'Lname' => strtoupper( $this->input->post( 'lastName' ) ),
@@ -208,7 +208,7 @@ class Account_model extends CI_Model {
 	{
 		$query_obj = $this->db->get_where('user', 
 							array( 'username' => $username )
-							);
+					);
 		$result_arr = $query_obj->result();
 		
 		$names = array(
@@ -219,6 +219,20 @@ class Account_model extends CI_Model {
 		return $names;
 	}// getUser_Names()
 	
+	function isThisNameExistent( $first, $middle, $last )
+	{
+		// Created 13MAR2012-0125
+		$query_obj = $this->db->get_where('user', 
+			array( 
+				'Fname' => strtoupper( $first ),
+				'Mname' => strtoupper( $middle ), 
+				'Lname' => strtoupper(  $last ) 			
+			)
+		);
+		$result_arr = $query_obj->result();
+		return ( count( $result_arr ) != 0 ); 
+	}
+	
 	function getUserInfo($username = NULL, $password = NULL)
 	/*
 		27 NOV 2011 1150 | Taken from Redbana internship project model/login_model/fetch_User()
@@ -228,7 +242,7 @@ class Account_model extends CI_Model {
 		if($username == NULL or $password == NULL) return NULL; 
 	
 		$this->db->where('username', $username);
-		$this->db->where('password', $password);
+		$this->db->where('password', hash( 'whirlpool', $password) );
 		$query = $this->db->get('user');
 		
 		return $query;
@@ -276,5 +290,20 @@ class Account_model extends CI_Model {
 			return false;
 	}
 	
+	function isEmployeeNumberExisting( $empNum )
+	{
+		$this->db->where('employeeNumber', $empNum );		
+		$query_obj = $this->db->get('uplbconstituent');
+		$result_arr = $query_obj->result();
+		return ( count( $result_arr ) != 0 ); 
+	}
+	
+	function isStudentNumberExisting( $studentNum )
+	{
+		$this->db->where('studentNumber', $studentNum );		
+		$query_obj = $this->db->get('uplbconstituent');
+		$result_arr = $query_obj->result();
+		return ( count( $result_arr ) != 0 ); 
+	}
 }//class
 ?>

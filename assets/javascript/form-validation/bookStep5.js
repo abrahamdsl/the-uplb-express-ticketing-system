@@ -14,13 +14,6 @@ $(document).ready( function(){
 		}	
 	});
 
-	$('select[name="paymentChannel"]').change( function(){
-		$( 'div#pc' + $('#lastPChannel').val() + '_details' ).hide();
-		if( $(this).val() == "NULL" ) return false;
-		
-		$( 'div#pc' + $(this).val() + '_details' ).show();				
-		$('#lastPChannel').val(  $(this).val() );
-	});
 	
 	$('a#buttonOK').click( function(){
 		if( $('select[name="paymentChannel"] option:selected').val() == "NULL" ){			

@@ -6,6 +6,7 @@ $(document).ready( function(){
 		$.fn.isFieldRequired = function()
 		{
 			/*
+				Duplicate in usersignup.js
 				Created 10FEB2012-1009 - Dependent on the DOM structure of the page the default DOM when this was 
 				made is like:
 				****************************
@@ -94,6 +95,42 @@ $(document).ready( function(){
 		$('input[type="text"][name$="email_01"]').change( function(){
 			var thisName = $(this).attr('name');
 			var result =  isEmail_valid( $(this).val() );
+			
+			if( result == "OK" )
+			{
+				hideFldMsg( thisName );
+				updateValidIndicator( thisName, true );
+			}else{				
+				displayFldMsg( thisName, result );
+				updateValidIndicator( thisName, false );
+			}
+		});
+		
+		$('input[type="text"][name$="studentNum"]').change( function(){
+			var thisName = $(this).attr('name');
+			var thisVal = $(this).val();
+			var result;
+			
+			if( thisVal.length < 1 ) return true;			
+			var result =  isStudentNumber_valid( thisVal );
+			
+			if( result == "OK" )
+			{
+				hideFldMsg( thisName );
+				updateValidIndicator( thisName, true );
+			}else{				
+				displayFldMsg( thisName, result );
+				updateValidIndicator( thisName, false );
+			}
+		});
+		
+		$('input[type="text"][name$="empNum"]').change( function(){
+			var thisName = $(this).attr('name');
+			var thisVal = $(this).val();
+			var result;
+			
+			if( thisVal.length < 1 ) return true;			
+			var result =  isEmployeeNumber_valid( thisVal );
 			
 			if( result == "OK" )
 			{

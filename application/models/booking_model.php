@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
-created 10FEB012-2240
+created 10FEB2012-2240
 
 This deals with booking processes, mostly utilities relating to such.
 
@@ -152,17 +152,38 @@ class Booking_model extends CI_Model {
 	{
 		/*
 			Created 25FEB2012-1247
-		*/
+		*/		
 		$sql_command = "SELECT * FROM `booking_details` INNER JOIN `purchase` ON `booking_details`.`bookingNumber`";
 		$sql_command .=  " =`purchase`.`bookingNumber` WHERE `EventID` = ? AND `ShowingTimeUniqueID` = ? AND";
-		$sql_command .= " `Status` = 'PENDING-PAYMENT' AND CURRENT_TIMESTAMP >=";
-		$sql_command .= " CONCAT(`purchase`.`Deadline_Date`,' ',`purchase`.`Deadline_Time`);";
+		$sql_command .= " `Status` = 'PENDING-PAYMENT' AND `purchase`.`Amount` > 0 AND CURRENT_TIMESTAMP >=";
+		$sql_command .= " CONCAT(`purchase`.`Deadline_Date`,' ',`purchase`.`Deadline_Time`);";		
 		$arr_result = $this->db->query( $sql_command, Array( $eventID, $showtimeID ) )->result();
 		if( count( $arr_result ) < 1 )
 			return false;
 		else
 			return $arr_result;
 	}// getPaymentPeriodExpiredBookings
+	
+	function getAllBookings( $userAccountNum, $getOnlyPaidOnes = false )
+	{	
+		/*
+			Created 09MAR2012-1406
+		*/
+		date_default_timezone_set('Asia/Manila');
+		$statusFilter = ( $getOnlyPaidOnes ) ? "AND `booking_details`.`Status` = 'PAID'" : "";
+		$sql_command = " SELECT * FROM `showing_time` INNER JOIN `booking_details` ON
+			`showing_time`.`EventID` = `booking_details`.`EventID` INNER JOIN `event` ON 
+			`showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`Status` = 'CONFIGURED' AND
+			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` AND
+			CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= CURRENT_TIMESTAMP AND
+			CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= CURRENT_TIMESTAMP "; 
+		$sql_command .= $statusFilter." AND `booking_details`.`MadeBy` = ?;";
+		$arr_result = $this->db->query( $sql_command, Array ( $userAccountNum ) )->result();	
+		if( count( $arr_result ) > 0 )
+			return $arr_result;
+		else
+			return false;
+	}
 	
 	function getPaidBookings( $userAccountNum )
 	{
@@ -174,7 +195,7 @@ class Booking_model extends CI_Model {
 			changing of seats, upgrading to a higher ticket class and the likes.
 		*/
 		date_default_timezone_set('Asia/Manila');
-		$sql_command = " SELECT * FROM `showing_time` INNER JOIN `booking_details` ON
+		/*$sql_command = " SELECT * FROM `showing_time` INNER JOIN `booking_details` ON
 			`showing_time`.`EventID` = `booking_details`.`EventID` INNER JOIN `event` ON 
 			`showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`Status` = 'CONFIGURED' AND
 			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` AND
@@ -186,7 +207,53 @@ class Booking_model extends CI_Model {
 			return $arr_result;
 		else
 			return false;
+		*/
+		return $this->getAllBookings( $userAccountNum, true );
 	}//getPaidBookings(..)
+	
+	function isBookingUpForChange( $bookingNumberOrObj )
+	{
+		/*
+			Created 10MAR2012-1535
+			
+			Detects if the current booking is an existing one waiting for changes to be completed,
+			i.e. (1) Change ticket class and/or (2) Change showing time
+			
+			The parameter that can be passed can be either a the booking number or
+			the MYSQL Object of that booking number.
+		*/
+		$bookingObj = null;
+		if( is_string( $bookingNumberOrObj ) ) 
+			$bookingObj = $this->getBookingDetails( $bookingNumberOrObj );
+		else
+			$bookingObj = $bookingNumberOrObj;
+			
+		if( $bookingObj === false ) return false;
+		return( $bookingObj->Status == 'PENDING-PAYMENT' and
+				$bookingObj->Status2 == 'MODIFY' 
+		);
+	}//isBookingUpForChange
+	
+	function isBookingRolledBack( $bookingNumberOrObj )
+	{
+		/*
+			Created 11MAR2012-1125
+			
+			Detects if the current booking was rolled back form some change
+			as  a result of non-payment of dues before a deadline.
+				
+			The parameter that can be passed can be either a the booking number or
+			the MYSQL Object of that booking number.
+		*/
+		$bookingObj = null;
+		if( is_string( $bookingNumberOrObj ) ) 
+			$bookingObj = $this->getBookingDetails( $bookingNumber );
+		else
+			$bookingObj = $bookingNumberOrObj;
+			
+		if( $bookingObj === false ) return false;
+		return( $bookingObj->Status2 == 'ROLLED-BACK' );
+	}//isBookingRolledBack
 	
 	function isBookingUnderThisUser( $bookingNumber, $accountNum )
 	{
@@ -266,6 +333,30 @@ class Booking_model extends CI_Model {
 		return $this->db->query( $sql_command, Array( $bNumber ) );
 	}// markAsPendingPayment
 	
+	function markAsRolledBack( $bNumber )
+	{
+		/*
+			Created 11FEB2012-1119
+			
+			Updates a booking's `Status2` entry to `ROLLED-BACK` - happens if changes to a booking
+			was not confirmed before the deadline. We do this so that there is an indicator so that
+			we can notify the client when seeing the booking details.
+		*/
+		$sql_command = "UPDATE `booking_details` SET `Status2`= 'ROLLED-BACK' WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $bNumber ) );
+	}// markAsRolledBack
 	
+	function updateBookingDetails( $bNumber, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )
+	{
+		/*
+			Created 04MAR2012-2314
+		*/
+		$sql_command = "UPDATE `booking_details` SET `EventID` = ?, `ShowingTimeUniqueID` = ?,";
+		$sql_command .= " `TicketClassGroupID` = ?, `TicketClassUniqueID` = ? WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array(
+				$eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID, $bNumber
+			)
+		);
+	}// updateBookingDetails(..)
 	
 } //modelhbhg

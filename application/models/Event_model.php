@@ -1,6 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
-created 07DEC2011 1156
+created 07DEC2011 1156 
+
+*COOKIE 'activity_data' definition:
+	
+	XXXX|AAAAA=BB;AAAAA;BB
+	
+	XXXX - instance identifier
+	AAAA - entry identifier
+	BB   - entry value
 */
 
 
@@ -37,7 +45,7 @@ class Event_model extends CI_Model {
 		
 		return $newDate;											// return
 	}//addOneDay
-	
+
 	function constructMatrix( )
 	{	/*
 			Created 11DEC2011-1632
@@ -176,16 +184,7 @@ class Event_model extends CI_Model {
 		
 		return ( $query_obj1 and $query_obj2 and $query_obj3 and $query_obj4 and $query_obj5 and $query_obj6 );
 	} // deleteAllEventInfo
-	
-	function deleteBookingCookies()
-	{
-		/*
-			Created 06FEB2012-1734
-		*/
-		$cookie_names = $this->getBookingCookieNames();
-		foreach( $cookie_names as $singleCookie ) delete_cookie( $singleCookie );
-	}// deleteBookingCookies()
-	
+			
 	function getAllEvents()
 	{
 		// created 20DEC2011-1418
@@ -216,24 +215,7 @@ class Event_model extends CI_Model {
 		
 		return $result_arr;	
 	}// getBeingConfiguredShowingTimes(..)
-	
-	function getBookingCookieNames()
-	{		
-		/*
-			09FEB2012-0059 | These cookies are for use in the booking steps.
 			
-			10FEB2012-2255 |  Added "ticketClassGroupID"
-			11FEB2012-0024 |  Added "bookingNumber"
-			29FEB2012-1238 | Added 'purchases_identifiers', 'visualseat_data'
-		*/	
-		return ( Array( 
-			"eventID", "showtimeID", "ticketClassGroupID", "eventName", "startDate", 
-			"startTime", "endDate", "endTime", "slots_being_booked", "location", "bookingNumber",
-			 "ticketClassUniqueID", "purchases_identifiers", "visualseat_data"
-			) 
-		);
-	}//getBookingCookieNames()
-	
 	function getConfiguredShowingTimes( $eventID = NULL , $validToday = false )
 	{
 		/* Created 29DEC2011-2055					
@@ -401,7 +383,7 @@ class Event_model extends CI_Model {
 						$BCT_exploded = explode( ":", $showtime->Book_Completion_Time );		// tokenize
 						// get the time equivalent in millisecs since 1970? of the currenttime, then let's add the hours and mins
 						$deadline["time"] = date( 'H:i', strtotime( '+'.$BCT_exploded[0].' hour +'.$BCT_exploded[1]." min ", strtotime( $currentTime ) ) ); 
-						log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline computed:'.$deadline["time"] );
+						
 						// now it's current date's turn and we add the number of days
 						$deadline["date"] = date( 'Y-m-d', strtotime( '+'.$showtime->Book_Completion_Days.' day', strtotime( $currentDate ) ) );	// now add
 						break;
@@ -414,6 +396,7 @@ class Event_model extends CI_Model {
 				$deadline["date"] = $showtime->StartDate;
 				$deadline["time"] = date( 'H:i', strtotime( '-45 min', $showtime->StartTime ) );
 			}
+			log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline computed:'.$deadline["date"]." ".$deadline["time"] );
 			return $deadline;
 	}//getShowingTimePaymentDeadline(..)
 	
@@ -571,28 +554,7 @@ class Event_model extends CI_Model {
 		
 		return null;
 	}//retrieveSingleEventFromAll
-	
-	function setBookingCookies( $cookie_values )
-	{
-		/*
-			Created 09FEB2012-0052. Moved from EventCtrl for refactoring purposes.
 			
-			Sets cookies needed in booking process. Called in EventCtrl/book_step2
-		*/		
-		$cookie_names = $this->getBookingCookieNames();
-		$y = count($cookie_names);
-		//unset( $cookie_names["ticketClassUniqueID"] );		// this is to be set next page ( after current - ticket class selection) so removed.	
-		for( $x=0; $x<$y; $x++ )	// $cookie_names is global - found in construct, less 1 for y initially due to unset(..) earlier
-		{
-			$cookie = Array(
-				'name' => $cookie_names[ $x ],
-				'value' => $cookie_values[ $x ],
-				'expire' => 3600				// change later to how long ticketclass hold time
-			);
-			$this->input->set_cookie($cookie);		
-		}	
-	}// setBookingCookies
-	
 	function setShowingTimeSeatMap( $seatMapUniqueID, $eventID, $showtimeID )
 	{
 		/*
@@ -679,16 +641,7 @@ class Event_model extends CI_Model {
 		);		
 		return $query_result;
 	}//setParticulars
-	
-	function setSessionActivity( $name, $stage )
-	{
-		/*
-			Created 02MAR2012-2055
-		*/
-		$this->session->set_userdata( 'activity_name', $name );
-		$this->session->set_userdata( 'activity_stage', $stage );
-	}//setSessionActivity()
-	
+			
 	function setShowingTimeConfigStat( $eventID = NULL, $thisScheduleString = NULL, $newStat = "UNCONFIGURED" )
 	{
 		/*
@@ -782,8 +735,7 @@ class Event_model extends CI_Model {
 		$dbAccessResult = $this->db->query( $sql, array( $eventID ) );
 		
 		return $dbAccessResult;
-	}// stopShowingTimeConfiguration
-	
+	}// stopShowingTimeConfiguration				
 }//class
 
 ?>

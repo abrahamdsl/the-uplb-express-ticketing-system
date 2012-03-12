@@ -6,7 +6,7 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Purchase Ticket";
+	$this->pageTitle = "Confirmation Details";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -27,9 +27,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<!--For modal v1-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlayv2_general.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/seatV2/seatV2.css'; ?>"/>	 <!--For seat map v2 --> 
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
 	
 	<?php			
 		$this->load->view('html-generic/jquery-core.inc');
@@ -50,18 +48,11 @@ $this->load->view('html-generic/metadata.inc');
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
-	<!-- For overlay v2-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/modal2/jquery.simplemodal.js'; ?>" ></script>
-	<!-- seat manipulations -->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
-	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>			
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');
-		$this->load->view('html-generic/seatModal-client.inc');		
+		$this->load->view('html-generic/overlay_general.inc');	
 ?>
 <div id="main_container">
 	<div id="header">    	    	        
@@ -188,7 +179,7 @@ $this->load->view('html-generic/metadata.inc');
 											<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 											<td>
 											<?php
-												$thisItemAmount = intval($singlePurchase->Amount); 
+												$thisItemAmount = floatval($singlePurchase->Amount); 
 												$totalCharges += $thisItemAmount;
 												if ( $thisItemAmount < 0 )
 													echo '('.$thisItemAmount.')';

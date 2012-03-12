@@ -19,6 +19,7 @@ class Slot_model extends CI_Model {
 		$sql_command = "UPDATE `event_slot` SET `Assigned_To_User` = ? WHERE `EventID` = ? AND `Showtime_ID` = ? AND `UUID` = ?";
 		return $this->db->query( $sql_command, Array( $uuid_Guest, $eventID, $showtimeID, $uuid_Slot ) );
 	}//assignSlotToUser
+
 	
 	function createSlots( $quantity, $eventID, $showtimeID, 
 		$ticketClass_GroupID, $ticketClass_UniqueID  )
@@ -143,7 +144,44 @@ class Slot_model extends CI_Model {
 		else
 			return false;
 	}//getSingleSlot
+	
+	function getSlotAssignedToUser_MoreFilter( 
+		$eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID, $guestUUID 
+	)
+	{
+		/*
+			Created 10MAR2012-1119
 			
+			Arose during creation of feature that will rollback changes made
+				to an existing booking.
+			It was deemed $this->getSlotAssignedToUser( $UUID ) is insufficient
+				because in the time when a booking was changed and payment is pending,
+				two records in `event_slot` are assigned to a single guest in `booking_guests`.
+			So this was created to narrow down the search.
+			I won't erase that function by now, since it is being used widely, and this
+			function is only needed during the feature I specified above.
+			
+			Ammendment 12MAR2012-1905 - Omo omo, it seems if there's time,
+			we should deprecate getSlotAssignedToUser(). We need this current function
+			more.
+		*/
+		$sql_command = "SELECT * FROM `event_slot` WHERE `EventID` = ? AND `Showtime_ID` = ? AND";
+		$sql_command .= " `Ticket_Class_GroupID` = ? AND `Ticket_Class_UniqueID` = ? AND ";
+		$sql_command .= " `Assigned_To_User` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array(
+				$eventID, 
+				$showtimeID, 
+				$ticketClassGroupID, 
+				$ticketClassUniqueID,
+				$guestUUID
+			)
+		)->result();
+		if( count( $arr_result ) > 0 )
+			return $arr_result[0];
+		else
+			return false;
+	}//getSlotAssignedToUser_MoreFilter
+	
 	function getSlotsForBooking( $quantity, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID )
 	{
 		/*
@@ -201,6 +239,22 @@ class Slot_model extends CI_Model {
 			return $lastInt;
 		}else return 0;		
 	}//getSlotsLastGroupID
+	
+	function getSlotsUnderThisBooking( $bookingNumber )
+	{
+		/*
+			Created 04MAR2012-1723
+		*/
+		$sql_command = "SELECT * FROM `event_slot` INNER JOIN `booking_guests` ON `event_slot`.`Assigned_To_User`";
+		$sql_command .= " = `booking_guests`.`UUID` WHERE `booking_guests`.`bookingNumber` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array( $bookingNumber ) )->result();
+		if( count( $arr_result ) > 0 )
+			return $arr_result;
+		else
+			return false;
+	}//getSlotsUnderThisBooking(..)
+	
+	
 	
 	function isSlotBeingBookedLapsedHoldingTime( $slotObj, $ticketClassObj )
 	{

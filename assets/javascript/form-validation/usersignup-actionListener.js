@@ -143,8 +143,7 @@ $(document).ready(function()
 			only adds "OK". I do not intend to check addresses now				
 		*/
 		$("input[name$='_addr']").change(function() {						
-			var func_result;
-			console.log( 'sending .. ' +  $(this).attr("name") );								
+			var func_result;			
 			updateFldMsg( $(this).attr("name"), "OK", false );			
 		});
 		/*
@@ -197,24 +196,25 @@ $(document).ready(function()
 			var uplbConstituency;
 			var uplbConstituency_fields = $('input[name$="Number_validate"]');
 			var strTemp;
-			
-			/*
-				ask for some form submit confirmation here
-			*/	
-				
+						
 			//subtract 2 first as this accounts for the last two regarding uplb constituency
 			validatorsQuantity -= 2;
 	
 			for( x = 0; x < validatorsQuantity; x++ )
 			{
 				if( array_of_Validators[x].value == "0" ) 
-				{	
-					console.log( 'error on ' + array_of_Validators[x].name );
-					areAllOK = false;
-					break;
+				{						
+					if( $('input[name="' + array_of_Validators[x].name + '"]').isFieldRequired() )
+					{
+						
+						var inputNameValidityIndicatorLen = array_of_Validators[x].name.length;
+						var inputName = array_of_Validators[x].name.substring( 0, inputNameValidityIndicatorLen- 9 );
+						$( 'input[name="' + inputName + '"]' ).change();					
+						areAllOK = false;
+						console.log("error on " + inputName);
+					}					
 				}
-			}//for
-			
+			}//for		
 			// now determine if uplbConstituent is checked
 			// if checked, either student num or employee should be filled out and okay
 			uplbConstituency = document.getElementsByName('uplbConstituentBoolean')[0];			
@@ -224,17 +224,63 @@ $(document).ready(function()
 				if( ! ( uplbConstituency_fields[0].value == "1"  || 
 						uplbConstituency_fields[1].value == "1") 
 				)
-				{					
+				{
+					console.log("error on uplbc");
 					areAllOK = false;
 				}
 				
 			}
 			
 			if( !areAllOK )				
-			{
-				alert( "Error detected or not all fields are filled out. Please review the form." );
-			}else{				
-				document.forms[0].submit();				
+			{				
+				$.fn.nextGenModal({
+				   msgType: "error",
+				   title: "error",
+				   message: "There are still invalid entries in the form. Please correct them."
+				});
+			}else{
+				var x = $.ajax({
+					type: 'POST',
+					url: CI.base_url + '/userAccountCtrl/isUserExisting',
+					timeout: 30000,
+					beforeSend: function(){
+						$.fn.nextGenModal({
+						   msgType: 'ajax',
+						   title: 'please wait',
+						   message: 'Checking your inputs...'
+						});
+						setTimeout( function(){ }, 500 );
+					},
+					data: { 
+						'username' : $('input[name="username"]').val(),
+						'fName' : $('input[name="firstName"]').val(),
+						'mName' : $('input[name="middleName"]').val(),
+						'lName'	: $('input[name="lastName"]').val(),
+						'studentNum':  $('input[name="studentNumber"]').val(),
+						'employeeNum': $('input[name="employeeNumber"]').val()						
+					},
+					success: function(data){
+						var splitted =  data.split('_');
+						if( splitted[0].startsWith( 'OK' ) ) document.forms[0].submit();					
+						else{
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'Sign-up error',
+							   message: splitted[2]
+							});
+						}
+					}
+				});	
+				x.fail(	function(jqXHR, textStatus) { 							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'Connection timeout',
+							   message: 'It seems you have lost your internet connection. Please try again.'
+							});
+
+							return false;
+				} ) ;	
+				
 			}
 		});					
 	}

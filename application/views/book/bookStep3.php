@@ -284,6 +284,11 @@ $this->load->view('html-generic/metadata.inc');
 								</fieldset>
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">uplb constituency</legend>
+									<p style="font-size: 0.8em; padding: 3px; text-align: center;" >
+										Please do not include dashes.<br/>
+										These info will be used in checking of your attendance.
+										Disregard if you are not a UPLB constituent.
+									</p>
 									<div class="row" id="g<?php echo $x+1; ?>-studentNumFld" >
 										<div class="label" >
 											<label class="label" for="id_g<?php echo $x+1; ?>-studentNum">Student number</label>											
