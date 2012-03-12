@@ -28,6 +28,54 @@ class userAccountCtrl extends CI_Controller {
 		}	
 	}//index
 	
+	function isUserExisting()
+	{
+		/*
+			Created 13MAR2012-0118. WTF! Bakit ngayon lang.
+			During sign-up proces, checks if the user's identity is already being used by someone.
+		*/
+		if( !$this->input->is_ajax_request() ) redirect( '/' );
+		$identityTheftMsg = "If this is really you, please contact the administrator to find to verify your identity.";
+		$username = $this->input->post( 'username' );
+		$fName = $this->input->post( 'fName' );
+		$mName = $this->input->post( 'mName' );
+		$lName = $this->input->post( 'lName' );
+		$studentNum = $this->input->post( 'studentNum' );
+		$empNum = $this->input->post( 'empNum' );
+		if( strtolower( $username ) === 'default' ) 
+		{
+			echo "ERROR_-1_The word 'default' cannot be used as a username.";
+			return false;
+		}
+		if( $username === false or $fName === false or $lName === false )
+		{
+			echo "ERROR_0_Info needed";
+			return false;
+		}
+		if( $this->Account_model->getUserInfoByUsername( $username ) !== false )
+		{
+			echo "ERROR_1_Username is already in use.";
+			return false;
+		}
+		if( $this->Account_model->isThisNameExistent( $fName, $mName, $lName ) !== false )
+		{
+			echo "ERROR_2_The name '".$lName.", ".$fName." ".$mName."' is already being used.";
+			return false;
+		}
+		if(  $studentNum != "disabled" and  $this->Account_model->isStudentNumberExisting( $studentNum ) !== false )
+		{
+			echo "ERROR_3_The student number ".$studentNum." is already being used by someone. ".$identityTheftMsg;
+			return false;
+		}
+		if( $empNum != "disabled" and $this->Account_model->isEmployeeNumberExisting( $empNum ) !== false )
+		{
+			echo "ERROR_4_The employee number ".$studentNum." is already being used by someone. ".$identityTheftMsg;
+			return false;
+		}
+		echo "OKAY";
+		return true;
+	}//isUserExisting()
+	
 	function getUserInfoForBooking()
 	{
 		/*
@@ -102,14 +150,12 @@ class userAccountCtrl extends CI_Controller {
 		$step = $this->session->userdata('userSignup_step');
 		$status = $this->session->userdata('userSignup_status');
 		
-		/* this is a correct function call since we are receiving posted data with "studentNumber"
-		   however, this can be a hazard if some arbitrary HTML made with a form having such "studentnumber"
-		   submits to our url/function call
-			
-		*/				
-		$isFunctionCallValid = isset($_POST["studentNumber"]);		
+		/*
+			13MAR2012-0114 - Removed the requirement for having a student number during sign-up
+			what the f**k - why did I placed that restriction months ago?
+		*/
 		
-		if(  $step == 1 &&  $isFunctionCallValid )
+		if(  $step == 1 )
 		{					
 			$data['userSignup_step'] = 2;			// now, new step
 			$this->session->set_userdata($data);

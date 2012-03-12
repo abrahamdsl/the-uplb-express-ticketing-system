@@ -174,6 +174,10 @@ class SeatCtrl extends CI_Controller {
 		foreach( $matrices_tokenized as $singleData )
 		{
 			$matrixInfo = explode( "_", $singleData );
+			/*
+			04MAR2012-1743 - This commented block is the former algorithm.
+				DEPRECATED now. I have yet to test the other algorithm so 
+				I won't erase this for now.
 			$seatObj = $this->Seat_model->getSingleActualSeatData( $matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID );
 			if( $seatObj === false )
 			{
@@ -183,6 +187,20 @@ class SeatCtrl extends CI_Controller {
 			if( intval( $seatObj->Status) != 0 ){
 				echo "OK|FALSE|".$singleData;
 				return false;
+			}*/
+			
+			$isSeatAvailableResult = $this->Seat_model->isSeatAvailable( 
+				$matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID 
+			);
+			if( !$isSeatAvailableResult['boolean'] ){			
+				if( $isSeatAvailableResult['throwException'] === NULL ){
+					echo "OK|FALSE|".$singleData;
+					return false;
+				}else{
+					// error in operation, so far, only no such seat found.
+					echo $isSeatAvailableResult['throwException'];
+					return false;
+				}
 			}
 		}
 		echo "OK|TRUE";

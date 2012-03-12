@@ -60,12 +60,13 @@ function deleteBookingX( args )
 $(document).ready( function(){
 	$('div#accordion2').accordion();
 	if( $('div#accordion h3').size() != 0 ) $('div#accordion2').hide();
-	$(document).makeTimestampFriendly();
+	//$(document).makeTimestampFriendly();
 	
 	$('div.metrotile').click( function(e){
 		var thisID = $(this).attr( 'name' );
 		var bNumber;
 		
+		if( $(this).attr( 'id' ) === 'purchaseticket' ) return true;
 		e.preventDefault();
 		bNumber = $(this).siblings('input[name="bookingNumber"]').first().val();
 		if( thisID == "cancel" )
@@ -78,15 +79,17 @@ $(document).ready( function(){
 				   yesFunctionCall: 'deleteBookingX',
 				   yFC_args: new Array( bNumber )
 			});
-		}else
-		if( thisID == "changeseat" )
+		}else{
+			$(this).children('form').first().submit();
+		}
+		/*if( thisID == "changeseat" )
 		{
 			$(this).children('form').first().submit();
 		}else
 		if( thisID == "changeshowingtime" )
 		{
 			$(this).children('form').first().submit();
-		}
+		}*/
 		
 	});
 });

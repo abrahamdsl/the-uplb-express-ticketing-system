@@ -126,10 +126,11 @@
 	var x;
 			
 	for ( x = 0; x < y; x++) {	    
-		if( allowedChars.indexOf( theStudentNumber[x] ) == -1 ) return "Invalid character(s) detected";
+		if( allowedChars.indexOf( theStudentNumber[x] ) == -1 ) return "Invalid character(s) detected (Do not include dash if any)";
 	}	
 	
-	if(y != 9 ) return "Insufficient digits";
+	if(y > 9 ) return "Too many characters";
+	if(y < 9 ) return "Insufficient digits";
 	
 	return "OK";
   }
@@ -144,10 +145,11 @@
 	var x;
 			
 	for ( x = 0; x < y; x++) {	    
-		if( allowedChars.indexOf( theEmployeeNumber[x] ) == -1 ) return "Invalid character(s) detected";
+		if( allowedChars.indexOf( theEmployeeNumber[x] ) == -1 ) return "Invalid character(s) detected (Do not include dash if any)";
 	}	
 	
-	if(y != 10 ) return "Insufficient digits";
+	if(y > 10 ) return "Too many characters";
+	if(y < 10 ) return "Insufficient digits";
 	
 	return "OK";
   }
@@ -252,7 +254,7 @@ function isEmail_valid(theEmail) {
 	var message = "OK";
 
 	if (theEmail == "") 
-		return "Email field left blank";
+		return "Email address is required";
 
 	// checks for @ and .
 	if (atPos == -1 || stopPos == -1) 
@@ -422,3 +424,31 @@ function isEmail_valid(theEmail) {
 	}	
   }//updateValidIndicator
   
+  
+  $(document).ready( function(){
+	$.fn.isFieldRequired = function()
+	{
+		/*
+			Imported from bookstep3.js
+			Created 10FEB2012-1009 - Dependent on the DOM structure of the page the default DOM when this was 
+			made is like:
+			****************************
+			<div class="row" id="g1">
+				<div class="label">
+					<label .....
+					<span class="critical">*</span>
+				</div>
+				<div class="collection">
+					<input type="text" name=".." .../>
+					<input type="hidden" name".._validate' .../>
+				</div>
+			</div>				
+			******************************
+			It is the "span.critical: we will be basing on.
+			This function is attached to div.row div.collection input[type="text"
+		*/
+		var divClassMsgContainer = $(this).parent().parent().children("div.label").children("span.critical");
+		
+		return ( divClassMsgContainer.size() == 1 );
+	};//isFieldRequired
+  });

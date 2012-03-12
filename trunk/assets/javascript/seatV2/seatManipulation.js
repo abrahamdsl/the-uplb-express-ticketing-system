@@ -72,10 +72,13 @@ function assembleExistingGuestSeatData(){
 	for( x = 1; x <= guestCount; x++ )
 	{
 		var guestUUID = $( 'input[name="g' + x + '_uuid"]' ).val();
-		var matrixRep = $( 'input[name="g' + x + '_seatMatrix_old"]' ).val();
-		existingGuestSeatData[ x-1 ] = new Array();
-		existingGuestSeatData[ x-1 ]['matrixRep'] =  matrixRep;
-		existingGuestSeatData[ x-1 ]['uuid'] =  guestUUID;		
+		var matrixRep = $( 'input[name="g' + x + '_seatMatrix"]' ).val();
+		if( matrixRep !== "0" )
+		{
+			existingGuestSeatData[ x-1 ] = new Array();
+			existingGuestSeatData[ x-1 ]['matrixRep'] =  matrixRep;
+			existingGuestSeatData[ x-1 ]['uuid'] =  guestUUID;
+		}
 	}
 }//assembleExistingGuestSeatData(..)
 
@@ -111,11 +114,14 @@ function makeSeatUsedByThisBookingAvailable(){
 	{
 		guestConcerned = ( x + 1 );
 		divID = existingGuestSeatData[x]['matrixRep'];		
-		$('div#seatSelectionTable div#' + divID).removeClass( 'occupiedSameClass' );		
-		$('div#seatSelectionTable div#' + divID).trigger('click.ddms_item_clicked');
-		manipulateGuestSeat( "SELECT", divID );
-		$('div#seatSelectionTable div#' + divID).addClass( 'otherGuest' );		
-		//postChooseCleanup();		
+		if( $('div#seatSelectionTable div#' + divID).hasClass('otherClass') === false )
+		{
+			$('div#seatSelectionTable div#' + divID).removeClass( 'occupiedSameClass' );		
+			$('div#seatSelectionTable div#' + divID).trigger('click.ddms_item_clicked');
+			manipulateGuestSeat( "SELECT", divID );
+			$('div#seatSelectionTable div#' + divID).addClass( 'otherGuest' );		
+			//postChooseCleanup();		
+		}
 	}
 }// makeSeatUsedByThisBooking(..)
 
@@ -186,7 +192,7 @@ $(document).ready( function(){
 					
 					Also found in bookStep4.js
 				*/
-				isModeManageBookingChooseSeat = ($( 'input#manageBookingChooseSeat' ).val() == "1" );				
+				isModeManageBookingChooseSeat = ( $( 'input#manageBookingChooseSeat' ).size() == 1 && $( 'input#manageBookingChooseSeat' ).val() == "1" );								
 				if( isModeManageBookingChooseSeat )
 				{
 					assembleExistingGuestSeatData();
@@ -284,11 +290,12 @@ $(document).ready( function(){
 							concernedDiv.addClass( 'classRestricted' );
 							concernedDiv.removeClass( 'dropAvailable' );
 						}else{
-							if( status == 1 ){
-								/*if( !isModeManageBookingChooseSeat )
-								{*/
-									concernedDiv.addClass( 'occupiedSameClass' );
-								//}
+							/*
+								Modified 06MAR2012-1705. Added new status "-4" - seat is on hold
+								during manage booking (pending confirmation).
+							*/
+							if( status == 1 || status == -4 ){
+								concernedDiv.addClass( 'occupiedSameClass' );								
 							}
 						}
 					}	

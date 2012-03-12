@@ -59,16 +59,16 @@ class Payment_model extends CI_Model {
 		));
 	}//createPaymentChannelPermission(..)
 	function createPurchase( $bookingNumber, $chargeType, $chargeDesc,
-		$quantity, $amount, $deadlineDate, $deadlineTime )
+		$quantity, $amount, $deadlineDate, $deadlineTime, $comments = NULL )
 	{
 		/*
 			Created 14FEB2012-1315
 		*/
 		$sql_command = "INSERT INTO `purchase` ( `BookingNumber`, `Charge_type`, `Charge_type_Description`, ";
-		$sql_command .= "`Quantity`, `Amount`, `Deadline_Date`, `Deadline_Time` ) VALUES ( ?, ?, ?, ?, ?, ?, ? ); ";
+		$sql_command .= "`Quantity`, `Amount`, `Deadline_Date`, `Deadline_Time`, `Comments` ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ); ";
 		
 		return $this->db->query( $sql_command, Array( $bookingNumber, $chargeType, $chargeDesc,
-				$quantity, $amount, $deadlineDate, $deadlineTime ) 
+				$quantity, $amount, $deadlineDate, $deadlineTime, $comments ) 
 		);
 	}//createPurchase(..)
 	
@@ -81,6 +81,23 @@ class Payment_model extends CI_Model {
 		return $this->db->query( $sql_command, Array( $bookingNumber ) );
 	}// deleteAllBookingPurchases(..)
 	
+	function deleteSinglePurchase( $bookingNumber, $uniqueID )
+	{
+		$sql_command = "DELETE FROM `purchase` WHERE `BookingNumber` = ? AND `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $bookingNumber, $uniqueID ) );
+	}//deleteSinglePurchase(..)
+		
+	function doesPaymentExist( $uniqueID )
+	{
+		/*
+			Created 23FEB2012-0026
+		*/
+		$sql_command = "SELECT * FROM `payments` WHERE `UniqueID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $uniqueID ) )->result();
+		
+		return ( count($arr_result) > 0 ? true : false );
+	}
+	
 	function generatePaymentUniqueID()
 	{
 		$number;
@@ -92,16 +109,18 @@ class Payment_model extends CI_Model {
 		return $number;
 	}
 	
-	function doesPaymentExist( $uniqueID )
+	function getPaidPurchases( $bookingNumber )
 	{
 		/*
-			Created 23FEB2012-0026
+			Created 04MAR2012-1655
 		*/
-		$sql_command = "SELECT * FROM `payments` WHERE `UniqueID` = ?";
-		$arr_result = $this->db->query( $sql_command, Array( $uniqueID ) )->result();
-		
-		return ( count($arr_result) > 0 ? true : false );
-	}
+		$sql_command = "SELECT * FROM `purchase` WHERE `BookingNumber` = ? AND `Payment_UniqueID` != '0'";
+		$arr_result = $this->db->query( $sql_command, Array( $bookingNumber ) )->result();
+		if( count( $arr_result ) < 1 )
+			return false;
+		else
+			return $arr_result;
+	}//getPaidPurchases
 	
 	function getUnpaidPurchases( $bookingNumber )
 	{
@@ -168,9 +187,10 @@ class Payment_model extends CI_Model {
 		*/
 		$arr_result = $this->getPaymentChannelsForEvent( $eventID, $showtimeID, TRUE );
 		if( $arr_result === false ) return false;
+		//echo var_dump( $arr_result );
 		foreach( $arr_result as $singleChannel )
 		{
-			if( intval($singleChannel->UniqueID) === $uniqueID  ) return $singleChannel;
+			if( intval($singleChannel->UniqueID) === intval($uniqueID)  ) return $singleChannel;
 		}
 		return false;
 	}// getSinglePaymentChannel(..)
@@ -189,18 +209,32 @@ class Payment_model extends CI_Model {
 			return false;
 	}// getSinglePurchase(..)
 	
+	function getSumTotalOfPaid( $bookingNumber, $purchases = Array() )
+	{
+		/*
+			Created 23FEB2012-0031
+		*/
+	
+		if( count( $purchases ) < 1 ){		
+			$purchases = $this->getPaidPurchases( $bookingNumber ); // get from database using $bookingNumber		
+		}
+		
+		return $this->sumTotalCharges( $purchases );
+	}// getSumTotalOfUnpaid
+	
 	function getSumTotalOfUnpaid( $bookingNumber, $purchases = Array() )
 	{
 		/*
 			Created 23FEB2012-0031
 		*/
 	
-		if( count( $purchases ) > 0 )		
+		if( count( $purchases ) < 1 ){		// 04MAR2012-1657 : Why is this formerly ' > 0 '???
 			$purchases = $this->getUnpaidPurchases( $bookingNumber ); // get from database using $bookingNumber		
-				
+		}
+		
 		return $this->sumTotalCharges( $purchases );
 	}// getSumTotalOfUnpaid
-		
+
 	function setAsPaid( $bookingNumber, $uniqueID, $paymentUniqueID )
 	{
 		/*
@@ -212,27 +246,45 @@ class Payment_model extends CI_Model {
 		return $this->db->query( $sql_command, Array( $paymentUniqueID, $bookingNumber, $uniqueID ) );
 	}//setAsPaid
 	
-	function setPaymentModeForPurchase( $bNumber, $pChannel )
+	function setPaymentModeForPurchase( $bNumber, $pChannel, $uniqueID = NULL )
 	{
 		/*
 			Created 22FEB2012-2351
+			10MAR2012-1507 : Added param $uniqueID
 		*/
+		$insertTheseValues = Array( $pChannel, $bNumber );
 		$sql_command = "UPDATE `purchase` SET `Payment_Channel_ID` = ? WHERE `Payment_UniqueID` = 0 AND `BookingNumber` = ?";
-		return $this->db->query( $sql_command, Array( $pChannel, $bNumber ) );
-	}
+		if( $uniqueID !== NULL ){
+			$sql_command .= " AND `UniqueID` = ?";
+			$insertTheseValues[] = $uniqueID;
+		}
+		return $this->db->query( $sql_command,  $insertTheseValues );
+	}//setPaymentModeForPurchase(..)s
 	
-	function sumTotalCharges( $unpaidPurchasesArray )
+	function sumTotalCharges( $purchasesArray )
 	{
 		/*
 			Created 28FEB2012-1034
 			
-			Basically, receives array of MYSQL_OBJs returned by $this->getUnpaidPurchases(..) and sums 
+			Basically, receives array of MYSQL_OBJs returned by $this->get{'Unp'|'P'}aidPurchases(..) and sums 
 			the total. This computation is moved from bookStep5.php to here.						
 		*/
 		$totalCharges = 0;
+		if( !is_array( $purchasesArray ) or count( $purchasesArray ) < 1 ) return false;
 		
-		foreach( $unpaidPurchasesArray as $singlePurchase ) $totalCharges += floatval($singlePurchase->Amount);	
+		foreach( $purchasesArray as $singlePurchase ) $totalCharges += floatval($singlePurchase->Amount);	
 		
 		return $totalCharges;
 	}//sumTotalCharges(..)
+	
+	function updatePurchaseComments( $bookingNumber, $uniqueID, $comments )
+	{
+		/*
+			Created 10MAR2012-1053
+		*/
+		$sql_command = "UPDATE `purchase` SET `Comments` = ? WHERE `BookingNumber` = ? AND `UniqueID` = ?";
+		$query_result = $this->db->query( $sql_command, Array($comments,$bookingNumber, $uniqueID ) );
+		
+		return $query_result;
+	}//updatePurchaseComments
 }//class

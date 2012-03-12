@@ -95,6 +95,19 @@ class TicketClass_model extends CI_Model {
 		}else return 0;		
 	}//getLastTicketClassGroupID
 	
+	//getTicketClassesOrderByPrice( $eventID, $groupID )
+	function getMostExpensiveTicketClass( $eventID, $groupID )
+	{
+		/* 
+			CREATED 08MAR2012-0323
+			
+			Returns MYSQL_OBJ or BOOLEAN FALSE on error.
+		*/
+		$ticketClassByPriceArray = $this->getTicketClassesOrderByPrice( $eventID, $groupID );
+		if( $ticketClassByPriceArray === false or count($ticketClassByPriceArray) < 1 ) return false;
+		return $ticketClassByPriceArray[0];
+	}//getMostExpensiveTicketClass
+	
 	function getSingleTicketClass( $eventID, $groupID, $uniqueID ){
 		/*
 			Created 06FEB2012-1850
@@ -165,6 +178,25 @@ class TicketClass_model extends CI_Model {
 		if( count( $array_result ) < 1 ) return false;
 		return $array_result;
 	}//getTicketClassesExceptThisUniqueID
+	
+	function getTicketClassesOrderByPrice( $eventID, $groupID )
+	{
+		/*
+			Created 08MAR2012-0319
+		*/
+		$sql_command = "SELECT * FROM `ticket_class` WHERE `EventID` = ? AND `GroupID` = ? ORDER BY `Price` DESC";
+		$arr_result = $this->db->query( $sql_command, Array( $eventID, $groupID ) )->result();
+		$newArray = Array();
+		if( count( $arr_result) == 0 )
+			return false;
+		else{
+			foreach( $arr_result as $eachTC )
+			{
+				$newArray[ $eachTC->UniqueID ] = $eachTC;
+			}
+			return $newArray;
+		}
+	}//  getTicketClassesOrderByPrice
 	
 	function isThereFreeTicketClass( $eventID )
 	{

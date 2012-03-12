@@ -65,7 +65,9 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
 			<div id="page_title">
-				Manage Booking - Change showing time
+				Manage Booking<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;			
+				Change showing time
 			</div>
 			<div style="padding-left:10px; clear: both">
 				Please select a new showing time
@@ -83,7 +85,8 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
 						<input type="hidden" id="excludeShowingTime" value="<?php echo $existingShowtimeID; ?>" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/manageBooking_changeTicketClass' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'EventCtrl/manageBooking_changeShowingTime_process' ?>" name="formLogin" id="formMain">							
+						<input type="hidden" name="bookingNumber" value="<?php echo $bookingNumber; ?>" />
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
@@ -109,52 +112,53 @@ $this->load->view('html-generic/metadata.inc');
 										Current showing time selected
 									</span>
 									<span class="rightSpecialHere" >
+										<?php
+											$x = 2;		
+											// determine if this is a red-eye show
+											$redEye = FALSE;													
+											$dateStart = strtotime( $currentShowingTime->StartDate );
+											$timeStart = strtotime( $currentShowingTime->StartTime );
+											$timeEnd = strtotime( $currentShowingTime->EndTime );																										
+											if( $timeEnd < $timeStart ) $redEye = TRUE;										
+										?>
 										<table class="center_purest schedulesCentral">
 											<thead>
 												<tr>											
 													<td class="iNeedMostSpace" >Date</td>
 													<td class="iNeedMoreSpace" >Time Start</td>
-													<!-- <td>&nbsp;</td> -->
+													<?php if( $redEye) { ?><td class="iNeedMoreSpace" >Date End</td><?php }  ?>
 													<td class="iNeedMoreSpace" >Time End</td>
 												</tr>
 											</thead>
 											<tbody>
-											<?php
 											
-													$x = 2;		
-													// determine if this is a red-eye show
-													$redEye = FALSE;													
-													$dateStart = strtotime( $currentShowingTime->StartDate );
-													$timeStart = strtotime( $currentShowingTime->StartTime );
-													$timeEnd = strtotime( $currentShowingTime->EndTime );													
-													/*$TSSplit = explode(':', $currentShowingTime->StartTime );
-													$showingTimeTotal = strtotime( '+'.$TSSplit[0].' hour +'.$TSSplit[1].' min +'.$TSSplit[2].' sec' , $dateStart);
-													*/
-													if( $timeEnd < $timeStart ) $redEye = TRUE;										
-											?>
 												<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
 													<td class="BCST_date" >
-														<span><?php echo date('Y-M-d', $dateStart); ?></span>														
+														<span><?php echo date('Y-M-d l', $dateStart); ?></span>														
 													</td>
 													<td class="BCST_time_start">	
 														<span><?php echo date('h:i:s A', $timeStart); ?></span>														
-													</td>											
+													</td>	
+												<?php if( $redEye) { ?>	
+													<td class="BCST_date_end" >
+														<span><?php echo date('Y-M-d l', $dateEnd); ?></span>														
+													</td>
+												<?php }  ?>
 													<td class="BCST_time_end">
 														<span><?php echo date('h:i:s A', $timeEnd); ?></span>														
 													</td>
 												</tr>
-										
 											</tbody>
 										</table>
 									</span>
 								</div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
-										Step 1: Select a showing time
+										Your new showing time
 									</span>
 									<span class="rightSpecialHere" >
 										<span id="showtimeDummy" class="center_purest" >										
-											<input type="text" class="commonality disabled" id="messenger" name="messenger" value="Select an event first" disabled="disabled" style="width: 80%;"  /><br/>										
+											<input type="text" class="commonality disabled" id="messenger" name="messenger" value="Please refresh the page" disabled="disabled" style="width: 80%;"  /><br/>										
 										</span>
 										<span id="showtimeCustomError" class="center_purest" >											
 										</span>
@@ -174,8 +178,8 @@ $this->load->view('html-generic/metadata.inc');
 										Quantity
 									</span>
 									<span class="rightSpecialHere" >
-										<input type="text" class="commonality disabled" id="slot" name="slot_visual" value="1" style="background-color: white; color: black;" disabled="disabled" /><br/>									
-										<input type="hidden" name="slot" value="1" ><br/>									
+										<input type="text" class="commonality disabled" id="slot" name="slot_visual" value="<?php echo $guestCount; ?>" style="background-color: white; color: black;" disabled="disabled" /><br/>									
+										<input type="hidden" name="slot" value="<?php echo $guestCount; ?>" ><br/>									
 									</span>
 								</div>								
 							</div>							

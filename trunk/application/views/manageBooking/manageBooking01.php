@@ -23,7 +23,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
+	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking01.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -92,21 +92,48 @@ $this->load->view('html-generic/metadata.inc');
 			?>				
 				<h3 id="h_<?php echo $singleBooking->bookingNumber; ?>"><a href="#"><?php echo $displayThis ?></a></h3>
 				<div id="<?php echo $singleBooking->bookingNumber; ?>" class="section" >
-					<div class="bookingDetails">
+					<?php
+						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) ) {
+					?>
+					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
+						This booking is up for confirmation/payment. Click "View Details" to see more information.
+					</div>
+					<br/>
+					<?php
+						}else 
+						if(  $this->Booking_model->isBookingRolledBack( $singleBooking ) ) {
+					?>
+					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
+						The changes to this booking has been reverted because you haven't paid your dues before the deadline.
+						Click here to see more information.
+					</div>
+					<?php 
+							// since user was notified already, then clear the `Status2` table by calling this
+							$this->Booking_model->markAsPaid( $singleBooking->bookingNumber );	
+						} 
+					?>
+					<div class="bookingDetails">						
 						<div class="top">		
-								<input type="hidden" id="startDate" value="<?php echo $singleBooking->StartDate ?>" />
-								<input type="hidden" id="endDate" value="<?php echo $singleBooking->EndDate ?>" />
-								<input type="hidden" id="startTime" value="<?php echo $singleBooking->StartTime ?>" />
-								<input type="hidden" id="endTime" value="<?php echo $singleBooking->EndTime ?>" />
+								<input type="hidden" id="_startDate" value="<?php echo $singleBooking->StartDate ?>" />
+								<input type="hidden" id="_endDate" value="<?php echo $singleBooking->EndDate ?>" />
+								<input type="hidden" id="_startTime" value="<?php echo $singleBooking->StartTime ?>" />
+								<input type="hidden" id="_endTime" value="<?php echo $singleBooking->EndTime ?>" />
 								<div class="start">
 									<span class="deed" >
 										Start
 									</span>
 									<span class="contentproper_time" >										
-										<?php echo $singleBooking->StartTime;?>
+										<?php 
+											/*
+												No need to show seconds if zero
+											*/
+											$splitted = explode(':', $singleBooking->StartTime);
+											$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
+											echo date( $timeFormat." A", strtotime($singleBooking->StartTime)); 
+										?>
 									</span>
 									<span class="contentproper_date" >
-										<?php echo $singleBooking->StartDate; ?>										
+										<?php echo date( 'Y-M-d l', strtotime($singleBooking->StartDate)); ?>										
 									</span>
 								</div>								
 								<div class="end">
@@ -114,11 +141,20 @@ $this->load->view('html-generic/metadata.inc');
 										End
 									</span>									
 									<span class="contentproper_time" >										
-										<?php echo $singleBooking->EndTime;?>
+										<?php 
+											/*
+												No need to show seconds if zero
+											*/
+											$splitted = explode(':', $singleBooking->EndTime);
+											$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
+											echo date( $timeFormat." A", strtotime($singleBooking->EndTime));
+										?>
 									</span>
 									<span class="contentproper_date" >
-										<?php
-											if( $singleBooking->StartDate != $singleBooking->EndDate ) echo $singleBooking->EndDate;
+										<?php										
+											if( $singleBooking->StartDate != $singleBooking->EndDate ) 
+												// if show ends past midnight (red eye), then display the next day's date.
+												echo date( 'Y-M-d l', strtotime($singleBooking->EndDate));
 											else
 												echo '&nbsp';
 										?>
@@ -148,15 +184,34 @@ $this->load->view('html-generic/metadata.inc');
 								
 							</div>
 					</div>
-					<div class="containingClassTable">						
+					<div class="containingClassTable">
+						<?php
+						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) ) {
+						?>
+							<div class="metrotile" name="viewdetails" >
+								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>																						
+								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_pendingchange_viewdetails'; ?>" >
+									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+								</form>
+							</div>
+							<div class="metrotile" name="cancelchanges" >
+								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelchanges.png" alt="Cancel changes" /></a>																						
+								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_cancelchanges'; ?>" >
+									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+								</form>
+							</div>
+						<?php } else { ?>
 						<div class="metrotile" name="changeshowingtime" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeshowingtime.png" alt="Change showing time" /></a>																						
 								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_changeShowingTime'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
 						</div>
-						<div class="metrotile" name="" >
+						<div class="metrotile" name="upgradeticketclass" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-upgradeticketclass.png" alt="Upgrade Ticket Class" /></a>
+								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_upgradeticketclass'; ?>" >
+									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+								</form>
 						</div>					
 						<div class="metrotile" name="changeseat" >
 								<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeseat.png" alt="Change Seat" /></a>
@@ -167,7 +222,9 @@ $this->load->view('html-generic/metadata.inc');
 						<div class="metrotile" name="cancel" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelbooking.png" alt="Cancel Booking" /></a>								
 						</div>
+						<?php } ?>
 						<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+						
 					</div>
 				</div>
 			<?php

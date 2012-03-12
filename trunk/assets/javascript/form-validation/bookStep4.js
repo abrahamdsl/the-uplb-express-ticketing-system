@@ -66,12 +66,13 @@ function formSubmit( ){
 					if he chose a new seat before appending to the 'matrices' string.
 				*/
 				var matrix_old = $('input[name="g' + parseInt( x + 1 )  + '_seatMatrix_old"]').val();			
-				if( matrix != matrix_old ) matrices += ( matrix + '-' );
-			}else{
-				matrices += ( matrix + '-' );
+				if( matrix != matrix_old && parseInt(matrix, 10) != 0 ) matrices += ( matrix + '-' );
+			}else{				
+				if( parseInt(matrix, 10) != 0 ) matrices += ( matrix + '-' );
 			}
 			
 		}		
+		console.log( matrices );
 		if( matrices.length > 0 ) // check for these seats if occupied
 		{			
 			ajaxObj = $.ajax({	
@@ -204,7 +205,7 @@ $(document).ready( function(){
 		
 		Also found in seatManipulation.js
 	*/
-	isModeManageBookingChooseSeat = ($( 'input#manageBookingChooseSeat' ).val() == "1" );
+	isModeManageBookingChooseSeat = ( $( 'input#manageBookingChooseSeat' ).size() == 1 && $( 'input#manageBookingChooseSeat' ).val() == "1" );				
 	createSeatmapOnPage( args );
 	
 	$('input[type="button"][class="seatChooser"]').click( function(){
@@ -223,9 +224,12 @@ $(document).ready( function(){
 		chosenSeatMatrix = $('input[name="' + seatMatrixIdentifier +'"]').val();		
 		$('#basic-modal-content-freeform').modal( 
 			{ 	// show modal
-				persist: true ,			
+				persist: true ,
+				/*minWidth: 926,
+				minHeight: 506, 
 				maxHeight: 600,
-				maxWidth: 1000,
+				maxWidth: 1000,*/
+				autoResize: false,
 				onShow: function(){					
 					if( chosenSeatMatrix != "0" ) {
 						$('div#' + chosenSeatMatrix ).removeClass( 'otherGuest' );

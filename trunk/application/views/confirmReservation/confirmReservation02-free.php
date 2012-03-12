@@ -168,7 +168,7 @@ $this->load->view('html-generic/metadata.inc');
 											<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 											<td>
 											<?php
-												$thisItemAmount = intval($singlePurchase->Amount); 
+												$thisItemAmount = floatval($singlePurchase->Amount); 
 												$totalCharges += $thisItemAmount;
 												if ( $thisItemAmount < 0 )
 													echo '('.$thisItemAmount.')';

@@ -1,4 +1,9 @@
 <?php
+	//echo var_dump( $guestSeatDetails );
+	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
+	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 4 );
+?>
+<?php
 $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
@@ -6,7 +11,7 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Choose seat";
+	$this->pageTitle = "Change seat - Manage Booking";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -81,8 +86,18 @@ $this->load->view('html-generic/metadata.inc');
 				Pick seat
 			</div>
 			<div id="top_page_detail" >
+			<?php if( !$isActivityManageBooking ) {?>
 				Now, there's no more racing and haggling in line outside the auditorium to race for seats.
 				<br/>				
+			<?php }else{ 
+					if( $isTicketClassChanged )
+						{
+			?>
+				You have selected a different ticket class. This requires you to choose new seat(s). Your
+				former seats are still reserved until you confirm the changes to this booking.
+			<?php		}
+			?>
+			<?php } ?>
 			</div>			
 			
 			<!-- accordion start -->			
@@ -197,21 +212,27 @@ $this->load->view('html-generic/metadata.inc');
 								</fieldset>
 							</div>
 							<div class="right" >
-								<fieldset>
+								<fieldset>								
 									<legend class="field_grouping_bar specialOnBook3">seat</legend>	
 									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
 									<?php 
 										$seatMatrixVal = "0";
 										if( $manageBooking_chooseSeat )
 										{
-											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];
-											 $seatMatrixVal = $guestSeatObj['Matrix_x'].'_'.$guestSeatObj['Matrix_y'];
+											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];											 											 
+											 if( $guestSeatObj['Matrix_x'] == NULL or $guestSeatObj['Matrix_y'] == NULL )
+											 {
+												 $seatMatrixValOld = "0";
+											 }else{
+												$seatMatrixValOld = $guestSeatObj['Matrix_x'].'_'.$guestSeatObj['Matrix_y'];
+											 }
+											 $seatMatrixVal = ($guestSeatObj['available'] === true ) ? $seatMatrixValOld : "0";
 									?>									
-									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix_old" value="<?php echo  $guestSeatObj['Matrix_x'].'_'.$guestSeatObj['Matrix_y']; ?>" />
+									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix_old" value="<?php echo $seatMatrixValOld;?>" />
 									<?php
 										}
 									?>
-									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="<?php echo $seatMatrixVal; ?>" />
+									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="<?php echo $seatMatrixVal;?>" />
 									<input type="hidden" name="g<?php echo $x+1; ?>_uuid" value="<?php echo $singleGuest->UUID; ?>"   />
 									<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
 									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >																			

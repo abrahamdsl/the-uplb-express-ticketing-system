@@ -149,7 +149,7 @@ $this->load->view('html-generic/metadata.inc');
 				<div class="accordionImitation aci2_Book3Special" >
 					<div class="title part2" >Payment details</div>
 					<div class="content paymentDetailsContent" >	
-							<div class="bookingDetails" >
+							<div class="bookingDetails" style="padding-bottom: 50px;" >
 								<span class="sectionChief" >Billing Summary</span>																																								
 								<table id="billingSummary" class="bStep5tbl center_purest" >
 									<thead>
@@ -163,7 +163,7 @@ $this->load->view('html-generic/metadata.inc');
 									<tbody>
 										<?php
 											$totalCharges = 0;
-											foreach( $purchases as $singlePurchase ){ 
+											foreach(  $unpaidPurchasesArray as $singlePurchase ){ 
 										?>
 										<tr>
 											<td><?php echo $singlePurchase->Quantity; ?></td>
@@ -171,8 +171,7 @@ $this->load->view('html-generic/metadata.inc');
 											<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 											<td>
 											<?php
-												$thisItemAmount = intval($singlePurchase->Amount); 
-												$totalCharges += $thisItemAmount;
+												$thisItemAmount = floatval($singlePurchase->Amount); 												
 												if ( $thisItemAmount < 0 )
 													echo '('.$thisItemAmount.')';
 												else
@@ -180,15 +179,49 @@ $this->load->view('html-generic/metadata.inc');
 											?>
 											</td>
 										</tr>												
-										<?php } 
-											// now set this to be accessible on the server side
-											$thisNewSessData = Array(
-												"totalCharges" => $totalCharges
-											);
-											$this->session->set_userdata( $thisNewSessData );
+										<?php } 											
 										?>
 									</tbody>
-								</table>								
+								</table>		
+								<?php									
+									if( $paidPurchasesArray !== false and count($paidPurchasesArray) > 0 )
+									{
+								?>
+								<br/>								
+								<span class="sectionChief" >Less Purchases</span>																																								
+								<table id="billingSummary" class="bStep5tbl center_purest" >
+									<thead>
+										<tr>
+											<td > Quantity</td>
+											<td > Item</td>
+											<td > Description</td>
+											<td > Cost</td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+											$totalCharges = 0;
+											foreach(  $paidPurchasesArray as $singlePurchase ){ 
+										?>
+										<tr>
+											<td><?php echo $singlePurchase->Quantity; ?></td>
+											<td><?php echo $singlePurchase->Charge_type; ?></td>
+											<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
+											<td>
+											<?php
+												$thisItemAmount = floatval($singlePurchase->Amount); 												
+												if ( $thisItemAmount < 0 )
+													echo '('.$thisItemAmount.')';
+												else
+													echo $thisItemAmount;
+											?>
+											</td>
+										</tr>												
+										<?php } 											
+										?>
+									</tbody>
+								</table>
+								<?php } ?>
 								
 								<div id="totalX" class="purchase center_purest" >																																											
 									<table id="total" class="bStep5tbl center_purest">
@@ -196,8 +229,8 @@ $this->load->view('html-generic/metadata.inc');
 											<tr>
 												<td>&nbsp;</td>
 												<td>&nbsp;</td>
-												<td>Total (in PHP)</td>
-												<td id="value_proper"><span class="cost" ><?php echo $this->session->userdata( "totalCharges" ); ?></span></td>
+												<td>Total Amount Due (in PHP)</td>
+												<td id="value_proper" ><span class="cost" ><?php echo $amountDue; ?></span></td>
 											</tr>											
 										</tbody>
 									</table>
@@ -299,7 +332,10 @@ $this->load->view('html-generic/metadata.inc');
 							<div class="right" >
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">seat</legend>
-									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ][ 'visual_rep' ]; ?>" disabled="disabled"   />									
+									<?php
+										$visualRep = ( strlen($seatVisuals[ $singleGuest->UUID ][ 'visual_rep' ]) > 0 ) ?  $seatVisuals[ $singleGuest->UUID ][ 'visual_rep' ] : "NONE" ;
+									?>
+									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $visualRep; ?>" disabled="disabled"   />									
 									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
 										
 											<?php

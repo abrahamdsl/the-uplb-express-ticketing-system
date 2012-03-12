@@ -125,6 +125,22 @@ class Seat_model extends CI_Model {
 		return $arrayResult;
 	}// getEventSeatMapActualSeats(..)
 	
+	function getLapsedHoldingTimeSeats( $eventID, $showtimeID )
+	{
+		/*
+			Created 08MAR2012-1214
+		*/
+		$sql_command = "SELECT * FROM `seats_actual` WHERE `EventID` = ?  AND `Showing_Time_ID` = ? AND";
+		$sql_command .= " `Status` = -4 AND CURRENT_TIMESTAMP >= `Comments`";
+		$arrayResult = $this->db->query( $sql_command, array( $eventID, $showtimeID ) )->result();
+		
+		if( count( $arrayResult) === 0 )
+			return false;
+		else
+			return $arrayResult;
+		
+	}//getLapsedHoldingTimeSeats(..)
+	
 	function getMasterSeatMapActualSeats( $uniqueID )
 	{
 		/*
@@ -143,20 +159,6 @@ class Seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getMasterSeatMapActualSeats
-	
-	function getSeats_User( $guests )
-	{
-		/*
-			Created 19FEB2012-1712
-			
-			Param definition: $guests - array of guests' MYSQL OBJ OF table `booking_guests`
-		*/
-		if( !is_array( $guests ) ) return false;
-		foreach( $guests as $singleGuest )
-		{
-		
-		}
-	}//getSeats_User
 	
 	function getSingleMasterSeatMapData( $uniqueID )
 	{
@@ -186,16 +188,6 @@ class Seat_model extends CI_Model {
 		else
 			return false;
 	}//getSingleActualSeatData
-	
-	function getSingleActualSeatData_ByClientUUID( $UUID )
-	{
-		/*
-			Created 19FEB2012-1716 ON-HOLD
-			
-			Gets from `seats_actual` the record specified using the client's UUID (found in `booking_guests` table )
-		*/
-		$sql_command = "SELECT FROM `seats_actual` where ";
-	}//getSingleActualSeatData_ByClientUUID
 	
 	function getUsableSeatMaps( $requestedCapacity )
 	{
@@ -293,6 +285,79 @@ class Seat_model extends CI_Model {
 		return ( $this->db->insert( 'seats_default', $data ) );
 	}//insertDefaultSingleSeatData
 	
+	function isSeatAssignedToGuest( $matrix_x, $matrix_y, $eventID, $showtimeID, $testThisGuestUUID )
+	{
+		/*
+			Created 08MAR2012-1331
+			
+			Though this should be in the seats.. but Assigned_To_User is in `event_slot`
+		*/
+		$sql_command = "SELECT *  FROM `event_slot` JOIN `seats_actual` ON `event_slot`.`EventID` = 
+		`seats_actual`.`EventID` AND `event_slot`.`Showtime_ID` = `seats_actual`.`Showing_Time_ID` AND 
+		`event_slot`.`Seat_x` =   `seats_actual`.`Matrix_x` AND `event_slot`.`Seat_y` =  
+		`seats_actual`.`Matrix_y` WHERE  `event_slot`.`EventID` = ? AND `Showtime_ID` = ? AND 
+		`event_slot`.`Seat_x` = ? AND `event_slot`.`Seat_y` = ? AND   `event_slot`.`Assigned_To_User` = ?;";
+		$arr_result = $this->db->query( $sql_command, Array(
+				$eventID, $showtimeID, $matrix_x, $matrix_y, $testThisGuestUUID
+			)
+		)->result();
+		//if( ( count( $arr_result === 0 ) ) return false; 
+		return ( count( $arr_result === 1 ) );
+	}
+	
+	function isSeatAvailable( $matrix_x, $matrix_y, $eventID, $showtimeID )
+	{
+		/*
+			Created 04MAR2012-1737. 
+			
+			Returns an Array with the specified keys and values.
+			If the specified seat does not exist array is:
+			
+			'boolean' => FALSE
+			'throwException' = 'INVALID|NO-SUCH-SEAT-EXISTS'
+			
+			So therefore, to know what if a seat is not available, back in the calling function,
+			the code should be like:
+			
+			$isSeatAvailableResult = $this->Seat_model->isSeatAvailable( .. );
+			if( $isSeatAvailableResult['boolean'] )
+				// seat is available
+			else
+				if( $isSeatAvailableResult['throwException'] === NULL )
+					// seat is not available
+				else
+					// error in operation, so far, only no such seat found.
+					
+		*/
+		$returnThis = Array(
+			'boolean' => TRUE,
+			'throwException' => NULL
+		);
+		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
+		if( $seatObj === FALSE )  
+		{
+			$returnThis[ 'boolean' ] = FALSE;
+			$returnThis[ 'throwException' ] = 'INVALID|NO-SUCH-SEAT-EXISTS';
+			return $returnThis;
+		}
+		$returnThis[ 'boolean' ] = ( intval( $seatObj->Status) === 0 );
+		return $returnThis;
+	}//isSeatAvailable
+	
+	function isSeatInThisTicketClass( 
+		$matrix_x, $matrix_y, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID
+	){
+		/*
+			Created 04MAR2012-2153
+		*/
+		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
+		if( $seatObj === FALSE )  return FALSE;
+		return( 
+			intval($seatObj->Ticket_Class_GroupID) === $ticketClassGroupID and
+			intval($seatObj->Ticket_Class_UniqueID) === ticketClassUniqueID
+		);
+	}// isSeatInThisTicketClass( ..)
+	
 	function isSeatMapNameExistent( $name = NULL )
 	{
 		/*
@@ -325,28 +390,57 @@ class Seat_model extends CI_Model {
 		return ( $query->num_rows == 1 );
 	}//isSeatMapUniqueIDExistent
 	
-	function markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, $status )
+	function markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, $status, $comment = "", 
+		$ticketClassGroupID = NULL, $ticketClassUniqueID= NULL
+	)
 	{
-		$sql_command = "UPDATE `seats_actual` SET `Status` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ? ";
+		$sql_command = "UPDATE `seats_actual` SET `Status` = ?, `Comments` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ? ";
 		$sql_command .= " AND `Matrix_x` = ? AND `Matrix_y` = ?";
-		return $this->db->query( $sql_command, Array( $status, $eventID, $showtimeID, $matrix_x, $matrix_y ) );
+		$parameters = Array( $status, $comment, $eventID, $showtimeID, $matrix_x, $matrix_y );
+		/*if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
+		{
+			$parameters[] = $ticketClassGroupID;
+			$parameters[] = $ticketClassUniqueID;
+			$sql_command .= " AND "
+		}*/
+		
+		return $this->db->query( $sql_command, $parameters );
 	}	
 	
-	function markSeatAsAssigned( $eventID, $showtimeID, $matrix_x, $matrix_y )
+	function markSeatAsAssigned( $eventID, $showtimeID, $matrix_x, $matrix_y, 
+		$ticketClassGroupID = NULL, $ticketClassUniqueID= NULL
+	)
 	{	
 		/*
 			Created 14JAN2012-0909
+			12MAR2012-1704 - Added last two params
 		*/
-		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '1' );
+		return $this->markSeat_Unified( 
+			$eventID, $showtimeID, $matrix_x, $matrix_y, '1', $ticketClassGroupID, $ticketClassUniqueID
+		);
 	}//markSeatAsAssigned
 	
-	function markSeatAsAvailable( $eventID, $showtimeID, $matrix_x, $matrix_y )
+	function markSeatAsAvailable( $eventID, $showtimeID, $matrix_x, $matrix_y, $comment = "" )
 	{	
 		/*
 			Created 14JAN2012-0909
 		*/
-		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '0' );
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '0', $comment );
 	}//markSeatAsAssigned
+	
+	function markSeatAsPendingPayment( $eventID, $showtimeID, $matrix_x, $matrix_y, $resetOnTimestamp )
+	{
+		/*
+			Created 08MAR2012-1135
+			
+			This effectively makes a seat seen as 'occupied' by others. 
+			In the database, `status` = -4, and the deadline so that the `status` can be changed to 1
+			is written on the `comment` column, on the form of "YYYY-MM-DD HH:MM:SS" where obviously..
+			
+			:D
+		*/
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '-4', $resetOnTimestamp );
+	}//SeatAsPendingPayment
 	
 	function setSeatMapStatus( $seatMapUniqueID, $status )
 	{
