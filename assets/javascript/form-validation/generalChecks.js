@@ -324,9 +324,10 @@ function isTimestampGreater( date1, time1, date2, time2, isShow_RedEye)
 {
 	//created 23DEC2011-1208
 	//for time either HH:MM or HH:MM:SS
+	/// checks if timestamp2 > timestamp2
 	// no error checking here as data passed here should
 	// be checked for errors before being passed
-	// 
+	// review 27mar2012-0733: what is 'isShow_RedEye' purpose?
 	var timeStamp1 = new Date( date1 );
 	var timeStamp2 = new Date( date2 );
 	var time1_splitted;

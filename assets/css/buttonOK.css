@@ -20,6 +20,12 @@ a.button {
 	float:right;
 	margin-left: 2px;
 }
-a.button2{
+a#button2{
 	background-color: rgb(236,165,0);
+}
+a#buttonOK:hover, a#buttonOK_special:hover{
+	background-color: rgb(126,126,126);
+}
+a#buttonReset:hover, a#buttonReset_special:hover{
+	background-color: rgb(126,126,126);
 }

@@ -1,31 +1,3 @@
-div.metrotile{
-	min-width: 123px; 
-	min-height: 123px; 
-	height: auto; 
-	width: auto;
-	padding: 15px; 
-	color: white; 
-	text-align: center;
-	float: left;
-}
-div.metrotile:first-child{
-	background-color: rgb(193,58,0); 
-}
-div.metrotile:nth-child(2){
-	background-color: rgb(144,169,48);
-}
-div.metrotile:nth-child(3){
-	background-color: rgb(107,70,39);
-}
-div.metrotile:nth-child(4){
-	background-color: rgb(129,95,176);
-}
-div.metrotile:hover{
-	background-color: green;
-}
-div.metrotile img{
-	border-width: 0px;
-}
 .homePage_accordion_container
 {
 	width: 90%;

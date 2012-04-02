@@ -129,14 +129,18 @@ $this->load->view('html-generic/metadata.inc');
 								Booking reference number
 							</div>
 							<div id="paymentDeadline" class="properInfo center_purest" >
-								<input type="hidden" id="pDead_Date" value="<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>" />
-								<input type="hidden" id="pDead_Time" value="<?php echo $this->session->userdata( 'paymentDeadline_Time' ); ?>" />
+								<?php
+									$pDate = $unpaidPurchasesArray[0]->Deadline_Date;
+									$pTime = $unpaidPurchasesArray[0]->Deadline_Time;
+								?>
+								<input type="hidden" id="pDead_Date" value="<?php echo $pDate; ?>" />
+								<input type="hidden" id="pDead_Time" value="<?php echo $pTime; ?>" />
 								<span id="date">
-									<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>
+									<?php echo $pDate; ?>
 								</span>
 								<br/>
 								<span id="time">
-									<?php echo $this->session->userdata( 'paymentDeadline_Time' ); ?>
+									<?php echo $pTime; ?>
 								</span>								
 							</div>
 							<div class="center_purest caption" id="deadlineCaption" >

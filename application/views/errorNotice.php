@@ -13,7 +13,7 @@
 *	By the way, here are the variables to be passed to here from the controller:
 
 	$error - STRING - REQUIRED - What type of error. If "CUSTOM", then custom message should be displayed.
-	$theMessage	- STRING - REQUIRED - As in the message you want the user to see.
+	$theMessage	- STRING - NOT_REQUIRED - As in the message you want the user to see.
 	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 
 				*Non-presence and value TRUE indicates automatic redirection to homepage.	
 	$redirectURI  - STRING (URI) - Where we should redirect.
@@ -117,6 +117,15 @@ $this->load->view('html-generic/doctype.inc');
 							<p>
 								You are trying to access a page which
 								submitted data beforehand, but of course, you are denied.
+								<br/><br/>
+								( You will also receive this message if you try to access a functionality which requires that you accomplish first
+								 an earlier step ).
+							</p>
+						<?php }else ?>
+						<?php if( $error == "NO_PERMISSION" ){ ?>
+							<p>
+								You are trying to access a page which
+								requires certain permissions to be granted first to your account.																
 							</p>
 						<?php }else ?>
 						<?php if( $error == "CUSTOM" ){ ?>

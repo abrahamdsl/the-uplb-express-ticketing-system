@@ -1,0 +1,24 @@
+div#status{
+	z-index: 100;
+	position: absolute;
+	text-align: center; 
+	vertical-align: center; 
+	padding: 10px 0px 10px 0px;
+	font-size: 2em; 	
+	
+	margin: 10px 0px 0px 600px;
+	height: 45px; 
+	width: 200px; 
+	float: right;
+	border: 1px solid red;
+}
+div.okay{
+	background-color: rgb(0,144,23);
+	border: 1px solid  rgb(0,144,23);
+	color: white; 
+}
+div.error{
+	background-color: rgb(176,26,63);
+	border: 1px solid   rgb(176,26,63);
+	color: white; 
+}

@@ -72,7 +72,7 @@ function formSubmit( ){
 			}
 			
 		}		
-		console.log( matrices );
+
 		if( matrices.length > 0 ) // check for these seats if occupied
 		{			
 			ajaxObj = $.ajax({	

@@ -1,0 +1,21 @@
+div.metrotile:first-child{
+	background-color: rgb(193,58,0); 
+}
+div.metrotile:nth-child(2){
+	background-color: rgb(144,169,48);
+}
+div.metrotile:nth-child(3){
+	background-color: rgb(107,70,39);
+}
+div.metrotile:nth-child(4){
+	background-color: rgb(129,95,176);
+}
+div.metrotile:nth-child(5){
+	background-color: rgb(117,23,100);
+}
+div.metrotile:nth-child(6){
+	background-color: rgb(218,134,21);
+}
+div.metrotile:nth-child(7){
+	background-color: rgb(78,178,184);
+}

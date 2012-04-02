@@ -26,14 +26,14 @@ class Payment_model extends CI_Model {
 		);
 	}//addPaymentChannel_ToShowTime(..)
 	
-	function createPayment( $bookingNumber, $amount, $paymentMode )
+	function createPayment( $bookingNumber, $amount, $paymentMode, $customData = "" )
 	{
 		/*
 			Created 23FEB2012-0016
 		*/
 		date_default_timezone_set('Asia/Manila');
 		$uniqueID = $this->generatePaymentUniqueID();
-		$sql_command = "INSERT INTO `payments` VALUES (?, ?, ?, ?, ?, ?, ? )";
+		$sql_command = "INSERT INTO `payments` VALUES (?, ?, ?, ?, ?, ?, ?, ? )";
 		$dbResult = $this->db->query( $sql_command, Array(
 			$uniqueID,
 			$bookingNumber,
@@ -41,7 +41,8 @@ class Payment_model extends CI_Model {
 			$this->session->userdata( 'accountNum' ),
 			$paymentMode,
 			date("H:i:s"),
-			date("Y-m-d"),			
+			date("Y-m-d"),
+			$customData
 		));
 		if( $dbResult ) return $uniqueID;
 		else
@@ -86,7 +87,13 @@ class Payment_model extends CI_Model {
 		$sql_command = "DELETE FROM `purchase` WHERE `BookingNumber` = ? AND `UniqueID` = ?";
 		return $this->db->query( $sql_command, Array( $bookingNumber, $uniqueID ) );
 	}//deleteSinglePurchase(..)
-		
+
+    function deleteUnpaidPurchases( $bookingNumber )
+	{
+		$sql_command = "DELETE FROM `purchase` WHERE `BookingNumber` = ? AND `Payment_UniqueID` = 0";
+		return $this->db->query( $sql_command, Array( $bookingNumber ) );
+	}	
+	
 	function doesPaymentExist( $uniqueID )
 	{
 		/*
@@ -169,7 +176,7 @@ class Payment_model extends CI_Model {
 				Factory default: If UniqueID of a payment channel is zero - it means, automatic confirmation/payment
 				of a booking since there's no charge/fees to be paid.
 				
-				So here, if the calling funciton specified to not include the free payment channel,
+				So here, if the calling function specified to not include the free payment channel,
 				detect if the UniqueID of first payment channel gotten from the query earlier
 				is zero, and if so, unset from the array to be returned
 			*/
@@ -226,6 +233,8 @@ class Payment_model extends CI_Model {
 	{
 		/*
 			Created 23FEB2012-0031
+			
+			31MAR2012-1847: Might be redundant
 		*/
 	
 		if( count( $purchases ) < 1 ){		// 04MAR2012-1657 : Why is this formerly ' > 0 '???
@@ -235,6 +244,39 @@ class Payment_model extends CI_Model {
 		return $this->sumTotalCharges( $purchases );
 	}// getSumTotalOfUnpaid
 
+	function isPaypalPaymentOK( $_IPN_Array )
+	{
+		/*
+			Created 22MAR2012-2321
+			
+			Refer to https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
+			for validity.
+			returns array.
+		*/
+		$returnThis = Array(
+			'boolean' => false, 'details' => ""
+		);
+		if( !isset( $_IPN_Array['payment_status'] ) ){
+			$returnThis['details'] = "PAYMENT STATUS NOT SET";
+			return $returnThis;
+		}
+		switch( $_IPN_Array['payment_status']  )
+		{ 
+			case 'Completed': $returnThis['boolean'] = TRUE; return $returnThis;
+			case 'Created':   $returnThis['boolean'] = TRUE; return $returnThis;
+			case 'Processed': $returnThis['boolean'] = TRUE; return $returnThis;
+			case 'Pending':  if( $_IPN_Array['pending_reason'] != 'other' ){
+								$returnThis['boolean'] = TRUE; 
+								return $returnThis;	
+							 }else{								
+								$returnThis['details'] = "Pending reason not specified by PayPal"; 
+								return $returnThis;	
+							 }
+		}//switch
+		$returnThis['details'] = "Unspecified reason."; 
+		return $returnThis;	
+	}//isPaypalPaymentOK(..)
+	
 	function setAsPaid( $bookingNumber, $uniqueID, $paymentUniqueID )
 	{
 		/*
@@ -269,7 +311,7 @@ class Payment_model extends CI_Model {
 			Basically, receives array of MYSQL_OBJs returned by $this->get{'Unp'|'P'}aidPurchases(..) and sums 
 			the total. This computation is moved from bookStep5.php to here.						
 		*/
-		$totalCharges = 0;
+		$totalCharges = 0.0;
 		if( !is_array( $purchasesArray ) or count( $purchasesArray ) < 1 ) return false;
 		
 		foreach( $purchasesArray as $singlePurchase ) $totalCharges += floatval($singlePurchase->Amount);	

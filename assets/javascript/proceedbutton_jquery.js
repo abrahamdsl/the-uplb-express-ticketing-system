@@ -9,4 +9,20 @@ $(document).ready(function() {
         //mouse out		
         $(this).css('background', colorOrig);						
     });
+	$("#buttonOK2").hover(
+		function() {
+			//mouse over
+			$(this).css('background', 'rgb(126,126,126)');
+		}, function() {
+			//mouse out		
+			$(this).css('background', colorOrig);						
+	});
+	$("#buttonOK3").hover(
+		function() {
+			//mouse over
+			$(this).css('background', 'rgb(126,126,126)');
+		}, function() {
+			//mouse out		
+			$(this).css('background', colorOrig);						
+	});
 });

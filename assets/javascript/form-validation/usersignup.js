@@ -1,5 +1,6 @@
   function startsWith( haystack, needle) 
   {    
+	// this might be in conflict/redundant with the prototype in generalChecks.js
     var y = needle.length;
 	var x;
 	

@@ -10,9 +10,14 @@
 *	
 *	From the title, the purpose of this is kinda obvious. :D
    
-*	By the way, here are the variables to be passed to here from the controller:
-
+*	By the way, here are the variables to be passed to here from the controller:	
+	$customTitle -  STRING - NOT REQUIRED - What title the user might want in alternate to "Success"
 	$theMessage	- STRING - REQUIRED - As in the message you want the user to see.
+	$noButton  - BOOLEAN - NOT REQUIRED - If buttons should be displayed( TRUE if just want to output message that 
+					user is being redirected )
+					
+	* If $noButton is TRUE, then the following might be moot and academic:
+	
 	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 
 				*Non-presence and value TRUE indicates automatic redirection to homepage.	
 	$redirectURI  - STRING (URI) - Where we should redirect.
@@ -98,7 +103,10 @@ $this->load->view('html-generic/doctype.inc');
     <div id="main_content" >    	
     	<div id="centralContainer">
 			<div id="page_title" class="page_title_custom" >
-				Success
+				<?php
+					if( !isset($customTitle) or $customTitle == "" ) echo "Success";
+					else echo $customTitle;
+				?>								
 			</div>						
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
@@ -117,6 +125,9 @@ $this->load->view('html-generic/doctype.inc');
 				</div>												
 			</div>
 			<!-- accordion end -->
+			<?php
+				if( !isset( $noButton) or $noButton === FALSE ){
+			?>
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" >
 								<span class="icon">
@@ -138,6 +149,9 @@ $this->load->view('html-generic/doctype.inc');
 								}
 							?>
 			</div>	
+			<?php
+				}
+			?>
 			<div id="misc" style=" clear:both;"></div>
 		</div>		
     </div><!--end of main content-->

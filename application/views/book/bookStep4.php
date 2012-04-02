@@ -1,5 +1,4 @@
-<?php
-	//echo var_dump( $guestSeatDetails );
+<?php	
 	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
 	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 4 );
 ?>
@@ -80,10 +79,15 @@ $this->load->view('html-generic/metadata.inc');
     <div id="main_content" >    	
     	<div id="centralContainer">
 <?php			
-			$this->load->view( 'html-generic/bookProgressIndicator.inc');
+			 if( !$isActivityManageBooking )$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
 			<div id="page_title" class="page_title_custom" >
+			<?php if( $isActivityManageBooking ) { ?>
+				Manage Booking<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;Change Seat
+			<?php }else { ?>
 				Pick seat
+			<?php } ?>
 			</div>
 			<div id="top_page_detail" >
 			<?php if( !$isActivityManageBooking ) {?>

@@ -25,43 +25,50 @@ class Permission_model extends CI_Model {
 							);
 						
 		$result_arr = $query_obj->result();
-		
-		return $result_arr[0];
+		if( count( $result_arr ) > 0 )
+			return $result_arr[0];
+		else
+			return false;
 	}//getPermissionStraight
 	
-	function isAdministrator( $accountNum )
+	function isAdministrator( $accountNum = NULL )
 	{
+		if( $accountNum == NULL  ) $accountNum = $this->session->userdata('accountNum');
 		$rowInfo = $this->getPermissionStraight( $accountNum );
 		
-		return $rowInfo->ADMINISTRATOR;
+		return (intval($rowInfo->ADMINISTRATOR) == 1 );
 	} //isAdmin..
 	
-	function isEventManager( $accountNum )
+	function isEventManager( $accountNum = NULL  )
 	{
+		if( $accountNum == NULL  ) $accountNum = $this->session->userdata('accountNum');
 		$rowInfo = $this->getPermissionStraight( $accountNum );
-		
-		return $rowInfo->EVENT_MANAGER;
+				
+		return (intval($rowInfo->EVENT_MANAGER) == 1 );
 	} //isEventManager..
 	
-	function isReceptionist( $accountNum )
+	function isReceptionist( $accountNum = NULL  )
 	{
+		if( $accountNum == NULL  ) $accountNum = $this->session->userdata('accountNum');
 		$rowInfo = $this->getPermissionStraight( $accountNum );
-		
-		return $rowInfo->RECEPTIONIST;
+				
+		return (intval($rowInfo->RECEPTIONIST) == 1 );
 	} //isReceptionist
 	
-	function isCustomer( $accountNum )
+	function isCustomer( $accountNum = NULL  )
 	{
+		if( $accountNum == NULL  ) $accountNum = $this->session->userdata('accountNum');
 		$rowInfo = $this->getPermissionStraight( $accountNum );
-		
-		return $rowInfo->CUSTOMER;
+				
+		return (intval($rowInfo->CUSTOMER) == 1 );
 	} //isAdmin..
 	
-	function isFaculty( $accountNum )
+	function isFaculty( $accountNum = NULL  )
 	{
+		if( $accountNum == NULL  ) $accountNum = $this->session->userdata('accountNum');
 		$rowInfo = $this->getPermissionStraight( $accountNum );
-		
-		return $rowInfo->FACULTY;
+				
+		return (intval($rowInfo->FACULTY) == 1 );
 	} //isAdmin..
 	
 	

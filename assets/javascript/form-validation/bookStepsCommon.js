@@ -1,9 +1,10 @@
 function cancelBookingProcess()
 {	
+	var whichMsg = ( typeof buttonReset2 == 'undefined' ) ? 'Cancelling your reserved slots ...' : 'Cleaning-up some data...'
 	$.fn.nextGenModal({
 	   msgType: 'ajax',
 	   title: 'processing',
-	   message: 'Cancelling your reserved slots ...'
+	   message: whichMsg
 	});
 	// now, ajax-time!
 	var cancelPOST = $.ajax({	
@@ -32,7 +33,7 @@ function cancelBookingProcess()
 }
 
 $(document).ready( function(){
-	$(document).makeTimestampFriendly();
+	if( typeof doNotProcessTime == 'undefined' ) $(document).makeTimestampFriendly();
 	
 	$('#buttonReset').click( function(){			
 		$.fn.nextGenModal({
@@ -41,6 +42,10 @@ $(document).ready( function(){
 			   message: 'Are you sure you want to do this? All slots we have temporarily reserved will be made as available again for others.',
 			   yesFunctionCall: 'cancelBookingProcess'
 			});
+	});
+	
+	$('#buttonReset2').click( function(){		
+		cancelBookingProcess();
 	});
 		
 });

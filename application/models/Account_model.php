@@ -8,6 +8,17 @@ class Account_model extends CI_Model {
 		$this->load->library('session');
 	}
 	
+	function authenticateUser($username = NULL, $password = NULL)
+	{
+		/*
+			Created 26MAR2012-1850 - I realized $this->getUserInfo is kinda insufficient.
+		*/
+		$userObj = $this->getUserInfo($username, $password);
+		$user_array = $userObj->result();
+		
+		return ( is_array( $user_array ) and count( $user_array ) === 1 );
+	}//authenticateUser(
+	
 	function createAccount()
 	{
 		$accountNum;
@@ -86,7 +97,7 @@ class Account_model extends CI_Model {
 			'Lname' => strtoupper( $this->input->post( 'lastName' ) ),
 			'Gender' => strtoupper( $this->input->post( 'gender' ) ),
 			'Cellphone' => $this->input->post( 'cellPhone' ) ,
-			'Landline' => $this->input->post( '4180487' ) ,
+			'Landline' => $this->input->post( 'landline' ) ,
 			'Email' => strtoupper( $this->input->post( 'email_01_' ) ),
 			'addr_homestreet' =>  strtoupper( $this->input->post( 'homeAndStreet_addr' ) ),
 			'addr_barangay' => strtoupper( $this->input->post( 'barangay_addr' ) ) ,
@@ -144,8 +155,17 @@ class Account_model extends CI_Model {
 			By default, the $pChannelID equals zero means that this is the payment
 			channel "AUTOMATIC_CONFIRMATION_SINCE_FREE".
 		*/
-	
 		if( intval($pChannelID) === 0 )
+		{
+			$returnThis['value'] = true;
+			$returnThis['status'] = 1;
+			return $returnThis;
+		}else
+		/*
+			By default, the $pChannelID equals 2 means that the payment is via Paypal
+			so this is allowed for all users.
+		*/
+		if( intval($pChannelID) === 2 )
 		{
 			$returnThis['value'] = true;
 			$returnThis['status'] = 1;
@@ -290,20 +310,107 @@ class Account_model extends CI_Model {
 			return false;
 	}
 	
-	function isEmployeeNumberExisting( $empNum )
+	function isEmployeeNumberExisting( $empNum, $includeSelf = TRUE )
 	{
+		$accountNum = $this->session->userdata('accountNum');
 		$this->db->where('employeeNumber', $empNum );		
 		$query_obj = $this->db->get('uplbconstituent');
 		$result_arr = $query_obj->result();
-		return ( count( $result_arr ) != 0 ); 
+		if( count( $result_arr ) != 0 )
+		{
+			if( $includeSelf ) return true;
+			else
+				return !( intval($result_arr[0]->AccountNum_ID) == intval($accountNum) );
+		}
 	}
 	
-	function isStudentNumberExisting( $studentNum )
+	function isStudentNumberExisting( $studentNum, $includeSelf = TRUE )
 	{
+		/*
+			Param def'n:
+			
+			$includeSelf - BOOLEAN - if true, kasama siya sa count.
+		*/
+		$accountNum = $this->session->userdata('accountNum');
 		$this->db->where('studentNumber', $studentNum );		
 		$query_obj = $this->db->get('uplbconstituent');
 		$result_arr = $query_obj->result();
-		return ( count( $result_arr ) != 0 ); 
+		
+		if( count( $result_arr ) != 0 )
+		{
+			if( $includeSelf ) return true;
+			else
+				return !( intval($result_arr[0]->AccountNum_ID) == intval($accountNum) );
+		}
 	}
+	
+	function setPassword( $password, $identifierVal, $identifier = "AccountNum" )
+	{
+		/*
+			Created 26MAR2012-1858 As in ngayon lang!!
+			
+			Param def'n:
+			$identifier - can  be also "username" (all lowercase)
+		*/
+		$encryptedPass = hash( 'whirlpool', $password );
+		$sql_command = "UPDATE `user` SET `password` = ? WHERE `".$identifier."` = ?";
+		return $this->db->query( $sql_command, Array(
+			$encryptedPass, $identifierVal
+		));		
+	}//setPassword(..)
+	
+	function setPermissions( $accountNum, $customer = 1, $eventmgr, $receptionist, $admin = NULL, $faculty )
+	{
+		$data = Array(		
+			'EVENT_MANAGER' => $eventmgr, 
+			'CUSTOMER'		=> $customer,  
+			'RECEPTIONIST'  => $receptionist, 
+			'FACULTY'		=> $faculty
+		);
+		if( $admin != NULL ) $data[ 'ADMINISTRATOR' ] = $admin;
+		$where = "`AccountNum_ID` = ".$accountNum; 
+		$sql_command = $this->db->update_string('grand_permission', $data, $where);
+		return $this->db->query( $sql_command );
+	}//setPermissions(..)
+	
+	function updateMainAccountDetails()
+	{
+		$accountNum = $this->session->userdata('accountNum');
+		$data = array(				
+			'username' => strtolower( $this->input->post( 'username' ) ),			
+			'Fname' => strtoupper( $this->input->post( 'firstName' ) ),
+			'Mname' => strtoupper( $this->input->post( 'middleName' ) ),
+			'Lname' => strtoupper( $this->input->post( 'lastName' ) ),
+			'BookableByFriend' => ( isset( $_POST['allowfriends']) ) ? 1 : 0,
+			'Gender' => strtoupper( $this->input->post( 'gender' ) ),
+			'Cellphone' => $this->input->post( 'cellPhone' ) ,
+			'Landline' => $this->input->post( 'landline' ) ,
+			'Email' => strtoupper( $this->input->post( 'email_01_' ) ),
+			'addr_homestreet' =>  strtoupper( $this->input->post( 'homeAndStreet_addr' ) ),
+			'addr_barangay' => strtoupper( $this->input->post( 'barangay_addr' ) ) ,
+			'addr_cityMunicipality' => strtoupper( $this->input->post( 'cityOrMun_addr' ) ),
+			'addr_province' => strtoupper( $this->input->post( 'province_addr' ) ),			
+			'temp1' => NULL,
+			'temp2' => NULL		
+		);
+		$where = "`AccountNum` = ".$accountNum;
+		$sql_command = $this->db->update_string('user', $data, $where);
+		return $this->db->query( $sql_command );
+		
+		//now for UPLB constituency
+	}
+	
+	function updateUPLBConstituencyDetails()
+	{
+		
+		$accountNum = $this->session->userdata('accountNum');
+		$data = array(				
+			'studentNumber' => $this->input->post( 'studentNumber' ),
+			'employeeNumber' => $this->input->post( 'employeeNumber' )
+		);
+		$where = "`AccountNum_ID` = ".$accountNum;
+		$sql_command = $this->db->update_string('uplbconstituent', $data, $where);
+		return $this->db->query( $sql_command );
+	}//updateUPLBConstituencyDetails(..)
 }//class
 ?>

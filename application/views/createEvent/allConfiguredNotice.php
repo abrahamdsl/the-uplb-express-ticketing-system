@@ -21,6 +21,9 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/stillUnconfiguredNotice.css'; ?>"/>
 	<?php			
+		$this->load->view('html-generic/baseURLforJS.inc');	
+	?>
+	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>

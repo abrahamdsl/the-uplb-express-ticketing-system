@@ -209,9 +209,9 @@ $(document).ready(function()
 						
 						var inputNameValidityIndicatorLen = array_of_Validators[x].name.length;
 						var inputName = array_of_Validators[x].name.substring( 0, inputNameValidityIndicatorLen- 9 );
-						$( 'input[name="' + inputName + '"]' ).change();					
+						$( 'input[name="' + inputName + '"]' ).change();
 						areAllOK = false;
-						console.log("error on " + inputName);
+						//console.log("error on " + inputName);
 					}					
 				}
 			}//for		
@@ -225,7 +225,7 @@ $(document).ready(function()
 						uplbConstituency_fields[1].value == "1") 
 				)
 				{
-					console.log("error on uplbc");
+					//console.log("error on uplbc");
 					areAllOK = false;
 				}
 				
@@ -239,48 +239,56 @@ $(document).ready(function()
 				   message: "There are still invalid entries in the form. Please correct them."
 				});
 			}else{
-				var x = $.ajax({
-					type: 'POST',
-					url: CI.base_url + '/userAccountCtrl/isUserExisting',
-					timeout: 30000,
-					beforeSend: function(){
-						$.fn.nextGenModal({
-						   msgType: 'ajax',
-						   title: 'please wait',
-						   message: 'Checking your inputs...'
-						});
-						setTimeout( function(){ }, 500 );
-					},
-					data: { 
-						'username' : $('input[name="username"]').val(),
-						'fName' : $('input[name="firstName"]').val(),
-						'mName' : $('input[name="middleName"]').val(),
-						'lName'	: $('input[name="lastName"]').val(),
-						'studentNum':  $('input[name="studentNumber"]').val(),
-						'employeeNum': $('input[name="employeeNumber"]').val()						
-					},
-					success: function(data){
-						var splitted =  data.split('_');
-						if( splitted[0].startsWith( 'OK' ) ) document.forms[0].submit();					
-						else{
+				if( $('input#isCurrentPageUserAccount').size() < 1 )
+				{
+					/*
+						This part is used when user is changing password (when he is logged-on in the system)
+					*/
+					var x = $.ajax({
+						type: 'POST',
+						url: CI.base_url + '/userAccountCtrl/isUserExisting',
+						timeout: 30000,
+						beforeSend: function(){
 							$.fn.nextGenModal({
-							   msgType: 'error',
-							   title: 'Sign-up error',
-							   message: splitted[2]
+							   msgType: 'ajax',
+							   title: 'please wait',
+							   message: 'Checking your inputs...'
 							});
+							setTimeout( function(){ }, 500 );
+						},
+						data: { 
+							'username' : $('input[name="username"]').val(),
+							'fName' : $('input[name="firstName"]').val(),
+							'mName' : $('input[name="middleName"]').val(),
+							'lName'	: $('input[name="lastName"]').val(),
+							'studentNum':  $('input[name="studentNumber"]').val(),
+							'employeeNum': $('input[name="employeeNumber"]').val()						
+						},
+						success: function(data){
+							var splitted =  data.split('_');
+							if( splitted[0].startsWith( 'OK' ) ) document.forms[0].submit();					
+							else{
+								$.fn.nextGenModal({
+								   msgType: 'error',
+								   title: 'Sign-up error',
+								   message: splitted[2]
+								});
+							}
 						}
-					}
-				});	
-				x.fail(	function(jqXHR, textStatus) { 							
-							$.fn.nextGenModal({
-							   msgType: 'error',
-							   title: 'Connection timeout',
-							   message: 'It seems you have lost your internet connection. Please try again.'
-							});
+					});	
+					x.fail(	function(jqXHR, textStatus) { 							
+								$.fn.nextGenModal({
+								   msgType: 'error',
+								   title: 'Connection timeout',
+								   message: 'It seems you have lost your internet connection. Please try again.'
+								});
 
-							return false;
-				} ) ;	
-				
+								return false;
+					} ) ;	
+				}else{
+					$('input[name$="_validate"]').attr('disabled','disabled');
+					document.forms[0].submit();
+				}
 			}
 		});					
 	}
