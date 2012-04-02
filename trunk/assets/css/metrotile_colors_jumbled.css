@@ -1,0 +1,21 @@
+div.metrotile[id="mtile1"]{
+	background-color: rgb(193,58,0); 
+}
+div.metrotile[id="mtile2"]{
+	background-color: rgb(144,169,48);
+}
+div.metrotile[id="mtile3"]{
+	background-color: rgb(107,70,39);
+}
+div.metrotile[id="mtile4"]{
+	background-color: rgb(129,95,176);
+}
+div.metrotile[id="mtile5"]{
+	background-color: rgb(117,23,100);
+}
+div.metrotile[id="mtile6"]{
+	background-color: rgb(218,134,21);
+}
+div.metrotile[id="mtile7"]{
+	background-color: rgb(78,178,184);
+}

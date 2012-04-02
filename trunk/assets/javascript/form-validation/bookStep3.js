@@ -106,7 +106,7 @@ $(document).ready( function(){
 			}
 		});
 		
-		$('input[type="text"][name$="studentNum"]').change( function(){
+		$('input[type="text"][name$="studentNum"]').change( function(){			
 			var thisName = $(this).attr('name');
 			var thisVal = $(this).val();
 			var result;

@@ -1,4 +1,10 @@
 <?php
+	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
+	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 2 );
+		
+	define('SLOTS', $this->clientsidedata_model->getSlotsBeingBooked() );
+?>
+<?php
 $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
@@ -51,6 +57,7 @@ $this->load->view('html-generic/metadata.inc');
 		$this->load->view('html-generic/overlay_general.inc');
 ?>		
 <div id="main_container">
+<input type="hidden" name="uplbconstituent" id="uplbcons" value="0" />
 	<div id="header">    	    	        
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
@@ -84,51 +91,8 @@ $this->load->view('html-generic/metadata.inc');
 					<div id="content">	
 						<div class="bookingDetails" >
 							<?php
-								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
-							?>
-							<div class="top">		
-								<input type="hidden" id="startDate" value="<?php echo $this->input->cookie( 'startDate' ); ?>" />
-								<input type="hidden" id="endDate" value="<?php echo $this->input->cookie( 'endDate' ); ?>" />
-								<input type="hidden" id="startTime" value="<?php echo $this->input->cookie( 'startTime' ); ?>" />
-								<input type="hidden" id="endTime" value="<?php echo $this->input->cookie( 'endTime' ); ?>" />
-								<div class="start">
-									<span class="deed" >
-										Start
-									</span>
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'startTime' ); ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php echo $this->input->cookie( 'startDate' ); ?>										
-									</span>
-								</div>								
-								<div class="end">
-									<span class="deed" >
-										End
-									</span>									
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'endTime' );  ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php
-											if( $this->input->cookie( 'startDate' ) != $this->input->cookie( 'endDate' ) ) echo $this->input->cookie( 'endDate' );
-											else
-												echo '&nbsp';
-										?>
-									</span>
-								</div>
-							</div>
-							<div class="bdtitle" >
-								<?php echo $this->input->cookie( 'eventName' ); ?>
-							</div>
-							<div class="bottom">
-								<?php echo $this->input->cookie( 'location' ); ?>
-								<br/>
-								<br/>
-								<p>
-									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
-								</p>
-							</div>														
+								$this->load->view('html-generic/eventInfoLeft_CookieBased.inc');
+							?>										
 						</div>
 						<div class="containingClassTable" >
 							Remaining time here?<br/><br/>							
@@ -136,18 +100,15 @@ $this->load->view('html-generic/metadata.inc');
 					</div>
 				</div>
 				<div class="accordionImitation aci2_Book3Special" >
-					<div class="part2 title" >Guest Details</div>
-					<?php
-						$slots = $this->input->cookie( 'slots_being_booked' );
-					?>
+					<div class="part2 title" >Guest Details</div>					
 					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step4' ?>" id="formMain">
 					<div id="tabs">					
 						<ul>
-							<?php for( $x=0; $x< $slots; $x++ ) {?>
+							<?php for( $x=0; $x< SLOTS; $x++ ) {?>
 							<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
 							<?php } ?>
 						</ul>
-						<?php for( $x=0; $x< $slots; $x++ ) {?>
+						<?php for( $x=0; $x< SLOTS; $x++ ) {?>
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
 								<fieldset>
@@ -270,7 +231,7 @@ $this->load->view('html-generic/metadata.inc');
 												</div>
 											<?php
 												}													
-												if( ( $slots-1 ) != $x ) 
+												if( ( SLOTS-1 ) != $x ) 
 												{
 											?>
 												<div class="rightInr">

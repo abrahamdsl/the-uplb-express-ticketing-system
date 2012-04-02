@@ -1,3 +1,8 @@
+/*
+	This CSS is mostly used due to
+	views/html-generic/eventInfoLeft.inc
+*/
+
 div.page_title_custom{
 	"width: 50%; clear: none;
 }
@@ -93,7 +98,7 @@ div.bookingDetails div.bdtitle{
 	border-width: 2px 0px 2px 0px;
 	border-style: solid;
 	border-color: rgb(216,228,214);
-	min-height: 80px;
+	min-height: 50px;
 	height: auto;
 	overflow; auto;
 }

@@ -301,6 +301,25 @@ span.critical{
 div.buttonfooterSeparator{
 	clear: both;
 }
+
+div.metrotile{
+	min-width: 123px; 
+	min-height: 123px; 
+	height: auto; 
+	width: auto;
+	padding: 15px; 
+	color: white; 
+	text-align: center;
+	float: left;
+}
+
+div.metrotile:hover{
+	background-color: green;
+}
+
+div.metrotile img{
+	border-width: 0px;
+}
 /*
 	27FEB2012-1635 - Moved from createEvent05.css - testing if it's better  here
 */
@@ -314,4 +333,18 @@ div.buttonfooterSeparator{
 	background-color: rgb(73,133,39);
 	color: white;
 	
+}
+
+/*
+16MAR2012-1407 Added so that buttons will always be near the footer.
+*/
+div.dropOnTheFloor{
+	bottom: 0;
+	position: absolute;
+	margin-bottom: 100px;
+	width: 90%;
+}
+
+a.button{
+	cursor: pointer;
 }

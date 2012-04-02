@@ -4,7 +4,7 @@ $this->load->view('html-generic/doctype.inc');
 <head>
 <?php
 	$this->pageTitle = "Create Event - Still Unconfigured";
-	$this->thisPage_menuCorrespond = "Create Event Step 6";
+	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
@@ -19,6 +19,9 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/stillUnconfiguredNotice.css'; ?>"/>
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
+	?>
+	<?php			
+		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>			

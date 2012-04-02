@@ -39,7 +39,58 @@ class Guest_model extends CI_Model {
 		}
 		return $this->db->query( $sql_command, $paramArrays );
 	}//assignSeatToGuest
+	//09161733236 aletheia grace del rosario
 	
+	function getGuestsAlreadyEnteredEvent( $bookingNumber )
+	{
+		// create 17mar2012-1109
+		$sql_command = "SELECT * FROM  `booking_guests` INNER JOIN `event_attendance_real` ON `booking_guests`.`UUID` = `event_attendance_real`.`GuestUUID`  WHERE  `booking_guests`.`bookingNumber` =  ?";
+		$arr_result = $this->db->query( $sql_command, $bookingNumber )->result();
+		$arr_result2;
+		
+		if( count($arr_result) > 0 ){
+			$arr_result2 = Array();
+			foreach( $arr_result as $val )
+			{
+				$arr_result2[ $val->GuestUUID ] = $val;
+			}
+			return $arr_result2;
+		}else
+			return false;
+	}//getGuestsAlreadyEnteredEvent(..)
+	
+	function getGuestsAlreadyExitedEvent( $bookingNumber )
+	{
+		// create 17mar2012-1109
+		$sql_command = "SELECT * FROM  `booking_guests` INNER JOIN `event_attendance_real` ON `booking_guests`.`UUID` = `event_attendance_real`.`GuestUUID` ";
+		$sql_command .= "WHERE  `booking_guests`.`bookingNumber` = ? AND `event_attendance_real`.`ExitDate` IS NOT NULL AND `event_attendance_real`.`ExitTime` IS NOT NULL ";
+		$arr_result = $this->db->query( $sql_command, $bookingNumber )->result();
+		$arr_result2;
+		
+		if( count($arr_result) > 0 ){
+			$arr_result2 = Array();
+			foreach( $arr_result as $val )
+			{
+				$arr_result2[ $val->GuestUUID ] = $val;
+			}
+			return $arr_result2;
+		}else
+			return false;
+	}//getGuestsAlreadyExitedEvent(..)
+	
+	function getAttendanceRecord( $guestUUID )
+	{
+		// DEPRECATED 02APR2012-2008
+		$this->db->where('GuestUUID', $guestUUID  );		
+		$sql_command = "SELECT * FROM `event_attendance_real` INNER JOIN `booking_guests` ON `event_attendance_real`.`GuestUUID`";
+		$sql_command .= " = `booking_guests`.`UUID` WHERE `event_attendance_real`.`GuestUUID` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array( $guestUUID ) )->result();
+		
+		if( count( $arr_result ) > 0 ) return $arr_result[0];
+		else
+			return false;
+	}
+		
 	function getGuestDetails( $bookingNumber )
 	{
 		/*
@@ -50,7 +101,7 @@ class Guest_model extends CI_Model {
 		if( count( $arr_result ) < 1 ) return false;
 		else
 			return $arr_result;
-	}// getGuestDetails
+	}// getGuestDetails	
 	
 	function getGuestDetails_UUID_AsKey( $bookingNumber )
 	{ 
@@ -68,6 +119,24 @@ class Guest_model extends CI_Model {
 		return $returnThis;
 	}// getGuestDetails_UUID_AsKey
 	
+	function getGuestDetails_ForCheckIn( $bookingNumber )
+	{
+		/*
+			Created 14MAR2012-1138
+		*/
+		$sql_command = "SELECT * FROM  `booking_guests` INNER JOIN  `event_slot` ON  `booking_guests`.`UUID` = ";
+		$sql_command .= "`event_slot`.`Assigned_To_User` INNER JOIN `seats_actual` ON `event_slot`.`Seat_x` = `seats_actual`.`Matrix_x` AND";
+		$sql_command .= " `event_slot`.`Seat_y` = `seats_actual`.`Matrix_y` AND `event_slot`.`EventID` = `seats_actual`.`EventID` AND ";
+		$sql_command .= " `event_slot`.`Showtime_ID` = `seats_actual`.`Showing_Time_ID`";
+		$sql_command .= " WHERE  `booking_guests`.`bookingNumber` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $bookingNumber ) )->result();
+		
+		if( count( $arr_result ) > 0 )
+			return $arr_result;
+		else
+			return false;			
+	}//getGuestDetails_ForCheckIn
+	
 	function getSingleGuest( $UUID )
 	{
 		/*
@@ -82,11 +151,28 @@ class Guest_model extends CI_Model {
 			return $arr_result[0];
 	}//getSingleGuest( .. )
 	
-	
-	function insertGuestDetails( $bookingNumber, $accountNum, $Fname,
-		 $Mname,  $Lname, $gender, $cellphone, $landline, $email	)
+	function getSingleGuestExtended( $UUID )
 	{
-		$sql_command = "INSERT INTO `booking_guests` VALUES ( UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		/*
+			Created 14FEB2012-1105
+		*/
+		$sql_command = "SELECT * FROM `booking_guests` INNER JOIN `booking_details` ON `booking_details`.`bookingNumber`=";
+		$sql_command .= "`booking_guests`.`bookingNumber` WHERE `booking_guests`.`UUID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $UUID ) )->result();
+		
+		if( count( $arr_result ) != 1 )
+			return false;
+		else
+			return $arr_result[0];
+	}//getSingleGuestExtended( .. )
+	
+	
+	function insertGuestDetails( $bookingNumber, $accountNum, $Fname,  $Mname,  $Lname, 
+		$gender, $cellphone, $landline, $email, $studentNum = NULL, $employeeNum = NULL
+	)
+	{
+		// 13MAR2012-1004 | Added $studentNum and $employeeNum
+		$sql_command = "INSERT INTO `booking_guests` VALUES ( UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		$data = Array(
 			'bookingNumber' => $bookingNumber,
 			'AccountNum' => intval($accountNum),
@@ -96,7 +182,9 @@ class Guest_model extends CI_Model {
 			'Gender' => $gender,
 			'Cellphone' => $cellphone,
 			'landline' => $landline,
-			'Email' => $email
+			'Email' => $email,
+			'studentNumber' => $studentNum,
+			'employeeNumber' => $employeeNum
 		);
 		return $this->db->query( $sql_command, $data);
 	}//insertGuestDetails

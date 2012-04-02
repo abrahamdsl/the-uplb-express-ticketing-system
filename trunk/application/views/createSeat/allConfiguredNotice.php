@@ -20,6 +20,9 @@ $this->load->view('html-generic/doctype.inc');
 	<?php			
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
+	<?php			
+		$this->load->view('html-generic/baseURLforJS.inc');	
+	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>			

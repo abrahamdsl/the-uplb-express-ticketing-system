@@ -87,6 +87,7 @@ class Event_model extends CI_Model {
 			'Location' => $this->input->post( 'location' ),
 			'Description' => "echos",
 			'FB_RSVP' => $this->input->post( 'eventFBRSVP' ),
+			'ByUser' => $this->session->userdata( 'accountNum' ),
 			'temp' => 100
 		);		
 		$this->db->insert( 'event', $data );
@@ -187,13 +188,38 @@ class Event_model extends CI_Model {
 			
 	function getAllEvents()
 	{
-		// created 20DEC2011-1418
-		$query_obj = $this->db->get('event');
+		// created 20DEC2011-1418		
+		$sql_command = "SELECT * FROM `event` ORDER BY `Name` ASC";
+		$query_obj = $this->db->query( $sql_command );
 		$result_arr = $query_obj->result();
 		
 		return $result_arr;
 	}//getAllEvents
 	
+	function getAllEventsRestricted()
+	{
+		// created 20DEC2011-1418
+		$accountNum = $this->session->userdata( 'accountNum' );
+		$sql_command = "SELECT * FROM `event` WHERE `ByUser` = ? ORDER BY `Name` ASC";
+		$query_obj = $this->db->query( $sql_command, Array( $accountNum ) );
+		$result_arr = $query_obj->result();
+		
+		return $result_arr;
+	}//getAllEvents
+	
+	function getAllShowingTimes( $eventID = NULL )
+	{
+		if( $eventID == NULL ) return NULL;
+		
+		$query_obj = $this->db->get_where( 'showing_time', Array('eventID' => $eventID ) );		
+		$result_arr = $query_obj->result();
+		
+		if( count($result_arr) > 0 )
+			return $result_arr;	
+		else
+			return false;
+	}//getAllShowingTimes(..)
+			
 	function getBeingConfiguredShowingTimes( $eventID = NULL )
 	{
 		/*
@@ -276,6 +302,19 @@ class Event_model extends CI_Model {
 			return $result_arr[0];
 	}//getEventInfo(..)
 	
+	function getForCheckInShowingTimes( $eventID = NULL )
+	{
+		if( $eventID == NULL ) return NULL;
+		
+		$query_obj = $this->db->get_where( 'showing_time', Array( 'eventID' => $eventID, 'Status' => 'CHECK-IN' ) );		
+		$result_arr = $query_obj->result();
+		
+		if( count($result_arr) > 0 )
+			return $result_arr;	
+		else
+			return false;
+	}//getForCheckInShowingTimes(..)
+	
 	function getLastShowingTimeUniqueID( $eventID = null )
 	{
 		/*
@@ -305,6 +344,7 @@ class Event_model extends CI_Model {
 		/*
 			Created 29DEC2011-2046
 			
+			Returns the showing times of the the events specified.
 		*/
 		$showingTimes = array();
 		
@@ -314,7 +354,11 @@ class Event_model extends CI_Model {
 		foreach( $allEvents as $key => $singleEvent )
 		{			
 			$cfgST = $this->getConfiguredShowingTimes( $singleEvent->EventID , true );
-			if( count( $cfgST ) > 0 ) $showingTimes[ $singleEvent->EventID ] = $cfgST;			
+			if( $cfgST === false ) continue;						
+			if( count( $cfgST ) > 0 )
+				$showingTimes[ $singleEvent->EventID ] = $cfgST;			
+			else
+				return false;
 		}//foreach
 		
 		return $showingTimes;
@@ -329,8 +373,10 @@ class Event_model extends CI_Model {
 			
 			Returns single MYSQL_OBJ (as in one entry) if successful, else
 			boolean false.
+			
+			17MAR2012-1612 - Added INNER JOIN to `event`
 		*/
-		$sql_command = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND `UniqueID` = ?;";
+		$sql_command = "SELECT * FROM `showing_time` INNER JOIN `event` ON `showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`EventID` = ? AND `showing_time`.`UniqueID` = ?;";
 		$mysql_result_arr = $this->db->query( $sql_command, array( $eventID, $showtimeID ) )->result();
 		
 		if( count( $mysql_result_arr ) !== 1 ) return false;
@@ -722,6 +768,18 @@ class Event_model extends CI_Model {
 		return $query_result;
 	}//setShowingTimeTicketClass(..)
 	
+	function setForCheckIn( $eventID, $showimeID )
+	{
+		$sql_command = "UPDATE `showing_time` SET `Status` = 'CHECK-IN' WHERE `EventID` = ? AND `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $eventID, $showimeID ) );
+	}
+	
+	function setAsCancelled( $eventID, $showimeID )
+	{
+		$sql_command = "UPDATE `showing_time` SET `Status` = 'CANCELLED' WHERE `EventID` = ? AND `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $eventID, $showimeID ) );
+	}
+	
 	function stopShowingTimeConfiguration( $eventID )
 	{
 		/*
@@ -736,6 +794,20 @@ class Event_model extends CI_Model {
 		
 		return $dbAccessResult;
 	}// stopShowingTimeConfiguration				
+
+	function updateShowingTimeSchedule( $eventID, $showtimeID, $startDate, $startTime, $endDate, $endTime )
+	{
+		//Created 27mar2012-0720
+		$data = Array (
+			'StartDate' => $startDate,
+			'StartTime' => $startTime,
+			'EndDate' 	=> $endDate,
+			'EndTime' 	=> $endTime
+		);
+		$where = "`EventID` = ".$eventID." AND `UniqueID` = ".$showtimeID;
+		$sql_command = $this->db->update_string('showing_time', $data, $where);
+		return $this->db->query( $sql_command );
+	}
 }//class
 
 ?>

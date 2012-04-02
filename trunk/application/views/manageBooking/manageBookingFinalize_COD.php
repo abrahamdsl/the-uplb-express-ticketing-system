@@ -19,13 +19,11 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
-	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
-	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>				
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBookingFinalize_COD.css'; ?>"/>	
 <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
@@ -149,6 +147,11 @@ $this->load->view('html-generic/metadata.inc');
 											<input type="hidden" name="slot" value="<?php echo $guestCount; ?>" ><br/>									
 										</span>
 									</div>
+									<?php
+										$isUpChange = $this->Booking_model->isBookingUpForChange( $this->clientsidedata_model->getBookingNumber() );
+										if( $isUpChange )
+										{
+									?>
 									<div class="KoreanPeninsula" >
 										<span class="left captionCurrent" >
 											Current showing time and ticket class selected
@@ -160,6 +163,7 @@ $this->load->view('html-generic/metadata.inc');
 												$redEye = FALSE;													
 												$dateStart = strtotime( $currentShowingTime->StartDate );
 												$timeStart = strtotime( $currentShowingTime->StartTime );
+												$dateEnd = strtotime( $currentShowingTime->EndDate );
 												$timeEnd = strtotime( $currentShowingTime->EndTime );																										
 												if( $timeEnd < $timeStart ) $redEye = TRUE;										
 											?>
@@ -196,9 +200,12 @@ $this->load->view('html-generic/metadata.inc');
 											<span class="center_purest" ><?php echo $oldTicketClassName; ?></span>
 										</span>
 									</div>
+									<?php 
+										}
+									?>
 									<div class="KoreanPeninsula" >
 										<span class="left captionCurrent" >
-											Your new showing time and ticket class
+											Your <?php if($isUpChange) echo 'new&nbsp;'?> showing time and ticket class
 										</span>
 										<span class="rightSpecialHere" >
 										<?php
@@ -207,6 +214,7 @@ $this->load->view('html-generic/metadata.inc');
 												$redEye = FALSE;													
 												$dateStart = strtotime( $newShowingTime->StartDate );
 												$timeStart = strtotime( $newShowingTime->StartTime );
+												$dateEnd = strtotime( $newShowingTime->EndDate );
 												$timeEnd = strtotime( $newShowingTime->EndTime );																										
 												if( $timeEnd < $timeStart ) $redEye = TRUE;										
 											?>
@@ -340,7 +348,7 @@ $this->load->view('html-generic/metadata.inc');
 										</tbody>
 									</table>		
 									<?php
-										if( count($paidPurchasesArray) > 0 )
+										if( is_array($paidPurchasesArray) and count($paidPurchasesArray) > 0 )
 										{
 									?>
 									<br/>								

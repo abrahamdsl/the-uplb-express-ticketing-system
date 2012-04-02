@@ -40,6 +40,26 @@ class MakeXML_model extends CI_Model {
 		}
    }// createTempFile(..)
    
+   function XMLize_AJAX_Response( 
+	$type="error", $title, $resultString, $resultCode = 0, $message, $redirectTo = ""
+   )
+   {
+		/*
+			Created 26MAR2012-1912
+		*/
+		$xml = new xml_writer;
+		$xml->setRootName( 'ajaxresponse' );
+		$xml->initiate();		
+		$xml->addNode( 'type' , $type );
+		$xml->addNode( 'resultstring' , $resultString );
+		$xml->addNode( 'resultcode' , $resultCode  );
+		$xml->addNode( 'title', $title );
+		$xml->addNode( 'message', $message );
+		if( strlen( $redirectTo ) >  0 ) $xml->addNode( 'redirect', $redirectTo );
+		
+		return $xml->getXml();		 
+   }//XMLize_AJAX_Response
+   
 	function XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes )
 	{
 		/* created 30DEC2011-1409
@@ -315,5 +335,59 @@ class MakeXML_model extends CI_Model {
 			// cannot write to current disk!
 			return "ERROR_CANNOT-WRITE-TO-DISK";
 		}
-	}
+	}//function
+	
+	function XMLize_AllDetailsForCheckin( $detailsObj, $alreadyEntered, $alreadyExited )
+	{
+		$XMLfile = $this->createTempFile();
+		$fp;
+		
+		if( !is_array( $detailsObj ) )
+		{
+			 echo "ERROR_INVALID_DATA";
+			 return false;
+		}		
+		$fp = fopen( $XMLfile, "w" );
+		if( $fp != NULL )
+		{
+			// Initiate class
+			$xml = new xml_writer;
+			$xml->setRootName( 'checkininfo' );
+			$xml->initiate();
+			
+			foreach( $detailsObj as $mainInfo )
+			{
+				$xml->startBranch( 'guest' );	
+					$xml->addNode(  'entered', ( isset( $alreadyEntered[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
+					$xml->addNode(  'exited', ( isset( $alreadyExited[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
+					$xml->addNode(  'uuid', $mainInfo->Assigned_To_User );				
+					$xml->startBranch( 'name' );
+						$xml->addNode(  'first', $mainInfo->Fname );
+						if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
+						$xml->addNode(  'last', $mainInfo->Lname );
+					$xml->endBranch();
+					$xml->startBranch( 'seat' );
+						$xml->addNode(  'row', $mainInfo->Visual_row );
+						$xml->addNode(  'colY', $mainInfo->Visual_col );
+					$xml->endBranch();
+					$xml->addNode(  'gender', $mainInfo->Gender );
+					$xml->addNode(  'cellphone', $mainInfo->Cellphone );
+					//if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
+						$xml->addNode(  'landline', $mainInfo->Landline );	
+					//$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
+					//if( strlen($mainInfo->studentNumber) > 8 )		
+						$xml->addNode(  'studentnum', $mainInfo->studentNumber );
+					//if( strlen($mainInfo->employeeNumber) > 8 )		
+						$xml->addNode(  'empnum', $mainInfo->employeeNumber );
+				$xml->endBranch();				
+			}
+			$xml->endBranch( );	
+			$xmlContent = $xml->getXml();			
+			fclose( $fp );			
+			return  $xmlContent;
+		}else{
+			// cannot write to current disk!
+			return "ERROR_CANNOT-WRITE-TO-DISK";
+		}
+	}//function
 }

@@ -1,7 +1,7 @@
 				<table id="bookProgressIndicator" class="center_purest" cellspacing="0px" >
 					<tr>
 						<?php
-							$currentStep = $this->session->userdata( 'book_step' );							
+							$currentStep = intval($this->clientsidedata_model->getBookingProgressIndicator());
 							if( $currentStep === FALSE )
 							{
 								$currentStep = $this->session->userdata( 'activity_stage' );

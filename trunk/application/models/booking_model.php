@@ -13,6 +13,7 @@ class Booking_model extends CI_Model {
 	{
 		parent::__construct();		
 	}
+		
 	
 	function createBookingDetails( $bNumber, $eventID, $showingTimeUID, $ticketClassGID, $ticketClassUID, $accountNum)	
 	{
@@ -152,7 +153,8 @@ class Booking_model extends CI_Model {
 	{
 		/*
 			Created 25FEB2012-1247
-		*/		
+		*/
+		date_default_timezone_set('Asia/Manila');
 		$sql_command = "SELECT * FROM `booking_details` INNER JOIN `purchase` ON `booking_details`.`bookingNumber`";
 		$sql_command .=  " =`purchase`.`bookingNumber` WHERE `EventID` = ? AND `ShowingTimeUniqueID` = ? AND";
 		$sql_command .= " `Status` = 'PENDING-PAYMENT' AND `purchase`.`Amount` > 0 AND CURRENT_TIMESTAMP >=";
@@ -234,6 +236,22 @@ class Booking_model extends CI_Model {
 		);
 	}//isBookingUpForChange
 	
+	function isBookingUpForPayment( $bookingNumberOrObj )
+	{
+		/*
+				
+			Detects if the current booking is waiting for payment
+		*/
+		$bookingObj = null;
+		if( is_string( $bookingNumberOrObj ) ) 
+			$bookingObj = $this->getBookingDetails( $bookingNumberOrObj );
+		else
+			$bookingObj = $bookingNumberOrObj;
+			
+		if( $bookingObj === false ) return false;
+		return( $bookingObj->Status == 'PENDING-PAYMENT' );
+	}//isBookingUpForPayment
+	
 	function isBookingRolledBack( $bookingNumberOrObj )
 	{
 		/*
@@ -275,6 +293,24 @@ class Booking_model extends CI_Model {
 		else
 			return ( count( $callBack ) > 0 );
 	}//isTherePaymentPeriodExpiredBooking
+
+	function markAsConsumed_Full( $bNumber )
+	{
+		/*
+			Created 17FEB2012-1058
+		*/
+		$sql_command = "UPDATE `booking_details` SET `Status`= 'CONSUMED',`Status2` = 'FULL' WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $bNumber ) );
+	}//markAsConsumed_Full
+	
+	function markAsConsumed_Partial( $bNumber )
+	{
+		/*
+			Created 17FEB2012-1058
+		*/
+		$sql_command = "UPDATE `booking_details` SET `Status`= 'CONSUMED',`Status2` = 'PARTIAL' WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $bNumber ) );
+	}//markAsConsumed_Partial
 	
 	function markAsExpired_ForDeletion( $bNumber )
 	{

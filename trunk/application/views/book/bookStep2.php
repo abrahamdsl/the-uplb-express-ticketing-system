@@ -1,6 +1,8 @@
 <?php
 	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
 	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 2 );
+		
+	define('SLOTS', $this->clientsidedata_model->getSlotsBeingBooked() );
 ?>
 <?php
 $this->load->view('html-generic/doctype.inc');
@@ -64,7 +66,6 @@ $this->load->view('html-generic/metadata.inc');
 <?php			
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
 ?>		
-
 			<div id="page_title" class="page_title_custom" >
 			<?php if( $isActivityManageBooking ) {?>
 				Manage Booking<br/>
@@ -101,69 +102,11 @@ $this->load->view('html-generic/metadata.inc');
 					<div id="title">Select now</div>
 					<div id="content">	
 						<div class="bookingDetails" >							
-							<div class="top">		
-								<input type="hidden" id="startDate" value="<?php echo $showtimeObj->StartDate ?>" />
-								<input type="hidden" id="endDate" value="<?php echo $showtimeObj->EndDate ?>" />
-								<input type="hidden" id="startTime" value="<?php echo $showtimeObj->StartTime ?>" />
-								<input type="hidden" id="endTime" value="<?php echo $showtimeObj->EndTime ?>" />
-								<div class="start">
-									<span class="deed" >
-										Start
-									</span>
-									<span class="contentproper_time" >										
-										<?php echo $showtimeObj->StartTime;?>
-									</span>
-									<span class="contentproper_date" >
-										<?php echo $showtimeObj->StartDate; ?>										
-									</span>
-								</div>								
-								<div class="end">
-									<span class="deed" >
-										End
-									</span>									
-									<span class="contentproper_time" >										
-										<?php echo $showtimeObj->EndTime;?>
-									</span>
-									<span class="contentproper_date" >
-										<?php
-											if( $showtimeObj->StartDate != $showtimeObj->EndDate ) echo $showtimeObj->EndDate;
-											else
-												echo '&nbsp';
-										?>
-									</span>
-								</div>
-							</div>
-							<div class="bdtitle" >
-								<?php echo $eventInfo->Name; ?>
-							</div>
-							<div class="bottom">
-								<?php echo $eventInfo->Location; ?>
-								<br/>
-								<br/>
-								<?php
-									$slots = $this->input->cookie( 'slots_being_booked' );
-								?>
-								<p>
-									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
-								</p>
-								<?php if( $isActivityManageBooking ) {?>
-								<table class="center_purest" >
-									<tr>
-										<td>Ticket class of your current booking:</td>
-										<td> <?php echo $existingTCName; ?></td>
-									</tr>
-									<tr>
-										<td style="width: 85%;" >Total payments for your current booking:</td>
-										<td>PHP <?php echo $existingPayments; ?></td>
-									</tr>								
-								</table>
-								<?php } ?>
-							</div>							
-						</div>
-						<div class="containingClassTable" >							
 							<?php
-								 //$actionFunction = ( $isActivityManageBooking ) ? "manageBooking_changeShowingTime_process2" : "book_step3";								
-							?>
+								$this->load->view('html-generic/eventInfoLeft.inc');
+							?>							
+						</div>
+						<div class="containingClassTable" >														
 							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3'; ?>" id="formMain">		
 								<table class="center_purest schedulesCentral">
 									<thead>
@@ -188,7 +131,7 @@ $this->load->view('html-generic/metadata.inc');
 													<?php echo $TCD->Price; ?>
 												</td>
 												<td>
-													<?php echo ( floatval($TCD->Price) * intval( $slots ) ); ?>
+													<?php echo ( floatval($TCD->Price) * intval( SLOTS ) ); ?>
 												</td>
 												<td>
 													<?php if( $this->input->cookie( $TCD->UniqueID."_slot_UUIDs" ) !== false )

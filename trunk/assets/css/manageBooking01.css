@@ -25,3 +25,15 @@ div.bottomspecialOnMB01{
 div.bottomspecialOnMB01 ul{
 	list-style-type: none;
 }
+span.choice{
+	min-width: 65px;
+	min-height: 29px;
+	width: auto;
+	height: auto;
+	overflow: auto;
+	margin: 0px 10px 0px 10px;
+}
+p.comment{
+	padding: 5px;
+	border: 1px solid gray;
+}

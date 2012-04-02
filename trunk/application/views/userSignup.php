@@ -3,7 +3,7 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
 <?php
-	$this->pageTitle = "UXT - Sign up";
+	$this->pageTitle = "Sign up";
 	$this->thisPage_menuCorrespond = "HOME";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');

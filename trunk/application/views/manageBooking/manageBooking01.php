@@ -11,12 +11,15 @@ $this->load->view('html-generic/metadata.inc');
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_basic.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>			
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
@@ -83,17 +86,15 @@ $this->load->view('html-generic/metadata.inc');
 					foreach( $bookings as $singleBooking )
 					{
 					$displayThis = $singleBooking->bookingNumber;
-					$displayThis .= "&nbsp;&nbsp;|&nbsp;&nbsp;".$singleBooking->Name;
-					/*$displayThis .= " | Starts at ".$singleBooking->StartDate;
-					$displayThis .= " ".$singleBooking->StartTime;
-					$displayThis .= " | Ends at ".$singleBooking->EndDate;
-					$displayThis .= " ".$singleBooking->EndTime;
-					$displayThis .= " | ".$singleBooking->Location;*/
+					$displayThis .= "&nbsp;&nbsp;|&nbsp;&nbsp;".$singleBooking->Name;					
 			?>				
 				<h3 id="h_<?php echo $singleBooking->bookingNumber; ?>"><a href="#"><?php echo $displayThis ?></a></h3>
 				<div id="<?php echo $singleBooking->bookingNumber; ?>" class="section" >
 					<?php
-						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) ) {
+						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) or 
+						      $this->Booking_model->isBookingUpForPayment( $singleBooking )
+						) 
+						{
 					?>
 					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
 						This booking is up for confirmation/payment. Click "View Details" to see more information.
@@ -186,33 +187,53 @@ $this->load->view('html-generic/metadata.inc');
 					</div>
 					<div class="containingClassTable">
 						<?php
-						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) ) {
-						?>
+							$isUpChange = $this->Booking_model->isBookingUpForChange( $singleBooking );
+							$isUpPayment = $this->Booking_model->isBookingUpForPayment( $singleBooking );
+							$isPendingChange = ( $isUpChange  or $isUpPayment );
+						?>						
+						<?php
+						if( $isPendingChange ) {
+						?>				
 							<div class="metrotile" name="viewdetails" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>																						
 								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_pendingchange_viewdetails'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
 							</div>
+							<?php if( $isUpChange ) { ?>
 							<div class="metrotile" name="cancelchanges" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelchanges.png" alt="Cancel changes" /></a>																						
 								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_cancelchanges'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
 							</div>
+							<?php } ?>
 						<?php } else { ?>
+						<!--
+						<div class="metrotile" name="viewdetails" >
+							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>																						
+							<form method="post" action="<?php echo base_url().'EventCtrl/viewdetails'; ?>" >
+								<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+							</form>
+						</div>				-->		
 						<div class="metrotile" name="changeshowingtime" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeshowingtime.png" alt="Change showing time" /></a>																						
 								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_changeShowingTime'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
-						</div>
+						</div>						
 						<div class="metrotile" name="upgradeticketclass" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-upgradeticketclass.png" alt="Upgrade Ticket Class" /></a>
 								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_upgradeticketclass'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
-						</div>					
+						</div><!--
+						<div class="metrotile" name="customer-manage-class" >
+								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-customer-manageclass.png" alt="Change showing time" /></a>																						
+								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_manageclasses'; ?>" >
+									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+								</form>
+						</div>-->				
 						<div class="metrotile" name="changeseat" >
 								<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeseat.png" alt="Change Seat" /></a>
 								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_changeSeat'; ?>" >

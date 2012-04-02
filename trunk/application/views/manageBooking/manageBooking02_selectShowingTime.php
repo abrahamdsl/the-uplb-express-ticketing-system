@@ -118,6 +118,7 @@ $this->load->view('html-generic/metadata.inc');
 											$redEye = FALSE;													
 											$dateStart = strtotime( $currentShowingTime->StartDate );
 											$timeStart = strtotime( $currentShowingTime->StartTime );
+											$dateEnd = strtotime( $currentShowingTime->EndDate );																										
 											$timeEnd = strtotime( $currentShowingTime->EndTime );																										
 											if( $timeEnd < $timeStart ) $redEye = TRUE;										
 										?>

@@ -4,10 +4,15 @@ class userAccountCtrl extends CI_Controller {
 
 	function __construct()
 	{
-		parent::__construct();		
+		parent::__construct();
+		
+		define( 'ADMIN_MANAGE_USER', 'ADMIN_MANAGE-USER');
+		
 		$this->load->library('session');
 		$this->load->model('login_model');
+		$this->load->model('Academic_model');
 		$this->load->model('Account_model');
+		$this->load->model('clientsidedata_model');
 		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
 	}
@@ -27,6 +32,36 @@ class userAccountCtrl extends CI_Controller {
 			$this->userSignup();
 		}	
 	}//index
+	
+	
+	function changePassword_step1()
+	{
+		$this->load->view('manageAccount/changePassword');
+	}
+	
+	function changePassword_step2(){
+		/*
+			Take note, we don't perform new password confirmation here, inasa na sa JavaScript! hahaha.
+			( kasalanan na yan ng  naghack/trick dun sa page.javascript)
+		*/
+		if( !$this->input->is_ajax_request() ) die("NOT-ALLOWED");
+		
+		$accountNum = $this->session->userdata('accountNum');
+		$userObj 	= $this->Account_model->getUserInfoByAccountNum( $accountNum );		
+		$oldPass = $this->input->post( "oldPassword" );
+		$newPass = $this->input->post( "password" );		
+		if( !$this->Account_model->authenticateUser( $userObj->username, $oldPass ) )
+		{			
+			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+				"error", "authentication failure", "AUTH_FAIL", 0, "Invalid current password. Please try again.", "" 
+			);
+			return false;
+		}
+		$result = $this->Account_model->setPassword( $newPass, $accountNum );
+		$whereNext = '<br/><br/><a href="'.base_url().'userAccountCtrl/myAccount" >Back to My Account</a>';
+		echo $this->MakeXML_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, "Your password has been changed.".$whereNext );
+		return true;
+	}//changePassword_step2
 	
 	function isUserExisting()
 	{
@@ -76,6 +111,53 @@ class userAccountCtrl extends CI_Controller {
 		return true;
 	}//isUserExisting()
 	
+	function isUserExisting2()
+	{
+		/*
+			Checks if a user is attached to an AccountNum or username being submitted.
+			Data submitted is deemed to be accountNum if it is an integer.
+		*/
+		define( 'ACCOUNTNUM_I', "AccountNum" );
+		define( 'USERNAME_I', "username" );
+		$identifier_val;
+		$identifier_type;		
+		$accountNum = 0;
+		
+		$identifier_val = $this->input->post( 'useridentifier' );				
+		if( $identifier_val === false or strlen($identifier_val) < 1 ){ 
+			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+				"error", "information needed", "INFO_NEEDED", 0, "i need your info please! field: useridentifier", "" 
+			);
+			return false;
+		}
+		$identifier_type = ( is_numeric( $identifier_val) && !( intval( $identifier_val ) == 0 or intval( $identifier_val )== 1  ) ) 
+								? ACCOUNTNUM_I : USERNAME_I;
+			
+		switch( $identifier_type )
+		{
+			case ACCOUNTNUM_I:  $userExists = ( $this->Account_model->getUserInfoByAccountNum( $identifier_val ) !== FALSE );
+								$accountNum = $identifier_val;
+								break;									
+			case USERNAME_I	: 	$userObj =  $this->Account_model->getUserInfoByUsername( $identifier_val );
+								$userExists = ( $userObj !== FALSE );
+								if( $userExists ) $accountNum = $userObj->AccountNum;
+								break;								
+		}//switch
+		if( $userExists )
+		{
+			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+				"okay", "user exists", "USERNAME_EXISTS", 0, "user is existing.", "" 
+			);
+			$this->clientsidedata_model->setSessionActivity( ADMIN_MANAGE_USER, 2, 'accountNum='.$accountNum.";" );
+			return true;
+		}else{
+			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+				"error", "not found", "USERNAME_DOES-NOT-EXIST", 0, "username is not existing.", "" 
+			);
+			return false;
+		}
+	}//isUserExisting2(..)
+	
 	function getUserInfoForBooking()
 	{
 		/*
@@ -110,6 +192,114 @@ class userAccountCtrl extends CI_Controller {
 		echo $this->MakeXML_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );		
 		return true;	
 	}//getUserInfoForBooking
+	
+	function manageuser()
+	{
+		//for admin only		
+		if( !$this->Permission_model->isAdministrator() )
+		{
+			$data['error'] = "NO_PERMISSION";					
+			$this->load->view( 'errorNotice', $data );			
+			return false;
+		}
+		$this->load->view( 'manageUser/manageUser01' );
+	}// manageUser(..)
+	
+	private function manageuser_common()
+	{
+		/*
+			Gets main info and uplb constituency info.
+		*/
+		if( !$this->Permission_model->isAdministrator() )
+		{
+			$data['error'] = "NO_PERMISSION";					
+			$this->load->view( 'errorNotice', $data );			
+			return false;
+		}
+		$concernedUserAccountNum = $this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' );		
+		$data['accountNum']   = $concernedUserAccountNum;
+		$data['userMainInfo'] = $this->Account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
+		$data['userUPLBInfo'] = $this->Account_model->getUserUPLBConstituencyData( $concernedUserAccountNum );
+		
+		return $data;
+	}// manageuser_common(..)
+	
+	private function manageuser_precheck( $stage = 2 )
+	{
+		$sessionActivity = $this->clientsidedata_model->getSessionActivity( );				
+		if( $sessionActivity[0] != ADMIN_MANAGE_USER and $sessionActivity[1] < $stage )
+		{
+			$data['error'] = "NO_DATA";			
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+	}//manageuser_precheck(..)
+	
+	function manageUser_step2()
+	{		
+		$this->manageuser_precheck( 2 );		
+		$data = $this->manageuser_common();
+		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
+		$this->load->view( 'manageUser/manageUser02', $data);		
+	}//manageUser_step2
+	
+	function manageuser_editroles()
+	{
+		$this->manageuser_precheck( 3 );		
+		$data = $this->manageuser_common();
+		$data['permissionObj'] = $this->Permission_model->getPermissionStraight( $data['accountNum']  );
+		$this->load->view( 'manageUser/manageUser03_editRoles.php', $data);
+	}//manageuser_editroles(..)
+	
+	function manageuser_editrole_save()
+	{
+		// customer and admin are not included, as they are not removable
+		
+		$this->manageuser_precheck( 2 );
+		$data = $this->manageuser_common();
+		$transResult;
+		
+		$permissionsSent = Array(			
+			'eventmanager'  => $this->input->post('eventmanager'),
+			'receptionist'  => $this->input->post('receptionist'),			
+			'facultymember' => $this->input->post('facultymember')
+		);
+		foreach( $permissionsSent as $key => $value )
+		{	// check for validity
+			if( !( $value==="1" or $value==="0") )
+			{				
+				$data['error'] = "CUSTOM";
+				$data['theMessage'] = "The submitted data to the server is in the incorrect format.";
+				$data['redirectURI'] = base_url()."userAccountCtrl/manageuser_editroles";
+				$data['defaultAction'] = "Edit Roles";
+				$this->load->view( 'errorNotice', $data );			
+				return false;
+			}
+		}
+		$transResult =  $this->Account_model->setPermissions( 
+			$data['accountNum'],
+			1,
+			$permissionsSent[ 'eventmanager' ],
+			$permissionsSent[ 'receptionist' ],
+			NULL,
+			$permissionsSent[ 'facultymember' ]
+		);
+		if( $transResult ){
+			
+			$data[ 'theMessage' ] = "The roles have been edited.";
+			$data[ 'redirect' ] = true;
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/manageUser_step2';
+			$data[ 'defaultAction' ] = 'Manage User';			
+			$this->load->view( 'successNotice', $data );				
+		}else{
+			$data['error'] = "CUSTOM";
+			$data['theMessage'] = "Something went wrong while updating permissions. Your changes might not be saved.";
+			$data[ 'redirect' ] = true;
+			$data['redirectURI'] = base_url()."userAccountCtrl/manageuser_editroles";
+			$data['defaultAction'] = "Edit Roles";
+			$this->load->view( 'errorNotice', $data );						
+		}
+	}//manageuser_editroles_save()
 	
 	function newUserWelcome()
 	{
@@ -180,5 +370,67 @@ class userAccountCtrl extends CI_Controller {
 		}
 	} // userSignup_step2()
 		
+	function manageAccountSave()
+	{		
+		$studentNumber = $this->input->post( 'studentNumber' );
+		$employeeNumber = $this->input->post( 'employeeNumber' );		
+		$_UPLB_Unique_violated = " you have chosen is already being used. No changes have been done to your account.";
+		
+		if( $this->Account_model->isStudentNumberExisting( $studentNumber, FALSE ) )
+		{
+			$data['error'] = "CUSTOM";
+			$data[ 'theMessage' ] = "The new student number".$_UPLB_Unique_violated;
+			$data[ 'redirect' ] = true;
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'defaultAction' ] = 'Manage Account';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		if( $this->Account_model->isEmployeeNumberExisting( $employeeNumber, FALSE ) )
+		{
+			$data['error'] = "CUSTOM";
+			$data[ 'theMessage' ] = "The new employee number".$_UPLB_Unique_violated;
+			$data[ 'redirect' ] = true;
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'defaultAction' ] = 'Manage Account';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		
+		$transResult =  $this->Account_model->updateMainAccountDetails();	
+		$transResult2 =  $this->Account_model->updateUPLBConstituencyDetails();		
+		if( $transResult and $transResult2 ){
+			
+			$data[ 'theMessage' ] = "The changes in your account have been saved..";
+			$data[ 'redirect' ] = true;
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'defaultAction' ] = 'Manage Account';
+			$this->load->view( 'successNotice', $data );				
+		}else{
+			$data['error'] = "CUSTOM";
+			$data['theMessage'] = "Something went wrong while saving changes to your account. Your changes might not be saved.";
+			$data[ 'redirect' ] = true;
+			$data['redirectURI'] = base_url()."userAccountCtrl/myAccount";
+			$data['defaultAction'] = 'Manage Account';
+			$this->load->view( 'errorNotice', $data );						
+		}
+	}//manageAccountSave(..)
+	
+	
+	
+	
+	function myAccount()
+	{
+		$accountNum =  $this->session->userdata( 'accountNum' );
+		$userObj = $this->Account_model->getUserInfoByAccountNum( $accountNum );
+		$uplbConstituencyObj =  $this->Account_model->getUserUPLBConstituencyData( $accountNum );
+		$permissionsObj = $this->Permission_model-> getPermissionStraight( $accountNum );
+		
+		$data['userObj'] 			 = $userObj;
+		$data['uplbConstituencyObj'] = $uplbConstituencyObj;		
+		$data['permissionsObj'] 	 = $permissionsObj;		
+				
+		$this->load->view( 'manageAccount/accountHome', $data );
+	}
 } // class
 ?>

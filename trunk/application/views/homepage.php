@@ -11,10 +11,11 @@ $this->load->view('html-generic/metadata.inc');
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
 ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_jumbled.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->					
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
@@ -49,9 +50,7 @@ $this->load->view('html-generic/metadata.inc');
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>			
-    </div>
-        
-    
+    </div>    
     <div id="main_content">    	
     	<div id="centralContainer" class="homepageSpecial" > 
 			<div id="page_title">
@@ -70,29 +69,19 @@ $this->load->view('html-generic/metadata.inc');
 						if( $permissions->CUSTOMER )
 						{
 					?>															
-					<div class="metrotile" >
+					<div class="metrotile" id="mtile1" >
 							<a href="<?php echo base_url(); ?>EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" alt="Purchase ticket" /></a>
 					</div>
-					<div class="metrotile" >
+					<div class="metrotile" id="mtile2"  >
 							<a href="<?php echo base_url()."EventCtrl/manageBooking"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/managebooking.png" alt="Manage Booking" /></a>
 					</div>
+					<!--
 					<div class="metrotile" >
 							<a class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/transhistory.png" alt="Transaction History" /></a>
 					</div>
 					<div class="metrotile" >
 							<a  class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/inquiries.png" alt="Inquiries" /></a>
-					</div>
-					<!--
-					<div>
-						
-						<img src="<?php echo base_url().'assets/images/customer-otherfunction-temp_all_horiz.png'; ?>" usemap="#customerMap" />					
-						<map name="customerMap">
-							<area shape="rect" coords="4,1,186,103" title="Edit my Reservations" alt="Edit my Reservations" href="<?php echo base_url().'booking/editBooking'; ?>" />
-							<area shape="rect" coords="188,1,371,103" title="View Transaction History" alt="View Transaction History" href="<?php echo base_url().'userAccountCtrl/viewTransactionHistory'; ?>" />
-							<area shape="rect" coords="373,1,554,103" title="Send a message to CS" alt="Send a message to CS" href="<?php echo base_url().'client/sendMessage'; ?>" />
-							<area shape="rect" coords="557,1,721,103" title="See your cash account" alt="See your cash account" href="<?php echo base_url().'client/cashAccountHome'; ?>" />
-						</map>						
-					</div>									
+					</div>												
 					-->
 					<?php
 						}else{
@@ -108,26 +97,15 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Event Management</a></h3>
 				<div>
-					<div class="metrotile" >
+					<div class="metrotile" id="mtile3"  >
 							<a href="<?php echo base_url(); ?>EventCtrl/create"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createevent.png" alt="Create Event" /></a>
 					</div>
-					<div class="metrotile" >
-							<a class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-modifyevent.png" alt="Modify Event" /></a>
+					<div class="metrotile" id="mtile5" >
+							<a  href="<?php echo base_url(); ?>EventCtrl2/manageEvent" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-modifyevent.png" alt="Modify Event" /></a>
 					</div>
-					<div class="metrotile" >
+					<div class="metrotile" id="mtile6"  >
 							<a href="<?php echo base_url(); ?>EventCtrl/confirm" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-confirmreservation.png" alt="Confirm Reservation" /></a>
-					</div>
-					<img src="<?php echo base_url().'assets/images/event-manager_temp.png'; ?>"  usemap="#eventManagerMap" alt="eventmgrmap" />				
-					<map name="eventManagerMap" id="emap1" >
-						<area shape="rect" coords="6,7,176,101" title="Create Event" alt="Create Event" href="<?php echo base_url().'EventCtrl/create'; ?>" />
-						<area shape="rect" coords="188,7,358,101" title="Confirm Reservation" alt="Confirm Reservation"  />
-						<area shape="rect" coords="367,7,537,101" title="Modify Reservation" alt="Modify Reservation" href="" />
-						<area shape="rect" coords="545,7,715,101" title="Modify Event" alt="Modify Event" href="<?php echo base_url().'EventCtrl/manage'; ?>" />
-						<area shape="rect" coords="6,106,176,200" title="Modify Ticket Classes" alt="Modify Ticket Classes" href="" />
-						<area shape="rect" coords="188,106,358,200" title="Clean Unconfirmed Slots" alt="Clean Unconfirmed Slots" href="" />
-						<area shape="rect" coords="367,106,537,200" title="Customer care" alt="Customer care" href="" />
-						<area shape="rect" coords="545,106,715,200" title="Grant Faculty Access" alt="Grant Faculty Access" href="" />
-					</map>
+					</div>							
 				</div>
 				<?php
 					} // ender for event management
@@ -138,17 +116,12 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Checking in</a></h3>
 				<div>
-					<p>
-					Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
-					Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
-					ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
-					lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
-					</p>
-					<ul>
-						<li>List item one</li>
-						<li>List item two</li>
-						<li>List item three</li>
-					</ul>
+					<div class="metrotile" id="mtile7"  >
+						<a href="<?php echo base_url(); ?>AcademicCtrl/check_start/1"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-receiveguests.png" alt="Receive Guests" /></a>
+					</div>
+					<div class="metrotile" id="mtile3" >
+						<a href="<?php echo base_url(); ?>AcademicCtrl/check_start/2"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-checkout.png" alt="Check-out Guests" /></a>
+					</div>
 				</div>
 				<?php
 					} // ender for receptionist
@@ -159,10 +132,16 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Administration</a></h3>
 				<div>					
-					<img src="<?php echo base_url().'assets/images/administrator-preliminary_all_horiz.png'; ?>" usemap="#administratorMap" alt="administrator" />					
-						<map name="administratorMap" id="emap2" >
-							<area shape="rect" coords="4,1,186,103" title="Create Seat Map" alt="Create Seat Map" href="<?php echo base_url().'SeatCtrl/create'; ?>" />							
-						</map>
+					<div class="metrotile" id="mtile2"  >
+						<a href="<?php echo base_url().'SeatCtrl/create'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createseatmap.png" alt="Create Seat Map" /></a>
+					</div>
+					<div class="metrotile" id="mtile7"  >
+						<a href="<?php echo base_url().'SeatCtrl/managemaps'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageseatmaps.png" alt="Manage Seat Map" /></a>
+					</div>
+					<div class="metrotile" id="mtile5"  >
+						<a href="<?php echo base_url().'userAccountCtrl/manageuser'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageusers.png" alt="Manage Users" /></a>
+					</div>
+					
 				</div>
 				<?php
 					} // ender for administrator
@@ -171,8 +150,22 @@ $this->load->view('html-generic/metadata.inc');
 					if( $permissions->FACULTY)
 					{
 				?>
-				<h3><a href="#">Terrorizing students...</a></h3>
+				<h3><a href="#">Faculty Lounge</a></h3>
 				<div>
+					<div class="metrotile" id="mtile4"  >
+							<a href="<?php echo base_url()."AcademicCtrl/createClass"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createclass.png" alt="Create a new class" /></a>
+					</div>
+					<div class="metrotile" id="mtile6"  >
+							<a href="<?php echo base_url()."AcademicCtrl/manageClasses"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-seeattendingstudents.png" alt="See going students" /></a>
+					</div>
+				</div>
+				<?php
+					} // ender for administrator
+					if( true == false){	// para lang di to ma-output sa HTML page for the meantime :D
+				?>				
+				<!--
+				<h3><a href="#">Announcements</a></h3>
+				<div>															
 					<p>
 					Cras dictum. Pellentesque habitant morbi tristique senectus et netus
 					et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
@@ -185,18 +178,10 @@ $this->load->view('html-generic/metadata.inc');
 					inceptos himenaeos.
 					</p>
 				</div>
+				-->
 				<?php
-					} // ender for administrator
+					}//if( true==false)
 				?>
-				<h3><a href="#">Announcements</a></h3>
-				<div>										
-					<p>
-					Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-					ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-					amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-					odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-					</p>					
-				</div>
 			</div>
 			</div>
 			<!-- accordion end -->

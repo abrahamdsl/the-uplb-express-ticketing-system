@@ -136,14 +136,18 @@ $this->load->view('html-generic/metadata.inc');
 								aside from your money.
 							</div>
 							<div id="paymentDeadline" class="properInfo center_purest" >
-								<input type="hidden" id="pDead_Date" value="<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>" />
-								<input type="hidden" id="pDead_Time" value="<?php echo $this->session->userdata( 'paymentDeadline_Time' ); ?>" />
+								<?php
+									$pddate = $this->clientsidedata_model->getPaymentDeadlineDate();
+									$pdtime = $this->clientsidedata_model->getPaymentDeadlineTime();
+								?>
+								<input type="hidden" id="pDead_Date" value="<?php echo $pddate; ?>" />
+								<input type="hidden" id="pDead_Time" value="<?php echo $pdtime; ?>" />
 								<span id="date">
-									<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>
+									<?php echo $pddate; ?>
 								</span>
 								<br/>
 								<span id="time">
-									<?php echo $this->session->userdata( 'paymentDeadline_Time' ); ?>
+									<?php echo $pdtime; ?>
 								</span>								
 							</div>
 							<div class="center_purest caption ">
