@@ -128,7 +128,7 @@ $this->load->view('html-generic/metadata.inc');
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>"   />
 							</form>
 						</div>
-						<div class="metrotile notyet" name="resetpasword" >
+						<div class="metrotile" name="resetpasword" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-resetpassword.png" alt="Reset password" /></a>
 							<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_resetpassword'; ?>" >
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>" class="notyet" />

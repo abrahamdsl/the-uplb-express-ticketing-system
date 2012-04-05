@@ -151,11 +151,24 @@ $this->load->view('html-generic/metadata.inc');
 										</div>
 										<?php
 											}else
-											if( $showingTime->Status == "CHECK-IN" ){
+											if( $showingTime->Status == "CHECK-IN"  ){
 										?>
+										<div class="metrotile" name="straggle" >
+												<a href="<?php echo base_url(); ?>EventCtrl2/straggle/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-straggle.png" alt="Set straggle" /></a>
+										</div>
 										<div class="metrotile" name="finalize" >
 												<a href="<?php echo base_url(); ?>EventCtrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
-										</div>										
+										</div>
+										<?php
+											}else
+											if( $showingTime->Status == "STRAGGLE" ){
+										?>
+										<div class="metrotile" name="seal" >
+												<a href="<?php echo base_url(); ?>EventCtrl2/seal/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_seal.png" alt="Seal showing time" /></a>
+										</div>
+										<div class="metrotile" name="finalize" >
+												<a href="<?php echo base_url(); ?>EventCtrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
+										</div>
 										<?php 
 											}else
 											if( $showingTime->Status == "FINALIZED" ){

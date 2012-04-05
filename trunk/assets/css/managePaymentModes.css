@@ -1,0 +1,46 @@
+div.bookingDetails div.properInfo
+{
+	border: 2px solid rgb(255,153,0);
+	padding: 5px 5px 0px 5px;	
+	min-width: 60px;	
+	height: auto;	
+	text-align: center;
+}
+div.bookingDetails div#bookingNumber{
+	font-size: 2.5em;
+	width: 40%;
+}
+div.bookingDetails div#paymentDeadline{
+	font-size: 1.5em;	
+	width: 40%;
+}
+div.bookingDetails div.caption
+{
+	width: 90%;
+	text-align: justify;
+	margin: 10px 0px 10px 10px;
+	border-bottom: 2px solid rgb(216,228,214);	
+}
+div#pChannelName{
+	width: 80%;
+	font-size: 1.5em;
+	margin-bottom: 10px;
+}
+div.pChannelDetails{	
+	clear: both;
+	width: 98%;
+	left: -20px;
+}
+div.pChannelDetails div.row{
+	min-height: 1em; height: auto; overflow: auto;
+	border-bottom: 1px solid rgb(216,228,214);	
+}
+div.pChannelDetails div.row span:first-child{
+	float: left;
+	vertical-align: center;
+	margin-top: 0.5em;
+}
+div.pChannelDetails div.row span:nth-child(2){
+	float: right;	
+}
+

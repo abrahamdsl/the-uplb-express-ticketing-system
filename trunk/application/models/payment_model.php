@@ -49,6 +49,28 @@ class Payment_model extends CI_Model {
 			return false;
 	}// createPayment(..)
 	
+	function createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
+			$email, $comments, $internal_data_type, $internal_data
+	)
+	{
+		$uniqueID = $this->getLastPaymentModeUniqueID() + 1 ;
+		$data = Array(
+			'UniqueID'			=>  $uniqueID,
+			'Type'	   			 => $ptype,
+			'Name'	   	         => $name,
+			'Contact_Person' 	 => $person,
+			'Location'		 	 => $location,
+			'Cellphone'		 	 => $cellphone,
+			'Landline'		 	 => $landline,
+			'Email'		     	 => $email,
+			'Comments'		 	 => $comments,
+			'internal_data_type' => $internal_data_type,
+			'internal_data'		 => $internal_data
+			
+		);				
+		return $this->db->insert('payment_channel', $data );		
+	}//createPaymentMode(..)
+	
 	function createPaymentChannelPermission( $accountNum, $eventID, $showtimeID, $pChannelID  )
 	{
 		/*
@@ -81,6 +103,12 @@ class Payment_model extends CI_Model {
 		$sql_command = "DELETE FROM `purchase` WHERE `BookingNumber` = ?";
 		return $this->db->query( $sql_command, Array( $bookingNumber ) );
 	}// deleteAllBookingPurchases(..)
+	
+	function deletePaymentMode( $uniqueID )
+	{
+		$sql_command = "DELETE FROM `payment_channel` WHERE `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $uniqueID ) );
+	}
 	
 	function deleteSinglePurchase( $bookingNumber, $uniqueID )
 	{
@@ -116,6 +144,18 @@ class Payment_model extends CI_Model {
 		return $number;
 	}
 	
+	function getLastPaymentModeUniqueID()
+	{						
+		$sql_command = "SELECT * FROM  `payment_channel` ORDER BY  `UniqueID` DESC LIMIT 0 , 1000";		
+		$array_result = $this->db->query( $sql_command )->result();
+		
+		// now, what we want is found at the first element
+		if( count( $array_result ) > 0 )
+		{			
+			return intval( $array_result[0]->UniqueID );
+		}else return 0;		
+	}// getLastPaymentModeUniqueID
+	
 	function getPaidPurchases( $bookingNumber )
 	{
 		/*
@@ -128,6 +168,16 @@ class Payment_model extends CI_Model {
 		else
 			return $arr_result;
 	}//getPaidPurchases
+	
+	function getPaymentModeByName( $name )
+	{
+		$sql_command = "SELECT * FROM `payment_channel` WHERE `Name` = ?";
+		$arr_result = $this->db->query( $sql_command, Array(  $name ) )->result();
+		if( count( $arr_result ) < 1 )
+			return false;
+		else
+			return $arr_result;
+	}
 	
 	function getUnpaidPurchases( $bookingNumber )
 	{
@@ -187,14 +237,24 @@ class Payment_model extends CI_Model {
 			return $arr_result;
 	}//getPaymentChannelsForEvent
 	
+	function getSinglePaymentChannelByUniqueID( $uniqueID )
+	{		
+		$sql_command = "SELECT * FROM `payment_channel` WHERE `UniqueID` = ?";
+		$arr_result = $this->db->query( $sql_command, Array( $uniqueID ) )->result();
+		
+		if( count ($arr_result) == 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}// getSinglePaymentChannelByUniqueID()
+	
 	function getSinglePaymentChannel( $eventID, $showtimeID, $uniqueID )
 	{
 		/*
 			Created 14FEB2012-1850
 		*/
 		$arr_result = $this->getPaymentChannelsForEvent( $eventID, $showtimeID, TRUE );
-		if( $arr_result === false ) return false;
-		//echo var_dump( $arr_result );
+		if( $arr_result === false ) return false;		
 		foreach( $arr_result as $singleChannel )
 		{
 			if( intval($singleChannel->UniqueID) === intval($uniqueID)  ) return $singleChannel;
@@ -318,6 +378,28 @@ class Payment_model extends CI_Model {
 		
 		return $totalCharges;
 	}//sumTotalCharges(..)
+	
+	function updatePaymentMode( $uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
+			$email, $comments, $internal_data_type, $internal_data
+	)
+	{
+		$data = Array(			
+			'Type'	   			 => $ptype,
+			'Name'	   	         => $name,
+			'Contact_Person' 	 => $person,
+			'Location'		 	 => $location,
+			'Cellphone'		 	 => $cellphone,
+			'Landline'		 	 => $landline,
+			'Email'		     	 => $email,
+			'Comments'		 	 => $comments,
+			'internal_data_type' => $internal_data_type,
+			'internal_data'		 => $internal_data
+			
+		);		
+		$where = "`UniqueID` = ".$uniqueID; 
+		$sql_command = $this->db->update_string('payment_channel', $data, $where );
+		return $this->db->query( $sql_command );
+	}
 	
 	function updatePurchaseComments( $bookingNumber, $uniqueID, $comments )
 	{

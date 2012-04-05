@@ -55,15 +55,15 @@ $this->load->view('html-generic/metadata.inc');
 	<div id="main_content" >    	
 		<div id="centralContainer" >
 			<div id="page_title" >
-				Confirm Reservation
+				Reset password
 			</div>
 			<div id="instruction" >
-				Please fill out the following fields.
+				Please enter the new password for user: 
 			</div>				
 			<!-- accordion start -->			
 			<div class="accordionContainer center_purest" >
 				<div id="accordion" >
-					<h3><a href="#" >Basic details</a></h3>					
+					<h3><a href="#" >&nbsp;</a></h3>					
 					<form method="post"  action="<?php echo base_url().'EventCtrl/confirm_step2' ?>" name="formLogin" id="formMain" >						
 						<div>
 							<div class="mainWizardMainSections" >

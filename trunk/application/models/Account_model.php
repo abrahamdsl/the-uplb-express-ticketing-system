@@ -13,7 +13,8 @@ class Account_model extends CI_Model {
 		/*
 			Created 26MAR2012-1850 - I realized $this->getUserInfo is kinda insufficient.
 		*/
-		$userObj = $this->getUserInfo($username, $password);
+		$userObj = $this->getUserInfo($username, $password);		
+		if( $userObj === false or is_null( $userObj ) ) return false;
 		$user_array = $userObj->result();
 		
 		return ( is_array( $user_array ) and count( $user_array ) === 1 );

@@ -27,7 +27,8 @@ $(document).ready( function(){
 		   msgType: 'warning',
 		   title: 'confirm',
 		   message: "Are you sure you have modified the seat map according to your whims?",
-		   yesFunctionCall: 'formSubmit'
+		   yesFunctionCall: 'formSubmit',
+		   closeOnChoose: false
 		});
 	});
 
@@ -82,12 +83,7 @@ $(document).ready( function(){
 		}else
 		// we are dealing with horizontal aisle
 		if( thisIndicator.name.endsWith('letter') )	
-		{
-			/*mode="letter";
-			destroyThis = atoi( $(thisIndicator).val() );		// found in generalChecks.js
-			y = $('#cols').val();
-			z = $('#rows').val();			
-			z_handle = $('#rows_touchable');*/								
+		{										
 			$.fn.nextGenModal({
 				   msgType: 'okay',
 				   title: 'not yet',

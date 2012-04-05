@@ -136,12 +136,14 @@ $this->load->view('html-generic/metadata.inc');
 						<a href="<?php echo base_url().'SeatCtrl/create'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createseatmap.png" alt="Create Seat Map" /></a>
 					</div>
 					<div class="metrotile" id="mtile7"  >
-						<a href="<?php echo base_url().'SeatCtrl/managemaps'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageseatmaps.png" alt="Manage Seat Map" /></a>
+						<a href="<?php echo base_url().'SeatCtrl/manageseatmap'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageseatmaps.png" alt="Manage Seat Map" /></a>
 					</div>
 					<div class="metrotile" id="mtile5"  >
 						<a href="<?php echo base_url().'userAccountCtrl/manageuser'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageusers.png" alt="Manage Users" /></a>
 					</div>
-					
+					<div class="metrotile" id="mtile4"  >
+						<a href="<?php echo base_url().'userAccountCtrl/managepaymentmode'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-managepaymentmodes.png" alt="Manage Payment Modes" /></a>
+					</div>
 				</div>
 				<?php
 					} // ender for administrator

@@ -116,7 +116,8 @@ $this->load->view('html-generic/doctype.inc');
 						<?php if( $error == "NO_DATA" ){ ?>
 							<p>
 								You are trying to access a page which
-								submitted data beforehand, but of course, you are denied.
+								submitted data beforehand, but you attempted to access it without submitting the
+								data first!
 								<br/><br/>
 								( You will also receive this message if you try to access a functionality which requires that you accomplish first
 								 an earlier step ).

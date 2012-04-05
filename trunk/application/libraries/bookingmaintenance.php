@@ -188,7 +188,7 @@ class BookingMaintenance{
 			$this->CI->Booking_model->markAsRolledBack( $eachBooking->bookingNumber );
 		}
 		$this->CI->TransactionList_model->createNewTransaction(
-			$this->session->userdata('accountNum'),
+			$this->CI->session->userdata('accountNum'),
 			$reasonText,
 			'TICKET_CLASS_UPGRADE',			
 			$eachBooking->bookingNumber,
@@ -348,6 +348,35 @@ class BookingMaintenance{
 		// CODE MISSING: DB Commit
 		return true;
 	}//deleteBookingTotally_andCleanup
+	
+	public function forfeitSlotsOfNoShowGuests( $eventID, $showtimeID )
+	 {
+		/*
+			A lot of non-harmful bugs in the functions in booking_model where this is called.
+		*/
+		$forfeit_noncon = $this->CI->Booking_model->getBookingsForfeitedForCheckIn_NonConsumed( $eventID, $showtimeID );
+		$forfeit_partial = $this->CI->Booking_model->getBookingsForfeitedForCheckIn_PartiallyConsumed( $eventID, $showtimeID );
+		
+		$forfeited = array_merge( ($forfeit_noncon !== false) ? $forfeit_noncon : Array() , ($forfeit_partial !== false) ? $forfeit_partial : Array() );
+		$bookingsProcessed = Array();
+		
+		foreach( $forfeited as $guestUUID => $guestObj )
+		{
+			log_message( 'DEBUG', 'Guest no-show: '.$guestUUID );
+			$eventSlot = $this->CI->Slot_model->getSlotAssignedToUser( $guestUUID );
+			@$this->CI->Seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );	
+			@$this->CI->Slot_model->setSlotAsAvailable($eventSlot->UUID );
+			if( isset($bookingsProcessed[ $guestObj->bookingNumber ] ) ){
+				$bookingsProcessed[ $guestObj->bookingNumber ]++;
+			}else{
+				$bookingsProcessed[ $guestObj->bookingNumber ] = 1;
+			}
+			log_message( 'DEBUG', 'Guest slot freed: '.@$eventSlot->UUID );
+		}
+		
+		foreach( $bookingsProcessed as $key=>$val ) @$this->CI->Booking_model->markAsNoShowForfeited( $key );
+		
+	 }// forfeitSlotsOfNoShowGuests(..)
 	
 	public function getBillingRelevantData( $bookingNumber )
 	{

@@ -12,6 +12,7 @@ class SeatCtrl extends CI_Controller {
 		$this->load->model('Event_model');		
 		$this->load->model('login_model');		
 		$this->load->model('MakeXML_model');				
+		$this->load->model('Permission_model');				
 		$this->load->model('Seat_model');				
 		if( !$this->login_model->isUser_LoggedIn() ) redirect('/SessionCtrl');
 	} //construct
@@ -20,6 +21,62 @@ class SeatCtrl extends CI_Controller {
 	{		
 		$this->create();		
 	}//index
+	
+	private function checkAndActOnAdmin()
+	{
+		if( !$this->Permission_model->isAdministrator() )
+		{
+			$data['error'] = "NO_PERMISSION";					
+			$this->load->view( 'errorNotice', $data );			
+			return false;
+		}
+		return true;
+	}
+	
+	function deleteseatmap()
+	{
+		$this->checkAndActOnAdmin();
+		$uniqueID = $this->input->post( 'uniqueID' );
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
+		$data['title'] =  "Be careful on what you wish for";
+		$data['theMessage'] =  "Are you sure you want to delete this seat map?";
+		$data['yesURI'] = base_url().'SeatCtrl/deleteseatmap_process';
+		$data['noURI'] = base_url().'SeatCtrl/manageseatmap';
+		$data['formInputs'] = Array( 
+			'uniqueID' => $uniqueID
+		);		
+		$this->load->view( 'confirmationNotice', $data );
+	}
+	
+	function deleteseatmap_process()
+	{
+		$this->checkAndActOnAdmin();
+		$uniqueID = $this->input->post( 'uniqueID' );
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );		
+		$result = $this->Seat_model->deleteSeatMap( $uniqueID );
+		if( $result )
+		{
+			$data[ 'theMessage' ] = "The seat map has been successfully deleted.";			
+			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';
+			$data[ 'defaultAction' ] = 'Seat Maps';
+			$this->load->view( 'successNotice', $data );
+			return true;
+		}else{
+			$data[ 'error' ] = 'CUSTOM';
+			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.";
+			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';
+			$data[ 'defaultAction' ] = 'Seat Maps';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+	}
+	
+	function manageseatmap()
+	{
+		$this->checkAndActOnAdmin();
+		$data['seatmaps'] = $this->Seat_model->getAllSeatMaps();
+		$this->load->view( 'manageSeat/manageSeat01', $data );	
+	}
 	
 	function create()
 	{
@@ -206,5 +263,7 @@ class SeatCtrl extends CI_Controller {
 		echo "OK|TRUE";
 		return true;
 	}//areSeatsOccupied(..)
+
+	
 }//class
 ?>

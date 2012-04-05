@@ -54,6 +54,13 @@ class clientsidedata_model extends CI_Model {
 		define("PAYMENT_DEADLINE_DATE", "paymentDeadline_Date" );
 		define("PAYMENT_DEADLINE_TIME", "paymentDeadline_Time" );
 		define("PAYMENT_CHANNEL", "paymentChannel" );
+		define("RESETPASS_BY_ADMIN_PRESENCE", "adminresetspasswords" );
+	}
+	
+	function deleteAdminResetsPasswordIndicator()
+	{
+		// USES SESSION DATA
+		return $this->session->unset_userdata( RESETPASS_BY_ADMIN_PRESENCE );
 	}
 	
 	function deleteAvailabilityOfSlotInSameTicketClass()
@@ -228,6 +235,12 @@ class clientsidedata_model extends CI_Model {
 	function deleteVisualSeatInfo()
 	{
 		return $this->deleteCookieUnified( VISUALSEAT_DATA );
+	}
+	
+	function getAdminResetsPasswordIndicator()
+	{
+		// USES SESSION DATA
+		return $this->session->userdata( RESETPASS_BY_ADMIN_PRESENCE );
 	}
 	
 	function getAvailabilityOfSlotInSameTicketClass( )
@@ -425,6 +438,12 @@ class clientsidedata_model extends CI_Model {
 	}//getBookingCookieNames()
 	
 	/*set part*/
+	function setAdminResetsPasswordIndicator( $concernedUserAccountNum )
+	{
+		// USES SESSION DATA
+		return $this->session->set_userdata( RESETPASS_BY_ADMIN_PRESENCE, $concernedUserAccountNum );
+	}
+	
 	function setAvailabilityOfSlotInSameTicketClass( $value, $expiry = 3600)
 	{
 		return $this->setCookieUnified(SLOT_SAME_TICKETCLASS, $value, $expiry );

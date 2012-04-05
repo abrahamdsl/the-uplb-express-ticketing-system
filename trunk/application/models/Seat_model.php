@@ -24,13 +24,13 @@ class Seat_model extends CI_Model {
 			insert to the database the seat's coordinates, status and comments.
 		*/
 		$usableSeats;
-		
+		//die(var_dump($_POST ));
 		for( $x = 0, $y = $this->input->cookie('rows'), $usableSeats = 0; $x < $y; $x++ )
 		{
-			$present;
-			for( $i = 0, $j = $this->input->cookie('cols'); $i < $j; $i++ )
+			$present;			
+			for( $i = 0, $j = $this->input->cookie('cols'); $i < $j; $i++ )			
 			{
-				$status =  $this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_status' );
+				$status =  intval($this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_status' ));
 				$Visual_row = NULL;
 				$Visual_col = NULL;	
 				$transactionResult;
@@ -96,6 +96,12 @@ class Seat_model extends CI_Model {
 		
 	}// createSeatMap
 	
+	function deleteSeatMap( $uniqueID )
+	{
+		$sql_command = "DELETE FROM `seat_map` WHERE `UniqueID` = ? ";
+		return $this->db->query( $sql_command, Array( $uniqueID ) );
+	}
+	
 	function generateSeatMapUniqueID()
 	{
 		/*
@@ -124,6 +130,17 @@ class Seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getEventSeatMapActualSeats(..)
+	
+	function getAllSeatMaps()
+	{
+		$sql_command = "SELECT * FROM `seat_map` WHERE 1 ORDER BY `Name` ASC";
+		$arr_result = $this->db->query( $sql_command )->result();
+		
+		if( count( $arr_result ) < 1 )
+			return false;
+		else
+			return $arr_result;
+	}
 	
 	function getLapsedHoldingTimeSeats( $eventID, $showtimeID )
 	{
@@ -159,7 +176,7 @@ class Seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getMasterSeatMapActualSeats
-	
+		
 	function getSingleMasterSeatMapData( $uniqueID )
 	{
 		/*
@@ -172,7 +189,10 @@ class Seat_model extends CI_Model {
 		$sql_command = "SELECT * FROM `seat_map` WHERE `UniqueID` = ?";
 		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
 		
-		return $arrayResult[0];
+		if( count($arrayResult) === 1 )		
+			return $arrayResult[0];
+		else
+			return false;
 	}// getSingleMasterSeatMap
 	
 	function getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID )
@@ -487,6 +507,7 @@ class Seat_model extends CI_Model {
 		
 		return $transactionResult;
 	}//updateSeatMapUsableCapacity
+		
 }//class
 
 
