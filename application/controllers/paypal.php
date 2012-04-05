@@ -31,7 +31,7 @@ class Paypal extends CI_Controller {
 				by your webserver.
 			).
 		*/
-		define( 'NON_HOSTING_IPADDR', "112.207.18.164" );
+		define( 'NON_HOSTING_IPADDR', "112.207.14.170" );
 		
 		/*
 			Our paypal merchant address

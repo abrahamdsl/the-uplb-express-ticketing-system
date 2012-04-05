@@ -69,13 +69,19 @@ class UsefulFunctions_model extends CI_Model {
 		foreach( $muchTokenizedHaystack as $key => $value ) if( $key == $needle ) return $value;
 		return false;
 	}//getValueOfWIN5_Data
-	
+		
 	function isHourValid_24( $hour )
 	{
 		$thisHour = intval( $hour, 10 );		
 		if( $thisHour > 23 ) return false;
 		
 		return true;
+	}
+	
+	function isInternalDataTypeValid( $text )
+	{
+		$validTypes = Array( 'WIN5', 'XML' );
+		return in_array( strtoupper( $text), $validTypes, true );
 	}
 	
 	function isMinuteValid( $minute )
@@ -86,6 +92,12 @@ class UsefulFunctions_model extends CI_Model {
 		return true;
 	}
 
+	function isPaymentModeTypeValid( $text )
+	{
+		$validTypes = Array( 'COD', 'ONLINE', 'OTHER' );
+		return in_array( strtoupper( $text), $validTypes, true );
+	}
+	
 	function isSecondValid( $seconds )
 	{
 		$thisSeconds = intval( $seconds, 10 );		

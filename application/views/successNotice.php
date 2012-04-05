@@ -116,11 +116,19 @@ $this->load->view('html-generic/doctype.inc');
 						<p>
 							<?php echo $theMessage; ?>
 						</p>						
-						<?php if( !isset( $redirect) or $redirect === true ){ ?>
+						<?php if( !isset( $redirect) or $redirect === true ){ 
+								if( !isset($redirectURI ) ){
+						?>						
 						<p>
 							Redirecting you to the homepage....
 						</p>
-						<?php } ?>
+						<?php } 
+						 }else{
+						?>
+							Redirecting you to <?php echo $defaultAction; ?>...
+						<?php
+							}
+						?>
 					</div>
 				</div>												
 			</div>

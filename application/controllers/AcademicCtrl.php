@@ -49,7 +49,7 @@ class AcademicCtrl extends CI_Controller {
 	private function createClassData_preCheck(
 		$title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, $functionNext = 'createClass', $functionCaption = 'Create Class' )
 	{
-		if( strlen($title) <1 or (strlen($num) < 1) or (strlen($lectSect) < 1) or (strlen($recitSect) < 1) 
+		if( strlen($title) <1 or (strlen($num) < 1) or (strlen($lectSect) < 1)
 			or (strlen($term) < 1) or (strlen($ay1) < 1) or (strlen($ay2) < 1) 
 		)
 		{
@@ -177,7 +177,7 @@ class AcademicCtrl extends CI_Controller {
 		$ay1 		= $this->input->post( 'acadyear_1' ); 
 		$ay2 		= $this->input->post('acadyear_2' );	
 
-		if( $this->createClassData_preCheck($title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) === false ) die();
+		if( $this->createClassData_preCheck($title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) === false ) die('ACCESS-NOT-GRANTED');
 		
 		if( !$this->Academic_model->isClassExisting( $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) 
 		)
@@ -212,8 +212,7 @@ class AcademicCtrl extends CI_Controller {
 		//store to $data for passing to view			
 		$data['configuredEventsInfo'] =  $configuredEventsInfo;
 		$data['configuredShowingTimes' ] = $showingTimes;
-		//echo var_dump( $configuredEventsInfo);
-		//echo var_dump($showingTimes);
+	
 		$this->load->view( 'createClass/createClass02', $data );
 	}//createClass_step2_forward()
 	

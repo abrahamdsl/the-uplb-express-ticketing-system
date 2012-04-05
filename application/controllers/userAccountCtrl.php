@@ -14,7 +14,9 @@ class userAccountCtrl extends CI_Controller {
 		$this->load->model('Account_model');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('MakeXML_model');
+		$this->load->model('Payment_model');
 		$this->load->model('Permission_model');
+		$this->load->model('UsefulFunctions_model');
 	}
 	
 	function index()
@@ -33,6 +35,65 @@ class userAccountCtrl extends CI_Controller {
 		}	
 	}//index
 	
+	function addpaymentmode()
+	{
+		$this->manageuser_common( true );
+		$this->load->view( 'managePaymentModes/managePaymentModes02' );
+	}
+	
+	function addpaymentmode_step2(){
+		//HOT-SPOT FOR REFACTORING. VERY COMMON WITH $this->managepaymentmode_save
+				
+		$ptype 		= $this->input->post( 'ptype' ); 
+		$name	 	= $this->input->post( 'name' ); 
+		$person 	= $this->input->post( 'person' ); 
+		$location 	= $this->input->post( 'location' ); 
+		$cellphone  = $this->input->post( 'cellphone' ); 
+		$landline   = $this->input->post( 'landline' ); 
+		$email 		= $this->input->post( 'email' ); 
+		$comments 	= $this->input->post( 'comments' ); 
+		$internal_data_type = $this->input->post( 'internal_data_type' ); 
+		$internal_data 		= $this->input->post( 'internal_data' ); 
+		if( $name === false ){
+			$data['error'] = "NO_DATA";			
+			$data['redirectURI'] = base_url().'userAccountCtrl/managepaymentmode';
+			$data['defaultAction'] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		if( strlen($name) < 1 or
+			!$this->UsefulFunctions_model->isPaymentModeTypeValid( $ptype ) or
+			!$this->UsefulFunctions_model->isInternalDataTypeValid( $internal_data_type ) )
+		{			
+			echo( 'Invalid entries specified!<br/><br/>' );
+			echo('<a href="javascript: window.history.back();" >Go back</a>' );
+			return false;
+		}
+		if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+		{
+			echo( 'Payment mode exists already!<br/><br/>' );
+			echo('<a href="javascript: window.history.back();" >Go back</a>' );
+			return false;
+		}
+		$result = $this->Payment_model->createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
+			$email, $comments, $internal_data_type, $internal_data
+		);
+		if( $result )
+		{
+			$data[ 'theMessage' ] = "The payment mode has been successfully added.";			
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'successNotice', $data );
+			return true;
+		}else{
+			$data[ 'error' ] = 'CUSTOM';
+			$data[ 'theMessage' ] = "Something went wrong while adding the payment mode. It may have been not saved.";
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+	}
 	
 	function changePassword_step1()
 	{
@@ -46,20 +107,48 @@ class userAccountCtrl extends CI_Controller {
 		*/
 		if( !$this->input->is_ajax_request() ) die("NOT-ALLOWED");
 		
-		$accountNum = $this->session->userdata('accountNum');
-		$userObj 	= $this->Account_model->getUserInfoByAccountNum( $accountNum );		
-		$oldPass = $this->input->post( "oldPassword" );
-		$newPass = $this->input->post( "password" );		
-		if( !$this->Account_model->authenticateUser( $userObj->username, $oldPass ) )
-		{			
-			echo $this->MakeXML_model->XMLize_AJAX_Response( 
-				"error", "authentication failure", "AUTH_FAIL", 0, "Invalid current password. Please try again.", "" 
-			);
-			return false;
+		$accountNum;
+		$userObj;
+		$oldPass 	= FALSE;
+		$newPass;
+		$isAdminResettingPassword;
+		$whereNext;
+		$whereNextURI;
+		$responseDescriptor;
+		$responseCaption;
+		
+		$accountNum = $this->clientsidedata_model->getAdminResetsPasswordIndicator();
+		$isAdminResettingPassword = (  $accountNum !== FALSE );
+		$newPass = $this->input->post( "password" );
+		
+		if( !$isAdminResettingPassword ){
+			$accountNum = $this->clientsidedata_model->getAccountNum();
+			$oldPass    = $this->input->post( "oldPassword" );
+			$userObj 	= $this->Account_model->getUserInfoByAccountNum( $accountNum );		
+					
+			if( !$this->Account_model->authenticateUser( $userObj->username, $oldPass ) )
+			{			
+				echo $this->MakeXML_model->XMLize_AJAX_Response( 
+					"error", "authentication failure", "AUTH_FAIL", 0, "Invalid current password. Please try again.", "" 
+				);
+				return false;
+			}
 		}
+				
 		$result = $this->Account_model->setPassword( $newPass, $accountNum );
-		$whereNext = '<br/><br/><a href="'.base_url().'userAccountCtrl/myAccount" >Back to My Account</a>';
-		echo $this->MakeXML_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, "Your password has been changed.".$whereNext );
+		
+		if( $isAdminResettingPassword ){
+			$whereNext = 'manageUser_step2';
+			$responseDescriptor = "The user's password has been changed.";
+			$responseCaption = "Manage User";
+			$this->clientsidedata_model->deleteAdminResetsPasswordIndicator();
+		}else{
+			$whereNext = 'myAccount';
+			$responseDescriptor = "Your password has been changed.";
+			$responseCaption = "My Account";
+		}		
+		$whereNext = '<br/><br/><a href="'.base_url().'userAccountCtrl'.$whereNextURI.'" >Back to '.$responseCaption.'</a>';		
+		echo $this->MakeXML_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, $responseDescriptor.$whereNext );
 		return true;
 	}//changePassword_step2
 	
@@ -196,16 +285,134 @@ class userAccountCtrl extends CI_Controller {
 	function manageuser()
 	{
 		//for admin only		
-		if( !$this->Permission_model->isAdministrator() )
-		{
-			$data['error'] = "NO_PERMISSION";					
-			$this->load->view( 'errorNotice', $data );			
-			return false;
-		}
+		$this->manageuser_common( true );
 		$this->load->view( 'manageUser/manageUser01' );
 	}// manageUser(..)
 	
-	private function manageuser_common()
+	function managepaymentmode()
+	{
+		$this->manageuser_common( true );
+		$data['paymentChannels'] = $this->Payment_model->getPaymentChannels( true );
+		$this->load->view( 'managePaymentModes/managePaymentModes01', $data );	
+	}
+	
+	function managepaymentmode_delete()
+	{
+		$this->manageuser_common( true );
+		$uniqueID = $this->input->post( 'pChannel' );
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
+		$data['title'] =  "Be careful on what you wish for";
+		$data['theMessage'] =  "Are you sure you want to delete this payment mode?";
+		$data['yesURI'] = base_url().'userAccountCtrl/managepaymentmode_delete_process';
+		$data['noURI'] = base_url().'userAccountCtrl/managepaymentmode';
+		$data['formInputs'] = Array( 
+			'pChannel' => $uniqueID
+		);		
+		$this->load->view( 'confirmationNotice', $data );
+	}
+	
+	function managepaymentmode_delete_process()
+	{
+		$this->manageuser_common( true );
+		$uniqueID = $this->input->post( 'pChannel' );
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
+		if( intval($uniqueID) === 0 ){
+			/*
+				Automatic confirmation since free is not removable
+			*/
+			$data[ 'error' ] = 'CUSTOM';
+			$data[ 'theMessage' ] = "By this system's design, this payment mode is not designed to be removable. Edit my code if you want to. <br/><br/>:D";			
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		$result = $this->Payment_model->deletePaymentMode( $uniqueID );
+		if( $result )
+		{
+			$data[ 'theMessage' ] = "The payment mode has been successfully deleted.";			
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'successNotice', $data );
+			return true;
+		}else{
+			$data[ 'error' ] = 'CUSTOM';
+			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.";
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+	}
+	
+	function managepaymentmode_edit()
+	{
+		$this->manageuser_common( true );
+		$uniqueID = $this->input->post( 'pChannel' );
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
+		$data['singleChannel'] = $this->Payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );		
+		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
+	}
+	
+	
+	function managepaymentmode_save()
+	{		
+		//form-validation skipped here. let javascript take care of that.
+		
+		$uniqueID 	= $this->input->post( 'uniqueID' ); 
+		$ptype 		= $this->input->post( 'ptype' ); 
+		$name	 	= $this->input->post( 'name' ); 
+		$person 	= $this->input->post( 'person' ); 
+		$location 	= $this->input->post( 'location' ); 
+		$cellphone  = $this->input->post( 'cellphone' ); 
+		$landline   = $this->input->post( 'landline' ); 
+		$email 		= $this->input->post( 'email' ); 
+		$comments 	= $this->input->post( 'comments' ); 
+		$internal_data_type = $this->input->post( 'internal_data_type' ); 
+		$internal_data 		= $this->input->post( 'internal_data' ); 
+		if( $uniqueID === false or $name === false ){
+			$data['error'] = "NO_DATA";			
+			$data['redirectURI'] = base_url().'userAccountCtrl/managepaymentmode';
+			$data['defaultAction'] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+		if( strlen($uniqueID) < 1 or strlen($name) < 1 or
+			!$this->UsefulFunctions_model->isPaymentModeTypeValid( $ptype ) or
+			!$this->UsefulFunctions_model->isInternalDataTypeValid( $internal_data_type ) )
+		{			
+			echo( 'Invalid entries specified!<br/><br/>' );
+			echo('<a href="javascript: window.history.back();" >Go back</a>' );
+			return false;
+		}
+		if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+		{
+			echo( 'Payment mode exists already!<br/><br/>' );
+			echo('<a href="javascript: window.history.back();" >Go back</a>' );
+			return false;
+		}
+		$result = $this->Payment_model->updatePaymentMode(
+			$uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
+			$email, $comments, $internal_data_type, $internal_data
+		);
+		if( $result )
+		{
+			$data[ 'theMessage' ] = "The payment mode has been successfully edited.";			
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'successNotice', $data );
+			return true;
+		}else{
+			$data[ 'error' ] = 'CUSTOM';
+			$data[ 'theMessage' ] = "Something went wrong while processing the modification of the payment mode. Your changes may have been not saved.";
+			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'defaultAction' ] = 'Payment modes';
+			$this->load->view( 'errorNotice', $data );
+			return false;
+		}
+	}//managepaymentmode_save()
+	
+	private function manageuser_common( $checkPermissionOnly = false )
 	{
 		/*
 			Gets main info and uplb constituency info.
@@ -216,6 +423,7 @@ class userAccountCtrl extends CI_Controller {
 			$this->load->view( 'errorNotice', $data );			
 			return false;
 		}
+		if( $checkPermissionOnly ) return true;
 		$concernedUserAccountNum = $this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' );		
 		$data['accountNum']   = $concernedUserAccountNum;
 		$data['userMainInfo'] = $this->Account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
@@ -300,6 +508,15 @@ class userAccountCtrl extends CI_Controller {
 			$this->load->view( 'errorNotice', $data );						
 		}
 	}//manageuser_editroles_save()
+	
+	function manageuser_resetpassword()
+	{
+		$this->manageuser_precheck( 2 );		
+		$data = $this->manageuser_common();		
+		$this->clientsidedata_model->setAdminResetsPasswordIndicator( $data['accountNum'] );
+		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
+		$this->load->view( 'manageUser/resetPassword', $data);
+	}
 	
 	function newUserWelcome()
 	{

@@ -139,7 +139,7 @@ $this->load->view('html-generic/metadata.inc');
 					</form>										
 			<div class="accordionContainer center_purest">				
 				<div id="seatIndicatorLegend">
-					Area for seat legend here. Later
+					<span class="dropped" style="padding: 10px;" >Won't be available for use</span>
 				</div>
 				<div id="essentialButtonsArea">
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>							

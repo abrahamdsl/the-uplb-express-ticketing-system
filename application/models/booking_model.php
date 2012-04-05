@@ -149,6 +149,52 @@ class Booking_model extends CI_Model {
 			return false;
 	}//getBookingDetails(..)
 	
+	function getBookingsForfeitedForCheckIn_NonConsumed( $eventID, $showtimeID )
+	{
+		$sql_command = "SELECT * FROM `booking_guests` INNER JOIN `booking_details` ON `booking_guests`.`bookingNumber`";
+		$sql_command .= " = `booking_details`.`bookingNumber` WHERE `booking_details`.`EventID` = ? AND";
+		$sql_command .= "  `booking_details`.`ShowingTimeUniqueID` = ? AND `booking_details`.`Status` = 'PAID'";
+		$arr_result = $this->db->query( $sql_command, array(  $eventID, $showtimeID ) )->result();
+		if( count( $arr_result )> 0 ){
+			$var_b = Array();
+			foreach($arr_result as $x ) $var_b[$x->UUID] = $x;		
+			return $var_b;
+		}else
+			return false; 
+	}//getBookingsForfeitedForCheckIn_NonConsumed()
+	
+	function getBookingsForfeitedForCheckIn_PartiallyConsumed( $eventID, $showtimeID )
+	{
+		// WHATEVER HAPPENED TO MY SQL JOINS! RAWR.
+		
+		$sql_command = "SELECT * FROM `booking_guests` INNER JOIN `booking_details` ON `booking_guests`.`bookingNumber`";
+		$sql_command .= " = `booking_details`.`bookingNumber` INNER JOIN `event_slot` ON `booking_guests`.`UUID` = `event_slot`.`Assigned_To_User` INNER JOIN `event_attendance_real` on `event_attendance_real`.`GuestUUID` = ";
+		$sql_command .= " `booking_guests`.`UUID`  WHERE `booking_details`.`EventID` = ? AND";
+		$sql_command .= "  `booking_details`.`ShowingTimeUniqueID` = ? AND `booking_details`.`Status` = 'CONSUMED'";
+		$sql_command .= "  AND `booking_details`.`Status2` = 'PARTIAL'";
+					
+		$arr_result_entered = $this->db->query( $sql_command, array(  $eventID, $showtimeID ) )->result();
+		$var_a = Array();
+		if( count( $arr_result_entered ) < 1 ) return false;
+		
+		foreach($arr_result_entered as $x ) $var_a[$x->UUID] = $x;
+		
+		$sql_command = "SELECT * FROM `booking_guests` INNER JOIN `booking_details` ON `booking_guests`.`bookingNumber`";
+		$sql_command .= " = `booking_details`.`bookingNumber` INNER JOIN `event_slot` ON `booking_guests`.`UUID` = `event_slot`.`Assigned_To_User` WHERE `booking_details`.`EventID` = ? AND";
+		$sql_command .= "  `booking_details`.`ShowingTimeUniqueID` = ? AND `booking_details`.`Status` = 'CONSUMED'";
+		$sql_command .= "  AND `booking_details`.`Status2` = 'PARTIAL'";
+		
+		$arr_result_all = $this->db->query( $sql_command, array(  $eventID, $showtimeID ) )->result();
+		$var_b = Array();
+		foreach($arr_result_all as $x ) $var_b[$x->UUID] = $x;
+		
+		foreach( $var_a as $key=>$val ) unset( $var_b[$key] );
+		if( count( $var_b )> 0 )
+			return $var_b;
+		else
+			return false; 
+	}//getBookingsForfeitedForCheckIn_NonConsumed()
+	
 	function getPaymentPeriodExpiredBookings( $eventID, $showtimeID )
 	{
 		/*
@@ -197,19 +243,7 @@ class Booking_model extends CI_Model {
 			changing of seats, upgrading to a higher ticket class and the likes.
 		*/
 		date_default_timezone_set('Asia/Manila');
-		/*$sql_command = " SELECT * FROM `showing_time` INNER JOIN `booking_details` ON
-			`showing_time`.`EventID` = `booking_details`.`EventID` INNER JOIN `event` ON 
-			`showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`Status` = 'CONFIGURED' AND
-			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` AND
-			CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= CURRENT_TIMESTAMP AND
-			CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= CURRENT_TIMESTAMP AND 
-			`booking_details`.`Status` = 'PAID' and `booking_details`.`MadeBy` = ?;";
-		$arr_result = $this->db->query( $sql_command, Array ( $userAccountNum ) )->result();	
-		if( count( $arr_result ) > 0 )
-			return $arr_result;
-		else
-			return false;
-		*/
+		
 		return $this->getAllBookings( $userAccountNum, true );
 	}//getPaidBookings(..)
 	
@@ -329,6 +363,15 @@ class Booking_model extends CI_Model {
 		$sql_command = "UPDATE `booking_details` SET `Status`= 'EXPIRED',`Status2` = 'NOT-YET-NOTIFIED' WHERE `bookingNumber` = ?";
 		return $this->db->query( $sql_command, Array( $bNumber ) );
 	}//markAsExpired
+	
+	function markAsNoShowForfeited( $bNumber )
+	{
+		/*
+			Created 25FEB2012-1300
+		*/
+		$sql_command = "UPDATE `booking_details` SET `Status2` = 'NO-SHOW-FORFEITED' WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $bNumber ) );
+	}//markAsNoShowForfeited
 	
 	function markAsHoldingTimeLapsed_ForDeletion( $bNumber )
 	{

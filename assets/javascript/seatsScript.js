@@ -58,6 +58,7 @@ jQuery(function($){
 				*/
 				//$('#msg').append( $(this).html() + " " );
 				$( this ).addClass("active");
+				$(this).find('input[type="hidden"][name^="status"]').val('-1');
 				
 			})
 			.drop(function( ev, dd ){
@@ -65,6 +66,9 @@ jQuery(function($){
 					after the deed?
 				*/
 				$( this ).toggleClass("dropped");
+				$currentVal = $(this).find('input[type="hidden"][name$="status"]').val();
+				$newVal = ($currentVal == '0' ) ? '-1' : '0';
+				$(this).find('input[type="hidden"][name$="status"]').val( $newVal );
 			})
 			.drop("end",function(){
 				/*
@@ -72,6 +76,7 @@ jQuery(function($){
 					in the process of being selected
 				*/
 				$( this ).removeClass("active");
+				
 			});
 		$.drop({ multi: true });	
 });	//jQuery(function($){									

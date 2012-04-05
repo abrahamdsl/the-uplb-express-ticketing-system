@@ -1,0 +1,17 @@
+div.containingClassTable
+{
+	min-width: 327px;
+	width: 48%;
+	float: right;
+}
+div.bookingDetails{
+	float: left;
+	min-height: 238px;
+	min-width: 200px;
+	width: 50%;
+	height: 50%;
+	overflow: auto;
+	padding: 5px;
+	border-right: 3px solid rgb(216,228,214);
+	position: relative;
+}

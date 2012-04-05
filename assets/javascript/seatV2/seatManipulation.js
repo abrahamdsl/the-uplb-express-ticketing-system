@@ -1,5 +1,7 @@
 /*
 17FEB2012-1242: I am thinking of merging this with CreateEvent_005.js
+
+Requires that cookie 'slots_being_booked' accessible (i.e., unencrypted)
 */
 
 
@@ -181,6 +183,7 @@ $(document).ready( function(){
 				var totalCapacity;
 				var hallName;
 				var masterMap;
+				var managetc;
 				var ticketClassBeingBooked;	// for use only during book Step 4.
 				var isModeManageBookingChooseSeat;
 				
@@ -193,20 +196,19 @@ $(document).ready( function(){
 					Also found in bookStep4.js
 				*/
 				isModeManageBookingChooseSeat = ( $( 'input#manageBookingChooseSeat' ).size() == 1 && $( 'input#manageBookingChooseSeat' ).val() == "1" );								
-				if( isModeManageBookingChooseSeat )
-				{
-					assembleExistingGuestSeatData();
-				}
-				
+				if( isModeManageBookingChooseSeat ) assembleExistingGuestSeatData();
+								
 				$("#seatSelectionTable").children().remove();	// remove all content first
 				detailBranch = $(xmlData).find( 'details' );	// get detail branch of XML				
 				actualSeats = $(xmlData).find( 'dataproper' );	// get the dataproper branch								
 								
 				//now, if this is a master seat plan data (i.e., for create event step 5, do the ff)				
 				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;								
+				// or we are managing ticket classes
+				managetc  = (typeof tcg_not_shared === "undefined" ) ? false : true;
 				rows = parseInt( detailBranch.find('rows').text() );
 				cols = parseInt( detailBranch.find('cols').text() );
-				if( masterMap ){
+				if( masterMap || managetc ){
 					// these details are limited to create event step 5.
 					usableCapacity = parseInt( detailBranch.find('usableCapacity').text() );				
 					hallName = detailBranch.find('name').text();
@@ -282,13 +284,34 @@ $(document).ready( function(){
 					var seatClass = parseInt( $(this).find( 'tClass' ).text() );
 					var concernedDiv = $('div#' + x + '_' + y);					
 					concernedDiv.children('span.row').html( row );
-					concernedDiv.children('span.col').html( colx );
-					if( masterMap === false ){						
-						if( ticketClassBeingBooked != seatClass )
-						{
-							concernedDiv.addClass( 'otherClass' );
-							concernedDiv.addClass( 'classRestricted' );
-							concernedDiv.removeClass( 'dropAvailable' );
+					concernedDiv.children('span.col').html( colx );					
+					if( masterMap === false  ){						
+						if( ticketClassBeingBooked != seatClass  )
+						{								
+							if( !managetc ){
+								concernedDiv.addClass( 'otherClass' );
+								concernedDiv.addClass( 'classRestricted' );
+								concernedDiv.removeClass( 'dropAvailable' );
+							}else
+							{	
+								var parseIntResult = parseInt( seatClass );
+								if( parseIntResult !== false && parseIntResult > 0  ) {
+									var className = $('input#classname_' + seatClass ).val();
+									concernedDiv.addClass( 'drop_' + className );							
+									if( status == 1 || status == -4 ){										
+										concernedDiv.addClass( 'alreadyreserved' );									
+										concernedDiv.removeClass( 'ui-selectable' );
+										concernedDiv.removeClass( 'dropAvailable' );
+										concernedDiv.removeClass( 'ddms_selected' );
+										concernedDiv.removeClass( 'ui-selected' );										
+									}else{										
+										concernedDiv.find('input.seatClass').val( className );
+									}
+									concernedDiv.addClass( 'otherClass' );
+								}else{
+									concernedDiv.find('input.seatClass').val( '-1' );
+								}
+							}
 						}else{
 							/*
 								Modified 06MAR2012-1705. Added new status "-4" - seat is on hold
@@ -297,6 +320,7 @@ $(document).ready( function(){
 							if( status == 1 || status == -4 ){
 								concernedDiv.addClass( 'occupiedSameClass' );								
 							}
+							
 						}
 					}	
 					if( status == -1 ){
@@ -330,7 +354,12 @@ $(document).ready( function(){
 					lasso_indicator: '#lassoWillDo',					
 					retainPreviouslySelected: true					
 				});
-				
+				//
+				$('input[type="hidden"][id^="classname_"]').each( function(){
+					var sub_thisclass = $(this).val();
+					var count = $('#basic-modal-content-freeform').find('div.drop_'+sub_thisclass).size();					
+					$( 'input#seatAssigned_' + sub_thisclass).val( count );
+				});
 				// adjust column indicators to make way for aisles
 				adjustColumnIndicators( rows, cols );
 				nullifyAisleCount();

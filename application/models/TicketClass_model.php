@@ -37,7 +37,7 @@ class TicketClass_model extends CI_Model {
 		);
 		
 		return $this->db->insert( 'ticket_class', $data );
-	}//createTicketClasses(..)
+	}//createTicketClass(..)
 	
 	function getHoldingTime( $eventID, $groupID, $uniqueID )
 	{
@@ -141,7 +141,7 @@ class TicketClass_model extends CI_Model {
 			return $singleClassObj->Name;
 	}//getSingleTicketClassName(..)
 	
-	function getTicketClasses( $eventID, $groupID )
+	function getTicketClasses( $eventID, $groupID, $namePreferred = false )
 	{
 		/*
 			Created 14JAN2012-1440
@@ -159,7 +159,8 @@ class TicketClass_model extends CI_Model {
 		if( count( $array_result ) < 1 ) return false;
 		foreach( $array_result as $singleClass )
 		{
-			$devFriendlyArray[ $singleClass->UniqueID ] = $singleClass;
+			$key = ( $namePreferred ) ?  $singleClass->Name: $singleClass->UniqueID ;
+			$devFriendlyArray[ $key ] = $singleClass;
 		}
 		return $devFriendlyArray;
 	}//getTicketClasses
@@ -197,6 +198,13 @@ class TicketClass_model extends CI_Model {
 			return $newArray;
 		}
 	}//  getTicketClassesOrderByPrice
+	
+	function isTicketClassGroupOnlyForThisShowtime( $eventID, $showtimeID, $groupID )
+	{
+		$sql_command = "SELECT * FROM `showing_time` WHERE `UniqueID` != ? AND `EventID` = ? AND `Ticket_Class_GroupID` = ?";
+		$arr_result  = $this->db->query( $sql_command , Array( $showtimeID, $eventID, $groupID ) )->result();
+		return( count( $arr_result ) === 0 );
+	}
 	
 	function isThereFreeTicketClass( $eventID )
 	{
@@ -238,5 +246,29 @@ class TicketClass_model extends CI_Model {
 		
 		return $theArray;
 	}//makeArray_NameAsKey(..)
+	
+	function updateTicketClass( 
+		$eventID, $GroupID, $UniqueID, $price = 0, $slots = 0, 
+		$privileges = NULL,  $restrictions = NULL, $priority = 0, $holdingTime = 20
+	)
+	{
+		/*
+			CREATED 12DEC2011-2132
+			
+			30DEC2011-1307, added $UniqueID param
+		*/
+						
+		$data = Array(					
+			'Price'		  => $price,  
+			'Slots'       => $slots, 
+			'Privileges'	=> $privileges,
+			'Restrictions'	=> $restrictions,
+			'priority'		=> $priority,
+			'HoldingTime'	=> $holdingTime
+		);		
+		$where = "`EventID` = ".$eventID." AND `GroupID` = ".$GroupID." AND `UniqueID` = ".$UniqueID; 
+		$sql_command = $this->db->update_string('ticket_class', $data, $where);
+		return $this->db->query( $sql_command );
+	}//updateTicketClass()
 } //class
 ?>

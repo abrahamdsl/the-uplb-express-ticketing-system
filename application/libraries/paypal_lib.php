@@ -69,7 +69,7 @@ class Paypal_Lib {
 		$this->CI->load->config('paypallib_config');
 		
 		// constant found in paypal.php controller	
-		$this->paypal_url = ( isset( ISPAYPAL_TEST_MODE ) and ISPAYPAL_TEST_MODE ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+		$this->paypal_url = ( ISPAYPAL_TEST_MODE ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 
 		$this->last_error = '';
 		$this->ipn_response = '';

@@ -1137,7 +1137,7 @@ class EventCtrl extends CI_Controller {
 		$totalCharges = $billingInfo[ AKEY_AMOUNT_DUE ];
 		$this->encryptPurchaseCookies( $bookInstanceEncryptionKey, $bookingNumber, $purchases );
 		$this->encryptSeatVisualCookie( $bookInstanceEncryptionKey, $sendSeatInfoToView );
-						
+		
 		$this->clientsidedata_model->setPurchaseCount( $purchaseCount );
 		$this->clientsidedata_model->setPurchaseTotalCharge( $totalCharges );
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );		
@@ -1860,8 +1860,9 @@ class EventCtrl extends CI_Controller {
 		*/
 		$x = 0;
 		$classesCount = 0;
-		foreach( $_POST as $key => $val) // isn't this somewhat a security risk because we don't escape?
+		foreach( $_POST as $key_x => $val) // isn't this somewhat a security risk because we don't escape?
 		{
+				$key = mysql_real_escape_string( $key_x );
 				if( $this->UsefulFunctions_model->startsWith( $key, "price" ) )
 				{
 					$temp = explode("_",$key);
@@ -2824,13 +2825,15 @@ class EventCtrl extends CI_Controller {
 			$this->load->view( 'confirmationNotice', $data );
 			return false;
 		}
-		if( $this->bookingmaintenance->cancelPendingChangesToBooking( $bookingNumber, 2 ) )
+		if( $this->bookingmaintenance->cancelPendingChanges( $bookingNumber, 2 ) )
 		{		
+			
 			$data['theMessage'] = "The changes were cancelled and booking reverted to its original state.";			
 			$data['redirectURI'] = base_url().'EventCtrl/manageBooking';			
 			$data['defaultAction'] = 'Manage Booking';			
 			$this->load->view( 'successNotice', $data );
 		}else{
+			$data['error'] = "CUSTOM";
 			$data['theMessage'] = "Something went wrong while cancelling changes to this booking.";			
 			$data['redirectURI'] = base_url().'EventCtrl/manageBooking';			
 			$data['defaultAction'] = 'Manage Booking';
@@ -2966,16 +2969,7 @@ class EventCtrl extends CI_Controller {
 		$isTicketClassChanged = intval(  $this->clientsidedata_model->getSessionActivityDataEntry( 'isTicketClassChanged' ));
 		$billingInfoArray = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
 		$noPendingPayment = ( floatval($billingInfoArray['amountDue']) === 0.0 );
-		/*
-			Log-area. Can be removed on production. 12MAR2012-1537
-		*/
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : Booking number '.$bookingNumber );
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : old Showtime ID, TC G-ID, TC U-ID: '.$oldShowingTimeID.",".$oldTicketClassGroupID.",".$oldTicketClassUniqueID );
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : NEW Showtime ID, TC G-ID, TC U-ID: '.$newShowingTimeID.",".$newTicketClassGroupID.",".$newTicketClassUniqueID );
-		log_message('debug', "MANAGE_BOOKING: isComingFromTicketClass: ". $isComingFromTicketClass );
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : $isShowtimeChanged '.$isShowtimeChanged  );
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : $isTicketClassChanged '.$isTicketClassChanged );
-		log_message( 'DEBUG', 'MANAGE_BOOKING|FINALIZE  : Starting log of new seats info' );		
+		
 		if( $newSeatsInfoArray !== false )
 		{
 			foreach( $newSeatsInfoArray as $key => $value )
@@ -2994,10 +2988,7 @@ class EventCtrl extends CI_Controller {
 		$x = 0;						
 		foreach( $bookingGuests as $eachGuest )
 		{	
-			
-			//	Log-area. Can be removed on production. 12MAR2012-1537			
-			log_message('debug', "MANAGE_BOOKING: Processing guest: ".  $eachGuest->UUID  );
-			log_message('debug', "MANAGE_BOOKING: supposed new slot uuid: ".  $newSlotsUUIDs[ $x ]  );					
+								
 			/*	
 				Assign the new slot for the new showing time and/or ticket class
 				(We still don't remove the old slot)
@@ -3162,6 +3153,19 @@ class EventCtrl extends CI_Controller {
 		if( $noPendingPayment )
 			echo 'Finalization completed.<br/><br/><a href="'.base_url().'EventCtrl/manageBooking">Back to Manage Booking</a>';
 		else
+			if( $paymentMode == FACTORY_PAYPALPAYMENT_UNIQUEID )
+			{
+				/*
+					Cookie data for Paypal Separated by pipes:
+					<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|"CHARGE DESCRIPTION">
+				*/									
+				$paypalTotal = floatval($billingInfoArray['amountDue'] * PAYPAL_FEE_PERCENTAGE) + PAYPAL_FEE_FIXED;				
+				$chargeDescriptor = $slots." Ticket Class Upgrade ".$eventObj->Name." ordered via The UPLB Express Ticketing System";
+				$this->clientsidedata_model->setPaypalAccessible();
+				$this->clientsidedata_model->setDataForPaypal( $bookingNumber."|".$billingInfoArray['amountDue']."|".$paypalTotal."|".$chargeDescriptor );
+				$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_PAYMENTPROCESSING );
+				redirect( 'paypal/process' );
+			}
 			redirect( 'EventCtrl/managebooking_finalize_forward');
 	}//managebooking_finalize
 	

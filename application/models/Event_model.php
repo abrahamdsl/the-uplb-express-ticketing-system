@@ -18,9 +18,7 @@ class Event_model extends CI_Model {
 	{
 		parent::__construct();
 		$this->load->helper('cookie');
-		$this->load->library('session');
-		
-		
+		$this->load->library('session');		
 	}
 			
 	function addOneDay( $thisDate )
@@ -185,7 +183,15 @@ class Event_model extends CI_Model {
 		
 		return ( $query_obj1 and $query_obj2 and $query_obj3 and $query_obj4 and $query_obj5 and $query_obj6 );
 	} // deleteAllEventInfo
-			
+
+	function doesEventBelongToUser( $eventObjSent = NULL, $eventID, $accountNum )
+	{
+		//wait..
+		$eventObj = (  $eventObjSent !== NULL ) ? $eventObjSent : $this->getEventInfo( $eventID );
+		if( $eventObj === false) return false;
+		return ( intval( $accountNum ) === intval( $eventObj->ByUser ) );
+	}//doesEventBelongToUser(..)
+	
 	function getAllEvents()
 	{
 		// created 20DEC2011-1418		
@@ -272,7 +278,7 @@ class Event_model extends CI_Model {
 			
 			// review 01MAR2012-2235 -  and why you didn't use constant CURRENT_TIMESTAMP but instead
 			// $dateToday and $timeToday pa?
-			$sql = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND `Status` = 'CONFIGURED' AND 
+			$sql = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND (`Status` = 'CONFIGURED' OR `Status` = 'STRAGGLE' )AND 
 					CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= ? AND
 					CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= ?;";
 			$query_obj = $this->db->query( $sql, array(
@@ -600,7 +606,9 @@ class Event_model extends CI_Model {
 		
 		return null;
 	}//retrieveSingleEventFromAll
-			
+
+	
+	
 	function setShowingTimeSeatMap( $seatMapUniqueID, $eventID, $showtimeID )
 	{
 		/*
@@ -687,7 +695,25 @@ class Event_model extends CI_Model {
 		);		
 		return $query_result;
 	}//setParticulars
+	
+	function setSingleShowingTimeTicketClass( $eventID = null, $showtimeID = null, $ticketClassGroupID = null)
+	{
+		/*
+			ACTUALLY, MISNOMER, SINCE *ALL* SHOWING TIMES UNDER AN EVENT IS  INVOLVED.
+			Created 30DEC2011-1312
 			
+			Created due to bug arising from Create Event Step 6.
+		*/
+		if(  $eventID == null ) return false;
+		if(  $showtimeID == null ) return false;
+		if(  $ticketClassGroupID == null ) return false;
+		
+		$sql = "UPDATE `showing_time` SET `Ticket_class_GroupID` = ? WHERE `EventID` = ? AND `UniqueID` = ? ";
+		$query_result = $this->db->query( $sql, array(  $ticketClassGroupID, $eventID, $showtimeID ) );
+		
+		return $query_result;
+	}//setSingleShowingTimeTicketClass(..)
+	
 	function setShowingTimeConfigStat( $eventID = NULL, $thisScheduleString = NULL, $newStat = "UNCONFIGURED" )
 	{
 		/*
@@ -755,6 +781,8 @@ class Event_model extends CI_Model {
 	function setShowingTimeTicketClass( $eventID = null, $uniqueID = null)
 	{
 		/*
+			ACTUALLY, MISNOMER, SINCE *ALL* SHOWING TIMES UNDER AN EVENT IS  INVOLVED.
+			Use $this->setSingleShowingTimeTicketClass(..) if you want to be more specific.
 			Created 30DEC2011-1312
 			
 			Created due to bug arising from Create Event Step 6.
@@ -767,16 +795,33 @@ class Event_model extends CI_Model {
 		
 		return $query_result;
 	}//setShowingTimeTicketClass(..)
-	
+			
 	function setForCheckIn( $eventID, $showimeID )
 	{
 		$sql_command = "UPDATE `showing_time` SET `Status` = 'CHECK-IN' WHERE `EventID` = ? AND `UniqueID` = ?";
 		return $this->db->query( $sql_command, Array( $eventID, $showimeID ) );
 	}
 	
+	function setForStraggle( $eventID, $showtimeID )
+	{
+		date_default_timezone_set('Asia/Manila');
+		$currentDate = date( 'Y-m-d' );
+		$currentTime = date( 'H:i:s' );		
+		$strx = strtotime( '+30 min', strtotime( $currentTime ) );	// now add
+		$leeway = date( 'H:i:s', $strx );
+		$sql_command = "UPDATE `showing_time` SET `Status` = 'STRAGGLE',`Selling_End_Date`=?,`Selling_End_Time`=? WHERE `EventID` = ? AND `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $currentDate, $leeway, $eventID, $showtimeID ) );						
+	}
+	
 	function setAsCancelled( $eventID, $showimeID )
 	{
 		$sql_command = "UPDATE `showing_time` SET `Status` = 'CANCELLED' WHERE `EventID` = ? AND `UniqueID` = ?";
+		return $this->db->query( $sql_command, Array( $eventID, $showimeID ) );
+	}
+	
+	function setAsFinalized( $eventID, $showimeID )
+	{
+		$sql_command = "UPDATE `showing_time` SET `Status` = 'FINALIZED' WHERE `EventID` = ? AND `UniqueID` = ?";
 		return $this->db->query( $sql_command, Array( $eventID, $showimeID ) );
 	}
 	

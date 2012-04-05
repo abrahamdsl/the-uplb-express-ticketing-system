@@ -1,12 +1,10 @@
 /*
-	NOTE: 15DEC2011-1513: A LOT OF REFACTORING TO BE DONE here. Might look
-	at createEvent_004.js too and its relation with here.
+	Ripped off from createEvent_005.js
+	
 */
 var lastUsedSeatmap = -1;
 var alreadyConfiguredSeat = false;
-var args;
-var antishowstopper_seatmapid = -1;
-
+var _continue = true;
 function checkSlotsTotal( theObject)
 {
 	/*
@@ -42,14 +40,13 @@ function createSeatmapOnPage( args )
 	// ajax-time!	
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'SeatCtrl/getMasterSeatmapData',
-		timeout: 50000,		
-		data: { 'uniqueID': antishowstopper_seatmapid },				
+		url: CI.base_url + '/SeatCtrl/getActualSeatsData',
+		timeout: 50000,
+		data: { 'uniqueID': args["seatMapUniqueID"] },				
 		success: function(data){
 			alreadyConfiguredSeat = false;			
 			$(document).manipulateSeatAJAX( data );			// make now the HTML
-			lastUsedSeatmap =  antishowstopper_seatmapid;
-			$('input[id^="seatAssigned"]').val('0'); 		// reset counters of how many seats have been already selected
+			lastUsedSeatmap =  args["seatMapUniqueID"];			
 		}
 	});	
 	x.fail(	function(jqXHR, textStatus) { 
@@ -63,8 +60,21 @@ function createSeatmapOnPage( args )
 	} ) ;	
 }
 
+function enableNewCreation()
+{
+	$('input[name="share_separate"]').val( "1" );
+	formSubmit();
+}
+
+function disableNewCreation()
+{
+	$('input[name="share_separate"]').val( "0" );	
+}
+
 function formSubmitPreCheck()
 {
+	var longnotice;
+	
 	// created 13JAN2012-1130
 	if( parseInt( $('#totalSlotsChosen').val() ) == 0 )
 	{		
@@ -74,11 +84,26 @@ function formSubmitPreCheck()
 		   message: 'Please enter at least one slot in at least one ticket class, else click Cancel to configure this event later.'
 		});
 		return false;		
+	}
+	if( $("div#tcg_shared_notice").size() > 0 ){
+		longnotice = "This ticket class group is being shared with other showing times. So any change you made here will also apply to them.";
+		longnotice += " <br/><br/>Would you like to create a new ticket class group for this showing time so that the changes <br/>";
+		longnotice += " you made will only apply to this one?"
+		$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: 'showing time conflict',
+			   message: longnotice,
+			   yesFunctionCall:  'enableNewCreation',			   
+			   noFunctionCall: 'formSubmit',			   
+			   closeOnChoose: false,
+			   closeOnChooseNO: false
+			});
+	}else{
+		formSubmit();
 	}	
-	return true;
 }
 
-function formSubmit( args )
+function formSubmit( )
 {
 	// created 7JAN2012-1547
 	
@@ -97,8 +122,10 @@ function formSubmit( args )
 		url: $('form#formMain').attr('action'),
 		timeout: 50000,
 		data:  $('form#formMain').serialize(),
-		success: function(data){								
-			//	Now try to submit seats				
+		success: function(data){
+			disableNewCreation();
+			var responseX = data.split('_');
+			//Now try to submit seats				
 			$.fn.nextGenModal({
 			   msgType: 'ajax',
 			   title: 'processing',
@@ -107,13 +134,16 @@ function formSubmit( args )
 			var seatsPOST = $.ajax({	
 				type: 'POST',
 				url: $('form#seatAssignments').attr('action'),
-				timeout: 72000,
-				data:  $('form#seatAssignments').serialize() + '&seatmapUniqueID=' + $('select#seatMapPullDown option:selected').val(),	// add seatmap id too since it's not within the form
-				success: function(data){					
-					$('input#eligibility').val( data );					
-					$.fn.nextGenModal.hideModal();
-					$("form#id_forwarder").submit();
-					return [ this ];
+				timeout: 72000,				
+				// add seatmap id too since it's not within the form
+				data:  $('form#seatAssignments').serialize() + '&seatmapUniqueID=' + $('input#seatMapPullDown').val() + '&_tcg=' + responseX[1],	
+				success: function(data){
+					if( data == "OKAY" )
+					{
+						window.location = CI.base_url + 'EventCtrl2/managetc_success';
+					}else{
+						alert('Response from server: ' + data);
+					}
 				}
 			});	
 			seatsPOST.fail( 
@@ -191,6 +221,15 @@ function sumTotalSlots()
 }//sumSlotsTotal(..)
 
 $(document).ready( function() {	
+	$.fn.onloadCreateSeatMap = function(){
+		var args = [];
+		
+		sumTotalSlots();
+		args["seatMapUniqueID"] = $('input#seatMapPullDown').val();				
+		createSeatmapOnPage( args );		
+	};
+	
+	$.fn.onloadCreateSeatMap();
 	
 	$('#lassoWillDo').click( function(){
 		var opt1 = "SELECT";
@@ -208,32 +247,7 @@ $(document).ready( function() {
 
 	});
 	
-	$('#seatMapPullDown').change( function(){
-		// called when user selects a seat map from the pull down list
-		
-		args = null;
-		args = new Array();
-		
-		antishowstopper_seatmapid = $(this).val();						
-		if( $(this).val() == "null" ) return false;		// selects the blank entry, so don't do anything		
-		args["seatMapUniqueID"] = $(this).val();				
-		if( antishowstopper_seatmapid === lastUsedSeatmap ) return false;
-						
-		if( alreadyConfiguredSeat ){			
-			$.fn.nextGenModal({
-			   msgType: 'warning',
-			   title: 'Confirm',
-			   message: "Your previous seat assignments would be erased. Continue?",
-			   yesFunctionCall:  'createSeatmapOnPage',			   
-			   noFunctionCall: 'revertSeatMapPulldown',
-			   nFC_args: args,
-			   closeOnChoose: false
-			});
-		}
-		else{			
-			createSeatmapOnPage( args );			
-		}
-	});
+	
 	
 	$('input[type="text"]').focus( function() {
 		/*
@@ -246,19 +260,10 @@ $(document).ready( function() {
 	$('input[id^="id_seat_"]').click( function() {
 		
 		var thisClass = giveMeClass( $(this).attr('name') );				
-		var seatMapUniqueID = $('#seatMapPullDown option:selected').val();		
+		var seatMapUniqueID = $('input#seatMapPullDown').val();		
 		var thisClassSlots;
 		var thisClassAssignedSeatQuantity;
-		
-		if( isNaN( parseInt( seatMapUniqueID ) ) )
-		{			
-			$.fn.nextGenModal({
-			   msgType: 'error',
-			   title: 'first and foremost',
-			   message: 'Please choose a seat map first.'
-			});
-			return false;
-		}
+				
 		thisClassSlots = parseInt( $( '#id_slot_' + thisClass).val() );
 		thisClassAssignedSeatQuantity = parseInt( $( '#seatAssigned_' + thisClass).val() );
 		$('#basic-modal-content-freeform').find('.items_selected').html( thisClassAssignedSeatQuantity );		
@@ -281,10 +286,14 @@ $(document).ready( function() {
 				maxWidth: 1000,
 				onShow: function(){
 					$('#basic-modal-content-freeform').find( '.drop_' + thisClass ).each( function(){
-						$(this).removeClass( 'drop_' + thisClass );
-						$(this).removeClass('otherClass');	
-						$(this).addClass('ddms_selected');
-						$(this).addClass('ui-selected');
+						if( !$(this).hasClass('alreadyreserved') ) {							
+							$(this).removeClass( 'drop_' + thisClass );
+							$(this).removeClass('otherClass');	
+							$(this).addClass('ddms_selected');
+							$(this).addClass('ui-selected');
+						}else{
+							$(this).addClass('ar_sameclass');
+						}
 					});
 				},
 				onClose: function(){
@@ -299,9 +308,12 @@ $(document).ready( function() {
 							
 							$('#warningIndicator').hide();							
 							$( '#seatAssigned_' + thisClass).val( $('#basic-modal-content-freeform').find('.items_selected').html() );	// reassign
-							$('#basic-modal-content-freeform').find('.ddms_selected').each( function(){								
+							$('#basic-modal-content-freeform').find('.ar_sameclass').each( function(){																
+								if($(this).attr('id') != 'miscx' ) $(this).removeClass('ar_sameclass');
+							});
+							$('#basic-modal-content-freeform').find('.ddms_selected').each( function(){
 								$(this).find('input.seatClass').val( thisClass );								
-								$(this).removeClass('ddms_selected');
+								$(this).removeClass('ddms_selected');								
 								$(this).removeClass('ui-selected');
 								$(this).removeClass('ui-selectee');
 								$(this).removeClass('ui-selectable');								
@@ -584,27 +596,12 @@ $(document).ready( function() {
 	}); //$('input[name^="holdingTime"]').blur(..)
 	
 	$("#buttonReset").click( function() {				
-		$.fn.nextGenModal({
-			   msgType: 'okay',
-			   title: 'Not yet :-)',
-			   message: 'Feature coming later' 
-			});		
-		return false;
+		window.location = CI.base_url + 'EventCtrl2/manageEvent';
 	});
 	
-	$("#buttonOK").click( function() {
-		var args = new Array();
-		
-		sumTotalSlots();		
-		if( formSubmitPreCheck() === false ) return false;					
-		$.fn.nextGenModal({
-		   msgType: 'warning',
-		   title: 'Confirm',
-		   message: "Are you sure you have configured them?",
-		   yesFunctionCall:  'formSubmit',
-		   yFC_args: args,
-		   closeOnChoose: false
-		});		
+	$("#buttonOKspecial").click( function() {
+		sumTotalSlots();
+		formSubmitPreCheck();		
 	});
 	
 	/*$('input[name^="slot"]').change(		

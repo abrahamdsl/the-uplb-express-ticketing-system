@@ -78,7 +78,9 @@ $this->load->view('html-generic/metadata.inc');
 				e.preventDefault();
 				$("#buttonOK").click();
 			});
-			
+			$("#buttonReset").click( function() {
+				window.location = CI.base_url;
+			});
 			$("#buttonOK").click( function(e) {
 				var bNumberHandle = $('input[name="useridentifier"]');			
 				var allOK = 0;
@@ -144,7 +146,7 @@ $this->load->view('html-generic/metadata.inc');
 	?>	
 				<div id="essentialButtonsArea" >														
 							<a class="button" id="buttonOK" ><span class="icon" >Go</span></a>
-							<a class="button" id="buttonReset" ><span class="icon" >Back</span></a>							
+							<a class="button" id="buttonReset" ><span class="icon" >Home</span></a>							
 				</div>
 				<div class="buttonfooterSeparator" ></div>
 			</div>						

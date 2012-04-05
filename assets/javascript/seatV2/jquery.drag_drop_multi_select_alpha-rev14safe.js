@@ -30,6 +30,10 @@
 	var lassoJustAppeared = false;
 	var forcedTerminatedMouseup = false;
 	
+	$.fn.setlastclass = function( value )
+	{
+		$(config.lastclassindicator).val( value );
+	}
     $.fn.exists = function(){if(jQuery(this).length == 0){return false;}else{return true;}};	
 	$.fn.showWarning = function(config, message, hideThereafter )
 	{
@@ -113,7 +117,16 @@
 						}
 						forcedTerminatedMouseup = false;
 						return false;
+					}					
+					if( $(this).hasClass( config.customerAlready ) ){						
+						if( forcedTerminatedMouseup == false ) 
+						{
+							$(document).showWarning(config, 'This seat is already assigned to a customer.<br/> You cannot manipulate it anymore.' , false );							
+						}
+						forcedTerminatedMouseup = false;
+						return false;
 					}
+					
 					var remainingSelectable = $(this).updateSeatmapStatistics( config );					
 					if( $(config.lasso_indicator).val() == 'SELECT' )
 					{
@@ -137,6 +150,7 @@
                 $item.bind('ddms.deselect',function(){
 					$(config.element_to_show_Warning).hide();
                     $(this).removeClass('ui-selected');
+					//$(this).find('input.seatClass').val( '-1' );
                     $(this).removeClass($.fn.drag_drop_multi_select.settings[$.fn.drag_drop_multi_select.get_instance_id($(this).attr('ddms'))].selectedClass);
 					$(this).addClass( config.availableClass ); 									// restore the 'available' characteristics                   
 					$(config.element_to_show_result).text($self.find('.ui-selected').size());	// indicate how many have been selected now			
@@ -148,7 +162,7 @@
 				delay: 200,
 				distance: 0,
                 cancel: "'"+config.elements_to_cancel_select+","+config.element_to_drag_drop_select+"'",
-                filter: $self.find(config.element_to_drag_drop_select + '[class!="' +config.otherClassIndicator + '"]'),
+                filter: $self.find(config.element_to_drag_drop_select + '[class2!="' +config.otherClassIndicator + '"]' ),
 				//tolerance: 'fit',
 				start: function( ev, ui ){										
 					// called when lasso tool appears
@@ -343,6 +357,8 @@
 		otherClassIndicator: 'otherClass', // added by abe 30JAN2012 -  no '.' preceding - used to check if there are different classes, and you don't want to select other classes
 		retainPreviouslySelected: false, // added by abe 29JAN2012 -  if there were items selected already, this decides if to retain them or not if there's another selection
 		maxSeatsForClass: '#maxSeatsForClass', // // added by abe 29JAN2012, indicator to show how many seats can be selected for this class
+		customerAlready: 'alreadyreserved', // added by abe 04APR2012,
+		lastclassindicator: 'input#seatlastclass', // added by abe 04APR2012,
         after_drop_action:function($item_instance,$old_container,$new_container,event,helper){}
     };
 	// *global variables declaration
