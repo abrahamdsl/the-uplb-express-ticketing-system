@@ -17,6 +17,11 @@ class userAccountCtrl extends CI_Controller {
 		$this->load->model('Payment_model');
 		$this->load->model('Permission_model');
 		$this->load->model('UsefulFunctions_model');
+		
+		if( !$this->login_model->isUser_LoggedIn() )
+		{	
+			redirect('SessionCtrl/authenticationNeeded');
+		}	
 	}
 	
 	function index()
@@ -26,6 +31,7 @@ class userAccountCtrl extends CI_Controller {
 			login-login
 			
 		*/
+		
 		if( $this->login_model->isUser_LoggedIn() )
 		{
 			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
