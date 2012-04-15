@@ -20,9 +20,10 @@ class Paypal extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+				
 		/*
 			If you are testing this within your PC, make sure your internet connection/infrastructure
-			supports port forwarding so that your app can be accessed over the Internet (thus
+			supports port forwarding in port 80 so that your app can be accessed over the Internet (thus
 			you can do PayPal post back ).
 			
 			(i.e., if server address is 128.31.12.212, it should be accessible on the net via port 80
@@ -41,30 +42,8 @@ class Paypal extends CI_Controller {
 			Should we go to sandbox site or REAL Paypal site?
 		*/
 		define( 'ISPAYPAL_TEST_MODE', TRUE );
-		/* 
-			Please check EventCtrl on whether these are the same. The definitions there precede this, so
-			change accordingly if different.
-		*/
-		define( 'AKEY_UNPAID_PURCHASES_ARRAY', 'unpaidPurchasesArray' );		
-		define( 'AKEY_PAID_PURCHASES_ARRAY', 'paidPurchasesArray' );		
-		define( 'AKEY_UNPAID_TOTAL', 'unpaidTotal' );		
-		define( 'AKEY_PAID_TOTAL', 'paidTotal' );		
-		define( 'AKEY_AMOUNT_DUE', 'amountDue' );		
-		define( 'STAGE_BOOK_1_PROCESS', 0 );
-		define( 'STAGE_BOOK_1_FORWARD', 1 );
-		define( 'STAGE_BOOK_2_PROCESS', 2 );
-		define( 'STAGE_BOOK_2_FORWARD', 3 );
-		define( 'STAGE_BOOK_3_PROCESS', 4 );
-		define( 'STAGE_BOOK_3_FORWARD', 5 );		
-		define( 'STAGE_BOOK_4_PROCESS', 6 );
-		define( 'STAGE_BOOK_4_CLASS_1_FORWARD', 7 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_CLASS_2_FORWARD', 8 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_FORWARD', 9 );
-		define( 'STAGE_BOOK_5_PROCESS', 10 );
-		define( 'STAGE_BOOK_5_FORWARD', 11 );
-		define( 'STAGE_BOOK_6_PROCESS', 12 );
-		define( 'STAGE_BOOK_6_PAYMENTPROCESSING', 13 );
-		define( 'STAGE_BOOK_6_FORWARD', 14 );
+		
+		include_once('_constants.inc');
 		
 		$this->load->library('bookingmaintenance');
 		$this->load->library('paypal_lib');
@@ -174,7 +153,7 @@ class Paypal extends CI_Controller {
 		/*
 			01APR2012-2239 : Processing for refunds, reversal and others are pending here.
 		*/
- 		$ipn_init = $this->paypal_lib->ipn_data[ 'txn_id' ];
+ 		$ipn_init = @$this->paypal_lib->ipn_data[ 'txn_id' ];
 		log_message('DEBUG', "IPN initial: ".$ipn_init);
 		if ($this->paypal_lib->validate_ipn()) 
 		{

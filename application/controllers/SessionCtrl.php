@@ -8,6 +8,7 @@ class SessionCtrl extends CI_Controller {
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
 		$this->load->model('Permission_model');
+				
 	}
 	
 	function index()
@@ -27,7 +28,15 @@ class SessionCtrl extends CI_Controller {
 		$this->load->view('homepage', $data);		
 	}//userHome
 	
-	function login()
+	function authenticationNeeded()
+	{
+		$data['LOGIN_WARNING'] = array( " You have to log-in first before you can access the feature requested. " ) ;
+		$this->session->set_userdata($data);
+		$this->index();
+	
+	}
+	
+	function login( )
 	{
 		/*
 			made | 26NOV2011 2014 at SM City Calamba Global Pinoy Center :-D

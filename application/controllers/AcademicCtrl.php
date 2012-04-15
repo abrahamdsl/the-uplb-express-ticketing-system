@@ -7,26 +7,8 @@ class AcademicCtrl extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();		
-		/* 
-			Please check EventCtrl on whether these are the same. The definitions there precede this, so
-			change accordingly if different.
-		*/
-		define( 'ACTIVITY_CREATE_CLASS',  "FACULTY_CREATE_CLASS" );
-		define( 'STAGE_BOOK_1_PROCESS', 0 );
-		define( 'STAGE_BOOK_1_FORWARD', 1 );
-		define( 'STAGE_BOOK_2_PROCESS', 2 );
-		define( 'STAGE_BOOK_2_FORWARD', 3 );
-		define( 'STAGE_BOOK_3_PROCESS', 4 );
-		define( 'STAGE_BOOK_3_FORWARD', 5 );		
-		define( 'STAGE_BOOK_4_PROCESS', 6 );
-		define( 'STAGE_BOOK_4_CLASS_1_FORWARD', 7 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_CLASS_2_FORWARD', 8 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_FORWARD', 9 );
-		define( 'STAGE_BOOK_5_PROCESS', 10 );
-		define( 'STAGE_BOOK_5_FORWARD', 11 );
-		define( 'STAGE_BOOK_6_PROCESS', 12 );
-		define( 'STAGE_BOOK_6_PAYMENTPROCESSING', 13 );
-		define( 'STAGE_BOOK_6_FORWARD', 14 );
+		
+		include_once('_constants.inc');
 		
 		$this->load->library('session');
 		$this->load->model('login_model');
@@ -39,6 +21,11 @@ class AcademicCtrl extends CI_Controller {
 		$this->load->model('MakeXML_model');
 		$this->load->model('Permission_model');
 		$this->load->model('UsefulFunctions_model');
+		
+		if( !$this->login_model->isUser_LoggedIn() )
+		{	
+			redirect('SessionCtrl/authenticationNeeded');
+		}
 	}
 	
 	function index()
