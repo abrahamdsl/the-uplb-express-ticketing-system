@@ -9,6 +9,7 @@ class SeatCtrl extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->helper('cookie');
+		$this->load->model('clientsidedata_model');		
 		$this->load->model('Event_model');		
 		$this->load->model('login_model');		
 		$this->load->model('MakeXML_model');				
@@ -215,16 +216,18 @@ class SeatCtrl extends CI_Controller {
 	{
 		/*
 			Created 13FEB2012-2000
+			
+			also checks if seat selection is mandatory.
 		*/
 		$matrices = $this->input->post( 'matrices' );		
 		$eventID = $this->input->post( 'eventID' );
 		$showtimeID = $this->input->post( 'showtimeID' );
 		$seatObj;
 		$matrices_tokenized;
-		
+		$slots = $this->clientsidedata_model->getSlotsBeingBooked();
 		
 		// user is accessing via browser address bar, so not allowed
-		//if( $this->input->is_ajax_request() === false ) redirect('/');
+		if( $this->input->is_ajax_request() === false ) redirect('/');
 		
 		if( $matrices === false or $eventID === false or $showtimeID === false )
 		{
@@ -235,20 +238,6 @@ class SeatCtrl extends CI_Controller {
 		foreach( $matrices_tokenized as $singleData )
 		{
 			$matrixInfo = explode( "_", $singleData );
-			/*
-			04MAR2012-1743 - This commented block is the former algorithm.
-				DEPRECATED now. I have yet to test the other algorithm so 
-				I won't erase this for now.
-			$seatObj = $this->Seat_model->getSingleActualSeatData( $matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID );
-			if( $seatObj === false )
-			{
-				echo "INVALID|NO-SUCH-SEAT-EXISTS";
-				return false;
-			}
-			if( intval( $seatObj->Status) != 0 ){
-				echo "OK|FALSE|".$singleData;
-				return false;
-			}*/
 			
 			$isSeatAvailableResult = $this->Seat_model->isSeatAvailable( 
 				$matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID 
@@ -263,11 +252,30 @@ class SeatCtrl extends CI_Controller {
 					return false;
 				}
 			}
+		}		
+		if( $this->Event_model->isSeatSelectionRequired( $eventID, $showtimeID ) and $slots !== count($matrices_tokenized) )
+		{
+			echo "OK|SEATREQUIRED|Seat selection for this event/showing time is mandatory.";
+			return false;
 		}
 		echo "OK|TRUE";
 		return true;
 	}//areSeatsOccupied(..)
-
-	
+/*
+	function isSeatSelectionRequred( $eventID = NULL, $showtimeID = NULL, $slots = NULL, $seatcount = NULL ){
+		$_eventID    = ( $eventID === NULL ) ? $this->input->post( 'eventID' ) : $eventID;
+		$_showtimeID = ( $showtimeID === NULL ) ? $this->input->post( 'showtimeID' ) : $showtimeID;
+		$_slots = ( $slots === NULL ) ? $this->clientsidedata_model->getSlotsBeingBooked() : $slots ;
+		$_seatcount;
+		$matrices;
+		
+		if( $seatcount === NULL )
+		{
+			$matrices = $this->input->post( 'matrices' );
+			foreach()
+		}
+		
+	}
+	*/
 }//class
 ?>

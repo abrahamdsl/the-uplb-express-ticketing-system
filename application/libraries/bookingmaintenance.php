@@ -1,13 +1,16 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); 
 /**
-*	Validations if it is alright that user is in this function of a controller.
+*	Booking Maintenance Library
+* 	Created late March 2012
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
 *
-*	Constants are defined in the Controller where this is loaded.
-*   This means this should be loaded after the constants have been defined.
-*   Maybe it would be good if we could just perform a 'include_once()' statement also.
-*
-*   Oh wait, is loading of models necessary too? Di ba tinatawag na din to sa Controller where
- *  this is called.
+*	This contains utilities regarding bookings. Most of the contents were originally in EventCtrl controller.
+*   There are some constants in use in this file. Such should be defined in the Controller where this library
+*    is called.
 */
 
 class BookingMaintenance{
@@ -28,7 +31,7 @@ class BookingMaintenance{
 		$this->CI->load->model('TicketClass_model');		
 		$this->CI->load->model('TransactionList_model');		
 		$this->CI->load->model('UsefulFunctions_model');
-        $bookingNumberGlobal = (is_array($params) )?  $params[0] : $this->CI->clientsidedata_model->getBookingNumber();
+        $bookingNumberGlobal = (is_array($params) )?  $params[0] : $this->CI->clientsidedata_model->getBookingNumber();		
     }
 	
 	public function assembleNoMoreSlotSameTicketClassNotification( $eventID, $showtimeID, $slots, $bookingNumber )
@@ -55,7 +58,7 @@ class BookingMaintenance{
 		$data = Array();
 		$data['error'] = 'CUSTOM';		
 		$data['title'] = 'Payment Processing Error';
-		$data['theMessage'] = 'Something went wrong while processing your payment. Please choose another payment mode.<br/><br/>WARNING: Do not refresh the page.';		
+		$data['theMessage'] = 'Something went wrong while processing your payment. Please choose another payment mode.<br/><br/>WARNING: Do not refresh the page.';		//5104
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
 		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
@@ -67,7 +70,7 @@ class BookingMaintenance{
 		$data = Array();
 		$data['error'] = 'CUSTOM';
 		$data['title'] = 'Payment Processing Error';
-		$data['theMessage'] = 'You declined to use PayPal for payment.<br/><br/>Please choose another payment mode.';
+		$data['theMessage'] = 'You declined to use PayPal for payment.<br/><br/>Please choose another payment mode.'; 
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
 		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
@@ -78,7 +81,7 @@ class BookingMaintenance{
 	{
 		$data = Array();
 		$data['error'] = 'CUSTOM';
-		$data['title'] = 'Payment Processing Error';
+		$data['title'] = 'Payment Processing Error'; //5103
 		$data['theMessage'] = "We have received your payment through PayPal but it did not pass our standards. (i.e., it was held by PayPal";
 		$data['theMessage'] .= "pending review for fraud). ";
 		$data['theMessage'] .= '<br/><br/>Please choose another payment mode or try again.<br/><br/>Please contact us to refund the amount ';
@@ -94,27 +97,32 @@ class BookingMaintenance{
 		/*
 			Called by EventCtrl->{ managebooking_cancelchanges() | book_step2() }
 		
-			Created 11MAR2012-1111. Moved from book_step2
+			@Created 11MAR2012-1111. Moved from book_step2
 			@history 01APR2012-1102 renamed from 'cancelPendingChangesToBooking' to 'cancelPendingChanges'
 		
-			@purpose This means that the booking is existing and was attempted for change for any or all of the following:
-						(1) Change of showing time
-						(2) ticket class upgrade
-					but lapsed on the payment deadline.
+			@purpose This means that the booking is existing and 
+			     (1)  was attempted for change for any or all of the following:
+						(a) Change of showing time
+						(b) ticket class change/upgrade
+					  but lapsed on the payment deadline.
+				 or
+				 (2) The user decided to cancel the changes and restore the booking to the original state.
 			
-			@param  $bookingNumberOrObj Can be either a the booking number or
+			@param  $bookingNumberOrObj Can be either the booking number in string/int or
 											the MYSQL Object of that booking number.			
-			@param	$reason	Indicates the reason why it was rolled back.
+			@param	$reason	Indicates the reason why it was rolled back. See @purpose
+						
 		*/
-		$eachBooking;
-		$reasonText;
 		$billingInfoArray;
-		$transactionID;
-		$transactionFailed;
-		$rollBackInfo;
+		$eachBooking;
 		$oldShowtimeID;
 		$oldTicketClassGroupID;
 		$oldTicketClassUniqueID;
+		$reasonText;
+		$rollBackInfo;
+		$transactionID;
+		$transactionFailed;		
+		
 		
 		if( is_string( $bookingNumberOrObj ) )
 		{
@@ -242,17 +250,21 @@ class BookingMaintenance{
 	public function cleanDefaultedSlots( $eventID, $showtimeID, $ticketClassesObjSENT = NULL )
 	{
 		/*
-			This part checks if there are event_slots (i.e., records in `event_slot` ) that the status
+			@purpose This part checks if there are event_slots (i.e., records in `event_slot` ) that the status
 			is 'BEING_BOOKED' but lapsed already based on the ticket class' holding time.
 			
 			Main difference with $this->cleanDefaultedBookings() is that this is only concerned
-			with record in `event_slot`
+			with entries in `event_slot`
+			
+			@param $eventID    			  :D
+			@param $showtimeID 			  :D
+			@param $ticketClassesObjSENT  An array of MYSQL OBJECT of entries from table `ticket_class`
 		  */
 		  // This next line gets all records marked as 'BEING_BOOKED' - judgment in the (next) if statement
 		  $beingBookedSlots = $this->CI->Slot_model->getBeingBookedSlots( $eventID, $showtimeID );
 		  $ticketClassesObj = NULL;
 		  
-			if( $beingBookedSlots === FALSE )	return false; // there are no slots being booked		  			
+		  if( $beingBookedSlots === FALSE )	return false; // there are no slots being booked so return now.
 			/*
 				This variable is for booking numbers that are already processed.
 				Because we are examining slot by slot, there might be at least two slots under
@@ -424,7 +436,7 @@ class BookingMaintenance{
 		if( $billingData[ AKEY_UNPAID_PURCHASES_ARRAY ] === false )
 		{			
 			$result['status'] = "ERROR";
-			$result['message'] = "Already paid.";
+			$result['message'] = "Already paid."; //1004
 			return $result;
 		}
 		$userPermitted = $this->CI->Account_model->isUserAuthorizedPaymentAgency(
@@ -435,7 +447,7 @@ class BookingMaintenance{
 		);
 		if( $userPermitted['value'] === false ){
 			$result['status'] = "ERROR";
-			$result['message'] = "You do not have permission to confirm a reservation for this event.<br/><br/>*";
+			$result['message'] = "You do not have permission to confirm a reservation for this event.<br/><br/>*"; //4007
 			$result['message'] .= $userPermitted['comment'];
 			return $result;			
 		}
@@ -455,12 +467,12 @@ class BookingMaintenance{
 			$this->CI->Booking_model->markAsPaid( $bNumber );
 			$result['boolean'] = TRUE;
 			$result['status'] = "OKAY";
-			$result['message'] = "Succesfully proccessed payment.";
+			$result['message'] = "Succesfully proccessed payment."; //1003
 			return $result;	
 		}else{			
 			$result['boolean'] = FALSE;
 			$result['status'] = "ERROR";
-			$result['message'] = "Unknown error occurred when confirming payment. Please try again.";
+			$result['message'] = "Unknown error occurred when confirming payment. Please try again."; //5102
 			return $result;
 		}
 	}//processPayment(..)

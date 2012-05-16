@@ -17,8 +17,7 @@ $(document).ready(function(){
 					$( 'input[type="checkbox"][name^="' + letter + '"]' ).attr('checked', 'checked');
 				}else{
 					$( 'input[type="checkbox"][name^="' + letter + '"]' ).removeAttr( 'checked' );
-				}
-				console.log( 'input[type="checkbox"][name^="' + letter + '"]' );
+				}				
 		});
 
 		$('#buttonOK').click( function(){			

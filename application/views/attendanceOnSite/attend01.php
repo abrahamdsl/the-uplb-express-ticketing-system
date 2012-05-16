@@ -63,7 +63,9 @@ $this->load->view('html-generic/metadata.inc');
 				Check in
 			</div>
 			<div id="status"  >
-				:-)
+				<!--
+				 :-)
+				-->
 			</div>
 			<div id="instruction" >
 				Key in the booking number.
@@ -95,7 +97,7 @@ $this->load->view('html-generic/metadata.inc');
 							</p>
 							<div class="mainWizardMainSections" >
 								<span class="MWMS1" >
-									Booking number, or
+									Booking number
 									<span class="critical" >*</span>
 								</span>
 								<span class="MWMS2" ><input type="text" name="bookingNumber" class="textInputSize" /></span>					
@@ -152,7 +154,7 @@ $this->load->view('html-generic/metadata.inc');
 							<a class="button" id="buttonOK2" ><span class="icon" >Confirm Entry</span></a>							
 							<a class="button" id="buttonOK" ><span class="icon" >Check Details</span></a>
 							<a class="button" id="buttonOK3" ><span class="icon" >Clear Fields</span></a>
-							<a class="button" id="buttonReset" ><span class="icon" >Change session</span></a>							
+							<a class="button" id="buttonReset" href="<?php echo base_url(); ?>AcademicCtrl/check_start/2" ><span class="icon" >Change session</span></a>							
 				</div>
 				<div class="buttonfooterSeparator" ></div>
 			</div>						

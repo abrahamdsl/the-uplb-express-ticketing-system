@@ -60,7 +60,11 @@ $this->load->view('html-generic/metadata.inc');
     <div id="main_content" >    	
     	<div id="centralContainer">           		   
 		<div id="page_title">
-				Start Check-in
+		<?php
+				$meow = ( $activity == 1 ) ? "Check-in Guests" : "Check-out Guests";
+				//Start Check-in
+				echo $meow;
+		?>
 			</div>
 			<div style="padding-left:10px; clear: both">
 				Please input the information.

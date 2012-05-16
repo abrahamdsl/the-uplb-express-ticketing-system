@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2012 at 03:19 AM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: May 15, 2012 at 10:45 AM
+-- Server version: 5.1.36
+-- PHP Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -44,8 +44,7 @@ CREATE TABLE IF NOT EXISTS `booking_details` (
 --
 
 INSERT INTO `booking_details` (`bookingNumber`, `EventID`, `ShowingTimeUniqueID`, `TicketClassGroupID`, `TicketClassUniqueID`, `PaymentDeadline_Date`, `PaymentDeadline_Time`, `Status`, `Status2`, `MadeBy`) VALUES
-('66SC96W', 261, 1, 1, 1, NULL, NULL, 'CONSUMED', 'PARTIAL', 593835),
-('8R9Z4XR', 261, 1, 1, 2, NULL, NULL, 'PAID', 'NO-SHOW-FORFEITED', 351916);
+('1E5P3G6', 261, 1, 1, 4, NULL, NULL, 'PAID', NULL, 593835);
 
 -- --------------------------------------------------------
 
@@ -75,13 +74,7 @@ CREATE TABLE IF NOT EXISTS `booking_guests` (
 --
 
 INSERT INTO `booking_guests` (`UUID`, `bookingNumber`, `AccountNum`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `studentNumber`, `employeeNumber`) VALUES
-('5c96a8e8-7dfc-11e1-8168-4cba9d4cadf0', '8R9Z4XR', 0, 'HANAMICHI', '', 'SAKURAGI', 'MALE', '91832948924', '', 'aaa@aaa.com', 200712345, 0),
-('91cd3fdf-7dfb-11e1-8168-4cba9d4cadf0', '66SC96W', 0, 'JONG IL', '', 'KIM', 'MALE', '9183981185', '', 'kji@gov.nk', 200837123, 0),
-('91d5b899-7dfb-11e1-8168-4cba9d4cadf0', '66SC96W', 0, 'JONG EUN', '', 'KIM', 'MALE', '9183981185', '', 'kje@gov.kz', 200837124, 0),
-('91e0117d-7dfb-11e1-8168-4cba9d4cadf0', '66SC96W', 0, 'George', 'Walker', 'Bush', 'MALE', '+13894898494', '', 'bush@cia.gov', 198190191, 0),
-('ce914f4c-7dfa-11e1-8168-4cba9d4cadf0', 'UK495EU', 0, 'JONG IL', '', 'KIM', 'MALE', '9183981185', '', 'kji@gov.nk', 200837123, 0),
-('ce9ac444-7dfa-11e1-8168-4cba9d4cadf0', 'UK495EU', 0, 'JONG EUN', '', 'KIM', 'MALE', '9183981185', '', 'kje@gov.kz', 200812345, 0),
-('cea4ea75-7dfa-11e1-8168-4cba9d4cadf0', 'UK495EU', 0, 'George', 'Walker', 'Bush', 'MALE', '+13894898494', '', 'bush@cia.gov', 19819019, 0);
+('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '1E5P3G6', 0, 'JONG IL', '', 'KIM', 'MALE', '9183981185', '', 'kji@gov.nk', 200837120, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,10 +94,6 @@ CREATE TABLE IF NOT EXISTS `coordinate_security` (
 -- Dumping data for table `coordinate_security`
 --
 
-INSERT INTO `coordinate_security` (`UUID`, `ACTIVITY_NAME`, `VALUE`, `VALUE_TYPE`) VALUES
-('4f7ba9d2ca36f', 'CREATE_EVENT', 'JQXHR', 'string'),
-('4f7baa543bf8c', 'CREATE_EVENT', 'JQXHR', 'string'),
-('4f7bab5647682', 'CREATE_EVENT', 'JQXHR', 'string');
 
 -- --------------------------------------------------------
 
@@ -144,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `event_and_class_pair` (
   `UPLBClassID` int(11) NOT NULL,
   PRIMARY KEY (`EventID`,`ShowtimeID`,`UPLBClassID`,`EC_UniqueID`),
   KEY `UniqueID` (`EC_UniqueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `event_and_class_pair`
@@ -210,15 +199,12 @@ CREATE TABLE IF NOT EXISTS `event_slot` (
 --
 
 INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
-('18bd908e-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 1, 'RESERVED-PENDING_PAYMENT', '91cd3fdf-7dfb-11e1-8168-4cba9d4cadf0', 3, 18, 0, NULL),
 ('1861a8e7-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('189f8235-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18808b2b-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18bdd847-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 1, 'RESERVED-PENDING_PAYMENT', '91d5b899-7dfb-11e1-8168-4cba9d4cadf0', 3, 19, 0, NULL),
+('18808b2b-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 4, 'BOOKED', 'f467fd6b-8d1a-11e1-95a8-00ff3343d70b', 7, 4, 0, NULL),
 ('18638ca8-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('189fe389-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1880d34a-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18be203f-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 1, 1, 1, 'RESERVED-PENDING_PAYMENT', '91e0117d-7dfb-11e1-8168-4cba9d4cadf0', 3, 20, 0, NULL),
 ('1863d59a-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18a04172-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18811a9c-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -715,12 +701,12 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('19329e58-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19155b1d-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('195263e1-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18f8e611-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
-INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
+('18f8e611-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1932ecca-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1915a2bd-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1952bdb9-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18f92b67-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('18f92b67-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
+INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
 ('1933416b-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1915e9ed-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19531ec3-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1223,12 +1209,12 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('68227c45-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('683fdf86-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6831136c-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('684fa220-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
-INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
+('684fa220-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6822c352-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6840343b-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('68315b81-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('684fe93c-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('684fe93c-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
+INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
 ('68230ad5-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('68407d14-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6831a7ad-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1686,15 +1672,29 @@ CREATE TABLE IF NOT EXISTS `payments` (
   `Processed_Date` date NOT NULL,
   `data` text,
   PRIMARY KEY (`UniqueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=865219 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=962908 ;
 
 --
 -- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`UniqueID`, `bookingNumber`, `amount`, `processedBy`, `payment_mode`, `Processed_Time`, `Processed_Date`, `data`) VALUES
-(833672, '8R9Z4XR', 500, 582327, '1', '10:19:49', '2012-04-04', ''),
-(865218, '66SC96W', 3000, 0, '2', '10:15:52', '2012-04-04', 'uxtcharge=0;mc_fee=;payer_id=4V7NQQD25H4B8;txn_id=1LB575588T140472V;');
+(0, 'XXXXX', 0, 0, '0', '00:00:00', '2012-01-01', 'comment=This is just an indicator for non payment;'),
+(560316, '49JT8XM', 0, 150949, '0', '17:36:48', '2012-04-22', ''),
+(560547, 'S2WMR6Z', 0, 351916, '0', '17:13:11', '2012-04-22', ''),
+(571189, 'S2WMR6Z', 0, 351916, '0', '17:26:58', '2012-04-22', ''),
+(576449, '49JT8XM', 0, 150949, '0', '17:32:44', '2012-04-22', ''),
+(687789, '1E5P3G6', 0, 593835, '0', '15:53:28', '2012-04-23', ''),
+(707283, 'NCA644R', 0, 351916, '0', '15:39:18', '2012-04-23', ''),
+(779811, '49JT8XM', 2000, 582327, '1', '17:46:01', '2012-04-22', ''),
+(827544, 'Q9RA841', 0, 150949, '0', '17:11:20', '2012-04-22', ''),
+(845669, '49JT8XM', 0, 150949, '0', '17:36:49', '2012-04-22', ''),
+(889389, '49JT8XM', 0, 150949, '0', '17:37:52', '2012-04-22', ''),
+(924935, 'S2WMR6Z', 0, 351916, '0', '17:14:41', '2012-04-22', ''),
+(932920, '49JT8XM', 0, 150949, '0', '17:37:52', '2012-04-22', ''),
+(954651, '49JT8XM', 0, 150949, '0', '17:30:02', '2012-04-22', ''),
+(958379, '9WK3XED', 2000, 582327, '1', '17:51:29', '2012-04-22', ''),
+(962907, '49JT8XM', 0, 150949, '0', '17:32:43', '2012-04-22', '');
 
 -- --------------------------------------------------------
 
@@ -1723,7 +1723,7 @@ CREATE TABLE IF NOT EXISTS `payment_channel` (
 --
 
 INSERT INTO `payment_channel` (`UniqueID`, `Type`, `Name`, `Contact_Person`, `Location`, `Cellphone`, `Landline`, `Email`, `Comments`, `internal_data_type`, `internal_data`) VALUES
-(0, 'COD', 'Automatic Confirmation Since Libre nga eh', '', '', '', '', '', 'Your booking has been confirmed automatically because you do not need to pay anything.', 'WIN5', ''),
+(0, 'FREE', 'Automatic Confirmation Since Free', '', '', '', '', '', 'Your booking has been confirmed automatically because you do not need to pay anything.', 'WIN5', ''),
 (1, 'COD', 'Personal payment to Department of Humanities', NULL, 'CAS Annex 2 UPLB', '09181234567', '(043) 1234567', 'dhum@uplb.edu.ph', 'Office hours until 5PM only.', 'WIN5', NULL),
 (2, 'ONLINE', 'Online via Credit Card ( PayPal )', 'Abraham Darius Llave', '', '9183981185', '', 'abraham.darius.llave@gmail.com', 'There are additional processing fees additional charge if you use this. It would be displayed once you are in PayPal. If you don''t want to use this once you''re there, just click "Cancel and return to.."   to select another payment mode.', 'WIN5', 'merchant_email=abraha_1332349997_biz@gmail.com;testmode=true;');
 
@@ -1812,16 +1812,15 @@ CREATE TABLE IF NOT EXISTS `purchase` (
   `Deadline_Time` time NOT NULL,
   `Comments` varchar(255) DEFAULT NULL COMMENT 'This will contain variables like, "onLapse" -> points to data on ''transactionList'' that is needed to rollback',
   PRIMARY KEY (`UniqueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `purchase`
 --
 
 INSERT INTO `purchase` (`UniqueID`, `BookingNumber`, `Charge_type`, `Charge_type_Description`, `Quantity`, `Amount`, `Payment_UniqueID`, `Payment_Channel_ID`, `Deadline_Date`, `Deadline_Time`, `Comments`) VALUES
-(1, 'UK495EU', 'TICKET', 'VIP Class', 3, 3000, 0, 2, '2012-04-04', '18:00:00', NULL),
-(2, '66SC96W', 'TICKET', 'VIP Class', 3, 3000, 865218, 2, '0000-00-00', '00:00:00', NULL),
-(3, '8R9Z4XR', 'TICKET', 'BUSINESS Class', 1, 500, 833672, 1, '0000-00-00', '00:00:00', NULL);
+(2, '49D2ZET', 'TICKET', 'ECONOMY Class', 2, 0, 0, 0, '2012-04-22', '18:00:00', NULL),
+(18, '1E5P3G6', 'TICKET', 'ECONOMY Class', 1, 0, 687789, 0, '0000-00-00', '00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -2068,13 +2067,13 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 2, 1, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 2, 1, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 2, 1, 'C', '2', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 2, 2, 'C', '3', 0, 1, '4', 'COMMENT'),
+(261, 1, 2, 2, 'C', '3', 0, 1, '4', ''),
 (261, 2, 2, 2, 'C', '3', 0, 1, '4', 'COMMENT'),
 (261, 3, 2, 2, 'C', '3', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 2, 3, 'C', '4', 0, 1, '4', 'COMMENT'),
+(261, 1, 2, 3, 'C', '4', 0, 1, '4', ''),
 (261, 2, 2, 3, 'C', '4', 0, 1, '4', 'COMMENT'),
 (261, 3, 2, 3, 'C', '4', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 2, 4, 'C', '5', 0, 1, '4', 'COMMENT'),
+(261, 1, 2, 4, 'C', '5', 0, 1, '4', ''),
 (261, 2, 2, 4, 'C', '5', 0, 1, '4', 'COMMENT'),
 (261, 3, 2, 4, 'C', '5', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 2, 5, 'C', '6', 0, 1, '1', 'COMMENT'),
@@ -2172,16 +2171,16 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 3, 0, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 3, 0, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 3, 0, 'D', '1', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 3, 1, 'D', '2', 0, 1, '4', 'COMMENT'),
+(261, 1, 3, 1, 'D', '2', 0, 1, '4', ''),
 (261, 2, 3, 1, 'D', '2', 0, 1, '4', 'COMMENT'),
 (261, 3, 3, 1, 'D', '2', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 3, 2, 'D', '3', 0, 1, '4', 'COMMENT'),
+(261, 1, 3, 2, 'D', '3', 0, 1, '4', ''),
 (261, 2, 3, 2, 'D', '3', 0, 1, '4', 'COMMENT'),
 (261, 3, 3, 2, 'D', '3', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 3, 3, 'D', '4', 0, 1, '4', 'COMMENT'),
-(261, 2, 3, 3, 'D', '4', 0, 1, '4', 'COMMENT'),
+(261, 1, 3, 3, 'D', '4', 0, 1, '4', ''),
+(261, 2, 3, 3, 'D', '4', 0, 1, '4', ''),
 (261, 3, 3, 3, 'D', '4', 0, 2, '4', 'COMMENT'),
-(261, 1, 3, 4, 'D', '5', 0, 1, '4', 'COMMENT'),
+(261, 1, 3, 4, 'D', '5', 0, 1, '4', ''),
 (261, 2, 3, 4, 'D', '5', 0, 1, '4', 'COMMENT'),
 (261, 3, 3, 4, 'D', '5', 0, 2, '4', 'COMMENT'),
 (261, 1, 3, 5, 'D', '6', 0, 1, '1', 'COMMENT'),
@@ -2201,16 +2200,16 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 3, 9, 'D', '9', 0, 2, '1', 'COMMENT'),
 (261, 1, 3, 10, 'D', '11', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 10, 'D', '11', 0, 1, '1', 'COMMENT'),
-(261, 3, 3, 10, 'D', '10', 0, 2, '1', 'COMMENT'),
+(261, 3, 3, 10, 'D', '10', 0, 2, '1', ''),
 (261, 1, 3, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 3, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
-(261, 3, 3, 11, 'D', '11', 0, 2, '1', 'COMMENT'),
+(261, 3, 3, 11, 'D', '11', 0, 2, '1', ''),
 (261, 1, 3, 12, 'D', '12', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 12, 'D', '12', 0, 1, '1', 'COMMENT'),
-(261, 3, 3, 12, 'D', '12', 0, 2, '2', 'COMMENT'),
+(261, 3, 3, 12, 'D', '12', 0, 2, '2', 'BOOKING_CHANGE_LAPSE_FREED'),
 (261, 1, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
-(261, 3, 3, 13, 'D', '13', 0, 2, '2', 'COMMENT'),
+(261, 3, 3, 13, 'D', '13', 0, 2, '2', 'BOOKING_CHANGE_LAPSE_FREED'),
 (261, 1, 3, 14, 'D', '14', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 14, 'D', '14', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 14, 'D', '14', 0, 2, '2', 'COMMENT'),
@@ -2223,13 +2222,13 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 3, 17, 'D', '17', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 17, 'D', '17', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 17, 'D', '17', 0, 2, '2', 'COMMENT'),
-(261, 1, 3, 18, 'D', '18', 1, 1, '1', NULL),
+(261, 1, 3, 18, 'D', '18', 0, 1, '1', NULL),
 (261, 2, 3, 18, 'D', '18', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 18, 'D', '18', 0, 2, '2', 'COMMENT'),
-(261, 1, 3, 19, 'D', '19', 1, 1, '1', NULL),
+(261, 1, 3, 19, 'D', '19', 0, 1, '1', NULL),
 (261, 2, 3, 19, 'D', '19', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 19, 'D', '19', 0, 2, '2', 'COMMENT'),
-(261, 1, 3, 20, 'D', '20', 1, 1, '1', NULL),
+(261, 1, 3, 20, 'D', '20', 0, 1, '1', NULL),
 (261, 2, 3, 20, 'D', '20', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 20, 'D', '20', 0, 2, '2', 'COMMENT'),
 (261, 1, 3, 21, 'D', '21', 0, 1, '1', 'COMMENT'),
@@ -2285,11 +2284,11 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 4, 2, 'E', '3', 0, 1, '4', 'COMMENT'),
 (261, 2, 4, 2, 'E', '3', 0, 1, '4', 'COMMENT'),
 (261, 3, 4, 2, 'E', '3', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 4, 3, 'E', '4', 0, 1, '4', 'COMMENT'),
-(261, 2, 4, 3, 'E', '4', 0, 1, '4', 'COMMENT'),
-(261, 3, 4, 3, 'E', '4', 0, 2, '4', 'COMMENT'),
-(261, 1, 4, 4, 'E', '5', 0, 1, '4', 'COMMENT'),
-(261, 2, 4, 4, 'E', '5', 0, 1, '4', 'COMMENT'),
+(261, 1, 4, 3, 'E', '4', 0, 1, '4', ''),
+(261, 2, 4, 3, 'E', '4', 0, 1, '4', ''),
+(261, 3, 4, 3, 'E', '4', 0, 2, '4', 'BOOKING_CHANGE_SUCCESS_FREED'),
+(261, 1, 4, 4, 'E', '5', 0, 1, '4', ''),
+(261, 2, 4, 4, 'E', '5', 0, 1, '4', ''),
 (261, 3, 4, 4, 'E', '5', 0, 2, '4', 'COMMENT'),
 (261, 1, 4, 5, 'E', '6', 0, 1, '1', 'COMMENT'),
 (261, 2, 4, 5, 'E', '6', 0, 1, '1', 'COMMENT'),
@@ -2311,7 +2310,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 4, 10, 'E', '10', 0, 2, '2', 'COMMENT'),
 (261, 1, 4, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 4, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
-(261, 3, 4, 11, 'E', '11', 0, 2, '2', 'COMMENT'),
+(261, 3, 4, 11, 'E', '11', 0, 2, '2', ''),
 (261, 1, 4, 12, 'E', '12', 0, 1, '1', 'COMMENT'),
 (261, 2, 4, 12, 'E', '12', 0, 1, '1', 'COMMENT'),
 (261, 3, 4, 12, 'E', '12', 0, 2, '2', 'COMMENT'),
@@ -2395,9 +2394,9 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 5, 3, 'F', '4', 0, 1, '4', 'COMMENT'),
 (261, 2, 5, 3, 'F', '4', 0, 1, '4', 'COMMENT'),
 (261, 3, 5, 3, 'F', '4', 0, 2, '4', 'COMMENT'),
-(261, 1, 5, 4, 'F', '5', 0, 1, '4', 'COMMENT'),
-(261, 2, 5, 4, 'F', '5', 0, 1, '4', 'COMMENT'),
-(261, 3, 5, 4, 'F', '5', 0, 2, '4', 'COMMENT'),
+(261, 1, 5, 4, 'F', '5', 0, 1, '4', ''),
+(261, 2, 5, 4, 'F', '5', 0, 1, '4', ''),
+(261, 3, 5, 4, 'F', '5', 0, 2, '4', ''),
 (261, 1, 5, 5, 'F', '6', 0, 1, '1', 'COMMENT'),
 (261, 2, 5, 5, 'F', '6', 0, 1, '1', 'COMMENT'),
 (261, 3, 5, 5, 'F', '6', 0, 2, '4', 'COMMENT'),
@@ -2521,7 +2520,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 6, 9, 'G', '10', 0, 1, '2', 'COMMENT'),
 (261, 3, 6, 9, 'G', '9', 0, 2, '2', 'COMMENT'),
 (261, 1, 6, 10, 'G', '11', 0, 1, '2', 'COMMENT'),
-(261, 2, 6, 10, 'G', '11', 0, 1, '2', 'COMMENT'),
+(261, 2, 6, 10, 'G', '11', 0, 1, '2', ''),
 (261, 3, 6, 10, 'G', '10', 0, 2, '2', 'COMMENT'),
 (261, 1, 6, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 6, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
@@ -2561,7 +2560,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 6, 22, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 1, 6, 23, 'G', '23', 0, 1, '1', 'COMMENT'),
 (261, 2, 6, 23, 'G', '23', 0, 1, '1', 'COMMENT'),
-(261, 3, 6, 23, 'G', '22', 0, 2, '4', 'COMMENT'),
+(261, 3, 6, 23, 'G', '22', 0, 2, '4', 'BOOKING_CHANGE_SUCCESS_FREED'),
 (261, 1, 6, 24, 'G', '24', 0, 1, '1', 'COMMENT'),
 (261, 2, 6, 24, 'G', '24', 0, 1, '1', 'COMMENT'),
 (261, 3, 6, 24, 'G', '23', 0, 2, '4', 'COMMENT'),
@@ -2609,7 +2608,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 7, 3, 'H', '4', 0, 1, '4', 'COMMENT'),
 (261, 2, 7, 3, 'H', '4', 0, 1, '4', 'COMMENT'),
 (261, 3, 7, 3, 'H', '4', 0, 2, '4', 'COMMENT'),
-(261, 1, 7, 4, 'H', '5', 0, 1, '4', 'COMMENT'),
+(261, 1, 7, 4, 'H', '5', 1, 1, '4', NULL),
 (261, 2, 7, 4, 'H', '5', 0, 1, '4', 'COMMENT'),
 (261, 3, 7, 4, 'H', '5', 0, 2, '4', 'COMMENT'),
 (261, 1, 7, 5, 'H', '6', 0, 1, '1', 'COMMENT'),
@@ -2627,7 +2626,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT'),
 (261, 2, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT'),
 (261, 3, 7, 9, 'H', '9', 0, 2, '3', 'COMMENT'),
-(261, 1, 7, 10, 'H', '11', 0, 1, '2', 'COMMENT'),
+(261, 1, 7, 10, 'H', '11', 0, 1, '2', ''),
 (261, 2, 7, 10, 'H', '11', 0, 1, '2', 'COMMENT'),
 (261, 3, 7, 10, 'H', '10', 0, 2, '3', 'COMMENT'),
 (261, 1, 7, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
@@ -2659,10 +2658,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 7, 19, 'H', '19', 0, 2, '3', 'COMMENT'),
 (261, 1, 7, 20, 'H', '20', 0, 1, '1', 'COMMENT'),
 (261, 2, 7, 20, 'H', '20', 0, 1, '1', 'COMMENT'),
-(261, 3, 7, 20, 'H', '20', 0, 2, '3', 'COMMENT'),
+(261, 3, 7, 20, 'H', '20', 0, 2, '3', ''),
 (261, 1, 7, 21, 'H', '21', 0, 1, '1', 'COMMENT'),
 (261, 2, 7, 21, 'H', '21', 0, 1, '1', 'COMMENT'),
-(261, 3, 7, 21, 'H', '21', 0, 2, '3', 'COMMENT'),
+(261, 3, 7, 21, 'H', '21', 0, 2, '3', ''),
 (261, 1, 7, 22, 'H', '22', 0, 1, '1', 'COMMENT'),
 (261, 2, 7, 22, 'H', '22', 0, 1, '1', 'COMMENT'),
 (261, 3, 7, 22, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
@@ -2760,10 +2759,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 8, 17, 'I', '17', 0, 2, '3', 'COMMENT'),
 (261, 1, 8, 18, 'I', '18', 0, 1, '1', 'COMMENT'),
 (261, 2, 8, 18, 'I', '18', 0, 1, '1', 'COMMENT'),
-(261, 3, 8, 18, 'I', '18', 0, 2, '3', 'COMMENT'),
+(261, 3, 8, 18, 'I', '18', 0, 2, '3', ''),
 (261, 1, 8, 19, 'I', '19', 0, 1, '1', 'COMMENT'),
 (261, 2, 8, 19, 'I', '19', 0, 1, '1', 'COMMENT'),
-(261, 3, 8, 19, 'I', '19', 0, 2, '3', 'COMMENT'),
+(261, 3, 8, 19, 'I', '19', 0, 2, '3', ''),
 (261, 1, 8, 20, 'I', '20', 0, 1, '1', 'COMMENT'),
 (261, 2, 8, 20, 'I', '20', 0, 1, '1', 'COMMENT'),
 (261, 3, 8, 20, 'I', '20', 0, 2, '3', 'COMMENT'),
@@ -2864,10 +2863,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 9, 16, 'J', '16', 0, 2, '3', 'COMMENT'),
 (261, 1, 9, 17, 'J', '17', 0, 1, '1', 'COMMENT'),
 (261, 2, 9, 17, 'J', '17', 0, 1, '1', 'COMMENT'),
-(261, 3, 9, 17, 'J', '17', 0, 2, '3', 'COMMENT');
-INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
+(261, 3, 9, 17, 'J', '17', 0, 2, '3', 'COMMENT'),
 (261, 1, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT'),
-(261, 2, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT'),
+(261, 2, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT');
+INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
 (261, 3, 9, 18, 'J', '18', 0, 2, '3', 'COMMENT'),
 (261, 1, 9, 19, 'J', '19', 0, 1, '1', 'COMMENT'),
 (261, 2, 9, 19, 'J', '19', 0, 1, '1', 'COMMENT'),
@@ -3004,7 +3003,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 10, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 10, 27, 'K', '26', 0, 2, '4', 'COMMENT'),
 (261, 1, 10, 28, 'K', '27', 0, 1, '3', 'COMMENT'),
-(261, 2, 10, 28, 'K', '27', 0, 1, '3', 'COMMENT'),
+(261, 2, 10, 28, 'K', '27', 0, 1, '3', ''),
 (261, 3, 10, 28, 'K', '27', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 10, 29, 'K', '28', 0, 1, '3', 'COMMENT'),
 (261, 2, 10, 29, 'K', '28', 0, 1, '3', 'COMMENT'),
@@ -3125,7 +3124,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 12, 9, 'M', '10', 0, 1, '3', 'COMMENT'),
 (261, 2, 12, 9, 'M', '10', 0, 1, '3', 'COMMENT'),
 (261, 1, 12, 10, 'M', '11', 0, 1, '3', 'COMMENT'),
-(261, 2, 12, 10, 'M', '11', 0, 1, '3', 'COMMENT'),
+(261, 2, 12, 10, 'M', '11', 0, 1, '3', ''),
 (261, 1, 12, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 12, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 1, 12, 12, 'M', '12', 0, 1, '2', 'COMMENT'),
@@ -3852,10 +3851,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 7, 4, 'H', '5', -2, NULL, NULL, 'COMMENT'),
 (985, 1, 7, 5, 'H', '6', -2, NULL, NULL, 'COMMENT'),
 (985, 1, 7, 6, 'H', '7', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 7, 'H', '8', 0, 1, '2', 'COMMENT');
-INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
+(985, 1, 7, 7, 'H', '8', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 8, 'H', '9', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT'),
+(985, 1, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT');
+INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
 (985, 1, 7, 10, 'H', '11', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (985, 1, 7, 12, 'H', '12', 0, 1, '2', 'COMMENT'),
@@ -4066,7 +4065,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 12, 22, 'M', '22', 0, 1, '3', 'COMMENT'),
 (985, 1, 12, 23, 'M', '23', 0, 1, '3', 'COMMENT'),
 (985, 1, 12, 24, 'M', '24', 0, 1, '3', 'COMMENT'),
-(985, 1, 12, 25, 'M', '25', 0, 1, '3', 'COMMENT'),
+(985, 1, 12, 25, 'M', '25', 0, 1, '3', ''),
 (985, 1, 12, 26, 'M', '26', 0, 1, '3', 'COMMENT'),
 (985, 1, 12, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (985, 1, 12, 28, 'M', '27', 0, 1, '3', 'COMMENT'),
@@ -5383,10 +5382,33 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 --
 
 INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `Seat_map_UniqueID`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
-(1, 261, '2012-04-27', '19:00:00', '2012-04-27', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-04', '10:54:31', 1, 0, NULL, 9765048, 500, 1, 'CHECK-IN', NULL),
+(1, 261, '2012-04-27', '19:00:00', '2012-04-27', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-24', '10:54:31', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
 (1, 985, '2012-04-20', '19:00:00', '2012-04-21', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-19', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
 (2, 261, '2012-04-28', '19:00:00', '2012-04-28', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-27', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
 (3, 261, '2012-04-30', '19:00:00', '2012-04-30', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-04-30', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system_settings`
+--
+
+CREATE TABLE IF NOT EXISTS `system_settings` (
+  `Name` varchar(255) NOT NULL,
+  `Value` varchar(255) NOT NULL,
+  `Type` varchar(255) NOT NULL DEFAULT 'INT' COMMENT 'STRING, INT, FLOAT, whatever',
+  PRIMARY KEY (`Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `system_settings`
+--
+
+INSERT INTO `system_settings` (`Name`, `Value`, `Type`) VALUES
+('ACAD_CURRENT_TERM', '3', 'INT'),
+('ACAD_CURRENT_YEAR1', '2012', 'INT'),
+('PP_CHARGE_DEFAULT_FIXED', '0.12', 'FLOAT'),
+('PP_CHARGE_DEFAULT_PERCENT', '2', 'FLOAT');
 
 -- --------------------------------------------------------
 
@@ -5455,7 +5477,18 @@ CREATE TABLE IF NOT EXISTS `transactionlist` (
 --
 
 INSERT INTO `transactionlist` (`Date`, `Time`, `UniqueID`, `ByUser`, `Title`, `Title_Sub`, `ObjectIdentifier`, `Description`, `DataType`, `Data`) VALUES
-('2012-04-04', '10:19:49', 248892, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '8R9Z4XR', 'No comment!', 'WIN5', 'NONE');
+('2012-04-22', '17:26:59', 136557, 351916, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', 'S2WMR6Z', 'Secret!', 'WIN5', 'oldShowingTime=2;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=1;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
+('2012-04-22', '17:46:00', 148284, 582327, 'BOOKING_CHANGE_CONFIRM', 'BY_AUTHORIZED_AGENT', '49JT8XM', 'Secret!', 'WIN5', 'NONE'),
+('2012-04-22', '17:40:32', 233731, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=3;oldTicketClassGroupID=2;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=2'),
+('2012-04-04', '10:19:49', 248892, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '8R9Z4XR', 'No comment!', 'WIN5', 'NONE'),
+('2012-04-22', '17:44:22', 373641, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=3;oldTicketClassGroupID=2;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=3'),
+('2012-04-22', '17:37:53', 431430, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=4'),
+('2012-04-22', '17:51:29', 465185, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '9WK3XED', 'No comment!', 'WIN5', 'NONE'),
+('2012-04-22', '17:36:49', 465570, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=2;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=1;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
+('2012-04-22', '17:32:44', 791891, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=2;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
+('2012-04-22', '17:14:42', 884231, 351916, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', 'S2WMR6Z', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=2;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
+('2012-04-22', '17:42:49', 897250, 150949, 'ROLLBACK-USER_DO', 'TICKET_CLASS_UPGRADE', '49JT8XM', 'Secret!', 'WIN5', 'backToShowingTime=3;backToTicketClassGroupID=2;backToTicketClassUniqueID=4'),
+('2012-04-22', '17:46:01', 912438, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '49JT8XM', 'No comment!', 'WIN5', 'NONE');
 
 -- --------------------------------------------------------
 
@@ -5529,15 +5562,12 @@ CREATE TABLE IF NOT EXISTS `uplb_class_and_student_pair` (
 --
 
 INSERT INTO `uplb_class_and_student_pair` (`GuestUUID`, `UPLBClassUUID`) VALUES
-('5c96a8e8-7dfc-11e1-8168-4cba9d4cadf0', '884511'),
-('91cd3fdf-7dfb-11e1-8168-4cba9d4cadf0', '881163'),
-('91cd3fdf-7dfb-11e1-8168-4cba9d4cadf0', '884511'),
-('91d5b899-7dfb-11e1-8168-4cba9d4cadf0', '881163'),
-('91d5b899-7dfb-11e1-8168-4cba9d4cadf0', '884511'),
-('91e0117d-7dfb-11e1-8168-4cba9d4cadf0', '881163'),
-('91e0117d-7dfb-11e1-8168-4cba9d4cadf0', '884511'),
-('ce914f4c-7dfa-11e1-8168-4cba9d4cadf0', '881163'),
-('ce914f4c-7dfa-11e1-8168-4cba9d4cadf0', '884511');
+('01b0e921-8d19-11e1-95a8-00ff3343d70b', '881163'),
+('01b0e921-8d19-11e1-95a8-00ff3343d70b', '884511'),
+('4a343d57-8c5b-11e1-95a8-00ff3343d70b', '884511'),
+('54b92f05-8c60-11e1-95a8-00ff3343d70b', '881163'),
+('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '881163'),
+('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '884511');
 
 -- --------------------------------------------------------
 
@@ -5573,8 +5603,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lname`, `BookableByFriend`, `Gender`, `Cellphone`, `Landline`, `Email`, `addr_homestreet`, `addr_barangay`, `addr_cityMunicipality`, `addr_province`, `temp1`, `temp2`) VALUES
+(0, 'root', 'default', 'ROOT', '', 'USER', 0, 'MALE', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL),
 (150949, 'sampleuser01', '69211b57e61853fc156da911f7e78eaf3390c3ae276a685e395f4622c49cebb923dddd578b7382af36c851da0bda6da4243d7cd9782f0bdfc8b3c6bbf3a49c25', 'SAMPLE USER', '', 'ONE', 1, 'MALE', '9183981185', '0', 'LMB@GOV.KR', '', '', '', '', NULL, NULL),
-(228018, 'sampleuser04', '9bf951b1ac2f8c69aebcd430b95497f823dcdf1bd381ca97145987637fe7996bec9069f248bc225679a95ea7f0b50587399dc989e3ca41a32ed03f61d2fab0c2', 'BARACK', '', 'OBAMA', 1, 'MALE', '9091234567', '0', 'FEBFAIR@UPLB.EDU.PH', '', '', '', '', NULL, NULL),
+(228018, 'sampleuser04', '08320853482cb653db8c10dca5adcc46063b6e79270c603cd08f17be12ee8a867a7bef91169117e9055680de395ab41adf150dd40b28b84531f510b9b1d9d999', 'BARACK', '', 'OBAMA', 1, 'MALE', '9091234567', '0', 'FEBFAIR@UPLB.EDU.PH', '', '', '', '', NULL, NULL),
 (351916, 'sampleuser03', '760eb2f7611e7d09cde257a7538fb0044c8738d5b4a270d9098928838249170d16ba36ab323319323b0fd394cbcf487f1b08c6374be66a047d0826b9133989f5', 'HANAMICHI', '', 'SAKURAGI', 1, 'MALE', '91832948924', '0', 'AAA@AAA.COM', '', '', '', '', NULL, NULL),
 (372076, 'kimjongeun', '5534dba47abe3241141d5cee392a8f6e4feac77263c82d8446120b9c438be4c41c8a5e02a84200a49a207bbf252c9be1bdd6e397208899478d50971a678f79ea', 'JONG EUN', '', 'KIM', 1, 'MALE', '9183981185', '0', 'AA@LKC.COM', '', '', '', '', NULL, NULL),
 (392648, 'kangsongdaeguk', '5534dba47abe3241141d5cee392a8f6e4feac77263c82d8446120b9c438be4c41c8a5e02a84200a49a207bbf252c9be1bdd6e397208899478d50971a678f79ea', 'BARACKY', '', 'OBAMA', 1, '', '9183981185', '0', 'AAA@AA.COM', '', '', '', '', NULL, NULL),

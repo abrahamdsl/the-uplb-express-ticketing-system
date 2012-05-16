@@ -23,6 +23,13 @@ function formSubmit()
 		success: function(data){
 			setTimeout( function(){}, 1000 );			
 			$('span#ajaxind').hide();
+			if( $( data ).find('resultstring').text() == 'BOOKING_CONFIRM_CLEARED' )
+			{
+				window.location = CI.base_url + 'EventCtrl/confirm_step2_forward';
+			}else{
+				$.fn.makeOverlayForResponse( data );
+			}
+			/*
 			if( data === "true" ) window.location = CI.base_url + 'EventCtrl/confirm_step2_forward';
 			else				
 				$.fn.nextGenModal({
@@ -30,6 +37,7 @@ function formSubmit()
 				   title: 'not found',
 				   message: 'The booking number you have specified is not found in the system.'
 				});						
+			*/
 		}
 	});	
 

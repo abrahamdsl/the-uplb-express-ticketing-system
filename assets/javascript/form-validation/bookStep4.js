@@ -107,6 +107,14 @@ function formSubmit( ){
 								});
 								
 								return false;
+							}else
+							if( resultData[1] == "SEATREQUIRED" ){
+								$.fn.nextGenModal({
+								   msgType: 'error',
+								   title: 'seat selection required',
+								   message: 'You must select seats for all guests in this booking.'
+								});								
+								return false;							
 							}else{
 								$('input[type!="hidden"]').attr( 'disabled', 'disabled' );	
 								document.forms[0].submit();
@@ -134,7 +142,7 @@ function formSubmit( ){
 			/*
 				This will be only executed when user is managing his booking - changing seat(s).
 				He did not choose a new seat so just submit
-			*/
+			*/			
 			document.forms[0].submit();
 		}
 }

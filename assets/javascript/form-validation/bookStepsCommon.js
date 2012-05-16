@@ -40,7 +40,8 @@ $(document).ready( function(){
 			   msgType: 'warning',
 			   title: 'Cancel booking process?',
 			   message: 'Are you sure you want to do this? All slots we have temporarily reserved will be made as available again for others.',
-			   yesFunctionCall: 'cancelBookingProcess'
+			   yesFunctionCall: 'cancelBookingProcess',
+			   closeOnChoose: false
 			});
 	});
 	

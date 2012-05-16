@@ -86,6 +86,7 @@ $this->load->view('html-generic/metadata.inc');
 							$function = (isset($singleChannel)) ? 'managepaymentmode_save' : 'addpaymentmode_step2';
 						?>
 						<form method="post"  action="<?php echo base_url().'userAccountCtrl/'.$function; ?>" name="formLogin" id="formMain">
+							<input type="hidden" name="mode" value="<?php echo $mode; ?>" />
 							<?php if(isset($singleChannel)){ ?>
 								<input type="hidden" name="uniqueID" value="<?php echo $singleChannel->UniqueID; ?>" />
 							<?php } ?>

@@ -130,8 +130,9 @@ $this->load->view('html-generic/metadata.inc');
 							</div>														
 						</div>
 						<div class="containingClassTable" >
-							Remaining time here?<br/><br/>
-							Or the "get-from-profile" feature.
+							<!--
+								Remaining time here?<br/><br/>
+							-->
 						</div>
 					</div>
 				</div>

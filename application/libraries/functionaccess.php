@@ -119,9 +119,10 @@ class FunctionAccess{
 				}
 			}else{
 				$data['error'] = "CUSTOM";
-				 $data['theMessage'] = "Crucial data missing in accessing this page.";
-				 $this->CI->load->view( 'errorNotice', $data );
+				 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here.";
+				 $this->CI->load->view( 'errorNotice', $data );				 
 				 return false;
+				 
 			}
 		}else{
 			 redirect('EventCtrl/book');

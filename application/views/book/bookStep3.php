@@ -79,7 +79,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>
 			<div id="top_page_detail" >
 				Enter your details promptly. For one slot, you can opt to get the information from your profile.
-				For the others, if they have UPLB UXT Accounts too, you can enter their username and get their
+				For the others, if they have UPLB XT Accounts too, you can enter their username and get their
 				info if they have this setting enabled.
 				<br/>				
 			</div>			
@@ -95,7 +95,9 @@ $this->load->view('html-generic/metadata.inc');
 							?>										
 						</div>
 						<div class="containingClassTable" >
-							Remaining time here?<br/><br/>							
+							<!--
+								Remaining time here?<br/><br/>
+							-->
 						</div>
 					</div>
 				</div>

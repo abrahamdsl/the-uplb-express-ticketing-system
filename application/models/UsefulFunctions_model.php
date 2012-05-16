@@ -25,7 +25,10 @@ class UsefulFunctions_model extends CI_Model {
 	
 	function getRealIpAddr()
 	{
-		//From: http://roshanbh.com.np/2007/12/getting-real-ip-address-in-php.html
+		/*
+			Gets the CLIENT's IP address.
+			From: http://roshanbh.com.np/2007/12/getting-real-ip-address-in-php.html
+		*/
 		if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
 		{
 		  $ip=$_SERVER['HTTP_CLIENT_IP'];
@@ -196,6 +199,17 @@ class UsefulFunctions_model extends CI_Model {
 			return $returnThis;			
 	}//outputShowingTime_SimpleOneLine(..)
 	
+	 function VisitorIP()
+    { 
+		/*
+			From http://wiki.jumba.com.au/wiki/PHP_Get_user_IP_Address
+		*/
+		if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+			$TheIp=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		else $TheIp=$_SERVER['REMOTE_ADDR'];
+	 
+		return trim($TheIp);
+    }
 	
 }//class
 ?>

@@ -60,7 +60,6 @@ function deleteBookingX( args )
 $(document).ready( function(){
 	$('div#accordion2').accordion();
 	if( $('div#accordion h3').size() != 0 ) $('div#accordion2').hide();
-	//$(document).makeTimestampFriendly();
 	
 	$('div.metrotile').click( function(e){
 		var thisID = $(this).attr( 'name' );

@@ -547,6 +547,18 @@ class Event_model extends CI_Model {
 		else return false;		
 	}//isRedEye(..)
 	
+	function isSeatSelectionRequired( $eventID = NULL, $showtimeID = NULL )
+	{
+		/*
+			@created 23APR2012-0243
+			@purpose Obviously
+			
+		*/
+		$showtimeObj = $this->getSingleShowingTime( $eventID, $showtimeID );
+		if( $showtimeObj === false ) return false;
+		return( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 );	
+	}
+	
 	function isShowtimeOnlyOne( $eventID )
 	{
 		$showtimesObj = $this->getConfiguredShowingTimes( $eventID , TRUE );

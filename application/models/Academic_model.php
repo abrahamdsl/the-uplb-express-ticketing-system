@@ -230,6 +230,11 @@ class Academic_model extends CI_Model {
 	function makeUPLBConstituencyDataToString( $dataArray )
 	{
 		/*
+			--------------------------------
+			For DEPRECIATION - 17APR2012-1519
+			*Formerly used by EventCtrl/book_step4 but not anymore
+			
+			---------------------------------
 			Created 21MAR2012-1416
 			
 			Structure of  $dataArray parameter.

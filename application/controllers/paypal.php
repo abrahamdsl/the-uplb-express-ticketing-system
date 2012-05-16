@@ -153,9 +153,18 @@ class Paypal extends CI_Controller {
 		/*
 			01APR2012-2239 : Processing for refunds, reversal and others are pending here.
 		*/
- 		$ipn_init = @$this->paypal_lib->ipn_data[ 'txn_id' ];
+		$visitorIP = $this->UsefulFunctions_model->VisitorIP();
+                $visitorHostName = gethostbyaddr( $visitorIP );
+		log_message('DEBUG', 'IPN function accessed');
+		log_message('DEBUG', 'IPN Connection from IP ' . $visitorIP );
+		log_message('DEBUG', 'IPN Connection from URI ' . $visitorHostName );
+		log_message('DEBUG', 'IPN Connection from Port ' . $_SERVER['REMOTE_PORT'] );
+		log_message('DEBUG', 'IPN START POST DATA ');
+		foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );
+		log_message('DEBUG', 'IPN END POST DATA ');		
+ 		$ipn_init = (isset($this->paypal_lib->ipn_data[ 'txn_id' ])) ? $this->paypal_lib->ipn_data[ 'txn_id' ] : "NULL";
 		log_message('DEBUG', "IPN initial: ".$ipn_init);
-		if ($this->paypal_lib->validate_ipn()) 
+		if ($this->paypal_lib->validate_ipn( $visitorHostName ) ) 
 		{
 			$bookingNumber = $this->paypal_lib->ipn_data[ 'item_number' ];
 			log_message('DEBUG', "IPN received for booking number: ".$bookingNumber);
