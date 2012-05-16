@@ -8,6 +8,10 @@
 		define( 'OLD_SHOWTIME_TC_GROUP_ID', 'oldTicketClassGroupID' );
 		define( 'OLD_SHOWTIME_TC_UNIQUE_ID', 'oldTicketClassUniqueID' );
 		define( 'FREE_AMOUNT', 0.0 );
+		/*
+			Change the corresponding entries in string_codes.php in the root accordingly
+			if change is done
+		*/
 		define( 'FACTORY_AUTOCONFIRMFREE_UNIQUEID', 0 );
 		define( 'FACTORY_PAYPALPAYMENT_UNIQUEID', 2 );
 		define( 'PAYPAL_FEE_FIXED', 15.00 );
@@ -21,6 +25,7 @@
 		define( 'MANAGE_BOOKING', 'MANAGE_BOOKING' );
 		define( 'CHECK_IN', 'CHECKIN_IN' );
 		define( 'CHECK_OUT', 'CHECKIN_OUT' );
+		define( 'SEAT_CREATE', 'SEAT_CREATE' );
 		
 		/*
 			Array keys

@@ -77,10 +77,8 @@ $this->load->view('html-generic/doctype.inc');
 			<div id="page_title">
 				Modify ticket classes for ' <?php echo $eventObj->Name; ?> '
 			</div>
-			<div id="instruction" >
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do 
-				<br/>
-				labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+			<div id="instruction" >							
+				&nbsp;
 			</div>			
 			<!-- accordion start -->			
 			<input type="hidden" id="managetc" value="0" />

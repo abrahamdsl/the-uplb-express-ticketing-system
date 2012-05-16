@@ -74,9 +74,12 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>			
     </div>            
-    <div id="main_content" >    	
-    	<div id="centralContainer">
-	
+    <div id="main_content" > 
+		<?php			
+			$bookingNumber = $this->input->cookie( 'bookingNumber' );
+			$isUpChange = $this->Booking_model->isBookingUpForChange( $bookingNumber );
+		?>
+    	<div id="centralContainer">	
 			<div id="page_title" class="page_title_custom" >
 				Confirmation
 			</div>
@@ -92,7 +95,7 @@ $this->load->view('html-generic/metadata.inc');
 					<div class="content">	
 						<div class="containingClassTable" style="float:left;padding-left: 25px;" >
 							<div id="bookingNumber" class="properInfo center_purest" >
-								<?php echo $this->input->cookie( 'bookingNumber' ); ?>
+								<?php echo $bookingNumber; ?>
 							</div>
 							<div class="caption center_purest" style="margin-top: 20px;" >
 								This is your booking reference number. The only thing you need when paying for your ticket(s), well,
@@ -109,12 +112,25 @@ $this->load->view('html-generic/metadata.inc');
 								</span>
 								<br/>
 								<span id="time">
-									<?php echo date('h:i:s A', strtotime($paymentDeadline['time']) ); ?>
+									<?php 
+										/*
+											No need to show seconds if zero
+										*/
+										$splitted = explode(':', $paymentDeadline['time']);
+										$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
+										echo date( $timeFormat." A", strtotime($paymentDeadline['time'])); 
+									?>									
 								</span>								
 							</div>
 							<div class="center_purest caption ">
-								Deadline for payment for the changes else your booking will be reverted to the original state. We advise
-								you be at the collecting agency 15 minutes before the deadline.
+								Deadline for payment, else 
+								<?php if( $isUpChange ) { ?>
+									your booking will be reverted to the original state.
+								<?php }else{ ?>
+									your reserved slot(s) will be forfeited.
+								<?php } ?>
+								
+								We advise you be at the collecting agency 15 minutes before the deadline.
 							</div>							
 										
 						</div>
@@ -278,7 +294,8 @@ $this->load->view('html-generic/metadata.inc');
 														</td>
 														<td class="oldseat">	
 															<?php 
-																echo $oldSeatVisuals[ $singleGuest->UUID ][ 'visual_rep' ];
+																$oldSeat = (strlen($oldSeatVisuals[ $singleGuest->UUID ][ 'visual_rep' ]) > 0 ) ? $oldSeatVisuals[ $singleGuest->UUID ][ 'visual_rep' ] : "NONE";
+																echo $oldSeat;
 															?>
 														</td>													
 														<td class="newseat" >

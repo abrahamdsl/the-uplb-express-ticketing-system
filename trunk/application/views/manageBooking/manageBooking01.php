@@ -25,8 +25,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking01.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -78,22 +77,40 @@ $this->load->view('html-generic/metadata.inc');
 			<div id="accordion" class="specialOnMB01" >
 			<?php				
 				if( $bookings === false )
-				{
-					//
+				{					
 			?>			
 			<?php
 				}else{
 					foreach( $bookings as $singleBooking )
-					{
-					$displayThis = $singleBooking->bookingNumber;
-					$displayThis .= "&nbsp;&nbsp;|&nbsp;&nbsp;".$singleBooking->Name;					
+					{	
+						$isExpired   	 = $this->Booking_model->isBookingExpired( $singleBooking );
+						$isExpired_State = ( $isExpired ) ? $singleBooking->Status2 : NULL;
+						$isUpChange  	 = $this->Booking_model->isBookingUpForChange( $singleBooking );
+						$isUpPayment 	 = $this->Booking_model->isBookingUpForPayment( $singleBooking );
+						$isPendingChange = ( $isUpChange  or $isUpPayment );
+						
+					
+						$displayThis = $singleBooking->bookingNumber;
+						$displayThis .= "&nbsp;&nbsp;|&nbsp;&nbsp;".$singleBooking->Name;					
 			?>				
 				<h3 id="h_<?php echo $singleBooking->bookingNumber; ?>"><a href="#"><?php echo $displayThis ?></a></h3>
 				<div id="<?php echo $singleBooking->bookingNumber; ?>" class="section" >
 					<?php
-						if(  $this->Booking_model->isBookingUpForChange( $singleBooking ) or 
-						      $this->Booking_model->isBookingUpForPayment( $singleBooking )
-						) 
+						if( $isExpired ) 
+						{
+							if( $isExpired_State == 'FOR-DELETION'){
+								$argumentArray = Array( 'bool' => true, 'Status2' => "FOR-DELETION" );		
+								$this->bookingmaintenance->deleteBookingTotally_andCleanup( $singleBooking->bookingNumber, $argumentArray );
+							}else
+								$this->Booking_model-> markAsExpired_ForDeletion( $singleBooking->bookingNumber );
+					?>
+					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
+						You were not able to pay for this booking on the deadline. Your slots and seats if any have been forfeited. All data
+						regarding this will be erased upon page refresh or the next time you visit this page.
+					</div>
+					<?php
+						}else
+						if( $isPendingChange ) 
 						{
 					?>
 					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
@@ -105,94 +122,27 @@ $this->load->view('html-generic/metadata.inc');
 						if(  $this->Booking_model->isBookingRolledBack( $singleBooking ) ) {
 					?>
 					<div style="width: 100%; border: 2px solid red; padding: 10px;  font-size: 1.2em; margin-bottom: 10px;" > 
-						The changes to this booking has been reverted because you haven't paid your dues before the deadline.
+						The changes to this booking have been reverted because you haven't paid your dues before the deadline.
 						Click here to see more information.
 					</div>
 					<?php 
-							// since user was notified already, then clear the `Status2` table by calling this
+							// since user was notified already, then clear the `Status2` column by calling this
 							$this->Booking_model->markAsPaid( $singleBooking->bookingNumber );	
 						} 
 					?>
 					<div class="bookingDetails">						
-						<div class="top">		
-								<input type="hidden" id="_startDate" value="<?php echo $singleBooking->StartDate ?>" />
-								<input type="hidden" id="_endDate" value="<?php echo $singleBooking->EndDate ?>" />
-								<input type="hidden" id="_startTime" value="<?php echo $singleBooking->StartTime ?>" />
-								<input type="hidden" id="_endTime" value="<?php echo $singleBooking->EndTime ?>" />
-								<div class="start">
-									<span class="deed" >
-										Start
-									</span>
-									<span class="contentproper_time" >										
-										<?php 
-											/*
-												No need to show seconds if zero
-											*/
-											$splitted = explode(':', $singleBooking->StartTime);
-											$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
-											echo date( $timeFormat." A", strtotime($singleBooking->StartTime)); 
-										?>
-									</span>
-									<span class="contentproper_date" >
-										<?php echo date( 'Y-M-d l', strtotime($singleBooking->StartDate)); ?>										
-									</span>
-								</div>								
-								<div class="end">
-									<span class="deed" >
-										End
-									</span>									
-									<span class="contentproper_time" >										
-										<?php 
-											/*
-												No need to show seconds if zero
-											*/
-											$splitted = explode(':', $singleBooking->EndTime);
-											$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
-											echo date( $timeFormat." A", strtotime($singleBooking->EndTime));
-										?>
-									</span>
-									<span class="contentproper_date" >
-										<?php										
-											if( $singleBooking->StartDate != $singleBooking->EndDate ) 
-												// if show ends past midnight (red eye), then display the next day's date.
-												echo date( 'Y-M-d l', strtotime($singleBooking->EndDate));
-											else
-												echo '&nbsp';
-										?>
-									</span>
-								</div>
-							</div>
-							<div class="bdtitle" >
-								<?php echo $singleBooking->Name; ?>
-							</div>
-							<div class="bottom bottomspecialOnMB01">
-								<?php echo $singleBooking->Location; ?>
-								<br/>
-								<br/>
-								<?php
-									$slots =  $guestCount[ $singleBooking->bookingNumber ];
-								?>
-								
-									<p>
-									<?php echo $slots; ?> Guest<?php if($slots > 1) echo 's'; ?>
-									</p>
-									<p>
-									<?php
-										echo $ticketClassesName[ $singleBooking->EventID ][ $singleBooking->TicketClassGroupID ][ $singleBooking->TicketClassUniqueID ];										
-									?> 
-									Class
-									</p>
-								
-							</div>
+						<?php						
+							$data['showtimeObj']   			 = $data['eventInfo'] = $singleBooking;
+							$data['existingTCName'] 		 = $ticketClassesName[ $singleBooking->EventID ][ $singleBooking->TicketClassGroupID ][ $singleBooking->TicketClassUniqueID ];
+							$data['isActivityManageBooking'] = TRUE;
+							$data['bottomOtherClass']		 = "bottomspecialOnMB01";
+							$data['slots'] 					 = $guestCount[ $singleBooking->bookingNumber ];
+							$this->load->view('html-generic/eventInfoLeft_phpall.inc', $data);
+						?>
 					</div>
-					<div class="containingClassTable">
+					<div class="containingClassTable">					
 						<?php
-							$isUpChange = $this->Booking_model->isBookingUpForChange( $singleBooking );
-							$isUpPayment = $this->Booking_model->isBookingUpForPayment( $singleBooking );
-							$isPendingChange = ( $isUpChange  or $isUpPayment );
-						?>						
-						<?php
-						if( $isPendingChange ) {
+						if( $isPendingChange or $isExpired ) {
 						?>				
 							<div class="metrotile" name="viewdetails" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>																						
@@ -203,6 +153,13 @@ $this->load->view('html-generic/metadata.inc');
 							<?php if( $isUpChange ) { ?>
 							<div class="metrotile" name="cancelchanges" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelchanges.png" alt="Cancel changes" /></a>																						
+								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_cancelchanges'; ?>" >
+									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+								</form>
+							</div>
+							<?php }else{ ?>
+							<div class="metrotile" name="cancel" >
+								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelbooking.png" alt="Cancel Booking" /></a>
 								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_cancelchanges'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
@@ -251,8 +208,7 @@ $this->load->view('html-generic/metadata.inc');
 			<?php
 					}//foreach
 				}//else				
-			?>
-				
+			?>				
 			</div>
 			<!-- accordion end -->
 			<div id="accordion2" class="specialOnMB01" >

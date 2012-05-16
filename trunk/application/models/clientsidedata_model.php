@@ -795,7 +795,7 @@ class clientsidedata_model extends CI_Model {
 			case "FLOAT": return ( floatval( $intendedValue) === floatval( $valueInCookie) );
 			case "STRING": return ( strval( $intendedValue) === strval( $valueInCookie) );		
 		}	
-	}//isSessionActivityDataEntryE
+	}//isSessionActivityDataEntryEqualTo
 	
 	
 	function setBookingCookies( $cookie_values )
@@ -807,11 +807,11 @@ class clientsidedata_model extends CI_Model {
 		*/		
 		$cookie_names = $this->getBookingCookieNames();
 		$y = count($cookie_names);
-		//unset( $cookie_names["ticketClassUniqueID"] );		// this is to be set next page ( after current - ticket class selection) so removed.	
-		for( $x=0; $x<$y; $x++ )	// $cookie_names is global - found in construct, less 1 for y initially due to unset(..) earlier
+		
+		for( $x=0; $x<$y; $x++ )
 		{
 			$cookie = Array(
-				'name' => $cookie_names[ $x ],
+				'name' =>  $cookie_names[ $x ],
 				'value' => $cookie_values[ $x ],
 				'expire' => 3600				// change later to how long ticketclass hold time
 			);

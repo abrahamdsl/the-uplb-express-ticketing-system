@@ -25,7 +25,6 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
 	
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -33,8 +32,7 @@ $this->load->view('html-generic/metadata.inc');
 	<!--For modal v1-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>		
 	<script type="text/javascript" >
-		$(document).ready( function(){
-			//$('input[type="button"][name="viewStudentsBtn"]').click( function(){
+		$(document).ready( function(){			
 			$('input[type="button"]').click( function(){
 				$(this).siblings('form').submit();
 			});

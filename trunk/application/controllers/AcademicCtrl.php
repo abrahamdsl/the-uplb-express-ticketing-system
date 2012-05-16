@@ -293,6 +293,7 @@ class AcademicCtrl extends CI_Controller {
 			$data['eventObj'] = $eventObj ;
 			$data['showtimeObj'] = $showtimeObj ;
 			$data['null'] = 'wala lang';
+			$data['activity'] = $activity;
 			if( $activity == 1 ) $this->load->view('attendanceOnSite/attend01.php', $data );
 			else $this->load->view('attendanceOnSite/attend01-b.php', $data );
 	}//checkin_main_forward()
@@ -483,7 +484,7 @@ class AcademicCtrl extends CI_Controller {
 			foreach( $studentsUnderEvent as $key => $eachStudent )
 			{
 				$extendedBookingInfo = $this->Guest_model->getSingleGuestExtended( $eachStudent->GuestUUID );
-				if( ($extendedBookingInfo->EventID === $ECPairObj->EventID
+				if( (@$extendedBookingInfo->EventID === @$ECPairObj->EventID //!!! ERROR - Found during Best SP presentation, fix later.
 					and 
 					$extendedBookingInfo->ShowingTimeUniqueID === $ECPairObj->ShowtimeID )
 					=== FALSE

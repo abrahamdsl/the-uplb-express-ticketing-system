@@ -8,6 +8,7 @@ class SessionCtrl extends CI_Controller {
 		$this->load->model('login_model');
 		$this->load->model('Account_model');
 		$this->load->model('Permission_model');
+		$this->load->model('UsefulFunctions_model');
 				
 	}
 	
@@ -18,6 +19,7 @@ class SessionCtrl extends CI_Controller {
 			$this->userHome();			
 		}else{						
 			$this->load->view('loginPage');
+			log_message('DEBUG', 'NEW USER Logging in from ' . $this->UsefulFunctions_model->VisitorIP() );
 		}
 	} // index
 	
@@ -29,7 +31,7 @@ class SessionCtrl extends CI_Controller {
 	}//userHome
 	
 	function authenticationNeeded()
-	{
+	{		
 		$data['LOGIN_WARNING'] = array( " You have to log-in first before you can access the feature requested. " ) ;
 		$this->session->set_userdata($data);
 		$this->index();
@@ -45,15 +47,16 @@ class SessionCtrl extends CI_Controller {
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 	
-		if(  $this->Account_model->isUserExistent( $username, $password )
-		) //if something was submitted, this will return true
-		{
+		if( $this->Account_model->isUserExistent( $username, $password ) ) 
+		{   //if something was submitted, this will return true
 			$this->login_model->setUserSession(
 				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
 				$this->Account_model->getUser_Names( $this->input->post('username') )
 			);
-			//$this->userHome();			
-			redirect('/');
+			/*
+				Redirect to EventCtrl's function that delete's this current user's expired bookings.
+			*/
+			redirect('EventCtrl/preclean');
 		}else{			
 			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
 			$this->session->set_userdata($data);

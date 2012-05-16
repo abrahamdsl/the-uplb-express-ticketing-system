@@ -212,10 +212,11 @@ class Booking_model extends CI_Model {
 			return $arr_result;
 	}// getPaymentPeriodExpiredBookings
 	
-	function getAllBookings( $userAccountNum, $getOnlyPaidOnes = false )
+	function getAllBookings( $userAccountNum = false, $getOnlyPaidOnes = false )
 	{	
 		/*
-			Created 09MAR2012-1406
+			@created 09MAR2012-1406
+			@purpose Gets all bookings of a guest.
 		*/
 		date_default_timezone_set('Asia/Manila');
 		$statusFilter = ( $getOnlyPaidOnes ) ? "AND `booking_details`.`Status` = 'PAID'" : "";
@@ -225,13 +226,14 @@ class Booking_model extends CI_Model {
 			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` AND
 			CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= CURRENT_TIMESTAMP AND
 			CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= CURRENT_TIMESTAMP "; 
-		$sql_command .= $statusFilter." AND `booking_details`.`MadeBy` = ?;";
+		$sql_command .= $statusFilter;
+		$sql_command .= ( $userAccountNum !== FALSE ) ? " AND `booking_details`.`MadeBy` = ?;" : "";
 		$arr_result = $this->db->query( $sql_command, Array ( $userAccountNum ) )->result();	
 		if( count( $arr_result ) > 0 )
 			return $arr_result;
 		else
 			return false;
-	}
+	}// getAllBookings
 	
 	function getPaidBookings( $userAccountNum )
 	{
@@ -246,6 +248,29 @@ class Booking_model extends CI_Model {
 		
 		return $this->getAllBookings( $userAccountNum, true );
 	}//getPaidBookings(..)
+	
+	function isBookingExpired( $bookingNumberOrObj, $lookStatus2 = false, $oldOrNew = NULL )
+	{
+		/*
+				
+			@purpose Detects if the current booking is expired.
+			@param $bookingNumberOrObj STRING/MYSQL_OBJ The booking number or booking number object. If booking number is specified,
+				the entries are retrieved from the database, else the object is directly accessed for `Status`.
+			@param $lookStatus2  BOOLEAN Default is FALSE. If true, checks `Status2`.
+			@param $oldOrNew STRING Values { 'NOT-YET-NOTIFIED', 'FOR-DELETION' }. Checks if `Status2` is equal to those.			
+		*/
+		$bookingObj = null;
+		if( is_string( $bookingNumberOrObj ) ) 
+			$bookingObj = $this->getBookingDetails( $bookingNumberOrObj );
+		else
+			$bookingObj = $bookingNumberOrObj;
+			
+		if( $bookingObj === false ) return false;
+		if( $lookStatus2 === false )
+			return( $bookingObj->Status == 'EXPIRED' );
+		else
+			return( $bookingObj->Status == 'EXPIRED' and $bookingObj->Status2 == $oldOrNew );
+	}//isBookingUpForPayment
 	
 	function isBookingUpForChange( $bookingNumberOrObj )
 	{
@@ -269,7 +294,7 @@ class Booking_model extends CI_Model {
 				$bookingObj->Status2 == 'MODIFY' 
 		);
 	}//isBookingUpForChange
-	
+		
 	function isBookingUpForPayment( $bookingNumberOrObj )
 	{
 		/*

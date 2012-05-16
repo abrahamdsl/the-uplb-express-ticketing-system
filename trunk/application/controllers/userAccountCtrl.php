@@ -44,7 +44,8 @@ class userAccountCtrl extends CI_Controller {
 	function addpaymentmode()
 	{
 		$this->manageuser_common( true );
-		$this->load->view( 'managePaymentModes/managePaymentModes02' );
+		$data['mode'] = 0;
+		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
 	
 	function addpaymentmode_step2(){
@@ -119,7 +120,7 @@ class userAccountCtrl extends CI_Controller {
 		$newPass;
 		$isAdminResettingPassword;
 		$whereNext;
-		$whereNextURI;
+		$whereNextURI = 'userAccountCtrl/myAccount';
 		$responseDescriptor;
 		$responseCaption;
 		
@@ -357,14 +358,20 @@ class userAccountCtrl extends CI_Controller {
 		$uniqueID = $this->input->post( 'pChannel' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
 		$data['singleChannel'] = $this->Payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );		
+		$data['mode'] = 1;
 		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
 	
 	
 	function managepaymentmode_save()
-	{		
+	{
 		//form-validation skipped here. let javascript take care of that.
+		//die( var_dump($_POST ) );
 		
+		/*
+			$mode Def'n : 0 - NEW ENTRY ; 1 - EDITING AN ENTRY
+		*/
+		$mode       = intval( $this->input->post( 'mode' ) );
 		$uniqueID 	= $this->input->post( 'uniqueID' ); 
 		$ptype 		= $this->input->post( 'ptype' ); 
 		$name	 	= $this->input->post( 'name' ); 
@@ -391,11 +398,14 @@ class userAccountCtrl extends CI_Controller {
 			echo('<a href="javascript: window.history.back();" >Go back</a>' );
 			return false;
 		}
-		if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+		if( $mode == 0 )
 		{
-			echo( 'Payment mode exists already!<br/><br/>' );
-			echo('<a href="javascript: window.history.back();" >Go back</a>' );
-			return false;
+			if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+			{
+				echo( 'Payment mode exists already!<br/><br/>' );
+				echo('<a href="javascript: window.history.back();" >Go back</a>' );
+				return false;
+			}
 		}
 		$result = $this->Payment_model->updatePaymentMode(
 			$uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,

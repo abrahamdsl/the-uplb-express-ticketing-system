@@ -176,13 +176,13 @@ class Guest_model extends CI_Model {
 		$data = Array(
 			'bookingNumber' => $bookingNumber,
 			'AccountNum' => intval($accountNum),
-			'Fname' => $Fname,
-			'Mname' => $Mname,
-			'Lname' => $Lname,
+			'Fname' => strtoupper( $Fname ),
+			'Mname' => strtoupper( $Mname ),
+			'Lname' => strtoupper( $Lname ),
 			'Gender' => $gender,
 			'Cellphone' => $cellphone,
 			'landline' => $landline,
-			'Email' => $email,
+			'Email' => strtolower( $email ),
 			'studentNumber' => $studentNum,
 			'employeeNumber' => $employeeNum
 		);
