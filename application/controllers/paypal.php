@@ -57,9 +57,12 @@ class Paypal extends CI_Controller {
 		
 		include_once('_constants.inc');
 		
+		//EMAIL EXPERIMENTAL
+		$this->load->library('email');
 		$this->load->library('bookingmaintenance');
 		$this->load->library('paypal_lib');
 		$this->load->model('clientsidedata_model');
+		$this->load->model('guest_model');
 		$this->load->model('Payment_model');
 		$this->load->model('UsefulFunctions_model');
 	}
@@ -193,10 +196,27 @@ class Paypal extends CI_Controller {
 					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
 					if( $isPaypalOKObj['boolean'] )
 					{ 
+						$guestDetails;
 						$totalCharges = floatval($this->clientsidedata_model->getPurchaseTotalCharge() );
 						$paymentDescriptor = 'uxtcharge='.$totalCharges.';mc_fee='.$this->paypal_lib->ipn_data[ 'mc_fee' ].';';
 						$paymentDescriptor .= 'payer_id='.$this->paypal_lib->ipn_data['payer_id'].';'.'txn_id='.$this->paypal_lib->ipn_data['txn_id'].';';
 						$this->bookingmaintenance->processPayment( $bookingNumber, $paymentDescriptor );
+						
+						
+						//EMAIL EXPERIMENTAL
+						$guestDetails = $this->guest_model->getGuestDetails( $bookingNumber );
+						if( $guestDetails !== false )
+						{
+							$this->emailMain( 1, $bookingNumber , $guestDetails[0]->Email );
+							$guestCount = count(  $guestDetails );
+							if( $guestCount  > 1 ) {
+								for( $xy = 1; $xy < $guestCount; $xy++ )
+								{
+									 $this->emailMain( 2, $bookingNumber , $guestDetails[$xy]->Email );
+								}
+							}							
+						}
+						//END EMAIL
 					}else{
 						$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );	// set again to be able to access  payment modes page
 						$data = $this->bookingmaintenance->assemblePaypalFishy( $isPaypalOKObj['details'] );
@@ -209,5 +229,34 @@ class Paypal extends CI_Controller {
 			echo "INVALID_IPN";
 		}
 	}//ipn()
+	
+	private function emailMain( $mode = 1, $bookingNumber = "NULL", $destination )
+	{
+		$config['protocol'] = 'mail';
+		$config['mailpath'] = 'mail/uplbtickets.info/sales/new';
+		$config['smtp_host'] = 'mail.uplbtickets.info';
+		$config['smtp_user'] = 'sales@uplbtickets.info';
+		$config['smtp_pass'] = '8sdk17a3';
+		//$config[''] = '';
+		$this->email->initialize($config);
+
+		$this->email->from('sales@uplbtickets.info', 'The UPLB Ticketing System');
+		$this->email->to( $destination ); 						
+
+		if( $mode === 1 )
+		{
+			$this->email->subject('Booking Receipt ' . $bookingNumber );
+			$this->email->message('Thank you for your payment.');			
+		}else{
+			$this->email->subject('Meow meow Booking Receipt ' . $bookingNumber );
+			$this->email->message('You have been booked by your friend. HAHAHA. Contact him/her.');			
+		}
+		$this->email->message('We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.');	
+		
+		$this->email->send();
+		log_message('DEBUG', 'email bug 1');
+		log_message('DEBUG', var_dump( $this->email->print_debugger() ) );
+		log_message('DEBUG', 'email bug 2');
+	}
 }
 ?>
