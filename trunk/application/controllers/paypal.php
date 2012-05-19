@@ -1,5 +1,17 @@
 <?php
 /**
+ *  PayPal_Lib Controller Class (Paypal IPN Class)
+ *  Third-party plugin used, under Lesser GPL (License)
+ *	Part of "The UPLB Express Ticketing System"
+ *  Special Problem of Abraham Darius Llave / 2008-37120
+ *	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+ *	University of the Philippines Los Banos
+ *	------------------------------
+ *
+ *	See more description below.
+ *
+*/
+/**
  * PayPal_Lib Controller Class (Paypal IPN Class)
  *
  * Paypal controller that provides functionality to the creation for PayPal forms, 
@@ -80,12 +92,12 @@ class Paypal extends CI_Controller {
 		$prepURL;
 						
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
-		{
+		{   //ec 4100
 			die( "You are not allowed to access this." );
 		}
 		$paypalData = $this->clientsidedata_model->getDataForPaypal();
 		if( $paypalData === false )
-		{
+		{	// ec 4150
 			die( "Paypal data not found.");
 		}
 		$prepURL = base_url();
@@ -139,7 +151,7 @@ class Paypal extends CI_Controller {
 		$bookingNumber;
 		
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
-		{
+		{	 //ec 4100
 			die( "You are not allowed to access this." );
 		}		
 		$bookingNumber = $this->clientsidedata_model->getBookingNumber();		
@@ -152,22 +164,24 @@ class Paypal extends CI_Controller {
 	{
 		/*
 			01APR2012-2239 : Processing for refunds, reversal and others are pending here.
+			
+			All lines indented by another column than usual are for debugging only.
 		*/
 		$visitorIP = $this->UsefulFunctions_model->VisitorIP();
-                $visitorHostName = gethostbyaddr( $visitorIP );
-		log_message('DEBUG', 'IPN function accessed');
-		log_message('DEBUG', 'IPN Connection from IP ' . $visitorIP );
-		log_message('DEBUG', 'IPN Connection from URI ' . $visitorHostName );
-		log_message('DEBUG', 'IPN Connection from Port ' . $_SERVER['REMOTE_PORT'] );
-		log_message('DEBUG', 'IPN START POST DATA ');
-		foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );
-		log_message('DEBUG', 'IPN END POST DATA ');		
+        $visitorHostName = gethostbyaddr( $visitorIP );
+			log_message('DEBUG', 'IPN function accessed');
+			log_message('DEBUG', 'IPN Connection from IP ' . $visitorIP );
+			log_message('DEBUG', 'IPN Connection from URI ' . $visitorHostName );
+			log_message('DEBUG', 'IPN Connection from Port ' . $_SERVER['REMOTE_PORT'] );
+			log_message('DEBUG', 'IPN START POST DATA ');
+			foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );
+			log_message('DEBUG', 'IPN END POST DATA ');				
  		$ipn_init = (isset($this->paypal_lib->ipn_data[ 'txn_id' ])) ? $this->paypal_lib->ipn_data[ 'txn_id' ] : "NULL";
-		log_message('DEBUG', "IPN initial: ".$ipn_init);
+			log_message('DEBUG', "IPN initial: ".$ipn_init);
 		if ($this->paypal_lib->validate_ipn( $visitorHostName ) ) 
 		{
 			$bookingNumber = $this->paypal_lib->ipn_data[ 'item_number' ];
-			log_message('DEBUG', "IPN received for booking number: ".$bookingNumber);
+				log_message('DEBUG', "IPN received for booking number: ".$bookingNumber);
 						
 			switch( $this->paypal_lib->ipn_data[ 'payment_status' ] )
 			{
@@ -178,7 +192,7 @@ class Paypal extends CI_Controller {
 				default: 
 					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
 					if( $isPaypalOKObj['boolean'] )
-					{
+					{ 
 						$totalCharges = floatval($this->clientsidedata_model->getPurchaseTotalCharge() );
 						$paymentDescriptor = 'uxtcharge='.$totalCharges.';mc_fee='.$this->paypal_lib->ipn_data[ 'mc_fee' ].';';
 						$paymentDescriptor .= 'payer_id='.$this->paypal_lib->ipn_data['payer_id'].';'.'txn_id='.$this->paypal_lib->ipn_data['txn_id'].';';
@@ -190,6 +204,7 @@ class Paypal extends CI_Controller {
 					}
 			}
 		}else{
+			//ec 2150
 			log_message('DEBUG', 'Invalid ipn');
 			echo "INVALID_IPN";
 		}

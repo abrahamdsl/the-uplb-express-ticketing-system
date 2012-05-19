@@ -17,7 +17,7 @@ class SeatCtrl extends CI_Controller {
 		$this->load->model('Seat_model');				
 		
 		if( !$this->login_model->isUser_LoggedIn() )
-		{	
+		{	//ec 4999
 			redirect('SessionCtrl/authenticationNeeded');
 		}
 	} //construct
@@ -30,7 +30,7 @@ class SeatCtrl extends CI_Controller {
 	private function checkAndActOnAdmin()
 	{
 		if( !$this->Permission_model->isAdministrator() )
-		{
+		{   //4101
 			$data['error'] = "NO_PERMISSION";					
 			$this->load->view( 'errorNotice', $data );			
 			return false;
@@ -44,7 +44,7 @@ class SeatCtrl extends CI_Controller {
 		$uniqueID = $this->input->post( 'uniqueID' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
 		$data['title'] =  "Be careful on what you wish for";
-		$data['theMessage'] =  "Are you sure you want to delete this seat map?";
+		$data['theMessage'] =  "Are you sure you want to delete this seat map?"; // EC 2850
 		$data['yesURI'] = base_url().'SeatCtrl/deleteseatmap_process';
 		$data['noURI'] = base_url().'SeatCtrl/manageseatmap';
 		$data['formInputs'] = Array( 
@@ -61,12 +61,14 @@ class SeatCtrl extends CI_Controller {
 		$result = $this->Seat_model->deleteSeatMap( $uniqueID );
 		if( $result )
 		{
-			$data[ 'theMessage' ] = "The seat map has been successfully deleted.";			
+			// EC 1850
+			$data[ 'theMessage' ] = "The seat map has been successfully deleted."; 
 			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';
 			$data[ 'defaultAction' ] = 'Seat Maps';
 			$this->load->view( 'successNotice', $data );
 			return true;
 		}else{
+			// EC 5850
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.";
 			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';

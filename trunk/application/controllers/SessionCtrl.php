@@ -31,7 +31,8 @@ class SessionCtrl extends CI_Controller {
 	}//userHome
 	
 	function authenticationNeeded()
-	{		
+	{	
+		// ec 4999
 		$data['LOGIN_WARNING'] = array( " You have to log-in first before you can access the feature requested. " ) ;
 		$this->session->set_userdata($data);
 		$this->index();
@@ -57,7 +58,8 @@ class SessionCtrl extends CI_Controller {
 				Redirect to EventCtrl's function that delete's this current user's expired bookings.
 			*/
 			redirect('EventCtrl/preclean');
-		}else{			
+		}else{	
+			// ec 4003
 			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
 			$this->session->set_userdata($data);
 			$this->index();

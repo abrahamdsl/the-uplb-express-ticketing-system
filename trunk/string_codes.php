@@ -51,18 +51,43 @@ WIN5 vs XML
 {
 
 NUM    STRING  								Message
-//okay
-1000   USERNAME-EXISTS 						Obviously. 
+//okay (tsss, not in conformance with HTTP, Informational to eh, di success?)
+//19MAY2012-Consider this as "SUCCESS"
+1000   USERNAME_EXISTS 						Obviously. ( how about vs 4202 ? )
 1002   PASSWORD_CHANGE-SUCCESS				Obviously
 1003   PAYMENT_PROCESS_OK					Succesfully proccessed payment
 1004   BOOKING_ALREADY_PAID					Obviously.
 1005   BOOKING_DEADLINE_LAPSED				The deadline for payment for the specified booking has passed and as such slots and seats are now forfeited.
 1006   BOOKING_CONFIRM_CLEARED				The booking is cleared to undergo confirmation. 
+1150   PAYPAL_IPN_MAIN_VALIDATE_OK          IPN Main method Validation SUCCESS
+1151   PAYPAL_IPN_PLANB_VALIDATE_OK         IPN ALTERNATE Validation SUCCESS
+1500   PAYMENT_MODE_EXISTS					Payment mode exists already
+1501   PAYMENT_MODE_DELETED					The payment mode has been successfully deleted.
+1502   PAYMENT_MODE_EDITED					The payment mode has been successfully edited.
+1600   ROLES_EDITED                         User roles have been edited
+2700   GEN_ACCOUNT_CHANGE_SAVED             The changes in your account have been saved
+1850   SEATMAP_DELETED						The seat map has been successfully deleted.
+
+//informational
+2000   ALL_OKAY								obviously
+2050   SAME_TC_NEWSCHED_NO_SLOT             There are no more slots available in the new showing time you have selected corresponding to the ticket class in your current booking.
+2150   PAYPAL_IPN_INVALID                   Invalid IPN data. Maybe ipn function/URI was accessed via browser by some unscruplous person.
+2200   ROLLBACK_DEADLINE_LAPSED             Pending changes to booking have been rolled back because deadline for payment lapsed.
+2201   ROLLBACK_USER_DO                     User opted to cancel pending changes to booking.
+2202   GUEST_NO_SHOW                        For logging purposes. <Supply guest UUID>.
+2203   GUEST_SLOT_FREED                     For logging purposes. <Supply guest UUID and slot UUID>
+2500   PAYMENT_MODE_ADDED					The payment mode has been successfully added.
+2510   CONFIRM_PAYMENT_DELETION             Are you sure you want to delete this payment mode?
+2515   DEFAULT_PAYMENT_DELETE_DENIED        By this system&aposs design, this payment mode is not designed to be removable. Edit my code if you want to.
+2850   CONFIRM_SEATMAP_DELETION             Are you sure you want to delete this seat map?
+//redirection
+3100   REDIRECT_STAGE                       Redirect to stage <supply it>
+3999   REDIRECT_CONFUSED					The server knows that you should be redirected but with your supplied information, it cannot determine which location you are to be redirected
 //client error
-4000   INFO_NEEDED							Information should be supplied by the user but is not found.
+4000   INFO_NEEDED							Information should be supplied by the user but is not found. <supply whenever possible>
 4001   USERNAME_DOES-NOT-EXIST
-4002
-4003   AUTH_FAIL							The username and password combination is incorrect.
+4002   INFO_CRITICAL_NEEDED                 CRITICAL Information should be supplied by the user but is not found.
+4003   AUTH_FAIL							Invalid credentials. Please try again. (The username and password combination is incorrect.)
 4004   NOT_FOUND
 4005   NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF The user specified that he is not bookable by other friends. Reserved for future use.
 4006   INVALID_VALUE						The submitted data to the server is in the incorrect format
@@ -70,7 +95,18 @@ NUM    STRING  								Message
 4030   EVENT_404							Event not found.
 4031   SHOWING_TIME_404						Showing time not found
 4032   BOOKING_404							The specified booking is not found in the system.
-
+4100   ACCESS_DENIED_GEN                    You are not allowed to access this functionality/page.
+4101   ACCESS_DENIED_NO_PERMIT              You need a specific permission to access this. Contact the system admin for details.
+4102   STAGE_NOT_YET                        You are not allowed in this stage yet. Please accomplish an earlier form maybe.
+4150   PAYMENT_MODE_DATA_404                Data for payment mode not found. <supply payment mode info>
+4200   USER_ALREADY_EXISTS                  When signing up, user is already existing.
+4201   RESERVED_WORD_USED                   A reserved word by the system is used, and not allowed (i.e., during signup and chosing a username).
+4202   USERNAME_ALREADY_TAKEN               obviously.
+4203   STUDENTNUM_ALREADY_TAKEN             obviously.
+4204   EMPNUM_ALREADY_TAKEN                 obviously.
+4103   ACCESS_DENIED_INVALID                Happens when a URI is accessed via address bar but only meant to be accessed via AJAX.
+4998   INVALID_ENTRIES_SPECIFIED            Invalid entries specified.
+4999   LOGIN_NEEDED                         You have to log-in first before you can access the feature requested
 //server error
 5050   INVALID_DATA_TC						Invalid data passed to ticket class selection.
 5051   TC_404								Event Showing time marked as for sale but there is not any ticket class yet.
@@ -78,7 +114,20 @@ NUM    STRING  								Message
 5101   BILLING_INFO_VANISHED				Billing info for this booking number suddenly became none? (I dunno if this will be used, but just in case)
 5102   PAYMENT_CONFIRM_ERROR_UNKNOWN	    Unknown error occurred when confirming payment. Please try again.
 5103   PAYMENT_RECEIVED_BUT_ERROR			Payment was received but there is an error in the transaction. (i.e., in PayPal, transaction was deemed to be fraudulent and fund was being held for review)
-5104   PAYMENT_PROCESS_ERROR_UNKNOWN		 Unknown error occurred when PROCESSING payment. Please try again.
+5104   PAYMENT_PROCESS_ERROR_UNKNOWN		Unknown error occurred when PROCESSING payment. Please try again.
+5105   PAYMENT_MODE_USER_DECLINE            You declined to use the selected mode for payment. Please choose another payment mode. ( Server should supply which payment mode was chosen)
+5149   PAYPAL_IPN_INITIATE_FAIL             Cannot open connection to PayPal for verification of IPN! (i.e., server disabled the PHP fsockopen() function )
+5150   PAPYPAL_IPN_MAIN_VALIDATE_FAIL       IPN Main method Validation FAIL
+5151   PAPYPAL_IPN_PLANB_VALIDATE_FAIL      IPN Main method Validation FAIL
+5200   TRANS_ID_404_WHEN_ROLLBACK           FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking.
+
+5500   PAYMENT_MODE_ADD_ERR					Something went wrong while adding the payment mode. It may have been not saved.
+5505   PAYMENT_MODE_DELETE_ERR              Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.
+5510   PAYMENT_MODE_EDIT_ERR                Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.
+5600   ROLES_EDIT_ERR						Something went wrong while updating permissions. Your changes might not be saved.
+5700   GEN_ACCOUNT_CHANGE_ERR				Something went wrong while saving changes to your account. Your changes might not be saved.
+5850   SEATMAP_DELETE_ERR                   Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.
+5855   SEATMAP_DATACREATE_ERR				Something went wrong in actual seat data insertion to DB
 }
 
 -----------------
@@ -166,6 +215,12 @@ automatically check every interval if there are defaulted bookings and act on it
 ****
 * Factory Conventions 
 ****
+Usernames
+ - 'default' cannot be used as a username.
+
+Payment costs
+ - We do not have to refund if $amountDue is less than zero.
+
 Payment modes
  - Confirmation because of a "FREE EVENT" - UniqueID 0
  - Confirmation because of payment via "PAYPAL" - UniqueID 2

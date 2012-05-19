@@ -1,0 +1,5 @@
+* PayPal_Lib Controller Class (Paypal IPN Class) 
+  application\libraries\paypal_lib.php
+  Ran Aroussi <ran@aroussi.com>
+  Copyright (c) 2006, http://aroussi.com/ci/
+  Lesser GPL (LGPL)

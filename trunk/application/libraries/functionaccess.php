@@ -1,11 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); 
 /**
+*	Function Access Eligibility Check library
+* 	Created late March 2012
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
 *	Important! In the Controller where this is declared, the constants
 *   found throughout this file should have been declared earlier in the file.
 *
 *	Validations if it is alright that user is in this function of a controller.
-*
-*
 */
 
 class FunctionAccess{
@@ -46,10 +52,10 @@ class FunctionAccess{
 	
 	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage )
 	{
-		$notAllowed    = "ERROR_You are not allowed to access this functionality/page.";
-		$notAllowedYet = "ERROR_You are not allowed in this stage yet.";
-		$redirect	   = "REDIRECT_to stage ".$this->sessionActivity_x[1];
-		$crucialData   = "ERROR_Crucial data missing.";
+		$notAllowed    = "ERROR_You are not allowed to access this functionality/page."; // 4100
+		$notAllowedYet = "ERROR_You are not allowed in this stage yet."; //4102
+		$redirect	   = "REDIRECT_to stage ".$this->sessionActivity_x[1]; //3100
+		$crucialData   = "ERROR_Crucial data missing."; //4002
 		
 		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() )
 		{			
@@ -107,7 +113,7 @@ class FunctionAccess{
 				if( $this->sessionActivity_x[1] < $stage )
 				{
 					 $data['error'] = "CUSTOM";
-					 $data['theMessage'] = "You are not allowed in this stage yet.";
+					 $data['theMessage'] = "You are not allowed in this stage yet."; //4102
 					 $this->CI->load->view( 'errorNotice', $data );
 					 return false;
 				}else
@@ -119,7 +125,7 @@ class FunctionAccess{
 				}
 			}else{
 				$data['error'] = "CUSTOM";
-				 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here.";
+				 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here."; //4102
 				 $this->CI->load->view( 'errorNotice', $data );				 
 				 return false;
 				 
@@ -219,7 +225,7 @@ class FunctionAccess{
 			case STAGE_BOOK_6_PROCESS: redirect('EventCtrl/book_step6'); break;
 			case STAGE_BOOK_6_PAYMENTPROCESSING: redirect('paypal/process'); break;
 			case STAGE_BOOK_6_FORWARD: redirect('EventCtrl/book_step6_forward'); break;
-			default: die("INTERNAL-SERVER-ERROR_I don't know where to redirect you.");
+			default: die("INTERNAL-SERVER-ERROR_I don't know where to redirect you."); //3999
 		}
 	}//redirectBookForward()
 }//class

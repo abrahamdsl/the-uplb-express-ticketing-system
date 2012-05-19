@@ -1,4 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); 
+
+/**
+ *  PayPal_Lib Library Class (Paypal IPN Class)
+ *  Third-party plugin used, under Lesser GPL (License)
+ *	Part of "The UPLB Express Ticketing System"
+ *  Special Problem of Abraham Darius Llave / 2008-37120
+ *	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+ *	University of the Philippines Los Banos
+ *	------------------------------
+ *
+ *	See more description below.
+ *
+*/
+
 /**
  * Code Igniter
  *
@@ -71,7 +85,7 @@ class Paypal_Lib {
 		// constant found in paypal.php controller	
 		$this->paypal_url = ( ISPAYPAL_TEST_MODE ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 
-		$this->last_error = '';
+		$this->last_error   = '';
 		$this->ipn_response = '';
 
 		$this->ipn_log_file = $this->CI->config->item('paypal_lib_ipn_log_file');
@@ -87,7 +101,7 @@ class Paypal_Lib {
 
 		$this->add_field('currency_code', $this->CI->config->item('paypal_lib_currency_code'));
 	    $this->add_field('quantity', '1');		
-	}
+	}//Paypal_Lib()
 	
 	function add_field($field, $value) 
 	{
@@ -96,6 +110,45 @@ class Paypal_Lib {
 		// array, it will be overwritten.
 		$this->fields[$field] = $value;
 	}
+	
+	function dump() 
+	{
+		// Used for debugging, this function will output all the field/value pairs
+		// that are currently defined in the instance of the class using the
+		// add_field() function.
+
+		ksort($this->fields);
+		echo '<h2>ppal->dump() Output:</h2>' . "\n";
+		echo '<code style="font: 12px Monaco, \'Courier New\', Verdana, Sans-serif;  background: #f9f9f9; border: 1px solid #D0D0D0; color: #002166; display: block; margin: 14px 0; padding: 12px 10px;">' . "\n";
+		foreach ($this->fields as $key => $value) echo '<strong>'. $key .'</strong>:	'. urldecode($value) .'<br/>';
+		echo "</code>\n";
+	}
+	
+	function log_ipn_results($success) 
+	{
+		if (!$this->ipn_log) return NULL;  // is logging turned off?
+
+		// Timestamp
+		$text = '['.date('m/d/Y g:i A').'] - '; 
+
+		// Success or failure being logged?
+		if ($success) $text .= "SUCCESS!\n";
+		else $text .= 'FAIL: '.$this->last_error."\n";
+
+		// Log the POST variables
+		$text .= "IPN POST Vars from Paypal:\n";
+		foreach ($this->ipn_data as $key=>$value)
+			$text .= "$key=$value, ";
+
+		// Log the response from the paypal server
+		$text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
+
+		// Write to log
+		$fp=fopen($this->ipn_log_file,'a');
+		fwrite($fp, $text . "\n\n"); 
+
+		fclose($fp);  // close file
+	}//log_ipn_results()
 	
 	function paypal_form($form_name='paypal_form') 
 	{
@@ -139,7 +192,7 @@ class Paypal_Lib {
 		{
 			// could not open the connection.  If logging is on, the error message
 			// will be in the log.
-			log_message('DEBUG', 'Cannot open connection to PayPal for verification of IPN!');
+			log_message('DEBUG', 'Cannot open connection to PayPal for verification of IPN!');	// 5149
 			$this->last_error = "fsockopen error no. $errnum: $errstr";
 			$this->log_ipn_results(false);
 			if( $visitorHostName !== NULL )
@@ -147,7 +200,7 @@ class Paypal_Lib {
 				// try alternate validation
 				if( $this->validate_ipn_fallback( $visitorHostName ) )
 				{
-					log_message('DEBUG', 'IPN ALTERNATE Validation SUCCESS.' );
+					log_message('DEBUG', 'IPN ALTERNATE Validation SUCCESS.' ); //1151
 					$this->log_ipn_results(true);
 					return true;		 
 				}else
@@ -174,12 +227,12 @@ class Paypal_Lib {
 		if (strpos($this->ipn_response,"VERIFIED") !== FALSE )
 		{
 			// Valid IPN transaction.
-			log_message('DEBUG', 'IPN Validation SUCCESS.' );
+			log_message('DEBUG', 'IPN Validation SUCCESS.' ); // 1150
 			$this->log_ipn_results(true);
 			return true;		 
 		}else{
 			// Invalid IPN transaction.  Check the log for details.
-			log_message('DEBUG', 'IPN Validation Failed.' );
+			log_message('DEBUG', 'IPN Validation Failed.' ); // 5150
 			$this->last_error = 'IPN Validation Failed.';
 			$this->log_ipn_results(false);	
 			return false;
@@ -193,59 +246,23 @@ class Paypal_Lib {
 			@purpose If for some reason we cannot use the POST BACK to PayPal (i.e. fsockopen() is disabled
 			 on server, we will just check if the sender of the POST data is paypal.com.
 			 
-			 WARNING: If hackers can manipulate the data during transmission (i.e., we are not using SSL),
+			 WARNING: If hackers can manipulate the data during transmission (i.e., we are not using SSL/HTTPS),
 			 then we're dead  - payment can be completed. As much as possible do not use this ( use POST BACK
 			  / fsockopen(..) bla bla ).
 			)
+			@demo 
+			 Supposed $visitorHostName == "ipn.paypal.com"
+			 After explode: $arr_vhname  = array( "ipn", "paypal", "com" );			
+			 So last two elements of the array is checked if it belongs to PayPal's domain.
 		*/
 		$arr_vhname = explode('.', $visitorHostName );
 		$arrlen = count( $arr_vhname );
 		if( $arrlen < 1 ) return false;
+		for( $x = 0; $x< $arrlen; $x++ ) $arr_vhname[ $x ] = strtolower( $arr_vhname[ $x]  );
+		
 		return ( $arr_vhname[ $arrlen-2 ] == "paypal" and $arr_vhname[ $arrlen-1 ] == "com" );
-	}
+	}//validate_ipn_fallback
 	
-	function log_ipn_results($success) 
-	{
-		if (!$this->ipn_log) return;  // is logging turned off?
-
-		// Timestamp
-		$text = '['.date('m/d/Y g:i A').'] - '; 
-
-		// Success or failure being logged?
-		if ($success) $text .= "SUCCESS!\n";
-		else $text .= 'FAIL: '.$this->last_error."\n";
-
-		// Log the POST variables
-		$text .= "IPN POST Vars from Paypal:\n";
-		foreach ($this->ipn_data as $key=>$value)
-			$text .= "$key=$value, ";
-
-		// Log the response from the paypal server
-		$text .= "\nIPN Response from Paypal Server:\n ".$this->ipn_response;
-
-		// Write to log
-		$fp=fopen($this->ipn_log_file,'a');
-		fwrite($fp, $text . "\n\n"); 
-
-		fclose($fp);  // close file
-	}
-
-
-	function dump() 
-	{
-		// Used for debugging, this function will output all the field/value pairs
-		// that are currently defined in the instance of the class using the
-		// add_field() function.
-
-		ksort($this->fields);
-		echo '<h2>ppal->dump() Output:</h2>' . "\n";
-		echo '<code style="font: 12px Monaco, \'Courier New\', Verdana, Sans-serif;  background: #f9f9f9; border: 1px solid #D0D0D0; color: #002166; display: block; margin: 14px 0; padding: 12px 10px;">' . "\n";
-		foreach ($this->fields as $key => $value) echo '<strong>'. $key .'</strong>:	'. urldecode($value) .'<br/>';
-		echo "</code>\n";
-	}
-	
-	
-
 }
 
 ?>
