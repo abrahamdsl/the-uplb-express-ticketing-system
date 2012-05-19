@@ -1175,7 +1175,7 @@ class EventCtrl extends CI_Controller {
 			$data['purchases'] = $decodingPurchaseCookieObj['textStatusFriendly'];
 		}else{
 			//$this->cancelBookingProcess();
-			echo "Booking process cancelled.<br/><br/>";
+			echo "Booking process *should BE* cancelled.<br/><br/>";
 			die( var_dump( $decodingPurchaseCookieObj ) );
 		}
 		
@@ -1278,7 +1278,7 @@ class EventCtrl extends CI_Controller {
 			{
 				/*
 					Cookie data for Paypal Separated by pipes:
-					<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|"CHARGE DESCRIPTION">
+					<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|<"CHARGE DESCRIPTION">|<merchantemail>|<testmode>
 				*/									
 				$paypalTotal = floatval($totalCharges * PAYPAL_FEE_PERCENTAGE) + PAYPAL_FEE_FIXED;
 				$paypalTotal =  round( $paypalTotal , 2 );

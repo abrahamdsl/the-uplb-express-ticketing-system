@@ -36,6 +36,7 @@ class BookingMaintenance{
 	
 	public function assembleNoMoreSlotSameTicketClassNotification( $eventID, $showtimeID, $slots, $bookingNumber )
 	{
+		// Error code 2050
 		$data = Array();
 		$data['title'] = 'Oops, some technicality';
 		$data['theMessage'] = 'There are no more slots available for the ticket class in your current booking.<br/><br/>';
@@ -55,6 +56,7 @@ class BookingMaintenance{
 	
 	public function assembleErrorPaymentNotification( $otherMsgs = "" )
 	{
+		// Error code 5104
 		$data = Array();
 		$data['error'] = 'CUSTOM';		
 		$data['title'] = 'Payment Processing Error';
@@ -67,6 +69,7 @@ class BookingMaintenance{
 	
 	public function assemblePaypalPaymentUserCancelledNotification( $otherMsgs = "" )
 	{
+		// Error code 5105
 		$data = Array();
 		$data['error'] = 'CUSTOM';
 		$data['title'] = 'Payment Processing Error';
@@ -79,9 +82,10 @@ class BookingMaintenance{
 	
 	public function assemblePaypalFishy( $otherMsgs = "" )
 	{
+		// Error code  5103
 		$data = Array();
 		$data['error'] = 'CUSTOM';
-		$data['title'] = 'Payment Processing Error'; //5103
+		$data['title'] = 'Payment Processing Error';
 		$data['theMessage'] = "We have received your payment through PayPal but it did not pass our standards. (i.e., it was held by PayPal";
 		$data['theMessage'] .= "pending review for fraud). ";
 		$data['theMessage'] .= '<br/><br/>Please choose another payment mode or try again.<br/><br/>Please contact us to refund the amount ';
@@ -133,8 +137,8 @@ class BookingMaintenance{
 		
 		switch( $reason )
 		{
-			case 1: $reasonText = "ROLLBACK-DEADLINE_LAPSED"; break;
-			case 2: $reasonText = "ROLLBACK-USER_DO"; break;
+			case 1: $reasonText = "ROLLBACK-DEADLINE_LAPSED"; break; //error code 2200
+			case 2: $reasonText = "ROLLBACK-USER_DO"; break;         // error code 2201
 		}
 				
 		$billingInfoArray = $this->getBillingRelevantData( $eachBooking->bookingNumber );	
@@ -144,8 +148,8 @@ class BookingMaintenance{
 			$transactionID = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'transaction' ,$billingInfoArray['unpaidPurchasesArray'][0]->Comments );
 			
 			if( $transactionID === false )
-			{
-				die("ERROR_FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking.");
+			{   // error code 5200
+				die("ERROR_FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking."); //error code 5200
 			}
 			$transactionFailed 		= $this->CI->TransactionList_model->getTransaction( $transactionID );
 			$rollBackInfo 			= $transactionFailed->Data;
@@ -153,7 +157,8 @@ class BookingMaintenance{
 			$oldTicketClassGroupID  = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( OLD_SHOWTIME_TC_GROUP_ID , $rollBackInfo );
 			$oldTicketClassUniqueID = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( OLD_SHOWTIME_TC_UNIQUE_ID , $rollBackInfo );
 		}else{
-			die("ERROR_FATAL ERROR: Billing info for this booking number suddenly became none?");
+			//error code 5101
+			die("ERROR_FATAL ERROR: Billing info for this booking number suddenly became none?");  
 		}
 		// wait, is this necessary to be in foreach??
 		foreach( $billingInfoArray['unpaidPurchasesArray'] as $unpaidPurchase )
@@ -175,14 +180,14 @@ class BookingMaintenance{
 					$eachBooking->ShowingTimeUniqueID,
 					$supposedlyNewSlot->Seat_x,
 					$supposedlyNewSlot->Seat_y,
-					"BOOKING_CHANGE_LAPSE_FREED"
+					BOOKING_CHANGE_LAPSE_FREED
 				);				
 				$this->CI->Slot_model->setSlotAsAvailable( $supposedlyNewSlot->UUID );		// obviously
 			}
 			// Delete this purchase entry
 			$this->CI->Payment_model->deleteSinglePurchase( $eachBooking->bookingNumber, $unpaidPurchase->UniqueID );
 		}//foreach unpaidPurchase
-		/* Now, revert the booking to its original*/
+		// Now, revert the booking to its original
 		$this->CI->Booking_model->updateBookingDetails(
 			$eachBooking->bookingNumber,
 			$eachBooking->EventID,
@@ -374,7 +379,7 @@ class BookingMaintenance{
 		
 		foreach( $forfeited as $guestUUID => $guestObj )
 		{
-			log_message( 'DEBUG', 'Guest no-show: '.$guestUUID );
+			log_message( 'DEBUG', 'Guest no-show: '.$guestUUID ); // error code 2203
 			$eventSlot = $this->CI->Slot_model->getSlotAssignedToUser( $guestUUID );
 			@$this->CI->Seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );	
 			@$this->CI->Slot_model->setSlotAsAvailable($eventSlot->UUID );
@@ -383,7 +388,7 @@ class BookingMaintenance{
 			}else{
 				$bookingsProcessed[ $guestObj->bookingNumber ] = 1;
 			}
-			log_message( 'DEBUG', 'Guest slot freed: '.@$eventSlot->UUID );
+			log_message( 'DEBUG', 'Guest slot freed: '.@$eventSlot->UUID ); // error code 2203
 		}
 		
 		foreach( $bookingsProcessed as $key=>$val ) @$this->CI->Booking_model->markAsNoShowForfeited( $key );
@@ -393,9 +398,9 @@ class BookingMaintenance{
 	public function getBillingRelevantData( $bookingNumber )
 	{
 			/*
-				Created 09MAR2012-1125. 
+				@created 09MAR2012-1125. 
 				
-				Gets entries in table `purchase` which have connection with the booking number specified,
+				@purpose Gets entries in table `purchase` which have connection with the booking number specified,
 				computes the amount due and returns the array containing such data.				
 			*/
 			$unpaidPurchasesArray = $this->CI->Payment_model->getUnpaidPurchases( $bookingNumber );
@@ -404,7 +409,7 @@ class BookingMaintenance{
 			$paidTotal 			  = $this->CI->Payment_model->sumTotalCharges( $paidPurchasesArray );
 			$amountDue 			  = $unpaidTotal - $paidTotal;
 			
-			if( $amountDue < 0 ) $amountDue = 0.0;	// we don't have to refund ( signified by negative here )
+			if( $amountDue < 0 ) $amountDue = FREE_AMOUNT;	// we don't have to refund ( signified by negative here )
 			return Array(
 				AKEY_UNPAID_PURCHASES_ARRAY => $unpaidPurchasesArray,			
 				AKEY_PAID_PURCHASES_ARRAY   => $paidPurchasesArray,			
@@ -417,14 +422,13 @@ class BookingMaintenance{
 	function processPayment( $bNumber, $customData = "" )
 	{	
 		/*
-			Called by book_step6 & its forward, confirm_step3
-			
-			Created 28FEB2012-1148
-			
-			Moved from confirm_step3,so this can be used in BookStep6 when 
+			@created 28FEB2012-1148
+			@calledBy called by book_step6 & its forward, confirm_step3
+			@purpose Moved from confirm_step3,so this can be used in BookStep6 when
 			there are no charges (FREE ).
-		*/
+		*/		
 		$result = Array(
+			//error code 5104
 			'boolean' => FALSE,
 			'status' => 'ERROR',
 			'message' => 'Something went wrong.'

@@ -1,5 +1,10 @@
 <?php
 		/*
+			DB history indicator
+		*/
+		define("BOOKING_CHANGE_LAPSE_FREED","BOOKING_CHANGE_LAPSE_FREED");
+		
+		/*
 			We define them here so that centralized ang pangalan ng mga cookies, etc.
 		*/
 		define( 'PAYMENT_MODE', 'paymentMode' );
