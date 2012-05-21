@@ -316,14 +316,14 @@
 *
 * We use this as a simple mechanism to access the logging
 * class and send messages to be logged.
-*
+* C:\wamp\www\species\system\core\Common.php
 * @access	public
 * @return	void
 */
 	function log_message($level = 'error', $message, $php_error = FALSE)
 	{
 		static $_log;
-
+		date_default_timezone_set('Asia/Manila');
 		if (config_item('log_threshold') == 0)
 		{
 			return;

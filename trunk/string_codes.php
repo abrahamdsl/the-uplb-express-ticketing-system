@@ -121,6 +121,11 @@ NUM    STRING  								Message
 5151   PAPYPAL_IPN_PLANB_VALIDATE_FAIL      IPN Main method Validation FAIL
 5200   TRANS_ID_404_WHEN_ROLLBACK           FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking.
 
+//.. 5300 - 5350 EMAIL
+5310   EMAIL_INFO_404						One or more necessary email info assumed to be in the database is not found. <specify whenever possible>
+//.. ..5310-5320 EMAIL-SALES
+
+
 5500   PAYMENT_MODE_ADD_ERR					Something went wrong while adding the payment mode. It may have been not saved.
 5505   PAYMENT_MODE_DELETE_ERR              Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.
 5510   PAYMENT_MODE_EDIT_ERR                Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.

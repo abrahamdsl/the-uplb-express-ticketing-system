@@ -62,6 +62,7 @@ class Paypal extends CI_Controller {
 		$this->load->library('bookingmaintenance');
 		$this->load->library('paypal_lib');
 		$this->load->model('clientsidedata_model');
+		$this->load->model('email_model');
 		$this->load->model('guest_model');
 		$this->load->model('Payment_model');
 		$this->load->model('UsefulFunctions_model');
@@ -231,15 +232,9 @@ class Paypal extends CI_Controller {
 	}//ipn()
 	
 	private function emailMain( $mode = 1, $bookingNumber = "NULL", $destination )
-	{
-		$config['protocol'] = 'mail';
-		$config['mailpath'] = 'mail/uplbtickets.info/sales/new';
-		$config['smtp_host'] = 'mail.uplbtickets.info';
-		$config['smtp_user'] = 'sales@uplbtickets.info';
-		$config['smtp_pass'] = '8sdk17a3';
-		//$config[''] = '';
-		$this->email->initialize($config);
-
+	{		
+		$this->email_model->initializeFromSales();
+		
 		$this->email->from('sales@uplbtickets.info', 'The UPLB Ticketing System');
 		$this->email->to( $destination ); 						
 
