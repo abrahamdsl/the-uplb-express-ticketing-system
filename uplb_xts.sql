@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 15, 2012 at 10:45 AM
--- Server version: 5.1.36
--- PHP Version: 5.3.0
+-- Generation Time: May 21, 2012 at 11:32 AM
+-- Server version: 5.5.16
+-- PHP Version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `booking_details` (
 --
 
 INSERT INTO `booking_details` (`bookingNumber`, `EventID`, `ShowingTimeUniqueID`, `TicketClassGroupID`, `TicketClassUniqueID`, `PaymentDeadline_Date`, `PaymentDeadline_Time`, `Status`, `Status2`, `MadeBy`) VALUES
+('14WJTCC', 985, 1, 1, 2, NULL, NULL, 'PENDING-PAYMENT', 'NEW', 582327),
 ('1E5P3G6', 261, 1, 1, 4, NULL, NULL, 'PAID', NULL, 593835);
 
 -- --------------------------------------------------------
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `booking_guests` (
 --
 
 INSERT INTO `booking_guests` (`UUID`, `bookingNumber`, `AccountNum`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `studentNumber`, `employeeNumber`) VALUES
+('ba29c1a0-a311-11e1-aea2-00ff14281d98', '14WJTCC', 0, 'ABRAHAM DARIUS', 'SENO', 'LLAVE', 'MALE', '9183981185', '', 'ab@yahooa.com', NULL, NULL),
 ('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '1E5P3G6', 0, 'JONG IL', '', 'KIM', 'MALE', '9183981185', '', 'kji@gov.nk', 200837120, NULL);
 
 -- --------------------------------------------------------
@@ -89,11 +92,6 @@ CREATE TABLE IF NOT EXISTS `coordinate_security` (
   `VALUE_TYPE` varchar(50) NOT NULL DEFAULT 'INT',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `coordinate_security`
---
-
 
 -- --------------------------------------------------------
 
@@ -1399,7 +1397,7 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('684e78fd-7df9-11e1-8168-4cba9d4cadf0', 50, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('683ef222-7df9-11e1-8168-4cba9d4cadf0', 50, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0183a8d1-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('01666a60-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('01666a60-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 2, 'RESERVED-PENDING_PAYMENT', 'ba29c1a0-a311-11e1-aea2-00ff14281d98', 7, 16, 0, NULL),
 ('01750cfc-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0183f25a-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0166b4b2-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1651,11 +1649,6 @@ CREATE TABLE IF NOT EXISTS `notification` (
   PRIMARY KEY (`UniqueID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `notification`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1812,7 +1805,7 @@ CREATE TABLE IF NOT EXISTS `purchase` (
   `Deadline_Time` time NOT NULL,
   `Comments` varchar(255) DEFAULT NULL COMMENT 'This will contain variables like, "onLapse" -> points to data on ''transactionList'' that is needed to rollback',
   PRIMARY KEY (`UniqueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `purchase`
@@ -1820,7 +1813,8 @@ CREATE TABLE IF NOT EXISTS `purchase` (
 
 INSERT INTO `purchase` (`UniqueID`, `BookingNumber`, `Charge_type`, `Charge_type_Description`, `Quantity`, `Amount`, `Payment_UniqueID`, `Payment_Channel_ID`, `Deadline_Date`, `Deadline_Time`, `Comments`) VALUES
 (2, '49D2ZET', 'TICKET', 'ECONOMY Class', 2, 0, 0, 0, '2012-04-22', '18:00:00', NULL),
-(18, '1E5P3G6', 'TICKET', 'ECONOMY Class', 1, 0, 687789, 0, '0000-00-00', '00:00:00', NULL);
+(18, '1E5P3G6', 'TICKET', 'ECONOMY Class', 1, 0, 687789, 0, '0000-00-00', '00:00:00', NULL),
+(20, '14WJTCC', 'TICKET', 'BUSINESS Class', 1, 200, 0, 1, '2012-05-21', '18:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -2519,7 +2513,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 6, 9, 'G', '10', 0, 1, '2', 'COMMENT'),
 (261, 2, 6, 9, 'G', '10', 0, 1, '2', 'COMMENT'),
 (261, 3, 6, 9, 'G', '9', 0, 2, '2', 'COMMENT'),
-(261, 1, 6, 10, 'G', '11', 0, 1, '2', 'COMMENT'),
+(261, 1, 6, 10, 'G', '11', 0, 1, '2', ''),
 (261, 2, 6, 10, 'G', '11', 0, 1, '2', ''),
 (261, 3, 6, 10, 'G', '10', 0, 2, '2', 'COMMENT'),
 (261, 1, 6, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
@@ -3861,7 +3855,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 7, 13, 'H', '13', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 14, 'H', '14', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 15, 'H', '15', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 16, 'H', '16', 0, 1, '2', 'COMMENT'),
+(985, 1, 7, 16, 'H', '16', 1, 1, '2', NULL),
 (985, 1, 7, 17, 'H', '17', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 18, 'H', '18', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 19, 'H', '19', 0, 1, '2', 'COMMENT'),
@@ -5382,10 +5376,10 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 --
 
 INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `Seat_map_UniqueID`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
-(1, 261, '2012-04-27', '19:00:00', '2012-04-27', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-24', '10:54:31', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(1, 985, '2012-04-20', '19:00:00', '2012-04-21', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-19', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
-(2, 261, '2012-04-28', '19:00:00', '2012-04-28', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-04-27', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(3, 261, '2012-04-30', '19:00:00', '2012-04-30', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-04-30', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
+(1, 261, '2012-06-22', '19:00:00', '2012-06-22', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-06-22', '10:54:31', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(1, 985, '2012-06-29', '19:00:00', '2012-06-30', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-06-28', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
+(2, 261, '2012-06-25', '19:00:00', '2012-06-25', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-06-24', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(3, 261, '2012-06-26', '19:00:00', '2012-06-26', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-06-25', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -5407,6 +5401,11 @@ CREATE TABLE IF NOT EXISTS `system_settings` (
 INSERT INTO `system_settings` (`Name`, `Value`, `Type`) VALUES
 ('ACAD_CURRENT_TERM', '3', 'INT'),
 ('ACAD_CURRENT_YEAR1', '2012', 'INT'),
+('EMAIL_CI_DEFAULT_PROTOCOL', 'mail', 'STRING'),
+('EMAIL_SALES', 'sales@uplbtickets.info', 'STRING'),
+('EMAIL_SALES_PASSWORD', '8sdk17a3', 'STRING'),
+('EMAIL_SALES_SERVER_PATH', 'mail/uplbtickets.info/sales/new', 'STRING'),
+('EMAIL_SMTP_HOST_ADDRESS', 'mail.uplbtickets.info', 'STRING'),
 ('PP_CHARGE_DEFAULT_FIXED', '0.12', 'FLOAT'),
 ('PP_CHARGE_DEFAULT_PERCENT', '2', 'FLOAT');
 
@@ -5614,6 +5613,89 @@ INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lna
 (771566, 'meowmeow', 'f92c092673da1cda19ec8edbd91cfc6b6b965763ce7917be8e2ea1f838ba6875fa9df7a41a5a87415f4f44bd9e4845de85720f9c759e468790d25a3905a76aa6', 'NYAN', 'S.', 'CAT', 1, 'FEMALE', '9183981185', '0', 'ADS@YAHOO.COM', '', '', '', '', NULL, NULL),
 (807519, 'wordchamp427', 'c03d6524ebc8603bc69e5981d6ca19ef46e0fc20277cbf250c5be0f5edda104e3c04c08715038794951b8b783f924556a17a72dd20578880d46bdecc365c96ae', 'EDRIARA ANN', 'SENO', 'LLAVE', 1, 'MALE', '9183981185', '0', 'ab@yahoo.com', '', '', '', '', NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `_telemetry_basic`
+--
+
+CREATE TABLE IF NOT EXISTS `_telemetry_basic` (
+  `UUID` varchar(38) COLLATE utf8_bin NOT NULL,
+  `RecDATE` date NOT NULL,
+  `RecTIME` time NOT NULL,
+  `IPV4_ADDRESS` varchar(15) COLLATE utf8_bin NOT NULL,
+  `EVENT` varchar(255) COLLATE utf8_bin NOT NULL,
+  `USER_AGENT` varchar(1000) COLLATE utf8_bin DEFAULT NULL,
+  `BROWSERSHORT_PLUS_OS` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `RESERVED2` int(11) DEFAULT NULL,
+  `RESERVED` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`UUID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `_telemetry_basic`
+--
+
+INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `EVENT`, `USER_AGENT`, `BROWSERSHORT_PLUS_OS`, `RESERVED2`, `RESERVED`) VALUES
+('{0178b83a-6dc4-4e21-9350-df3a71191535}', '2012-05-19', '16:15:41', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{0314abc0-1278-4662-aa9d-053ad81ff5fc}', '2012-05-19', '16:12:13', '112.207.10.115', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{04bbf5a0-dbd8-4321-91bb-8f5a8fe06659}', '2012-05-19', '16:14:45', '121.54.92.86', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{065f0c1f-bf83-4409-8f65-1e24677d5422}', '2012-05-20', '06:39:40', '112.198.83.134', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 Safari/536.11', 'Chrome 20.0.1132.11|Unknown Windows OS', NULL, NULL),
+('{072f595b-7852-4c00-b9f2-18274e34bd9e}', '2012-05-19', '18:48:08', '121.1.24.118', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{0f79a6bd-bbf7-4ec9-9571-8067b1f7d011}', '2012-05-19', '19:22:49', '180.194.251.168', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.7 (KHTML, like Gecko) RockMelt/0.16.91.456 Chrome/16.0.912.77 Safari/535.7', 'Chrome 16.0.912.77|Unknown Windows OS', NULL, NULL),
+('{1196c236-e37f-45c3-b205-c45722df6526}', '2012-05-19', '15:50:19', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{152f478a-368f-4836-bec2-a66ab644c055}', '2012-05-19', '15:50:41', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{161e2f64-06fc-4961-8554-07c77b0c7e8f}', '2012-05-19', '15:50:18', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{24392338-e6fc-41b4-90b4-fe007427482f}', '2012-05-19', '15:49:53', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{25a88d5f-0e45-47e0-b1a3-9ffcebfa9f23}', '2012-05-20', '04:24:58', '112.201.95.114', 'LOGGED_OUT_PAGE', 'REF_{caae5628-c282-430f-af42-a6ebe4dfdbba}', '', NULL, NULL),
+('{25d389c7-660b-4a40-82f3-517437f1374a}', '2012-05-19', '16:15:51', '112.207.20.43', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{376e186b-f5f1-4657-80ce-48eea339bb80}', '2012-05-19', '16:28:24', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{387bcc87-5854-4410-8826-f3d63bcd4d62}', '2012-05-19', '16:15:46', '112.207.20.43', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{3cdd8d73-8b6f-45f2-855d-d83ef8938ad5}', '2012-05-19', '18:51:09', '121.1.24.118', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:5.0) Gecko/20100101 Firefox/5.0', '', NULL, NULL),
+('{4250377c-b13d-4683-99af-42d961add225}', '2012-05-19', '18:35:37', '112.207.37.116', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{4501d775-c37f-4465-93ac-2f79fafa7fcb}', '2012-05-19', '16:14:32', '112.207.20.43', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{475234f2-360e-4b22-876e-cb7526c8f142}', '2012-05-19', '15:53:16', '121.1.24.118', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{4d45fb00-a318-11e1-b3dd-0800200c9a66}', '2012-05-19', '15:48:10', '69.171.229.249', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{4e051b4e-98aa-4a52-a717-adb857359b77}', '2012-05-19', '16:25:41', '112.198.83.33', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{4e83f16b-8dba-42cb-a21d-f997834fab9a}', '2012-05-19', '18:52:33', '121.1.24.118', 'LOGGED_OUT_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', '', NULL, NULL),
+('{4f428442-208a-43d3-8252-25114a2f787f}', '2012-05-19', '17:36:58', '112.202.141.151', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{4f601354-d464-48ea-ab0e-54755fa438f9}', '2012-05-19', '20:56:22', '122.55.28.66', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{5ab3806f-f7d1-45d9-9435-5aca0bad3e24}', '2012-05-19', '19:22:49', '180.194.251.168', 'LOGGED_OUT_PAGE', 'REF_{b35fc316-c942-44b9-878c-a5494504c2d7}', '', NULL, NULL),
+('{5d6d0411-343f-4e2d-b01c-0d22f7fb5ff9}', '2012-05-19', '16:28:04', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '2012-05-20', '06:59:08', '180.194.28.234', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{63684e82-a826-4746-90f3-4fd57bd954e9}', '2012-05-20', '00:02:07', '150.70.172.101', 'LOGIN_PAGE', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)', 'Internet Explorer 6.0|Windows XP', NULL, NULL),
+('{652b3ab0-951b-4f05-aa98-8a77974625ac}', '2012-05-19', '15:50:55', '121.54.13.52', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{67257037-6d6b-48e3-b2b5-b5b94e87f704}', '2012-05-19', '16:27:53', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{67c71b66-2b95-405b-9fc4-4a1e28ac8f4d}', '2012-05-19', '16:29:15', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{718e868e-a3c2-443c-824e-01a68e4ad363}', '2012-05-19', '15:51:26', '121.1.24.118', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{7bac3f60-33e1-4bc3-ad37-da41de553499}', '2012-05-19', '16:16:03', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{7d15277d-0303-442d-b1f8-e05cf0e95c11}', '2012-05-20', '07:00:28', '180.194.28.234', 'LOGGED_OUT_PAGE', 'REF_{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '', NULL, NULL),
+('{822b72d8-bc08-4cef-885c-2373b72c0152}', '2012-05-19', '16:01:16', '180.191.138.226', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{868504a7-3044-458e-8dec-1706e66b50a4}', '2012-05-19', '16:28:17', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{8b3f4f74-2b99-4a20-b0ea-3547209d6485}', '2012-05-19', '16:17:11', '121.54.92.86', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{9731ef88-bddd-41dd-9bfc-e24e6cc5a9f9}', '2012-05-19', '16:05:14', '50.17.107.32', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{9a5fff93-a86e-4608-94ba-2c47b65974c9}', '2012-05-19', '16:28:11', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{a54e8081-ae11-4250-bd72-0cf0500c583c}', '2012-05-19', '16:05:24', '50.17.107.32', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{a9fad5e9-158d-41a5-a689-dfa8c8f8ec52}', '2012-05-19', '16:12:02', '112.207.10.115', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{ac8a3084-9c28-4af3-98ae-d95e67ec9f5b}', '2012-05-19', '18:17:51', '23.20.190.69', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{ade45d55-5756-449a-a6b0-5bd6b9e11cc0}', '2012-05-20', '06:14:05', '112.198.83.134', 'LOGGED_OUT_PAGE', 'REF_{e39f8c65-48d4-4eb3-a17f-cb675119855d}', '', NULL, NULL),
+('{b35fc316-c942-44b9-878c-a5494504c2d7}', '2012-05-19', '19:22:22', '180.194.251.168', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.7 (KHTML, like Gecko) RockMelt/0.16.91.456 Chrome/16.0.912.77 Safari/535.7', 'Chrome 16.0.912.77|Unknown Windows OS', NULL, NULL),
+('{b51fb214-6ccb-48b2-8926-5ab9ea1934b9}', '2012-05-19', '15:49:33', '121.54.48.124', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{b5d6aa55-5721-4ceb-ba81-7c25412077bc}', '2012-05-19', '16:29:43', '121.1.24.118', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{bb8235d4-6934-4825-9684-26fa596cd469}', '2012-05-19', '16:15:30', '112.207.20.43', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{be90b11a-13a9-4e54-84c5-2b37ee1a580b}', '2012-05-19', '15:49:49', '180.194.29.34', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{caae5628-c282-430f-af42-a6ebe4dfdbba}', '2012-05-20', '04:24:32', '112.201.95.114', 'LOGIN_PAGE', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.75 Safari/535.7', 'Chrome 16.0.912.75|Linux', NULL, NULL),
+('{d02af430-6a50-4a39-8111-a7182d560fb0}', '2012-05-19', '15:55:27', '180.193.67.64', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{d4942b60-fb21-4f43-aeeb-d94fff4d8c24}', '2012-05-19', '21:01:35', '122.55.28.66', 'LOGGED_OUT_PAGE', 'REF_{4f601354-d464-48ea-ab0e-54755fa438f9}', '', NULL, NULL),
+('{dad7fd3c-a761-4c50-b328-79b3f6dbbfca}', '2012-05-19', '15:49:28', '125.162.195.176', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{e03d3130-2cd5-4c2a-8537-b0b0ffe02171}', '2012-05-19', '15:50:15', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{e39f8c65-48d4-4eb3-a17f-cb675119855d}', '2012-05-20', '06:10:56', '112.198.83.134', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 Safari/536.11', '20.0.1132.11|Unknown Windows OS', NULL, NULL),
+('{e41f4695-a1e4-4077-8d3f-0ad918a0992c}', '2012-05-20', '04:25:01', '112.201.95.114', 'LOGIN_PAGE', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.75 Safari/535.7', 'Chrome 16.0.912.75|Linux', NULL, NULL),
+('{e957141a-83ac-4945-96ba-c916f8832e46}', '2012-05-19', '15:51:08', '112.202.113.55', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{ee215baa-5d74-4f93-aa56-c41a414b7935}', '2012-05-19', '16:21:20', '121.1.59.244', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{f96c3eb1-691c-4e6a-a953-a4b10be18de7}', '2012-05-19', '18:33:27', '112.207.37.116', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{fabdafbf-fdff-457b-8102-0e0739f2a030}', '2012-05-19', '18:26:29', '121.1.24.118', 'LOGGED_OUT_PAGE', '', '', NULL, NULL);
+
 --
 -- Constraints for dumped tables
 --
@@ -5629,3 +5711,7 @@ ALTER TABLE `grand_permission`
 --
 ALTER TABLE `uplbconstituent`
   ADD CONSTRAINT `uplbconstituent_ibfk_1` FOREIGN KEY (`AccountNum_ID`) REFERENCES `user` (`AccountNum`) ON DELETE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

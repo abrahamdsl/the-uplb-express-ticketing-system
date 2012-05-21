@@ -72,7 +72,31 @@ class UsefulFunctions_model extends CI_Model {
 		foreach( $muchTokenizedHaystack as $key => $value ) if( $key == $needle ) return $value;
 		return false;
 	}//getValueOfWIN5_Data
+			
+	function guid(){
+		/*
+		Retrieved 21MAY2012-1515
+		http://php.net/manual/en/function.com-create-guid.php
+		Comment by: Kristof_Polleunis at yahoo dot com 28-Apr-2005 08:16
 		
+		*/
+		if (function_exists('com_create_guid')){
+			return com_create_guid();
+		}else{
+			mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+			$charid = strtoupper(md5(uniqid(rand(), true)));
+			$hyphen = chr(45);// "-"
+			$uuid = chr(123)// "{"
+					.substr($charid, 0, 8).$hyphen
+					.substr($charid, 8, 4).$hyphen
+					.substr($charid,12, 4).$hyphen
+					.substr($charid,16, 4).$hyphen
+					.substr($charid,20,12)
+					.chr(125);// "}"
+			return $uuid;
+		}
+	}//guid()
+	
 	function isHourValid_24( $hour )
 	{
 		$thisHour = intval( $hour, 10 );		

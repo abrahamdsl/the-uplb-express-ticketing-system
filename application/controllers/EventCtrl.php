@@ -32,6 +32,7 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('Booking_model');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('CoordinateSecurity_model');
+		$this->load->model('email_model');
 		$this->load->model('Event_model');
 		$this->load->model('Guest_model');
 		$this->load->model('MakeXML_model');
@@ -42,6 +43,7 @@ class EventCtrl extends CI_Controller {
 		$this->load->model('TicketClass_model');
 		$this->load->model('TransactionList_model');
 		$this->load->model('UsefulFunctions_model');
+		$this->load->library('email');		
 		$this->load->library('encrypt');		
 		$this->load->library('bookingmaintenance');		
 		$this->load->library('functionaccess');		
@@ -1194,7 +1196,7 @@ class EventCtrl extends CI_Controller {
 	}// book_step5_forward(..)
 	
 	function book_step6()
-	{
+	{		
 		//die( var_dump( $_POST ) );
 		$clientUUIDs;
 		$guestSeats = null;
@@ -1289,8 +1291,29 @@ class EventCtrl extends CI_Controller {
 				redirect( 'paypal/process' );
 			}
 		}
-		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_FORWARD ); // our activity tracker
-		$this->clientsidedata_model->setBookingProgressIndicator( 6 );
+		/*
+			Try to send email.
+		*/
+		foreach( $data['guests'] as $singleGuest)
+		{
+			$msgBody = "";
+			$this->email_model->initializeFromSales( TRUE );
+			
+			$this->email_model->from( 'DEFAULT', 'DEFAULT');
+			$this->email_model->to( $singleGuest->Email ); 						
+
+			$this->email_model->subject('Show Itinerary Receipt ' . $bookingNumber );
+			$msgBody = 'Your booking is pending.';
+			$msgBody .= 'Kang song dae guk.<br/>';
+			$msgBody .= 'Kim jong il\r\n';
+			$msgBody .= 'Kim jong un\n';
+			$msgBody .= 'We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.';	
+			$this->email_model->message( $msgBody );
+			
+			$this->email_model->send();			
+			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_FORWARD ); // our activity tracker
+			$this->clientsidedata_model->setBookingProgressIndicator( 6 );
+		}
 		redirect( 'EventCtrl/book_step6_forward' );
 	}//book_step6
 	
@@ -2352,7 +2375,7 @@ class EventCtrl extends CI_Controller {
 		
 		$this->functionaccess->__reinit();
 		$isComingFromTicketClass = ( intval($this->clientsidedata_model->getSessionActivityDataEntry( 'ticketclass' ))===1 );
-		log( 'DEBUG', 'Reached  manageBooking_changeSeat(). Is coming from ticket class? '.$isComingFromTicketClass );
+		log( 'DEBUG', 'Reached  manageBooking_changeSeat(). Is coming from ticket class? '.intval($isComingFromTicketClass) );
 		if(!$this->clientsidedata_model->changeSessionActivityDataEntry( 'seat', 1 )){
 			die('INTERNAL-SERVER-ERROR: Activity data cookie manipulated. Please start over by refreshing Manage Booking page.');
 		}
@@ -2374,6 +2397,7 @@ class EventCtrl extends CI_Controller {
 		{	
 			$this->clientsidedata_model->setSessionActivity( MANAGE_BOOKING, STAGE_BOOK_4_FORWARD );
 			$guestObj = $this->Guest_model->getGuestDetails( $bookingNumber ); 
+			$guestCount = count( $guestObj );
 			$this->setBookingCookiesOuter( 
 				$bookingObj->EventID, 
 				$bookingObj->ShowingTimeUniqueID, 
