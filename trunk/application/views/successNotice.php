@@ -67,8 +67,9 @@ $this->load->view('html-generic/doctype.inc');
 				});
 
 				$('#buttonOK').click( function(){
-					<?php if( !isset( $defaultAction ) or strtolower($defaultAction) === "home" ){ ?>
-						window.location = CI.base_url;
+					<?php 
+						if( !isset( $defaultAction ) or strtolower($defaultAction) === "home" ){ ?>
+							window.location = CI.base_url;
 					<?php 
 						}else{
 							echo "window.location = '".$redirectURI."';";
@@ -107,9 +108,9 @@ $this->load->view('html-generic/doctype.inc');
 					if( !isset($customTitle) or $customTitle == "" ) echo "Success";
 					else echo $customTitle;
 				?>								
-			</div>						
+			</div>								
 			<!-- accordion start -->			
-			<div class="center_purest homePage_accordion_container" >
+			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<div class="accordionImitation cEvent04_container errorNotice_div_custom">
 					<div id="title"></div>
 					<div id="content">						

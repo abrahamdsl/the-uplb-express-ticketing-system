@@ -82,7 +82,7 @@ $this->load->view('html-generic/metadata.inc');
 				<br/>				
 			</div>			
 			<!-- accordion start -->			
-			<div class="center_purest homePage_accordion_container" >
+			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<form method="post"  action="<?php echo base_url().'EventCtrl/managebooking_finalize' ?>" name="formLogin" id="formMain">					
 					<div class="accordionImitation cEvent04_container aci1_Book3Special">				
 						<div id="title">Details</div>
