@@ -1340,13 +1340,7 @@ class EventCtrl extends CI_Controller {
 		$totalCharges 			   = $this->clientsidedata_model->getPurchaseTotalCharge();
 		$paymentChannel 		   = ( $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : $this->clientsidedata_model->getPaymentChannel();
 		$slots 			           = $this->clientsidedata_model->getSlotsBeingBooked();
-		/*echo( var_dump( $bookingNumber ) );
-		echo( var_dump( $eventID  ) );
-		echo( var_dump( $showtimeID  ) );
-		echo( var_dump( $totalCharges  ) );
-		echo( var_dump( $paymentChannel  ) );
-		echo( var_dump( $slots ) );
-		die();*/
+		
 		// access validity check				
 		$this->functionaccess->preBookStep6FWCheck( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots, STAGE_BOOK_6_FORWARD );
 		
@@ -1379,7 +1373,7 @@ class EventCtrl extends CI_Controller {
 			die();
 		}
 		if( $paymentChannel_obj->Type == "COD" )
-		{
+		{			
 			$this->load->view( 'book/bookStep6_COD', $data);
 		}else
 		if( $paymentChannel_obj->Type == "ONLINE" )
@@ -1400,10 +1394,9 @@ class EventCtrl extends CI_Controller {
 				echo '<a href="'.base_url().'EventCtrl/book_step5_forward">Go back to Payment modes</a>';
 			}			
 		}else{
-			$this->clientsidedata_model->updateSessionActivityStage( -1 );
+			$this->clientsidedata_model->updateSessionActivityStage( -1 );			
 			$this->load->view( 'confirmReservation/confirmReservation02-free', $data );			
-		}
-		//echo var_dump( $paymentChannel_obj );
+		}		
 	}//book_step6_forward()
 	
 	function cancelBooking()

@@ -157,11 +157,11 @@ class userAccountCtrl extends CI_Controller {
 			$responseDescriptor = "Your password has been changed.";
 			$responseCaption = "My Account";
 		}		
-		$whereNext = '<br/><br/><a href="'.base_url().'userAccountCtrl'.$whereNextURI.'" >Back to '.$responseCaption.'</a>';		
+		$whereNext = '<br/><br/><a href="'.base_url().$whereNextURI.'" >Back to '.$responseCaption.'</a>';		
 		echo $this->MakeXML_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, $responseDescriptor.$whereNext );
 		return true;
 	}//changePassword_step2
-	
+			
 	function isUserExisting()
 	{
 		/*

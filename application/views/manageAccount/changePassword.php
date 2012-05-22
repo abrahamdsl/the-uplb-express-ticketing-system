@@ -65,7 +65,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span class="critical" >*</span>
 							</div>
 							<div class="collection">
-								<input type="password" name="oldPassword" value=" />
+								<input type="password" name="oldPassword" value="" />
 								<input type="hidden" name="oldPassword_validate" value="0" />
 							</div>
 							<div class="msgContainer">

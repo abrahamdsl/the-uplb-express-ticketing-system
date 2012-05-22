@@ -93,7 +93,7 @@ $this->load->view('html-generic/doctype.inc');
 				?>
 			</div>						
 			<!-- accordion start -->			
-			<div class="center_purest homePage_accordion_container" >
+			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<div class="accordionImitation cEvent04_container errorNotice_div_custom">
 					<div id="title"></div>
 					<div id="content">						

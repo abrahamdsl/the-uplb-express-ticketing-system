@@ -101,9 +101,9 @@ $this->load->view('html-generic/doctype.inc');
     	<div id="centralContainer">
 			<div id="page_title" class="page_title_custom" >
 				Error
-			</div>						
+			</div>			
 			<!-- accordion start -->			
-			<div class="center_purest homePage_accordion_container" >
+			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<div class="accordionImitation cEvent04_container errorNotice_div_custom">
 					<div id="title"></div>
 					<div id="content">
