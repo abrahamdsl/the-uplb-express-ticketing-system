@@ -26,6 +26,8 @@ class EventCtrl extends CI_Controller {
 		include_once('_constants.inc');
 		
 		$this->load->helper('cookie');
+		
+		$this->load->model('BrowserSniff_model');
 		$this->load->model('login_model');
 		$this->load->model('Academic_model');
 		$this->load->model('Account_model');
@@ -1294,9 +1296,11 @@ class EventCtrl extends CI_Controller {
 		/*
 			Try to send email.
 		*/
+		log_message( 'DEBUG', 'Trying to send email to guests - payment pending - guest count: ' . count( $data['guests'] ) );
 		foreach( $data['guests'] as $singleGuest)
 		{
 			$msgBody = "";
+			$emailResult = false;
 			$this->email_model->initializeFromSales( TRUE );
 			
 			$this->email_model->from( 'DEFAULT', 'DEFAULT');
@@ -1308,9 +1312,9 @@ class EventCtrl extends CI_Controller {
 			$msgBody .= 'Kim jong il\r\n';
 			$msgBody .= 'Kim jong un\n';
 			$msgBody .= 'We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.';	
-			$this->email_model->message( $msgBody );
-			
-			$this->email_model->send();			
+			$this->email_model->message( $msgBody );			
+			$emailResult = $this->email_model->send();
+			log_message('DEBUG', 'Email to guest '. $singleGuest->Email . ' : ' .intval( $emailResult ) );
 			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_FORWARD ); // our activity tracker
 			$this->clientsidedata_model->setBookingProgressIndicator( 6 );
 		}

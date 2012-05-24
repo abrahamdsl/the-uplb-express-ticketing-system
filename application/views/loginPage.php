@@ -24,9 +24,51 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/anti-ie.js'; ?>" ></script>					
+	<style type="text/css">
+		div.questionableBrowser{
+			height: auto;
+			width: 100%;
+			margin: 5px; 
+			clear:right; 						
+			background-color:rgb(255,174,201);
+			padding: 10px;		
+		}
+		div.questionableBrowserInner{
+			border: 2px solid rgb(255,45,45);
+			font-size: 1.6em;
+			padding: 5px;
+			width: 95%;
+			height: 10%;
+		}
+	</style>
 </head>
 <body>
-<div id="main_container">
+<?php if( isset($UA_CHECK ) and $UA_CHECK != BR_ALLOWED ) { ?> 
+<div class="questionableBrowser" >
+	<div class="center_purest questionableBrowserInner" >
+		<?php switch( $UA_CHECK ) { 
+			case BR_UNKNOWN_BUT_PERMIT_STILL: 
+					$this->telemetry_model->add( BR_UNKNOWN_BUT_PERMIT_STILL, $uuid_new_ident, $_client_iPv4, "REF_".$uuid, "" );
+		?>
+				We do not know exactly what your browser is but decided to allow it.
+				As a result, some functionalities might be buggy or not available.
+		<?php 
+				break;
+			case BR_NOT_TESTED_BUT_PERMIT_STILL:				
+				$this->telemetry_model->add( BR_NOT_TESTED_BUT_PERMIT_STILL,  $uuid_new_ident, $_client_iPv4, "REF_".$uuid, "" );
+		?>
+				We have tested a recent version of your browser but not this particular
+				one you are using. Therefore, we can't be sure if all functionalities would work
+				as they should.
+		<?php 
+				break;
+			default: break;
+		?>
+		<?php } ?>
+	</div>
+</div>
+<?php } ?>
+<div id="main_container">	
 	<div id="header">    	    	        
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
@@ -35,17 +77,17 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view('html-generic/menu-bar.inc');
 		?>
 		<!-- userInfo bar not needed here -->
-    </div>
-        
-    
+    </div>            
     <div id="main_content">    	
-    	<div id="centralContainer">			
+    	<div id="centralContainer">
+			
 			<div id="page_title">
 				Login
 			</div>
 			<div style="padding-left:10px; clear: both">
 				Login to access services.
-			</div>				
+			</div>
+			
 			<div id="left_content">					
 				<div class="text_box">
 					<form method="post"  action="<?php echo base_url().'SessionCtrl/login' ?>" name="formLogin" id="formMain">
