@@ -42,6 +42,18 @@
 		define( 'AKEY_AMOUNT_DUE', 'amountDue' );
 		
 		/*
+			Browser detection constants
+		*/
+		define( 'BR_ALLOWED' , 0x80 );
+		define( 'BR_STRICTLY_NOT_ALLOWED', 0x81 );
+		define( 'BR_UNKNOWN_BUT_PERMIT_STILL', 0x82 );
+		define( 'BR_UNKNOWN_AND_DENY', 0x83 );
+		define( 'BR_NOT_TESTED_BUT_PERMIT_STILL', 0x84 );
+		define( 'BR_NOT_TESTED_AND_DENY', 0x85 );
+		define( 'BR_BOT_SIMPLE', 0x86 );
+		define( 'BR_AGENT_DENIED', 0x87 );
+		
+		/*
 			Session stages						
 		*/
 		define( 'STAGE_BOOK_1_PROCESS', 0 );

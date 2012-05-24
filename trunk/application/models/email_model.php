@@ -162,13 +162,17 @@ class Email_model extends CI_Model {
 	
 	function message( $message )
 	{
-		$this->email->message( $message );
+		if( is_array( $message ) )
+		{
+			foreach( $message as $singleMsg ) $this->email->message( $singleMsg );
+		} else {
+			$this->email->message( $message );
+		}
 	}
 		
 	function send()
-	{
-		foreach( $messageBody as $singlePart ) $this->email->message( $singlePart );
-		$this->email->send();
+	{		
+		return $this->email->send();
 	}
 	
 	function subject( $subject )

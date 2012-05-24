@@ -28,6 +28,17 @@ class Telemetry_model extends CI_Model {
 			case 2: return "LOGGED_IN";
 			case 3: return "LOGGED_OUT";
 			case 4: return "LOGGED_OUT_PAGE"; break;
+			/* 
+				25MAY2012-1240: Tentatively, these browser events are the same as those found
+				in _constants.inc
+			*/
+			case 0x81: return "BROWSER_STRICTLY_NOT_ALLOWED"; break;
+			case 0x82: return "BROWSER_UNKNOWN_BUT_PERMIT_STILL"; break;
+			case 0x83: return "BROWSER_UNKNOWN_AND_DENY"; break;
+			case 0x84: return "BROWSER_NOT_TESTED_BUT_PERMIT_STILL"; break;
+			case 0x85: return "BROWSER_NOT_TESTED_AND_DENY"; break;
+			case 0x86: return "BROWSER_BOT_SIMPLE"; break;
+			case 0x87: return "BROWSER_AGENT_DENIED"; break;
 			default: "NULL";
 		}
 	}
