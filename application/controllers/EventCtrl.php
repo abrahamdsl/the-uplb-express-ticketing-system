@@ -877,8 +877,7 @@ class EventCtrl extends CI_Controller {
 		$showtimeID			 = $this->clientsidedata_model->getShowtimeID();
 		$ticketClassGroupID  = $this->clientsidedata_model->getTicketClassGroupID();
 		$ticketClassUniqueID = $this->input->post('selectThisClass');
-		//echo var_dump( $this->clientsidedata_model->getSessionActivity() );		
-		//die();
+		
 		//	Check if this page can be accessed already.				
 		$this->functionaccess->preBookStep3PRCheck( $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID, STAGE_BOOK_2_FORWARD );
 	    $this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_3_PROCESS );
@@ -1046,10 +1045,7 @@ class EventCtrl extends CI_Controller {
 			Now decide where to go next.
 			If any of the strings that collect specified student/employee number aren't blank, then
 			go to associateclasstobooking.
-		*/
-		//echo var_dump($guest_StudentNumPair);
-		//echo var_dump( $guest_EmpNumPair );
-		//die();
+		*/		
 		if( strlen( $guest_StudentNumPair ) > 0  or strlen( $guest_EmpNumPair ) > 0 ) 
 		{			
 			$this->clientsidedata_model->setUPLBConsStudentNumPair( $guest_StudentNumPair );
@@ -1218,7 +1214,6 @@ class EventCtrl extends CI_Controller {
 		/*
 			If total charges is zero, then payment mode unique_id is 0 (factory default - auto
 			confirmation since free), else, the one sent by post.
-						
 		*/
 		$paymentChannel = ( is_float( $totalCharges ) and $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : intval($this->input->post( 'paymentChannel' ) ) ;		
 		
@@ -1231,7 +1226,7 @@ class EventCtrl extends CI_Controller {
 		// to be accessed in forward page
 		$this->clientsidedata_model->setPaymentChannel( $paymentChannel );						   
 		$this->Payment_model->setPaymentModeForPurchase( $bookingNumber, $paymentChannel, NULL );		
-		$paymentChannel_obj      =  $this->Payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );
+		$paymentChannel_obj      = $this->Payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );
 		$eventObj                = $this->Event_model->getEventInfo( $eventID );
 		$data['guests']          = $this->Guest_model->getGuestDetails( $bookingNumber );
 		$data['singleChannel']   = $paymentChannel_obj;
@@ -1274,25 +1269,51 @@ class EventCtrl extends CI_Controller {
 				$slotAssignedObj = $this->Slot_model->getSlotAssignedToUser( $eachGuest->UUID );
 				$this->Slot_model->setSlotAsPendingPayment( $slotAssignedObj->UUID );
 			}
-			/*  Try PayPal payment: 
-				Factory Setting: UniqueID is 2
-				Redirect to PayPal processing too.
-			*/
-			if( $paymentChannel_obj->UniqueID == FACTORY_PAYPALPAYMENT_UNIQUEID )
+			if( $paymentChannel_obj->Type == "ONLINE" )
 			{
+				/* 
+					Determine which online payment processor to use
+				*/
+				$paymentProcessor = $this->bookingmaintenance->determineOnlinePaymentModeCode( $paymentChannel_obj );
+				if( $paymentProcessor === false )
+				{
+					echo "Error getting payment processor data. Please choose another payment method."; // EC 5110
+					$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );
+					return false;
+				}else{
+					switch( $paymentProcessor )
+					{
+						case PAYMODE_PAYPAL: 
+							$paypalTotal = floatval($totalCharges * PAYPAL_FEE_PERCENTAGE) + PAYPAL_FEE_FIXED;
+							$paypalTotal =  round( $paypalTotal , 2 );
+							$paypalInternalData = $paymentChannel_obj->internal_data;
+							$chargeDescriptor = $slots." Ticket(s) for ".$eventObj->Name." ordered via The UPLB Express Ticketing System";
+							$this->clientsidedata_model->setPaypalAccessible();
+							$this->clientsidedata_model->setDataForPaypal( $bookingNumber."|".$totalCharges."|".$paypalTotal."|".$chargeDescriptor."|".$paypalInternalData );
+							$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_PAYMENTPROCESSING );
+							redirect( 'paypal/process' );
+						default:
+							/*
+								The online payment processor we support now is only PayPal.
+								Now let customers choose other payment modes first.
+							*/
+							$data = $this->bookingmaintenance->assembleOnlinePaymentProcessorNotSupported();
+							$this->load->view('errorNotice', $data );
+							$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );
+							$this->clientsidedata_model->setBookingProgressIndicator( 5 );
+							return false;
+					}
+				}
+			}else{
 				/*
-					Cookie data for Paypal Separated by pipes:
-					<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|<"CHARGE DESCRIPTION">|<merchantemail>|<testmode>
-				*/									
-				$paypalTotal = floatval($totalCharges * PAYPAL_FEE_PERCENTAGE) + PAYPAL_FEE_FIXED;
-				$paypalTotal =  round( $paypalTotal , 2 );
-				$chargeDescriptor = $slots." Ticket(s) for ".$eventObj->Name." ordered via The UPLB Express Ticketing System";
-				$this->clientsidedata_model->setPaypalAccessible();
-				$this->clientsidedata_model->setDataForPaypal( $bookingNumber."|".$totalCharges."|".$paypalTotal."|".$chargeDescriptor );
-				$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_PAYMENTPROCESSING );
-				redirect( 'paypal/process' );
+					So far, other allowed values for $paymentChannel_obj->Type
+					are { "COD" | "OTHER" }. No need to process those for now.
+				*/
 			}
 		}
+		/**
+		*	By arriving at this stage, dapat CASH-ON-DELIVERY ang payment mode selected supposedly.
+		**/
 		/*
 			Try to send email.
 		*/
@@ -1311,7 +1332,7 @@ class EventCtrl extends CI_Controller {
 			$msgBody .= 'Kang song dae guk.<br/>';
 			$msgBody .= 'Kim jong il\r\n';
 			$msgBody .= 'Kim jong un\n';
-			$msgBody .= 'We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.';	
+			$msgBody .= 'We are in the process of starting our email module so no more info provided on this mail. HAHAHA.';	
 			$this->email_model->message( $msgBody );			
 			$emailResult = $this->email_model->send();
 			log_message('DEBUG', 'Email to guest '. $singleGuest->Email . ' : ' .intval( $emailResult ) );
@@ -1397,10 +1418,15 @@ class EventCtrl extends CI_Controller {
 				echo "<br/>";
 				echo '<a href="'.base_url().'EventCtrl/book_step5_forward">Go back to Payment modes</a>';
 			}			
-		}else{
-			$this->clientsidedata_model->updateSessionActivityStage( -1 );			
+		}else
+		if( $paymentChannel_obj->Type == "FREE" )
+		{	
+			$this->clientsidedata_model->updateSessionActivityStage( -1 );
 			$this->load->view( 'confirmReservation/confirmReservation02-free', $data );			
-		}		
+		}else{
+			echo "WHAT ERROR IS THIS?? PAYMENT_MODE ERROR"; // EC 5111
+			$this->clientsidedata_model->updateSessionActivityStage( -1 );
+		}
 	}//book_step6_forward()
 	
 	function cancelBooking()
@@ -1416,7 +1442,7 @@ class EventCtrl extends CI_Controller {
 		$bookingNumber = $this->input->post( 'bookingNumber' );
 		if( !$this->Booking_model->isBookingUnderThisUser( $bookingNumber , $accountNum ) )
 		{
-			echo "ERROR_NO-PERMISSION_This booking is not under you.";
+			echo "ERROR_NO-PERMISSION_This booking is not under you."; // EC 4102
 			return false;
 		}
 		$argumentArray = Array( 'bool' => true, 'Status2' => "FOR-DELETION" );		
@@ -1562,7 +1588,7 @@ class EventCtrl extends CI_Controller {
 		);
 		if( $data[ AKEY_UNPAID_PURCHASES_ARRAY ] === false ){			
 			$data['theMessage'] = "There are no pending payments for this booking/It has been confirmed already."; //1004
-			$data['redirect'] = FALSE;
+			$data['redirect'] = 0;
 			$data['noButton'] = TRUE;
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -2554,7 +2580,7 @@ class EventCtrl extends CI_Controller {
 		// CODE-MISSING: DATABASE COMMIT		
 		//die( var_dump( $_POST ) );
 		$data[ 'theMessage' ] = ($processedSeats == 0) ? "No changes to seats have been made." : "The seats have been changed.";
-		$data[ 'redirect' ] = FALSE;
+		$data[ 'redirect' ] = 2;
 		$data[ 'redirectURI' ] = base_url().'EventCtrl/manageBooking';
 		$data[ 'defaultAction' ] = 'Manage Booking';
 		$this->postManageBookingCleanup();
@@ -2688,7 +2714,7 @@ class EventCtrl extends CI_Controller {
 		if( !$isShowtimeChanged and !$isTicketClassChanged )
 		{			
 			$data[ 'theMessage' ] = "No changes in ticket class or showing time detected. Your booking was not modified.";
-			$data[ 'redirect' ] = FALSE;
+			$data[ 'redirect' ] = 2;
 			$data[ 'redirectURI' ] = base_url().'EventCtrl/manageBooking';
 			$data[ 'defaultAction' ] = 'Manage Booking';
 			$this->clientsidedata_model->setSessionActivity( MANAGE_BOOKING, 0 );
@@ -2902,15 +2928,6 @@ class EventCtrl extends CI_Controller {
 	function managebooking_manageclasses()
 	{
 		echo "Feature coming soon";
-	}
-	
-	function sample1()
-	{
-		$data['customTitle'] = "Redirection";			
-		$data['theMessage'] = "You are being redirected to Paypal<br/></br>Please wait...";
-		$data['redirect'] = FALSE;
-		$data['noButton'] = TRUE;
-		$this->load->view( 'successNotice', $data );
 	}
 	
 	function managebooking_confirm()
@@ -3303,7 +3320,7 @@ class EventCtrl extends CI_Controller {
 			$this->load->view( 'manageBooking/manageBookingFinalize_COD', $data );
 		}else{
 			$data['defaultAction'] = 'Manage Booking';		
-			$data['redirect'] = TRUE;		
+			$data['redirect'] = 2;		
 			$data['redirectURI'] = base_url().'EventCtrl/manageBooking';
 			$data['theMessage'] = "The changes to your booking has been successfully made.";				
 			$this->load->view( 'successNotice', $data );

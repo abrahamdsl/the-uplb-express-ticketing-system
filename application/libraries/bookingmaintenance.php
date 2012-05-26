@@ -54,6 +54,21 @@ class BookingMaintenance{
 		return $data;
 	}//assembleNoMoreSlotSameTicketClassNotification(..)
 	
+	public function assembleOnlinePaymentProcessorNotSupported( $otherMsgs = "" )
+	{
+		// Error code 5105
+		$data = Array();
+		$data['error'] = 'CUSTOM';
+		$data['title'] = 'Payment Processing Error';
+		$data['theMessage'] = 'The online payment processor specified is not supported by this system. Contact the system administrator for this.<br/><br/>';
+		$data['theMessage'] .= 'Meanwhile, you are being redirected to the payment mode selection page in 5 seconds ...'; 
+		$data['theMessage'] .= $otherMsgs;
+		$data['defaultAction'] = 'Payment page';
+		$data['redirect']	= 2;
+		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
+		return $data;
+	}//assembleOnlinePaymentProcessorNotSupported
+	
 	public function assembleErrorPaymentNotification( $otherMsgs = "" )
 	{
 		// Error code 5104
@@ -67,6 +82,21 @@ class BookingMaintenance{
 		return $data;
 	}//assembleErrorPaymentNotification()
 	
+	public function assemblePaypalPaymentMissingCrucial( $otherMsgs = "" )
+	{
+		// Error code 5105
+		$data = Array();
+		$data['error'] = 'CUSTOM';
+		$data['title'] = 'PayPal Processing Error';
+		$data['theMessage'] = 'Some crucial internal data is missing in our records ( like \'merchant_email\' ). Please contact the person in charge of this payment method'; 
+		$data['theMessage'] .= '<br/><br/>Meanwhile, please choose another payment method.<br/><br/>DO NOT REFRESH THE PAGE.';
+		$data['theMessage'] .= $otherMsgs;
+		$data['defaultAction'] = 'Payment page';
+		$data['redirect']	= 2;
+		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
+		return $data;
+	}// assemblePaypalPaymentMissingCrucial()
+	
 	public function assemblePaypalPaymentUserCancelledNotification( $otherMsgs = "" )
 	{
 		// Error code 5105
@@ -76,6 +106,7 @@ class BookingMaintenance{
 		$data['theMessage'] = 'You declined to use PayPal for payment.<br/><br/>Please choose another payment mode.'; 
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
+		$data['redirect']	= 2;
 		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
 		return $data;
 	}//assembleErrorPaymentNotification()
@@ -92,6 +123,7 @@ class BookingMaintenance{
 		$data['theMessage'] .= 'that may have been charged.<br/><br/>';
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
+		$data['redirect']	= 2;
 		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';		
 		return $data;
 	}//assemblePaypalFishy(..)
@@ -366,6 +398,44 @@ class BookingMaintenance{
 		return true;
 	}//deleteBookingTotally_andCleanup
 	
+	private function properDetermineOnlinePaymentCode( $paymentModeObj )
+	{		
+		if( $paymentModeObj->internal_data_type == 'WIN5' )
+		{
+			$processorValue = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'processor', $paymentModeObj->internal_data );
+			if( $processorValue === false ) return false;
+			else{
+				switch( strtolower($processorValue) )
+				{
+					case "paypal"       : return PAYMODE_PAYPAL;
+					case "2checkout"    : return PAYMODE_2CO;
+					case "moneybookers" : return PAYMODE_MONYEBOOKERS;
+					default				: return false;
+				}
+			}
+		}else{			
+			//if XML, later.
+			return false;
+		}
+	}// properDetermineOnlinePaymentCode(..)
+	
+	function determineOnlinePaymentModeCode( $passedData )
+	{
+		/**
+		* @created 25MAY2012-1158
+		**/
+		$paymentModeObj = NULL;
+		if( is_integer( $passedData ) )
+		{
+			$paymentModeObj = $this->payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );
+			if( $paymentModeObj === false ) return false;
+		}else{
+			$paymentModeObj = $passedData;
+			if( !isset( $paymentModeObj->internal_data) ) return false;						
+		}
+		return $this->properDetermineOnlinePaymentCode( $paymentModeObj );
+	}//determineOnlinePaymentModeCode(..)
+	
 	public function forfeitSlotsOfNoShowGuests( $eventID, $showtimeID )
 	 {
 		/*
@@ -418,7 +488,7 @@ class BookingMaintenance{
 				AKEY_AMOUNT_DUE             => $amountDue
 			);
 	}//getBillingRelevantData
-	
+		
 	function processPayment( $bNumber, $customData = "" )
 	{	
 		/*

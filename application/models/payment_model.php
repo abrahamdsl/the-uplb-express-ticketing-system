@@ -237,6 +237,24 @@ class Payment_model extends CI_Model {
 			return $arr_result;
 	}//getPaymentChannelsForEvent
 	
+	function getSinglePaymentChannelByInternalDataMerchantEmail( $paymentProcessor = 'paypal', $email )
+	{	
+		/**
+		*	@created 26MAY2012-1314
+		*   @author  abe		
+		*   @assumptions The internal_data is of type WIN5 for now. If in XML, won't be able to find for now.
+		**/
+		$sql_command = "SELECT * FROM `payment_channel` WHERE `internal_data` REGEXP 'merchant_email=".mysql_real_escape_string( $email )."'";
+		$sql_command .= " AND `internal_data` REGEXP 'processor=".mysql_real_escape_string( $paymentProcessor )."'";
+		log_message( 'DEBUG', 'Mysql query xyz ' . $sql_command );
+		$arr_result = $this->db->query( $sql_command )->result();
+		
+		if( count ($arr_result) == 1 )
+			return $arr_result[0];
+		else
+			return false;
+	}// getSinglePaymentChannelByInternalDataMerchantEmail()
+	
 	function getSinglePaymentChannelByUniqueID( $uniqueID )
 	{		
 		$sql_command = "SELECT * FROM `payment_channel` WHERE `UniqueID` = ?";

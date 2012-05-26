@@ -47,7 +47,7 @@ class Paypal extends CI_Controller {
 		define( 'NON_HOSTING_IPADDR', "112.207.14.170" );
 		
 		/*
-			Our paypal merchant address
+			Our default paypal merchant address
 		*/
 		define( 'PAYPAL_MERCHANT_EMAIL', 'abraha_1332349997_biz@gmail.com' );
 		/*
@@ -85,15 +85,20 @@ class Paypal extends CI_Controller {
 	function process()
 	{
 		/*
-			IMPORTANT! The current server location should support port forwarding/accessible on the net
+			IMPORTANT! The current server location better support port forwarding/accessible on the net
 			
 			
 			Cookie data for Paypal Separated by pipes:
-			<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|"CHARGE DESCRIPTION">
+			<BOOKING-NUMBER>|<BASE-CHARGE>|<PAYPAL-FEE-TOTAL>|<"CHARGE DESCRIPTION">|<INTERNAL_DATA>
+			
+			<INTERNAL_DATA> - WIN5 format containing merchant email
 		*/
 		$paypalData;
 		$paypalData_tokenized;
 		$prepURL;
+		$merchantEmail;
+		$testMode = false;
+		$testMode_check;
 						
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
 		{   //ec 4100
@@ -114,9 +119,17 @@ class Paypal extends CI_Controller {
 			$prepURL = str_replace('localhost', NON_HOSTING_IPADDR, $prepURL );
 			$prepURL = str_replace('127.0.0.1', NON_HOSTING_IPADDR, $prepURL );
 		}
-		$paypalData_tokenized = explode('|', $paypalData );		
+		$paypalData_tokenized = explode('|', $paypalData );	
+				
+		// Merchant email and testmode is found in index 4 of $paypalData_tokenized, we extract it via this function call
+		$data = $this->paypal_lib->getPaypalCrucialDetails( 3, $paypalData_tokenized[4] );
+		if( $data === false )
+		{
+			$this->clientsidedata_model->setPaypalCrucialDataErrorNoticeAccessible();
+		    redirect( 'paypal/crucial_data_error' );
+		}
 		$this->paypal_lib->add_field('currency_code', 'PHP' );
-		$this->paypal_lib->add_field('business'		, PAYPAL_MERCHANT_EMAIL );
+		$this->paypal_lib->add_field('business'		, $data[ 'merchant_email' ] );
 	    $this->paypal_lib->add_field('return'		, base_url().'paypal/success' );
 	    $this->paypal_lib->add_field('cancel_return', base_url().'paypal/cancel' );
 		
@@ -127,10 +140,23 @@ class Paypal extends CI_Controller {
 		$this->paypal_lib->add_field('item_name'	, $paypalData_tokenized[3] );
 	    $this->paypal_lib->add_field('item_number'	, $paypalData_tokenized[0] );
 	    $this->paypal_lib->add_field('amount'		, floatval($paypalData_tokenized[1]) +  floatval($paypalData_tokenized[2]) );
-		
-	    $data['paypal_form'] = $this->paypal_lib->paypal_form();	
+		log_message('DEBUG','pp lib 3 back in controller testmode is ' . intval( $data ['testmode'] ) );
+	    $data['paypal_form'] = $this->paypal_lib->paypal_form( 'paypal_form', $data[ 'testmode' ] );	
 		$this->load->view('payPalRedirect', $data);        
 	}//process()
+
+	function crucial_data_error()
+	{
+		if( $this->clientsidedata_model->getPaypalCrucialDataErrorNoticeAccessible() !== FALSE )
+		{
+			$this->load->view( 'errorNotice', $this->bookingmaintenance->assemblePaypalPaymentMissingCrucial() );
+			$this->clientsidedata_model->deletePaypalCrucialDataErrorNoticeAccessible();
+			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD ); 
+			$this->clientsidedata_model->setBookingProgressIndicator( 5 );
+		}else{
+			redirect( 'paypal' );
+		}
+	}
 		
 	function cancel()
 	{		
@@ -170,6 +196,7 @@ class Paypal extends CI_Controller {
 			01APR2012-2239 : Processing for refunds, reversal and others are pending here.
 			
 			All lines indented by another column than usual are for debugging only.
+			Remove only when you are now so confident on how this works.
 		*/
 		$visitorIP = $this->UsefulFunctions_model->VisitorIP();
         $visitorHostName = gethostbyaddr( $visitorIP );
@@ -201,9 +228,10 @@ class Paypal extends CI_Controller {
 						$totalCharges = floatval($this->clientsidedata_model->getPurchaseTotalCharge() );
 						$paymentDescriptor = 'uxtcharge='.$totalCharges.';mc_fee='.$this->paypal_lib->ipn_data[ 'mc_fee' ].';';
 						$paymentDescriptor .= 'payer_id='.$this->paypal_lib->ipn_data['payer_id'].';'.'txn_id='.$this->paypal_lib->ipn_data['txn_id'].';';
+						$paymentDescriptor .= 'merchant_email='.$this->paypal_lib->ipn_data['business'].';';
+						$paymentDescriptor .= 'processor=paypal;';
 						$this->bookingmaintenance->processPayment( $bookingNumber, $paymentDescriptor );
-						
-						
+												
 						//EMAIL EXPERIMENTAL
 						$guestDetails = $this->guest_model->getGuestDetails( $bookingNumber );
 						if( $guestDetails !== false )

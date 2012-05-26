@@ -1364,7 +1364,7 @@ class BrowserSniff_model extends CI_Model {
 					switch( $sniffedData[10][0] )
 					{
 						case 'firefox': 
-							if( $ver_split[0] <= 3 and $ver_split[1] <= 6 ) 
+							if( $ver_split[0] <= 3 and $ver_split[1] < 6 ) 
 								return BR_STRICTLY_NOT_ALLOWED;
 							else 
 								return BR_ALLOWED;  

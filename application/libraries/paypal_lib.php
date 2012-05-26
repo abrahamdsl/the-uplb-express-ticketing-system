@@ -81,10 +81,12 @@ class Paypal_Lib {
 		$this->CI->load->helper('url');
 		$this->CI->load->helper('form');
 		$this->CI->load->config('paypallib_config');
+		$this->CI->load->model('payment_model');
+		$this->CI->load->model('UsefulFunctions_model');
+				
+		define( 'PAYPAL_URL_TEST', 'https://www.sandbox.paypal.com/cgi-bin/webscr' );
 		
-		// constant found in paypal.php controller	
-		$this->paypal_url = ( ISPAYPAL_TEST_MODE ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
-
+		$this->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';
 		$this->last_error   = '';
 		$this->ipn_response = '';
 
@@ -150,22 +152,92 @@ class Paypal_Lib {
 		fclose($fp);  // close file
 	}//log_ipn_results()
 	
-	function paypal_form($form_name='paypal_form') 
+	function paypal_form($form_name='paypal_form', $testMode ) 
 	{
 		$str = '';
-		$str .= '<form method="post" action="'.$this->paypal_url.'" name="'.$form_name.'"/>' . "\n";
-		foreach ($this->fields as $name => $value)
+		$formURL;
+		
+		log_message('DEBUG','paypal form function testmode '.intval( $testMode ) );
+		$formURL = ( $testMode === true ) ? PAYPAL_URL_TEST : $this->paypal_url;		
+		log_message('DEBUG','Paypal url computed '.$formURL );		
+		$str .= '<form method="post" action="'.$formURL.'" name="'.$form_name.'"/>' . "\n";
+				
+		foreach ($this->fields as $name => $value)		
 			$str .= form_hidden($name, $value) . "\n";		
 		$str .= form_close() . "\n";
 
 		return $str;
 	}
-			
+		
+	function getPaypalCrucialDetails( $identType = 1, $identData = 2 )
+	{
+		/**
+		* @created 26MAY2012-1307
+		* @author Abe
+		* @description 						
+			The index 4 is checked for 'merchant_email' entry. If not found,returns BOOLEAN FALSE 
+			to the caller (controller).
+			In determining whether the PayPal account is in test mode ( developer.paypal.com ), the index 4
+			is searched for 'testmode' entry. If not found or has value of "false", the account is not in test mode 
+			(as in real-world payments and transactions are happening on the account ), if "true" or invalid value
+			( not either "false" or "true" it is in test mode.		
+		* @params
+		 	$identType values:
+				1 - $identData is the payment mode's `UniqueID`
+				2 - $identData is the merchant's email
+				3 - $identData is the payment mode's `internal_data` entry
+		   $identData - obviously
+		**/
+		$paymentModeObj = NULL;
+		$internalData;
+		$testMode_check;
+		$data = Array( 'merchant_email' => NULL, 'testmode' => false );
+		
+		switch( $identType )
+		{
+			case 1: $paymentModeObj = $this->CI->payment_model->getSinglePaymentChannelByUniqueID( $identData );
+					if( $paymentModeObj === false ) return false;					
+					break;
+			case 2: $paymentModeObj = $this->CI->payment_model->getSinglePaymentChannelByInternalDataMerchantEmail( 'paypal', $identData );
+					if( $paymentModeObj === false ) return false;
+					break;
+			case 3: break;
+			default: return false;
+		}
+		if( is_null( $paymentModeObj ) )
+		{
+			// meaning, $identType is not 1 or 2
+			$internalData = $identData;
+		}else{
+			$internalData = $paymentModeObj->internal_data;
+		}
+		$data[ 'merchant_email' ] = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data('merchant_email', $internalData );		
+		if( $data[ 'merchant_email' ] === false ){
+			return false;
+		}
+		$testMode_check = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data('testmode', $internalData );			
+		log_message( 'DEBUG', 'pplib 1 '. strval( $testMode_check) );
+		log_message( 'DEBUG', 'pplib 2 is bool ' . intval( is_bool( $testMode_check) ) );
+		if( $testMode_check === false ) 
+			$data[ 'testmode' ] = false;
+		else{
+			switch( strval( $testMode_check ) )
+			{
+				case "false" : //default, no need to assign;
+								break;
+				case "true"  :  $data[ 'testmode' ] = true; 
+								break;
+				default		 :  $data[ 'testmode' ] = true;
+			}
+		}
+		return $data;
+	}//getPaypalCrucialDetails(..)
+	
 	function validate_ipn( $visitorHostName = NULL )
 	{		
 		// parse the paypal URL
 		$url_parsed = parse_url($this->paypal_url);		  
-
+				
 		// generate the post string from the _POST vars aswell as load the
 		// _POST vars into an arry so we can play with them from the calling
 		// script.
@@ -184,6 +256,16 @@ class Paypal_Lib {
 			return false;
 		}
 		
+		// check first if the merchant email belongs to us.
+		$merchantEmail = mysql_real_escape_string( $_POST[ 'receiver_email' ] );
+		$data = $this->getPaypalCrucialDetails( 2, $merchantEmail );		
+		if( $data === false ){
+			log_message( 'ERROR', 'Merchant email delivered to IPN processing is not in our list of payment modes! Are we being hacked?' );
+			return false;
+		}else{
+			log_message( 'DEBUG', 'Merchant email is in record' );
+			if( $data[ 'testmode' ] ) $url_parsed = parse_url( PAYPAL_URL_TEST );
+		}
 		$post_string.="cmd=_notify-validate"; // append ipn check command
 
 		// open the connection to paypal
@@ -207,8 +289,7 @@ class Paypal_Lib {
 					return false;
 			}
 			return false;
-		}else
-		{ 			
+		}else{ 			
 			// Post the data back to paypal
 			fputs($fp, "POST ".$url_parsed['path'].$post_string." HTTP/1.1\r\n"); 
 			fputs($fp, "Host: $url_parsed[host]\r\n"); 
@@ -216,7 +297,7 @@ class Paypal_Lib {
 			fputs($fp, "Content-length: ".strlen($post_string)."\r\n"); 
 			fputs($fp, "Connection: close\r\n\r\n"); 
 			fputs($fp, $post_string . "\r\n\r\n"); 
-
+			log_message('DEBUG', 'IPN url ' . $url_parsed['host'].$url_parsed['path'].$post_string );
 			// loop through the response from the server and append to variable
 			while(!feof($fp))
 				$this->ipn_response .= fgets($fp, 1024); 
@@ -233,6 +314,7 @@ class Paypal_Lib {
 		}else{
 			// Invalid IPN transaction.  Check the log for details.
 			log_message('DEBUG', 'IPN Validation Failed.' ); // 5150
+			log_message('DEBUG', 'IPN PayPal\'s response : ' . $this->ipn_response);
 			$this->last_error = 'IPN Validation Failed.';
 			$this->log_ipn_results(false);	
 			return false;

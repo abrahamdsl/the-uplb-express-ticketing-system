@@ -48,6 +48,7 @@ class clientsidedata_model extends CI_Model {
 		define("UPLB_CONS_STUDENT_PAIR",  "uplbConstituentStudentNumPair");
 		define("UPLB_CONS_EMP_PAIR",  "uplbConstituentEmpNumPair");
 		define("PAYPAL_ACCESS_INDICATOR", "paypalAccessible" );
+		define("PAYPAL_CRUCIALDATA_ERR_INDICATOR", "ppcrucdata404" );
 		define("PAYPAL_DATA", "paypalData" );
 		define("PAYPAL_IPN", "paypalIPN" );
 		define("SLOT_UUID_JOINER", "_slot_UUIDs" );
@@ -154,6 +155,12 @@ class clientsidedata_model extends CI_Model {
 	{
 		// Uses SESSION data
 		return $this->session->unset_userdata( PAYPAL_ACCESS_INDICATOR );
+	}
+	
+	function deletePaypalCrucialDataErrorNoticeAccessible()
+	{
+		// Uses SESSION data
+		return $this->session->unset_userdata( PAYPAL_CRUCIALDATA_ERR_INDICATOR );
 	}
 	
 	function deletePaypal_IPN_Data()
@@ -334,6 +341,12 @@ class clientsidedata_model extends CI_Model {
 	function getPaymentDeadlineTime()
 	{
 		return $this->getCookieUnified( PAYMENT_DEADLINE_TIME );
+	}
+	
+	function getPaypalCrucialDataErrorNoticeAccessible()
+	{
+		// Uses SESSION data
+		return $this->session->userdata( PAYPAL_CRUCIALDATA_ERR_INDICATOR );
 	}
 	
 	function getPaypal_IPN_Data()
@@ -564,6 +577,12 @@ class clientsidedata_model extends CI_Model {
 	{
 		// Uses SESSION data
 		return $this->session->set_userdata( PAYPAL_ACCESS_INDICATOR, 1 );
+	}
+	
+	function setPaypalCrucialDataErrorNoticeAccessible()
+	{
+		// Uses SESSION data
+		return $this->session->set_userdata( PAYPAL_CRUCIALDATA_ERR_INDICATOR, 1 );
 	}
 	
 	function setReceptionistActivity( $value = NULL, $expiry = 3600 )

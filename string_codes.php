@@ -97,6 +97,7 @@ NUM    STRING  								Message
 4032   BOOKING_404							The specified booking is not found in the system.
 4100   ACCESS_DENIED_GEN                    You are not allowed to access this functionality/page.
 4101   ACCESS_DENIED_NO_PERMIT              You need a specific permission to access this. Contact the system admin for details.
+4102   BOOKING_NOT_OWNER					This booking is not under you and you do not have rights to make changes to it.
 4102   STAGE_NOT_YET                        You are not allowed in this stage yet. Please accomplish an earlier form maybe.
 4150   PAYMENT_MODE_DATA_404                Data for payment mode not found. <supply payment mode info>
 4200   USER_ALREADY_EXISTS                  When signing up, user is already existing.
@@ -116,6 +117,8 @@ NUM    STRING  								Message
 5103   PAYMENT_RECEIVED_BUT_ERROR			Payment was received but there is an error in the transaction. (i.e., in PayPal, transaction was deemed to be fraudulent and fund was being held for review)
 5104   PAYMENT_PROCESS_ERROR_UNKNOWN		Unknown error occurred when PROCESSING payment. Please try again.
 5105   PAYMENT_MODE_USER_DECLINE            You declined to use the selected mode for payment. Please choose another payment mode. ( Server should supply which payment mode was chosen)
+5110   PAYMENT_MODE_CRUCIAL_DATA_ERROR      A crucial piece of info needed to use the payment processing system is missing. 
+5111   PAYMENT_MODE_CONFUSED_FINAL			At the confirmation page, we cannot determine what payment mode you have specified. Maybe the cookies were manipulated.
 5149   PAYPAL_IPN_INITIATE_FAIL             Cannot open connection to PayPal for verification of IPN! (i.e., server disabled the PHP fsockopen() function )
 5150   PAPYPAL_IPN_MAIN_VALIDATE_FAIL       IPN Main method Validation FAIL
 5151   PAPYPAL_IPN_PLANB_VALIDATE_FAIL      IPN Main method Validation FAIL
