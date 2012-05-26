@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 21, 2012 at 11:32 AM
+-- Generation Time: May 26, 2012 at 01:21 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -40,14 +40,6 @@ CREATE TABLE IF NOT EXISTS `booking_details` (
   PRIMARY KEY (`bookingNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `booking_details`
---
-
-INSERT INTO `booking_details` (`bookingNumber`, `EventID`, `ShowingTimeUniqueID`, `TicketClassGroupID`, `TicketClassUniqueID`, `PaymentDeadline_Date`, `PaymentDeadline_Time`, `Status`, `Status2`, `MadeBy`) VALUES
-('14WJTCC', 985, 1, 1, 2, NULL, NULL, 'PENDING-PAYMENT', 'NEW', 582327),
-('1E5P3G6', 261, 1, 1, 4, NULL, NULL, 'PAID', NULL, 593835);
-
 -- --------------------------------------------------------
 
 --
@@ -70,14 +62,6 @@ CREATE TABLE IF NOT EXISTS `booking_guests` (
   PRIMARY KEY (`UUID`),
   UNIQUE KEY `bookingNumber` (`bookingNumber`,`Fname`,`Mname`,`Lname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `booking_guests`
---
-
-INSERT INTO `booking_guests` (`UUID`, `bookingNumber`, `AccountNum`, `Fname`, `Mname`, `Lname`, `Gender`, `Cellphone`, `Landline`, `Email`, `studentNumber`, `employeeNumber`) VALUES
-('ba29c1a0-a311-11e1-aea2-00ff14281d98', '14WJTCC', 0, 'ABRAHAM DARIUS', 'SENO', 'LLAVE', 'MALE', '9183981185', '', 'ab@yahooa.com', NULL, NULL),
-('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '1E5P3G6', 0, 'JONG IL', '', 'KIM', 'MALE', '9183981185', '', 'kji@gov.nk', 200837120, NULL);
 
 -- --------------------------------------------------------
 
@@ -199,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `event_slot` (
 INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
 ('1861a8e7-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('189f8235-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18808b2b-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 4, 'BOOKED', 'f467fd6b-8d1a-11e1-95a8-00ff3343d70b', 7, 4, 0, NULL),
+('18808b2b-7df9-11e1-8168-4cba9d4cadf0', 1, 261, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18638ca8-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('189fe389-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1880d34a-7df9-11e1-8168-4cba9d4cadf0', 2, 261, 1, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1397,7 +1381,7 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('684e78fd-7df9-11e1-8168-4cba9d4cadf0', 50, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('683ef222-7df9-11e1-8168-4cba9d4cadf0', 50, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0183a8d1-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('01666a60-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 2, 'RESERVED-PENDING_PAYMENT', 'ba29c1a0-a311-11e1-aea2-00ff14281d98', 7, 16, 0, NULL),
+('01666a60-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('01750cfc-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0183f25a-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0166b4b2-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1675,6 +1659,7 @@ INSERT INTO `payments` (`UniqueID`, `bookingNumber`, `amount`, `processedBy`, `p
 (0, 'XXXXX', 0, 0, '0', '00:00:00', '2012-01-01', 'comment=This is just an indicator for non payment;'),
 (560316, '49JT8XM', 0, 150949, '0', '17:36:48', '2012-04-22', ''),
 (560547, 'S2WMR6Z', 0, 351916, '0', '17:13:11', '2012-04-22', ''),
+(569426, '59X55AO ', 350.5, 582327, '1', '01:59:49', '2012-05-24', ''),
 (571189, 'S2WMR6Z', 0, 351916, '0', '17:26:58', '2012-04-22', ''),
 (576449, '49JT8XM', 0, 150949, '0', '17:32:44', '2012-04-22', ''),
 (687789, '1E5P3G6', 0, 593835, '0', '15:53:28', '2012-04-23', ''),
@@ -1682,6 +1667,8 @@ INSERT INTO `payments` (`UniqueID`, `bookingNumber`, `amount`, `processedBy`, `p
 (779811, '49JT8XM', 2000, 582327, '1', '17:46:01', '2012-04-22', ''),
 (827544, 'Q9RA841', 0, 150949, '0', '17:11:20', '2012-04-22', ''),
 (845669, '49JT8XM', 0, 150949, '0', '17:36:49', '2012-04-22', ''),
+(858494, '2N8TERR', 0, 150949, '0', '10:25:41', '2012-05-23', ''),
+(887437, 'RK53GH7', 0, 582327, '0', '13:25:43', '2012-05-25', ''),
 (889389, '49JT8XM', 0, 150949, '0', '17:37:52', '2012-04-22', ''),
 (924935, 'S2WMR6Z', 0, 351916, '0', '17:14:41', '2012-04-22', ''),
 (932920, '49JT8XM', 0, 150949, '0', '17:37:52', '2012-04-22', ''),
@@ -1718,7 +1705,8 @@ CREATE TABLE IF NOT EXISTS `payment_channel` (
 INSERT INTO `payment_channel` (`UniqueID`, `Type`, `Name`, `Contact_Person`, `Location`, `Cellphone`, `Landline`, `Email`, `Comments`, `internal_data_type`, `internal_data`) VALUES
 (0, 'FREE', 'Automatic Confirmation Since Free', '', '', '', '', '', 'Your booking has been confirmed automatically because you do not need to pay anything.', 'WIN5', ''),
 (1, 'COD', 'Personal payment to Department of Humanities', NULL, 'CAS Annex 2 UPLB', '09181234567', '(043) 1234567', 'dhum@uplb.edu.ph', 'Office hours until 5PM only.', 'WIN5', NULL),
-(2, 'ONLINE', 'Online via Credit Card ( PayPal )', 'Abraham Darius Llave', '', '9183981185', '', 'abraham.darius.llave@gmail.com', 'There are additional processing fees additional charge if you use this. It would be displayed once you are in PayPal. If you don''t want to use this once you''re there, just click "Cancel and return to.."   to select another payment mode.', 'WIN5', 'merchant_email=abraha_1332349997_biz@gmail.com;testmode=true;');
+(2, 'ONLINE', 'Online via Credit Card ( PayPal )', 'Abraham Darius Llave', '', '9183981185', '', '', 'There are additional processing fees additional charge if you use this. It would be displayed once you are in PayPal. If you don''t want to use this once you''re there, just click "Cancel and return to.."   to select another payment mode.', 'WIN5', 'processor=paypal;merchant_email=abraham_dsl2@yahoo.com;'),
+(3, 'ONLINE', 'Online via Credit Card ( *TEST ACCOUNT* PayPal )', 'Abraham Darius Llave', 'Philippines', '+639183981185', '', 'abraham_dsl2@yahoo.com', 'Paying via this account requires that you log in first in your PayPal developer account thru https://developer.paypal.com', 'WIN5', 'processor=paypal;merchant_email=abraha_1332349997_biz@gmail.com;testmode=true;');
 
 -- --------------------------------------------------------
 
@@ -1742,15 +1730,19 @@ INSERT INTO `payment_channel_availability` (`EventID`, `ShowtimeID`, `PaymentCha
 (261, 1, 0, 'Wala namang comment.'),
 (261, 1, 1, 'Wala namang comment.'),
 (261, 1, 2, 'Wala namang comment.'),
+(261, 1, 3, 'No comment'),
 (261, 2, 0, 'Wala namang comment.'),
 (261, 2, 1, 'Wala namang comment.'),
 (261, 2, 2, 'Wala namang comment.'),
+(261, 2, 3, 'No comment'),
 (261, 3, 0, 'Wala namang comment.'),
 (261, 3, 1, 'Wala namang comment.'),
 (261, 3, 2, 'Wala namang comment.'),
+(261, 3, 3, 'No comment'),
 (985, 1, 0, 'Wala namang comment.'),
 (985, 1, 1, 'Wala namang comment.'),
-(985, 1, 2, 'Wala namang comment.');
+(985, 1, 2, 'Wala namang comment.'),
+(985, 1, 3, 'No comment');
 
 -- --------------------------------------------------------
 
@@ -1805,16 +1797,14 @@ CREATE TABLE IF NOT EXISTS `purchase` (
   `Deadline_Time` time NOT NULL,
   `Comments` varchar(255) DEFAULT NULL COMMENT 'This will contain variables like, "onLapse" -> points to data on ''transactionList'' that is needed to rollback',
   PRIMARY KEY (`UniqueID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `purchase`
 --
 
 INSERT INTO `purchase` (`UniqueID`, `BookingNumber`, `Charge_type`, `Charge_type_Description`, `Quantity`, `Amount`, `Payment_UniqueID`, `Payment_Channel_ID`, `Deadline_Date`, `Deadline_Time`, `Comments`) VALUES
-(2, '49D2ZET', 'TICKET', 'ECONOMY Class', 2, 0, 0, 0, '2012-04-22', '18:00:00', NULL),
-(18, '1E5P3G6', 'TICKET', 'ECONOMY Class', 1, 0, 687789, 0, '0000-00-00', '00:00:00', NULL),
-(20, '14WJTCC', 'TICKET', 'BUSINESS Class', 1, 200, 0, 1, '2012-05-21', '18:00:00', NULL);
+(2, '49D2ZET', 'TICKET', 'ECONOMY Class', 2, 0, 0, 0, '2012-04-22', '18:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -2062,7 +2052,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 2, 1, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 2, 1, 'C', '2', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 2, 2, 'C', '3', 0, 1, '4', ''),
-(261, 2, 2, 2, 'C', '3', 0, 1, '4', 'COMMENT'),
+(261, 2, 2, 2, 'C', '3', 0, 1, '4', ''),
 (261, 3, 2, 2, 'C', '3', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 2, 3, 'C', '4', 0, 1, '4', ''),
 (261, 2, 2, 3, 'C', '4', 0, 1, '4', 'COMMENT'),
@@ -2203,7 +2193,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 3, 12, 'D', '12', 0, 2, '2', 'BOOKING_CHANGE_LAPSE_FREED'),
 (261, 1, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 13, 'D', '13', 0, 1, '1', 'COMMENT'),
-(261, 3, 3, 13, 'D', '13', 0, 2, '2', 'BOOKING_CHANGE_LAPSE_FREED'),
+(261, 3, 3, 13, 'D', '13', 0, 2, '2', ''),
 (261, 1, 3, 14, 'D', '14', 0, 1, '1', 'COMMENT'),
 (261, 2, 3, 14, 'D', '14', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 14, 'D', '14', 0, 2, '2', 'COMMENT'),
@@ -2218,7 +2208,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 3, 3, 17, 'D', '17', 0, 2, '2', 'COMMENT'),
 (261, 1, 3, 18, 'D', '18', 0, 1, '1', NULL),
 (261, 2, 3, 18, 'D', '18', 0, 1, '1', 'COMMENT'),
-(261, 3, 3, 18, 'D', '18', 0, 2, '2', 'COMMENT'),
+(261, 3, 3, 18, 'D', '18', 0, 2, '2', ''),
 (261, 1, 3, 19, 'D', '19', 0, 1, '1', NULL),
 (261, 2, 3, 19, 'D', '19', 0, 1, '1', 'COMMENT'),
 (261, 3, 3, 19, 'D', '19', 0, 2, '2', 'COMMENT'),
@@ -2492,7 +2482,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 6, 2, 'G', '3', 0, 1, '4', 'COMMENT'),
 (261, 2, 6, 2, 'G', '3', 0, 1, '4', 'COMMENT'),
 (261, 3, 6, 2, 'G', '3', -2, NULL, NULL, 'COMMENT'),
-(261, 1, 6, 3, 'G', '4', 0, 1, '4', 'COMMENT'),
+(261, 1, 6, 3, 'G', '4', 0, 1, '4', ''),
 (261, 2, 6, 3, 'G', '4', 0, 1, '4', 'COMMENT'),
 (261, 3, 6, 3, 'G', '4', 0, 2, '4', 'COMMENT'),
 (261, 1, 6, 4, 'G', '5', 0, 1, '4', 'COMMENT'),
@@ -2511,7 +2501,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 6, 8, 'G', '9', 0, 1, '2', 'COMMENT'),
 (261, 3, 6, 8, 'G', '8', 0, 2, '2', 'COMMENT'),
 (261, 1, 6, 9, 'G', '10', 0, 1, '2', 'COMMENT'),
-(261, 2, 6, 9, 'G', '10', 0, 1, '2', 'COMMENT'),
+(261, 2, 6, 9, 'G', '10', 0, 1, '2', ''),
 (261, 3, 6, 9, 'G', '9', 0, 2, '2', 'COMMENT'),
 (261, 1, 6, 10, 'G', '11', 0, 1, '2', ''),
 (261, 2, 6, 10, 'G', '11', 0, 1, '2', ''),
@@ -2602,7 +2592,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 7, 3, 'H', '4', 0, 1, '4', 'COMMENT'),
 (261, 2, 7, 3, 'H', '4', 0, 1, '4', 'COMMENT'),
 (261, 3, 7, 3, 'H', '4', 0, 2, '4', 'COMMENT'),
-(261, 1, 7, 4, 'H', '5', 1, 1, '4', NULL),
+(261, 1, 7, 4, 'H', '5', 0, 1, '4', ''),
 (261, 2, 7, 4, 'H', '5', 0, 1, '4', 'COMMENT'),
 (261, 3, 7, 4, 'H', '5', 0, 2, '4', 'COMMENT'),
 (261, 1, 7, 5, 'H', '6', 0, 1, '1', 'COMMENT'),
@@ -2675,7 +2665,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 7, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 7, 27, 'H', '26', 0, 2, '4', 'COMMENT'),
 (261, 1, 7, 28, 'H', '27', 0, 1, '3', 'COMMENT'),
-(261, 2, 7, 28, 'H', '27', 0, 1, '3', 'COMMENT'),
+(261, 2, 7, 28, 'H', '27', 0, 1, '3', ''),
 (261, 3, 7, 28, 'H', '27', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 7, 29, 'H', '28', 0, 1, '3', 'COMMENT'),
 (261, 2, 7, 29, 'H', '28', 0, 1, '3', 'COMMENT'),
@@ -2782,7 +2772,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 8, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 3, 8, 27, 'I', '26', 0, 2, '4', 'COMMENT'),
 (261, 1, 8, 28, 'I', '27', 0, 1, '3', 'COMMENT'),
-(261, 2, 8, 28, 'I', '27', 0, 1, '3', 'COMMENT'),
+(261, 2, 8, 28, 'I', '27', 0, 1, '3', ''),
 (261, 3, 8, 28, 'I', '27', -2, NULL, NULL, 'COMMENT'),
 (261, 1, 8, 29, 'I', '28', 0, 1, '3', 'COMMENT'),
 (261, 2, 8, 29, 'I', '28', 0, 1, '3', 'COMMENT'),
@@ -2859,10 +2849,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 9, 17, 'J', '17', 0, 1, '1', 'COMMENT'),
 (261, 3, 9, 17, 'J', '17', 0, 2, '3', 'COMMENT'),
 (261, 1, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT'),
-(261, 2, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT');
-INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
+(261, 2, 9, 18, 'J', '18', 0, 1, '1', 'COMMENT'),
 (261, 3, 9, 18, 'J', '18', 0, 2, '3', 'COMMENT'),
-(261, 1, 9, 19, 'J', '19', 0, 1, '1', 'COMMENT'),
+(261, 1, 9, 19, 'J', '19', 0, 1, '1', 'COMMENT');
+INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
 (261, 2, 9, 19, 'J', '19', 0, 1, '1', 'COMMENT'),
 (261, 3, 9, 19, 'J', '19', 0, 2, '3', 'COMMENT'),
 (261, 1, 9, 20, 'J', '20', 0, 1, '1', 'COMMENT'),
@@ -2936,11 +2926,11 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 10, 7, 'K', '8', 0, 1, '3', 'COMMENT'),
 (261, 2, 10, 7, 'K', '8', 0, 1, '3', 'COMMENT'),
 (261, 3, 10, 7, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
-(261, 1, 10, 8, 'K', '9', 0, 1, '3', 'COMMENT'),
+(261, 1, 10, 8, 'K', '9', 0, 1, '3', ''),
 (261, 2, 10, 8, 'K', '9', 0, 1, '3', 'COMMENT'),
 (261, 3, 10, 8, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 1, 10, 9, 'K', '10', 0, 1, '3', 'COMMENT'),
-(261, 2, 10, 9, 'K', '10', 0, 1, '3', 'COMMENT'),
+(261, 2, 10, 9, 'K', '10', 0, 1, '3', ''),
 (261, 3, 10, 9, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 1, 10, 10, 'K', '11', 0, 1, '3', 'COMMENT'),
 (261, 2, 10, 10, 'K', '11', 0, 1, '3', 'COMMENT'),
@@ -3037,7 +3027,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 11, 7, 'L', '8', 0, 1, '3', 'COMMENT'),
 (261, 1, 11, 8, 'L', '9', 0, 1, '3', 'COMMENT'),
 (261, 2, 11, 8, 'L', '9', 0, 1, '3', 'COMMENT'),
-(261, 1, 11, 9, 'L', '10', 0, 1, '3', 'COMMENT'),
+(261, 1, 11, 9, 'L', '10', 0, 1, '3', ''),
 (261, 2, 11, 9, 'L', '10', 0, 1, '3', 'COMMENT'),
 (261, 1, 11, 10, 'L', '11', 0, 1, '3', 'COMMENT'),
 (261, 2, 11, 10, 'L', '11', 0, 1, '3', 'COMMENT'),
@@ -3227,7 +3217,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 13, 24, 'N', '24', 0, 1, '3', 'COMMENT'),
 (261, 1, 13, 25, 'N', '25', 0, 1, '3', 'COMMENT'),
 (261, 2, 13, 25, 'N', '25', 0, 1, '3', 'COMMENT'),
-(261, 1, 13, 26, 'N', '26', 0, 1, '3', 'COMMENT'),
+(261, 1, 13, 26, 'N', '26', 0, 1, '3', ''),
 (261, 2, 13, 26, 'N', '26', 0, 1, '3', 'COMMENT'),
 (261, 1, 13, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (261, 2, 13, 27, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
@@ -3287,7 +3277,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 14, 15, 'O', '15', 0, 1, '2', 'COMMENT'),
 (261, 1, 14, 16, 'O', '16', 0, 1, '2', 'COMMENT'),
 (261, 2, 14, 16, 'O', '16', 0, 1, '2', 'COMMENT'),
-(261, 1, 14, 17, 'O', '17', 0, 1, '2', 'COMMENT'),
+(261, 1, 14, 17, 'O', '17', 0, 1, '2', 'BOOKING_CHANGE_LAPSE_FREED'),
 (261, 2, 14, 17, 'O', '17', 0, 1, '2', 'COMMENT'),
 (261, 1, 14, 18, 'O', '18', 0, 1, '2', 'COMMENT'),
 (261, 2, 14, 18, 'O', '18', 0, 1, '2', 'COMMENT'),
@@ -3299,7 +3289,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 2, 14, 21, 'O', '21', 0, 1, '3', 'COMMENT'),
 (261, 1, 14, 22, 'O', '22', 0, 1, '3', 'COMMENT'),
 (261, 2, 14, 22, 'O', '22', 0, 1, '3', 'COMMENT'),
-(261, 1, 14, 23, 'O', '23', 0, 1, '3', 'COMMENT'),
+(261, 1, 14, 23, 'O', '23', 0, 1, '3', ''),
 (261, 2, 14, 23, 'O', '23', 0, 1, '3', 'COMMENT'),
 (261, 1, 14, 24, 'O', '24', 0, 1, '3', 'COMMENT'),
 (261, 2, 14, 24, 'O', '24', 0, 1, '3', 'COMMENT'),
@@ -3613,10 +3603,10 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 1, 6, 'B', '7', 0, 1, '1', 'COMMENT'),
 (985, 1, 1, 7, 'B', '8', 0, 1, '1', 'COMMENT'),
 (985, 1, 1, 8, 'B', '9', 0, 1, '1', 'COMMENT'),
-(985, 1, 1, 9, 'B', '10', 0, 1, '1', 'COMMENT'),
+(985, 1, 1, 9, 'B', '10', 0, 1, '1', ''),
 (985, 1, 1, 10, 'B', '11', 0, 1, '1', 'COMMENT'),
 (985, 1, 1, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
-(985, 1, 1, 12, 'B', '12', 0, 1, '1', 'COMMENT'),
+(985, 1, 1, 12, 'B', '12', 0, 1, '1', ''),
 (985, 1, 1, 13, 'B', '13', 0, 1, '1', 'COMMENT'),
 (985, 1, 1, 14, 'B', '14', 0, 1, '1', 'COMMENT'),
 (985, 1, 1, 15, 'B', '15', 0, 1, '1', 'COMMENT'),
@@ -3653,7 +3643,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 2, 7, 'C', '8', 0, 1, '1', 'COMMENT'),
 (985, 1, 2, 8, 'C', '9', 0, 1, '1', 'COMMENT'),
 (985, 1, 2, 9, 'C', '10', 0, 1, '1', 'COMMENT'),
-(985, 1, 2, 10, 'C', '11', 0, 1, '1', 'COMMENT'),
+(985, 1, 2, 10, 'C', '11', 0, 1, '1', ''),
 (985, 1, 2, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (985, 1, 2, 12, 'C', '12', 0, 1, '1', 'COMMENT'),
 (985, 1, 2, 13, 'C', '13', 0, 1, '1', 'COMMENT'),
@@ -3847,19 +3837,19 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 7, 6, 'H', '7', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 7, 'H', '8', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 8, 'H', '9', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT');
-INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
+(985, 1, 7, 9, 'H', '10', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 10, 'H', '11', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
-(985, 1, 7, 12, 'H', '12', 0, 1, '2', 'COMMENT'),
+(985, 1, 7, 12, 'H', '12', 0, 1, '2', '');
+INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
 (985, 1, 7, 13, 'H', '13', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 14, 'H', '14', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 15, 'H', '15', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 16, 'H', '16', 1, 1, '2', NULL),
+(985, 1, 7, 16, 'H', '16', 0, 1, '2', ''),
 (985, 1, 7, 17, 'H', '17', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 18, 'H', '18', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 19, 'H', '19', 0, 1, '2', 'COMMENT'),
-(985, 1, 7, 20, 'H', '20', 0, 1, '2', 'COMMENT'),
+(985, 1, 7, 19, 'H', '19', 0, 1, '2', ''),
+(985, 1, 7, 20, 'H', '20', 0, 1, '2', ''),
 (985, 1, 7, 21, 'H', '21', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 22, 'H', '22', 0, 1, '2', 'COMMENT'),
 (985, 1, 7, 23, 'H', '23', 0, 1, '2', 'COMMENT'),
@@ -3931,7 +3921,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 9, 11, NULL, NULL, -1, NULL, NULL, 'COMMENT'),
 (985, 1, 9, 12, 'J', '12', 0, 1, '2', 'COMMENT'),
 (985, 1, 9, 13, 'J', '13', 0, 1, '2', 'COMMENT'),
-(985, 1, 9, 14, 'J', '14', 0, 1, '2', 'COMMENT'),
+(985, 1, 9, 14, 'J', '14', 0, 1, '2', ''),
 (985, 1, 9, 15, 'J', '15', 0, 1, '2', 'COMMENT'),
 (985, 1, 9, 16, 'J', '16', 0, 1, '2', 'COMMENT'),
 (985, 1, 9, 17, 'J', '17', 0, 1, '2', 'COMMENT'),
@@ -5480,10 +5470,13 @@ INSERT INTO `transactionlist` (`Date`, `Time`, `UniqueID`, `ByUser`, `Title`, `T
 ('2012-04-22', '17:46:00', 148284, 582327, 'BOOKING_CHANGE_CONFIRM', 'BY_AUTHORIZED_AGENT', '49JT8XM', 'Secret!', 'WIN5', 'NONE'),
 ('2012-04-22', '17:40:32', 233731, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=3;oldTicketClassGroupID=2;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=2'),
 ('2012-04-04', '10:19:49', 248892, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '8R9Z4XR', 'No comment!', 'WIN5', 'NONE'),
+('2012-05-24', '02:00:59', 285531, 582327, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '59X55AO', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=3;newShowingTime=1;newTicketClassGroupID=1;newTicketClassUniqueID=2'),
 ('2012-04-22', '17:44:22', 373641, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=3;oldTicketClassGroupID=2;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=3'),
 ('2012-04-22', '17:37:53', 431430, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=3;newTicketClassGroupID=2;newTicketClassUniqueID=4'),
+('2012-05-24', '01:59:49', 450491, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '59X55AO ', 'No comment!', 'WIN5', 'NONE'),
 ('2012-04-22', '17:51:29', 465185, 582327, 'PAYMENT_RECEIPT', 'BOOKING_CONFIRMATION', '9WK3XED', 'No comment!', 'WIN5', 'NONE'),
 ('2012-04-22', '17:36:49', 465570, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=2;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=1;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
+('2012-05-24', '02:01:27', 787057, 582327, 'ROLLBACK-USER_DO', 'TICKET_CLASS_UPGRADE', '59X55AO', 'Secret!', 'WIN5', 'backToShowingTime=1;backToTicketClassGroupID=1;backToTicketClassUniqueID=3'),
 ('2012-04-22', '17:32:44', 791891, 150949, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', '49JT8XM', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=2;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
 ('2012-04-22', '17:14:42', 884231, 351916, 'TICKET_CLASS_UPGRADE', 'UPDATED_BOOKING_DETAILS', 'S2WMR6Z', 'Secret!', 'WIN5', 'oldShowingTime=1;oldTicketClassGroupID=1;oldTicketClassUniqueID=4;newShowingTime=2;newTicketClassGroupID=1;newTicketClassUniqueID=4'),
 ('2012-04-22', '17:42:49', 897250, 150949, 'ROLLBACK-USER_DO', 'TICKET_CLASS_UPGRADE', '49JT8XM', 'Secret!', 'WIN5', 'backToShowingTime=3;backToTicketClassGroupID=2;backToTicketClassUniqueID=4'),
@@ -5565,6 +5558,9 @@ INSERT INTO `uplb_class_and_student_pair` (`GuestUUID`, `UPLBClassUUID`) VALUES
 ('01b0e921-8d19-11e1-95a8-00ff3343d70b', '884511'),
 ('4a343d57-8c5b-11e1-95a8-00ff3343d70b', '884511'),
 ('54b92f05-8c60-11e1-95a8-00ff3343d70b', '881163'),
+('a6110ba9-a6f5-11e1-a19d-00ff14281d98', '881163'),
+('ba324462-a501-11e1-a19d-00ff14281d98', '881163'),
+('ba324462-a501-11e1-a19d-00ff14281d98', '884511'),
 ('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '881163'),
 ('f467fd6b-8d1a-11e1-95a8-00ff3343d70b', '884511');
 
@@ -5604,7 +5600,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`AccountNum`, `username`, `password`, `Fname`, `Mname`, `Lname`, `BookableByFriend`, `Gender`, `Cellphone`, `Landline`, `Email`, `addr_homestreet`, `addr_barangay`, `addr_cityMunicipality`, `addr_province`, `temp1`, `temp2`) VALUES
 (0, 'root', 'default', 'ROOT', '', 'USER', 0, 'MALE', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL),
 (150949, 'sampleuser01', '69211b57e61853fc156da911f7e78eaf3390c3ae276a685e395f4622c49cebb923dddd578b7382af36c851da0bda6da4243d7cd9782f0bdfc8b3c6bbf3a49c25', 'SAMPLE USER', '', 'ONE', 1, 'MALE', '9183981185', '0', 'LMB@GOV.KR', '', '', '', '', NULL, NULL),
-(228018, 'sampleuser04', '08320853482cb653db8c10dca5adcc46063b6e79270c603cd08f17be12ee8a867a7bef91169117e9055680de395ab41adf150dd40b28b84531f510b9b1d9d999', 'BARACK', '', 'OBAMA', 1, 'MALE', '9091234567', '0', 'FEBFAIR@UPLB.EDU.PH', '', '', '', '', NULL, NULL),
+(228018, 'sampleuser04', '9bf951b1ac2f8c69aebcd430b95497f823dcdf1bd381ca97145987637fe7996bec9069f248bc225679a95ea7f0b50587399dc989e3ca41a32ed03f61d2fab0c2', 'BARACK', '', 'OBAMA', 1, 'MALE', '9091234567', '0', 'FEBFAIR@UPLB.EDU.PH', '', '', '', '', NULL, NULL),
 (351916, 'sampleuser03', '760eb2f7611e7d09cde257a7538fb0044c8738d5b4a270d9098928838249170d16ba36ab323319323b0fd394cbcf487f1b08c6374be66a047d0826b9133989f5', 'HANAMICHI', '', 'SAKURAGI', 1, 'MALE', '91832948924', '0', 'AAA@AAA.COM', '', '', '', '', NULL, NULL),
 (372076, 'kimjongeun', '5534dba47abe3241141d5cee392a8f6e4feac77263c82d8446120b9c438be4c41c8a5e02a84200a49a207bbf252c9be1bdd6e397208899478d50971a678f79ea', 'JONG EUN', '', 'KIM', 1, 'MALE', '9183981185', '0', 'AA@LKC.COM', '', '', '', '', NULL, NULL),
 (392648, 'kangsongdaeguk', '5534dba47abe3241141d5cee392a8f6e4feac77263c82d8446120b9c438be4c41c8a5e02a84200a49a207bbf252c9be1bdd6e397208899478d50971a678f79ea', 'BARACKY', '', 'OBAMA', 1, '', '9183981185', '0', 'AAA@AA.COM', '', '', '', '', NULL, NULL),
@@ -5639,42 +5635,76 @@ CREATE TABLE IF NOT EXISTS `_telemetry_basic` (
 INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `EVENT`, `USER_AGENT`, `BROWSERSHORT_PLUS_OS`, `RESERVED2`, `RESERVED`) VALUES
 ('{0178b83a-6dc4-4e21-9350-df3a71191535}', '2012-05-19', '16:15:41', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{0314abc0-1278-4662-aa9d-053ad81ff5fc}', '2012-05-19', '16:12:13', '112.207.10.115', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{03F0BC73-4F92-454D-A272-476EA027D98A}', '2012-05-26', '20:46:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{D27D3693-7C8B-4954-BC61-01F0F02AF2EE}', '', NULL, NULL),
 ('{04bbf5a0-dbd8-4321-91bb-8f5a8fe06659}', '2012-05-19', '16:14:45', '121.54.92.86', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{065f0c1f-bf83-4409-8f65-1e24677d5422}', '2012-05-20', '06:39:40', '112.198.83.134', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 Safari/536.11', 'Chrome 20.0.1132.11|Unknown Windows OS', NULL, NULL),
 ('{072f595b-7852-4c00-b9f2-18274e34bd9e}', '2012-05-19', '18:48:08', '121.1.24.118', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{0D3A9920-7387-400F-A0FC-45FB5A154031}', '2012-05-26', '20:54:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
 ('{0f79a6bd-bbf7-4ec9-9571-8067b1f7d011}', '2012-05-19', '19:22:49', '180.194.251.168', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.7 (KHTML, like Gecko) RockMelt/0.16.91.456 Chrome/16.0.912.77 Safari/535.7', 'Chrome 16.0.912.77|Unknown Windows OS', NULL, NULL),
 ('{1196c236-e37f-45c3-b205-c45722df6526}', '2012-05-19', '15:50:19', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{12341755-2DE6-428D-AE77-192A0569F825}', '2012-05-26', '12:35:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{9178007D-A6CA-4187-809A-66006B850E07}', '', NULL, NULL),
 ('{152f478a-368f-4836-bec2-a66ab644c055}', '2012-05-19', '15:50:41', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{161e2f64-06fc-4961-8554-07c77b0c7e8f}', '2012-05-19', '15:50:18', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{1C659DC7-CEF7-498F-B178-7F02C7B7FB0A}', '2012-05-26', '20:57:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
+('{1DB2DD0D-305C-4FA2-AF05-C495ECEAF33C}', '2012-05-26', '21:20:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
+('{218B151F-1F19-419B-BFA2-A67D2CA1DC48}', '2012-05-26', '20:57:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
+('{229222CB-4B1C-44D4-8B82-626552D48251}', '2012-05-26', '20:56:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
 ('{24392338-e6fc-41b4-90b4-fe007427482f}', '2012-05-19', '15:49:53', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{250353DB-0F5E-4CDB-9CC4-6FFFFCBDCB80}', '2012-05-25', '01:39:00', '192.168.11.2', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET4.0C; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)', 'Internet Explorer 8.0|Windows XP', NULL, NULL),
 ('{25a88d5f-0e45-47e0-b1a3-9ffcebfa9f23}', '2012-05-20', '04:24:58', '112.201.95.114', 'LOGGED_OUT_PAGE', 'REF_{caae5628-c282-430f-af42-a6ebe4dfdbba}', '', NULL, NULL),
 ('{25d389c7-660b-4a40-82f3-517437f1374a}', '2012-05-19', '16:15:51', '112.207.20.43', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{2BFE41A3-8106-463C-8779-5FAECA444B21}', '2012-05-25', '01:40:00', '192.168.11.2', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1) Gecko/20090624 Firefox/3.5', 'Firefox 3.5|Windows XP', NULL, NULL),
 ('{376e186b-f5f1-4657-80ce-48eea339bb80}', '2012-05-19', '16:28:24', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{387bcc87-5854-4410-8826-f3d63bcd4d62}', '2012-05-19', '16:15:46', '112.207.20.43', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{3cdd8d73-8b6f-45f2-855d-d83ef8938ad5}', '2012-05-19', '18:51:09', '121.1.24.118', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:5.0) Gecko/20100101 Firefox/5.0', '', NULL, NULL),
 ('{4250377c-b13d-4683-99af-42d961add225}', '2012-05-19', '18:35:37', '112.207.37.116', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{4501d775-c37f-4465-93ac-2f79fafa7fcb}', '2012-05-19', '16:14:32', '112.207.20.43', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{475234f2-360e-4b22-876e-cb7526c8f142}', '2012-05-19', '15:53:16', '121.1.24.118', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{4E94D991-CFDD-44A7-B627-119E76B0B459}', '2012-05-26', '16:17:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2', 'Firefox 10.0.2|Unknown Windows OS', NULL, NULL),
 ('{4d45fb00-a318-11e1-b3dd-0800200c9a66}', '2012-05-19', '15:48:10', '69.171.229.249', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{4e051b4e-98aa-4a52-a717-adb857359b77}', '2012-05-19', '16:25:41', '112.198.83.33', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{4e83f16b-8dba-42cb-a21d-f997834fab9a}', '2012-05-19', '18:52:33', '121.1.24.118', 'LOGGED_OUT_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', '', NULL, NULL),
 ('{4f428442-208a-43d3-8252-25114a2f787f}', '2012-05-19', '17:36:58', '112.202.141.151', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{4f601354-d464-48ea-ab0e-54755fa438f9}', '2012-05-19', '20:56:22', '122.55.28.66', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{5DF83070-0F41-4CF3-A8DA-093A8B07F01C}', '2012-05-25', '20:43:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{5ab3806f-f7d1-45d9-9435-5aca0bad3e24}', '2012-05-19', '19:22:49', '180.194.251.168', 'LOGGED_OUT_PAGE', 'REF_{b35fc316-c942-44b9-878c-a5494504c2d7}', '', NULL, NULL),
 ('{5d6d0411-343f-4e2d-b01c-0d22f7fb5ff9}', '2012-05-19', '16:28:04', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '2012-05-20', '06:59:08', '180.194.28.234', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{63684e82-a826-4746-90f3-4fd57bd954e9}', '2012-05-20', '00:02:07', '150.70.172.101', 'LOGIN_PAGE', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)', 'Internet Explorer 6.0|Windows XP', NULL, NULL),
+('{641DDC96-1F33-4381-A212-3C3E4A747576}', '2012-05-26', '12:46:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{652b3ab0-951b-4f05-aa98-8a77974625ac}', '2012-05-19', '15:50:55', '121.54.13.52', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{67257037-6d6b-48e3-b2b5-b5b94e87f704}', '2012-05-19', '16:27:53', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{67c71b66-2b95-405b-9fc4-4a1e28ac8f4d}', '2012-05-19', '16:29:15', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{6E7E3608-7605-4787-97E5-13727946746E}', '2012-05-26', '20:57:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
 ('{718e868e-a3c2-443c-824e-01a68e4ad363}', '2012-05-19', '15:51:26', '121.1.24.118', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{71F43118-5FF1-44C7-AE77-1A657ACCA31D}', '2012-05-26', '16:20:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{74ED8DC5-2772-4592-B09A-B143A1AD9B3E}', '', NULL, NULL),
+('{74ED8DC5-2772-4592-B09A-B143A1AD9B3E}', '2012-05-26', '16:17:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2', 'Firefox 10.0.2|Unknown Windows OS', NULL, NULL),
 ('{7bac3f60-33e1-4bc3-ad37-da41de553499}', '2012-05-19', '16:16:03', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{7d15277d-0303-442d-b1f8-e05cf0e95c11}', '2012-05-20', '07:00:28', '180.194.28.234', 'LOGGED_OUT_PAGE', 'REF_{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '', NULL, NULL),
 ('{822b72d8-bc08-4cef-885c-2373b72c0152}', '2012-05-19', '16:01:16', '180.191.138.226', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{858228BC-09CE-42E3-8344-C77BCB86E9A2}', '2012-05-25', '11:48:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{868504a7-3044-458e-8dec-1706e66b50a4}', '2012-05-19', '16:28:17', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{8b3f4f74-2b99-4a20-b0ea-3547209d6485}', '2012-05-19', '16:17:11', '121.54.92.86', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{907DF5B9-DF90-44D6-A838-DA251D3525E3}', '2012-05-26', '16:17:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2', 'Firefox 10.0.2|Unknown Windows OS', NULL, NULL),
+('{9178007D-A6CA-4187-809A-66006B850E07}', '2012-05-26', '11:17:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{91FFE4E9-08AA-4E0F-8452-88CF916EA988}', '2012-05-25', '01:35:00', '192.168.11.2', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6 (.NET CLR 3.5.30729)', 'Firefox 3.6|Windows XP', NULL, NULL),
+('{93CAE845-43F1-4169-8D03-F9C26AC99051}', '2012-05-26', '20:58:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{6E7E3608-7605-4787-97E5-13727946746E}', '', NULL, NULL),
 ('{9731ef88-bddd-41dd-9bfc-e24e6cc5a9f9}', '2012-05-19', '16:05:14', '50.17.107.32', 'LOGIN_PAGE', '', '', NULL, NULL),
+('{9E2BB7EA-6777-4C24-A8AC-BB17D7F6C23F}', '2012-05-26', '15:19:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{641DDC96-1F33-4381-A212-3C3E4A747576}', '', NULL, NULL),
 ('{9a5fff93-a86e-4608-94ba-2c47b65974c9}', '2012-05-19', '16:28:11', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{A0963BA6-EC0B-4F15-AE1C-FB1FCE4F3D8F}', '2012-05-26', '20:57:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
+('{AB54322B-B677-4069-8088-02B9683472D2}', '2012-05-25', '20:34:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{ABA4D808-6186-4726-99A6-496F7EFB6BDD}', '2012-05-26', '20:58:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
+('{BFA2CF12-5EC4-483E-BCA2-74BF8ACB5426}', '2012-05-26', '20:56:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{0D3A9920-7387-400F-A0FC-45FB5A154031}', '', NULL, NULL),
+('{C379CAFA-9F5E-4325-A75C-524CCA6CE7BE}', '2012-05-25', '11:48:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
+('{D27D3693-7C8B-4954-BC61-01F0F02AF2EE}', '2012-05-26', '20:40:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
+('{D2AE8B51-910C-4D86-813D-197A0AAE43B4}', '2012-05-25', '01:49:00', '192.168.11.2', 'LOGIN_PAGE', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.3) Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3', 'Firefox 3.6.3|Linux', NULL, NULL),
+('{D8A2226B-260C-45ED-997A-A4BE5991709F}', '2012-05-26', '20:46:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
+('{E76B4956-1E4D-4B59-BF65-C3DBAFC5906A}', '2012-05-25', '01:08:00', '127.0.0.1', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; Tablet PC 2.0; InfoPath.2)', 'Internet Explorer 7.0|Unknown Windows OS', NULL, NULL),
+('{E88F66B1-114D-4826-ACB1-ACE00819FB70}', '2012-05-25', '01:34:00', '192.168.11.2', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6 (.NET CLR 3.5.30729)', 'Firefox 3.6|Windows XP', NULL, NULL),
+('{EA50FD15-0F69-4098-9A3E-6CF340279806}', '2012-05-25', '01:09:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:10.0.2) Gecko/20100101 Firefox/10.0.2', 'Firefox 10.0.2|Unknown Windows OS', NULL, NULL),
+('{EABD7643-FA29-4F6C-84F6-1EF8A53AC673}', '2012-05-25', '01:08:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
+('{ED23FC9A-6C80-457C-A13D-D3002BC515B8}', '2012-05-25', '01:01:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
 ('{a54e8081-ae11-4250-bd72-0cf0500c583c}', '2012-05-19', '16:05:24', '50.17.107.32', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{a9fad5e9-158d-41a5-a689-dfa8c8f8ec52}', '2012-05-19', '16:12:02', '112.207.10.115', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{ac8a3084-9c28-4af3-98ae-d95e67ec9f5b}', '2012-05-19', '18:17:51', '23.20.190.69', 'LOGIN_PAGE', '', '', NULL, NULL),
