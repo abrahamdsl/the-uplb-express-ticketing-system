@@ -54,6 +54,13 @@
 		define( 'BR_AGENT_DENIED', 0x87 );
 		
 		/*
+			For payment modes
+		*/
+		define( 'PAYMODE_PAYPAL', "paypal" );
+		define( 'PAYMODE_2CO', "2checkout" );
+		define( 'PAYMODE_MONYEBOOKERS', "moneybookers" );
+		
+		/*
 			Session stages						
 		*/
 		define( 'STAGE_BOOK_1_PROCESS', 0 );

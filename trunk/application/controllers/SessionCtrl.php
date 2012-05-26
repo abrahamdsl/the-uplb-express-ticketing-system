@@ -189,24 +189,6 @@ class SessionCtrl extends CI_Controller {
 		$this->telemetry_model->add(4,$this->UsefulFunctions_model->guid(),$this->UsefulFunctions_model->VisitorIP(),'REF_'.$this->session->userdata('telemetry_uuid'),'' );
 		$this->session->unset_userdata('telemetry_uuid');
 		redirect('/');
-	} //logout
-	
-	function plus12()
-	{
-		/* INTERNAL DEBUGGING FUNCTION ONLY | DELETE WHEN DEEMED NOT TO BE USED IN THE FUTURE
-		
-		$whatdahell = $this->db->query( "SELECT * FROM `_telemetry_basic` WHERE 1")->result();
-		//echo var_dump( $whatdahell );
-		foreach( $whatdahell as $singleRecord )
-		{
-			$oldTime = date( $singleRecord->RecDATE ." ". $singleRecord->RecTIME);
-			$newTime = strtotime( '+12 hour', strtotime( $oldTime ) );
-			echo "Old timestamp : ".$singleRecord->RecDATE ." ". $singleRecord->RecTIME."<br/>";
-			echo "new timestamp : ".date('Y-m-d',$newTime)." ".date('H:i:s',$newTime)."<br/>-----------<br/>";
-			$meow = "UPDATE `_telemetry_basic` SET `RecDATE` = '".date('Y-m-d',$newTime)."', `RecTIME` = '".date('H:i:s',$newTime)."' WHERE `UUID` = '".$singleRecord->UUID."'";
-			$this->db->query( $meow );
-		}
-		*/
-	}
+	} //logout		
 }//class
 ?>

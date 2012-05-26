@@ -14,8 +14,10 @@
 
 	$error - STRING - REQUIRED - What type of error. If "CUSTOM", then custom message should be displayed.
 	$theMessage	- STRING - NOT_REQUIRED - As in the message you want the user to see.
-	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 
-				*Non-presence and value TRUE indicates automatic redirection to homepage.	
+	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 				
+				* Value 0 don't redirect whatever happens
+				* Non-presence or value 1 indicates automatic redirection to homepage.	
+				* Value 2 redirect to location specified by $redirectURI
 	$redirectURI  - STRING (URI) - Where we should redirect.
 	$defaultAction - STRING - NOT_REQUIRED - Default is "Home". Indicates what the main
 				button should do when clicked. If present or not equal to "Home", the other
@@ -23,6 +25,12 @@
 	
 	
 */
+if(  (!isset( $redirect ) or $redirect === 1) ) {
+	header( 'refresh: 5;url='.base_url() );
+}else
+if( $redirect === 2 ){
+	header( 'refresh: 5;url='.$redirectURI );
+}
 $this->load->view('html-generic/doctype.inc');
 ?>
 <head>
@@ -134,11 +142,19 @@ $this->load->view('html-generic/doctype.inc');
 								<?php echo $theMessage; ?>
 							</p>
 						<?php } ?>
-						<?php if( !isset( $redirect) or $redirect === true ){ ?>
 						<p>
-							Redirecting you to the homepage....
+							<?php
+								if( !isset( $redirect) or $redirect == 1 )
+								{	
+									echo "Redirecting you to homepage ... ";
+								}else{
+									if( $redirect == 2 )
+									{								
+										echo "Redirecting you to ".$defaultAction."...";
+									}
+								}
+							?>												
 						</p>
-						<?php } ?>
 					</div>
 				</div>												
 			</div>
