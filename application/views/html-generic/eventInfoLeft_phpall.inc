@@ -78,7 +78,7 @@ if( !isset( $bottomOtherClass ) )  $bottomOtherClass = "";
 					// if show ends past midnight (red eye), then display the next day's date.
 					echo date( 'Y-M-d l', strtotime($showtimeObj->EndDate));
 				else
-					echo '&nbsp';
+					echo '&nbsp;';
 			?>
 		</span>
 	</div>
