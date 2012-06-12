@@ -1,43 +1,43 @@
 <?php
 /**
-*	Booking Maintenance Controller
+*	Event Controller - The Main of them All
 * 	CREATED 28 NOV 2011 2035
 *	Part of "The UPLB Express Ticketing System"
 *   Special Problem of Abraham Darius Llave / 2008-37120
-*	In partial fulfillment of the requirements for the degree of Bachelor fo Science in Computer Science
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
 *	University of the Philippines Los Banos
 *	------------------------------
 *
 *	Contains most functionalities regarding an event.
-
-	At current, checks using functionacces library, infinite redirection could happen
+*	At current, checks using functionacces library, infinite redirection *will* happen
 	if data is submitted (book proper functions), then suddenly terminated midway
 	its processing (before setting that we can now go to the view function). I don't
 	know if CodeIgniter has safeguards against this.
 	
-	At current, user needs to be logged in to be able to use the features of this.
-*/
+*	At current, user needs to be logged in to be able to use the features of this controller.
+**/
 class EventCtrl extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();	
 		
-		include_once('_constants.inc');
-		
+		include_once( APPPATH.'constants/_constants.inc');
+		include_once( APPPATH.'constants/clientsidedata.inc');
 		$this->load->helper('cookie');
-		
-		$this->load->model('BrowserSniff_model');
+				
 		$this->load->model('login_model');
 		$this->load->model('Academic_model');
 		$this->load->model('Account_model');
 		$this->load->model('Booking_model');
+		$this->load->model('BrowserSniff_model');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('CoordinateSecurity_model');
 		$this->load->model('email_model');
 		$this->load->model('Event_model');
 		$this->load->model('Guest_model');
 		$this->load->model('MakeXML_model');
+		$this->load->model('ndx_model');
 		$this->load->model('Payment_model');
 		$this->load->model('Permission_model');
 		$this->load->model('Seat_model');		
@@ -52,7 +52,8 @@ class EventCtrl extends CI_Controller {
 		$this->load->library('seatmaintenance');		
 		
 		if( !$this->login_model->isUser_LoggedIn() )
-		{	
+		{				
+			$this->clientsidedata_model->setRedirectionURLAfterAuth( $_SERVER[ 'REDIRECT_QUERY_STRING' ] );
 			redirect('SessionCtrl/authenticationNeeded');
 		}
 		
@@ -176,8 +177,6 @@ class EventCtrl extends CI_Controller {
 		
 		return $tableProper;
 	}//assembleUnavailableSeatTableForManageBooking(..)
-
-	
 	
 	private function confirmSlotsOfThisBooking( $bookingNumber )
 	{
@@ -256,165 +255,49 @@ class EventCtrl extends CI_Controller {
 		return false;
 		// CODE-MISSING: DATABASE COMMIT
 	}//confirmSlotsOfThisBooking(..)
-					
-	private function decodeSeatVisualCookie( $bookInstanceEncryptionKey )
-	{
-		$array_result = Array(
-			'boolean' => false,
-			'textStatus' => 'ERROR',
-			'textStatusFriendly' => NULL
-		);		
-		$decodedSeatVisualCookie = explode('|',$this->encrypt->decode( 
-				$this->clientsidedata_model->getVisualSeatInfo()
-			) 
-		);
-		if( count( $decodedSeatVisualCookie ) !== 2 )
-		{
-			$array_result['textStatus'] = "input error";
-			$array_result['textStatusFriendly'] = "seat cookie manipulated.";
-			return $array_result;
-		}		
-		if( $decodedSeatVisualCookie[0] != $bookInstanceEncryptionKey )
-		{			
-			$array_result['textStatus'] = "input error";
-			$array_result['textStatusFriendly'] = "Session hijack attempt detected - bookInstanceEncryption Key incorrect.";
-			return $array_result;
-		}
-		$visualSeats_splitted = explode('.', $decodedSeatVisualCookie[1] );
-		$seatVisuals = Array();		
-		foreach( $visualSeats_splitted as $eachRelationship )
-		{
-			$mainSub = explode( '_', $eachRelationship );
-			//$seatVisuals[ $mainSub[0] ] = $mainSub[1];
-			$seatVisuals[ $mainSub[0] ] = isset($mainSub[1]) ? $mainSub[1] : "";
-		}
-		$array_result['boolean'] = true;
-		$array_result['textStatus'] = "okay";
-		$array_result['textStatusFriendly'] = $seatVisuals;
-		return $array_result;
-	}//decodeSeatVisualCookie
 	
-	private function decodePurchaseCookie_And_GetObjs( $bookInstanceEncryptionKey )
+	private function prepPurchaseCookies( $purchases )
 	{
-			$array_result = Array(
-				'boolean' => false,
-				'textStatus' => 'ERROR',
-				'textStatusFriendly' => NULL
-			);
-			$decodedPurchaseCookie = explode('|',$this->encrypt->decode( 
-					$this->clientsidedata_model->getPurchaseIDs()
-				)
-			);
-			if( count( $decodedPurchaseCookie ) !== 2 )
-			{				
-				$array_result['textStatus'] = "input error";
-				$array_result['textStatusFriendly'] = "purchase cookie manipulated.";
-				return $array_result;
-			}		
-			if( $decodedPurchaseCookie[0] != $bookInstanceEncryptionKey )
-			{				
-				$array_result['textStatus'] = "input error";
-				$array_result['textStatusFriendly'] = "Session hijack attempt detected - bookInstanceEncryption Key incorrect.";
-				return $array_result;
-			}			
-			$purchasesID_splitted = explode('.', $decodedPurchaseCookie[1] );
-			$array_result['textStatusFriendly'] = Array();		
-			foreach( $purchasesID_splitted as $eachRelationship )
-			{
-				/* 
-					Index of $mainSub
-					1 - booking number | 2 - unique ID
-				*/
-				$mainSub = explode( '-', $eachRelationship );
-				$array_result['textStatusFriendly'][] = $this->Payment_model->getSinglePurchase( $mainSub[0], $mainSub[1] );
-			}
-			$array_result['boolean'] = true;
-			$array_result['textStatus'] = "success";
-			return $array_result;
-	}//decodePurchaseCookie_And_GetObjs(..)
-	
-	private function encryptPurchaseCookies( $bookInstanceEncryptionKey, $bookingNumber, $purchases )
-	{
-		/*
+		/*	ON HOLD 09JUN2012-1347
 		*	Purchases section
 		*   We need to specify the purchase ID number so as for booking Step 6 display
 		*  ( getUnpaidPurchases will return nothing because such purchases will be marked as paid/pending payment )
 		*  before the page is displayed
 		*/				
-		$purchaseCount = count( $purchases );
-		if( $purchaseCount === 0 ) return true;
+		$purchaseCount = count( $purchases );		
 		$purchases_str = "";
+		
+		if( $purchaseCount === 0 ) return true;
 		// tokenize and set in cookie, the purchases to be displayed in the page. 
-		foreach( $purchases as $singlePurchase  )
-			 $purchases_str .= ( $singlePurchase->BookingNumber."-".$singlePurchase->UniqueID."_" );
-		$purchases_str = substr($purchases_str, 0, strlen($purchases_str)-1 );	//remove trailing underscore
 		/*
 			String structure of unencrypted cookie 'purchases_identifiers':
 				
-				AAAAAAAAAA|XXXXX_YY-XXXXX_YY.....XXXXXX_YY
-			
-			AAAA.AAA - Min length of 7 ata, unique identifier for this session
-			XXX..XX  - Min length of 5, booking number
+				a = { YYYYYY };
+				b = { YYYYYY | YYYYY;a };
+				
+				Separated by semicolons:
+			    
+				Ex1: a
+				Ex2: abaaaaabaaaa
+				
+				Live: 921093;213214;1094242;
+							
 			Y..Y	 - Min length of 2, UniqueID of purchase
 		*/
-		$purchases_encrypted = $this->encrypt->encode($bookInstanceEncryptionKey."|".$purchases_str);
-		$cookie = array(
-			'name'   => 'purchases_identifiers',
-			'value'  => $purchases_encrypted,
-			'expire' => '3600'
-		);
-		$this->input->set_cookie($cookie);
-		return true;
-	}//encryptPurchaseCookies
+		foreach( $purchases as $singlePurchase  ) $purchases_str .= ( $singlePurchase->UniqueID.";" );
+		$purchases_str = substr($purchases_str, 0, strlen($purchases_str)-1 );	//remove trailing colon
+
+		return $purchases_str;
+	}//prepPurchaseCookies(..)
 	
-	private function encryptSeatVisualCookie( $bookInstanceEncryptionKey, $sendSeatInfoToView )
+	private function prepSeatVisualData( $sendSeatInfoToView  )
 	{
-		$sendSeatInfoToView;	
 		$seatInfo_str = "";
-		foreach( $sendSeatInfoToView as  $uuid => $singleSeatAssignment )
-		{
-			$seatInfo_str .= ( $uuid."_".$singleSeatAssignment ).".";
-		}
-		$seatInfo_str = substr( $seatInfo_str, 0, strlen($seatInfo_str)-1 );	// remove trailing pipe
-		$seatInfo_str_encrypted = $this->encrypt->encode($bookInstanceEncryptionKey."|".$seatInfo_str);
-		$cookie = array(
-			'name'   => 'visualseat_data',
-			'value'  => $seatInfo_str_encrypted,
-			'expire' => '3600'
-		);
-		$this->input->set_cookie($cookie);
-	}//encryptSeatVisualCookie(..)
-			
-	private function getSeatVisual_Guests( $guest_arr )
-	{
-		/*	DEPRECATED | In favor of $this->getSeatRepresentationsOfGuests()
-		
-			Created 22FEB2012-2313. Moved from book_step6 to be used for confirm reservation.
-		
-			Iterate through each guest details, by their UUIDs, get the slot record 
-			assigned to them, get the seat pointer, then by that pointer together with
-			some cookies, access the visual representation of the seat by accessing the seat record.
-		*/
-		$guestSeats = Array();
-		
-		foreach( $guest_arr as $eachGuest )
-		{
-			// get slot record, as the seat pointer is there
-			$eSlotObject = $this->Slot_model->getSlotAssignedToUser( $eachGuest->UUID );
-			//$this->Slot_model->setSlotAsBooked( $eSlotObject->UUID );
-			$eSeatObject = $this->Seat_model->getSingleActualSeatData( 
-				$eSlotObject->Seat_x, 
-				$eSlotObject->Seat_y,
-				$this->clientsidedata_model->getEventID(),
-				$this->clientsidedata_model->getShowtimeID()
-			);
-			$guestSeats[ $eachGuest->UUID ] = ( $eSeatObject->Visual_row."-".$eSeatObject->Visual_col );
-		}
-		
-		return $guestSeats;
-	}//getSeatVisual_Guests( $guest_arr )
-	
-	
+		foreach( $sendSeatInfoToView as  $uuid => $singleSeatAssignment ) $seatInfo_str .= ( $uuid."_".$singleSeatAssignment ).".";
+		$seatInfo_str = substr( $seatInfo_str, 0, strlen( $seatInfo_str ) - 1 );
+		return $seatInfo_str;
+	}//prepSeatVisualData(..)
+
 	private function getSlotRollbackDataOfPurchase( $unpaidPurchaseObj )
 	{
 		/*
@@ -440,18 +323,17 @@ class EventCtrl extends CI_Controller {
 		$returnThis[ OLD_SHOWTIME_TC_UNIQUE_ID ] = $this->UsefulFunctions_model->getValueOfWIN5_Data( OLD_SHOWTIME_TC_UNIQUE_ID , $rollBackInfo );
 		return $returnThis;
 	}//getSlotRollbackDataOfPurchase(..)
-	
-	
-	
+
 	private function getSeatRepresentationsOfGuests( $eventID, $showtimeID, $guest_arr,
 		$ticketClassGroupID = NULL, $ticketClassUniqueID = NULL
 	)
 	{
-		/*
-			Created 03MAR2012-1147
-			11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID 
-		*/
-		$seatDetailsOfGuest = Array();			
+		/**
+		*	@created 03MAR2012-1147
+		*	@description Gets seat representations of guests.
+		*	@history 11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID		
+		**/
+		$seatDetailsOfGuest = Array();
 		foreach( $guest_arr as $singleGuest )
 		{
 			$seatVisualRepStr = false;
@@ -459,19 +341,19 @@ class EventCtrl extends CI_Controller {
 
 			if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
 			{
-				 $slotObj = $this->Slot_model->getSlotAssignedToUser_MoreFilter( 
+				 $slotObj = $this->Slot_model->getSlotAssignedToUser_MoreFilter(
 					 $eventID, 
 					 $showtimeID,
 					 $ticketClassGroupID, 
 					 $ticketClassUniqueID,
 					 $singleGuest->UUID 
-				);				
+				);
 				$seatMatrixRepObj = Array(
 					'Matrix_x' => (isset ($slotObj->Seat_x) ) ? $slotObj->Seat_x : "",
 					'Matrix_y' => (isset ($slotObj->Seat_y) ) ? $slotObj->Seat_y : ""
 				);
 			}else{
-				$seatMatrixRepObj = $this->Slot_model->getSeatAssignedToUser( $singleGuest->UUID );								
+				$seatMatrixRepObj = $this->Slot_model->getSeatAssignedToUser( $singleGuest->UUID );
 			}
 			if( $seatMatrixRepObj !== false ){	// there is seat assigned for this user				
 				$seatVisualRepStr = $this->Seat_model->getVisualRepresentation(
@@ -601,11 +483,12 @@ class EventCtrl extends CI_Controller {
 	}//isBookingSeatsAvailableNewShowtime(..)
 		
 	
-	private function setBookingCookiesOuter( $eventID, $showtimeID, $slots, $bookingNumber = 'XXXXX' )	
+	private function setBookingCookiesOuter( $eventID, $showtimeID, $slots, 
+		$bookingNumber = 'XXXXX')	
 	{
 		/*
-			@created 22FEB2012-2248
-			
+			@DEPRECATED 12JUN2012-1934
+			@created 22FEB2012-2248			
 			@purpose This handles setting of cookies that are needed to display info on the pages.
 			@params {} - Obviously.
 		*/
@@ -627,22 +510,73 @@ class EventCtrl extends CI_Controller {
 			 $data['theMessage'] = "INTERNAL SERVER ERROR<br/></br>Showing time marked as for sale but there isn't any ticket class yet."; //5051
 			 $this->load->view( 'errorNotice', $data );  
 			return false;		 
-		  }      
-		  //Cookie part		  
-		  $cookie_values = Array( 
+		  }
+		  //Cookie part		
+		  $cookie_values = Array(
 			 $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $eventInfo->Name, 
 			 $showtimeObj->StartDate, $showtimeObj->StartTime, $showtimeObj->EndDate, $showtimeObj->EndTime,
 			 $slots, $eventInfo->Location,  $bookingNumber, '-1', '-1', '-1'
-		  );
-		  $this->clientsidedata_model->setBookingCookies( $cookie_values );
+		  );			 
+		  $this->clientsidedata_model->setBookingCookies( $cookie_values );		  		  
 	}//setBookingCookiesOuter(..)
 	
-	function book()
+	private function setBookingCookiesOuterServer( $eventID, $showtimeID, $slots, $bookingNumber = 'XXXXX')
 	{
 		/*
-			@purpose, just sets the booking progress indicator then redirects to
-			forward page.
+			@created 09JUN2012-1326 			
+			@purpose Deprecates setBookingCookiesOuter(). This will now be used from now on.
+				Arose due to cookie setting bug when introducing change payment mode feature.
+			@params {} - Obviously.
 		*/
+		  $showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 
+		  if( $showtimeObj === false )		// counter check against spoofing
+		  {
+			 // no showing time exists
+			 $data['error'] = "CUSTOM";         
+			 $data['theMessage'] = "INTERNAL SERVER ERROR<br/></br>Showing time not found. Are you hacking the app?  :-D "; //4031
+			 $this->load->view( 'errorNotice', $data );
+			 return false;
+		  }	  	 
+		  $eventInfo = $this->Event_model->getEventInfo( $eventID );      // get major info of this event
+		  $ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $showtimeObj->Ticket_Class_GroupID ); 
+		  if( $ticketClasses === false )  // counter check against spoofing
+		  {
+			 // no ticket classes exist
+			 $data['error'] = "CUSTOM";         
+			 $data['theMessage'] = "INTERNAL SERVER ERROR<br/></br>Showing time marked as for sale but there isn't any ticket class yet."; //5051
+			 $this->load->view( 'errorNotice', $data );  
+			return false;		 
+		  }
+		  $guid = $this->UsefulFunctions_model->guid();
+		  $this->clientsidedata_model->setBookingCookiesOnServerUUIDRef( $guid );
+		  //Cookie part
+		  $cookie_values = Array(
+			 $guid,
+			 $bookingNumber,
+			 $eventID,
+			 $showtimeID,
+			 $showtimeObj->Ticket_Class_GroupID,
+			 NULL, //tcg unique ID
+			 NULL, //purchase IDS
+			 NULL, //slots UUID
+			 $slots,
+			 NULL, //visual seat data
+			 $eventInfo->Name,
+			 $showtimeObj->StartDate, $showtimeObj->StartTime, $showtimeObj->EndDate, $showtimeObj->EndTime,
+			 $eventInfo->Location
+		  );		
+		  log_message( 'DEBUG', 'precreate server outer' );		  
+		  return $this->ndx_model->create( $cookie_values );		  		  
+		  log_message( 'DEBUG', 'postrecreate server outer' );
+	}//setBookingCookiesOuterServer(..)
+	
+	// END OF PRIVATE FUNCTIONS //	
+	function book()
+	{
+		/**
+		*	@purpose, just sets the booking progress indicator then redirects to
+			forward page.
+		**/
 		$this->clientsidedata_model->setBookingProgressIndicator( 1 );
 		redirect('EventCtrl/book_forward');
 	}//book(..)
@@ -650,9 +584,8 @@ class EventCtrl extends CI_Controller {
 	function book_forward()
 	{
 		/*
-			Created 29DEC2011-2048
-			
-			Hotspot for refactoring (i.e., in Event_model, create a single function
+			@created 29DEC2011-2048			
+			@description Hotspot for refactoring (i.e., in Event_model, create a single function
 			that gets all info - via the use of SQL joins. :D )
 		*/
 		$configuredEventsInfo = array();
@@ -682,6 +615,7 @@ class EventCtrl extends CI_Controller {
 		*/
 		$userAccountNum = $this->clientsidedata_model->getAccountNum();
 		$bookings = false;
+		$redirect_to = $this->clientsidedata_model->getRedirectionURLAfterAuth();
 		if( $this->Permission_model->isAdministrator( $userAccountNum ) ){
 			$bookings = $this->Booking_model->getAllBookings( false, false );
 		}else{
@@ -699,7 +633,11 @@ class EventCtrl extends CI_Controller {
 			$this->bookingmaintenance->cleanDefaultedBookings( $singleBooking->EventID, $singleBooking->ShowingTimeUniqueID ); 
 		  }
 		}
-		redirect('/');
+		if( $redirect_to === FALSE )			
+			redirect('/');
+		else
+			$this->clientsidedata_model->deleteRedirectionURLAfterAuth();
+			redirect( $redirect_to );
 	}//preclean
 	
 	function book_step2( $bookingNumber = false, $ticketClassSelectionEssentials = null )
@@ -719,9 +657,8 @@ class EventCtrl extends CI_Controller {
 		  it means, user went straight to change ticket class (without changing showing time).
 		  It is an Array, with index 0,1,2 corresponding to `EventID`, `showingTimes` and `slot`
 		
-      */
-	  $bookInstanceEncryptionKey;
-	  $sessionActivity 				=  $this->clientsidedata_model->getSessionActivity();     
+      */	  
+	  $sessionActivity 				= $this->clientsidedata_model->getSessionActivity();     
       $eventID 						= $this->input->post( 'events' );
       $showtimeID 					= $this->input->post( 'showingTimes');
       $slots 						= $this->input->post( 'slot' );
@@ -731,7 +668,8 @@ class EventCtrl extends CI_Controller {
       $expiryCleanup = Array();	  
 	  $isActivityManageBooking = $this->functionaccess->isActivityManageBooking();
 	  $isThereSlotInSameTicketClass = true;
-	  	 	
+	  $guid;
+	  
 	  if( $ticketClassSelectionEssentials === null )
 	  {
 		/*
@@ -759,19 +697,19 @@ class EventCtrl extends CI_Controller {
       $this->functionaccess->preBookStep2Check( $eventID, $showtimeID, $slots, STAGE_BOOK_1_FORWARD );	  	  
 	  $this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_2_PROCESS );
 	  //This sets the initial cookies we need throughout the process.	  
-      if( $this->setBookingCookiesOuter( $eventID, $showtimeID, $slots, null ) === false ) return false; 
-	  	 
+      if( $this->setBookingCookiesOuterServer( $eventID, $showtimeID, $slots, null ) === false ) return false; 
+	  // after the preceeding function call, the cookies-on-server UUID ref is now available
+	  $guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+	  if( $guid === FALSE )
+	  {
+		 die('BOOK_STEP2: UNABLE TO SET GUID');
+	  }
 	  /*
 		 This checks if there are bookings marked as PENDING-PAYMENT' and yet
 		 not able to pay on the deadline - thus forfeited now.
 	  */
 	  $this->bookingmaintenance->cleanDefaultedBookings( $eventID, $showtimeID ); 
-	  /*
-		This sets encryption key whom we match with other cookies we are encrypting,
-		to avoid cookie injection.
-	  */
-	  $this->clientsidedata_model->setBookInstanceEncryptionKey();
-		
+	  
 	  // now ticket classes proper
 	  $showtimeObj   = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 
 	  $ticketClasses = $this->TicketClass_model->getTicketClassesOrderByPrice( $eventID, $showtimeObj->Ticket_Class_GroupID );
@@ -781,14 +719,14 @@ class EventCtrl extends CI_Controller {
 		is 'BEING_BOOKED' but lapsed already based on the ticket class' holding time.
 	  */	  
 	  $this->bookingmaintenance->cleanDefaultedSlots( $eventID, $showtimeID, $ticketClasses );
-	 
-	 
+	  
+	  $grandserialized_slots_uuid_str = "";	 
       foreach( $ticketClasses as $singleClass )
       {            
          $serializedClass_Slot_UUID = "";
                      
          $eachClassSlots = $this->Slot_model->getSlotsForBooking( $slots, $eventID, $showtimeID, $showtimeObj->Ticket_Class_GroupID, $singleClass->UniqueID );
-         if( $eachClassSlots === false ){		
+         if( $eachClassSlots === false ){
 			if( $isActivityManageBooking )
 			{				
 				$bookingObj = $this->Booking_model->getBookingDetails( $bookingNumber );				
@@ -808,15 +746,17 @@ class EventCtrl extends CI_Controller {
 		 }         
          foreach( $eachClassSlots  as $evSlot ) $serializedClass_Slot_UUID .= ($evSlot->UUID."_");        					//serialize UUIDs of slot
          $serializedClass_Slot_UUID = substr( $serializedClass_Slot_UUID, 0, strlen( $serializedClass_Slot_UUID )-1 );      // truncate the last underscore  
-		 $this->clientsidedata_model->setTicketClassSlotUUIDsCookie( $singleClass->UniqueID, $serializedClass_Slot_UUID );
+		 $grandserialized_slots_uuid_str .= ( $singleClass->UniqueID . "=" . $serializedClass_Slot_UUID . ";" );            // append to the string of to be written on the DB at the end of the outer foreach		 
       }//foreach
+	  
+	  $this->ndx_model->updateSlotsUUID( $guid,  $grandserialized_slots_uuid_str );
 	  
 	  if( $isActivityManageBooking )
 	  {	  		
 		if(!$this->clientsidedata_model->changeSessionActivityDataEntry( 'ticketclass', 1 )){
 			die('INTERNAL-SERVER-ERROR: Activity data cookie manipulated. Please start over by refreshing Manage Booking page.');
 		}
-		$this->clientsidedata_model->setBookingNumber( $bookingNumber );
+		$this->ndx_model->updateBookingNumber( $guid, $bookingNumber );
 		$this->clientsidedata_model->setAvailabilityOfSlotInSameTicketClass( intval( $isThereSlotInSameTicketClass ));
 	  }
 	  $this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_2_FORWARD );		// our activity tracker	
@@ -829,19 +769,21 @@ class EventCtrl extends CI_Controller {
 		$eventID;
 		$showtimeID;
 		$showtimeObj;		
-								
-		$eventID   = $this->clientsidedata_model->getEventID();
-		$showtimeID = $this->clientsidedata_model->getShowtimeID();		
+		$guid;
+		$bookingInfo;
 		
-		//  Validate if form submitted has the correct data. 	  
-		$this->functionaccess->preBookStep2FWCheck( $eventID, $showtimeID, STAGE_BOOK_2_FORWARD );
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );		
+		//  Validate if page is now accessible
+		if( !$this->functionaccess->preBookStep2FWCheck( $bookingInfo, STAGE_BOOK_2_FORWARD ) ) return false;
+		
+		$eventID     = $bookingInfo->EVENT_ID;
+		$showtimeID  = $bookingInfo->SHOWTIME_ID;
 		
 		$showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID ); 	// counter check against spoofing
 		if( $showtimeObj === false )
-		{			
-			 $data['error'] = "CUSTOM";
-			 $data['theMessage'] = "Internal Server Error.<br/>Showing time specified not found. Are you trying to hack the app?";
-			 $this->load->view( 'errorNotice', $data );
+		{						 
+			 $this->load->view( 'errorNotice', $this->bookingmaintenance->assembleShowtime404() );
 			 return false;
 		}
 		if( $this->functionaccess->isActivityManageBooking() )
@@ -849,8 +791,7 @@ class EventCtrl extends CI_Controller {
 			/*
 				Load additional data that are required by manage booking feature.
 			*/
-			$bookingNumber = $this->clientsidedata_model->getBookingNumber();
-			if( !$this->functionaccess->preBookCheckUnified( Array( $bookingNumber), STAGE_BOOK_2_FORWARD ) ) die();
+			$bookingNumber = $bookingInfo->BOOKING_NUMBER;			
 			$data['bookingObj'] = $this->Booking_model->getBookingDetails( $bookingNumber );
 			if( $data['bookingObj'] === false ) die('BOOKING_NUMBER_404');
 			$data['existingTCName'] = $this->TicketClass_model->getSingleTicketClassName( 
@@ -860,6 +801,7 @@ class EventCtrl extends CI_Controller {
 			);
 			$data['existingPayments'] = $this->Payment_model->getSumTotalOfPaid( $bookingNumber , NULL );
 		}
+		$data['bookingInfo'] = $bookingInfo;
 		$data['ticketClasses'] = $this->TicketClass_model->getTicketClasses( $eventID, $showtimeObj->Ticket_Class_GroupID );
 		$data['eventInfo'] 	   = $this->Event_model->getEventInfo( $eventID );
 		$data['showtimeObj']   = $showtimeObj;
@@ -872,58 +814,69 @@ class EventCtrl extends CI_Controller {
 		$showtimeID;
 		$ticketClassGroupID;
 		$ticketClassUniqueID;		
+		$guid;
+		$bookingInfo;
 		
-		$eventID 			 = $this->clientsidedata_model->getEventID();
-		$showtimeID			 = $this->clientsidedata_model->getShowtimeID();
-		$ticketClassGroupID  = $this->clientsidedata_model->getTicketClassGroupID();
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
 		$ticketClassUniqueID = $this->input->post('selectThisClass');
 		
-		//	Check if this page can be accessed already.				
-		$this->functionaccess->preBookStep3PRCheck( $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID, STAGE_BOOK_2_FORWARD );
+		//	Check if this page can be accessed already.		
+		if( !$this->functionaccess->preBookStep3PRCheck( $bookingInfo, $ticketClassUniqueID, STAGE_BOOK_2_FORWARD ) ) return false;		
+		$eventID 			 = $bookingInfo->EVENT_ID;
+		$showtimeID			 = $bookingInfo->SHOWTIME_ID;
+		$ticketClassGroupID  = $bookingInfo->TICKET_CLASS_GROUP_ID;			
+		
 	    $this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_3_PROCESS );
 		$selectedTicketClass = $this->TicketClass_model->getSingleTicketClass( $eventID, $ticketClassGroupID, $ticketClassUniqueID );
 		$allOtherClasses     = $this->TicketClass_model->getTicketClassesExceptThisUniqueID( $eventID, $ticketClassGroupID, $ticketClassUniqueID );
-		if( $selectedTicketClass === false /*or $allOtherClasses === false*/ ) // 08FEB2012-2145, turned into comment condition somewhat ambiguous
+		if( $selectedTicketClass === false )
 		{					
-			 $this->cancelBookingProcess();
-			 $data['error'] = "CUSTOM";         
-			 $data['theMessage'] = "INTERNAL SERVER ERROR<br/><br/>Cannot find DB records for the selected ticket class. Please contact the system administrator";
-			 $this->load->view( 'errorNotice', $data );
+			 $this->cancelBookingProcess();			 
+			 $this->load->view( 'errorNotice', $this->bookingmaintenance->assembleTicketClassOnDB404() );
 			 return false;
 		}
-		$this->Slot_model->freeSlotsBelongingToClasses( $allOtherClasses );		// since we now don't care about these, free so.
+		$chosen_class_slot_UUIDs_str = $this->UsefulFunctions_model->getValueOfWIN5_Data( $ticketClassUniqueID, $bookingInfo->SLOTS_UUID );		
+		$this->bookingmaintenance->freeSlotsBelongingToClasses_NDX( $ticketClassUniqueID, $bookingInfo->SLOTS_UUID );
+		$this->ndx_model->updateSlotsUUID( $guid, $chosen_class_slot_UUIDs_str );
+		
+		//$this->Slot_model->freeSlotsBelongingToClasses( $allOtherClasses );		// since we now don't care about these, free so.
 		/* 
 			Now set the uniqueID of the ticketclass.
 			Change expiry time later to how long is ticket class holding time.
 		 */
-		$this->clientsidedata_model->setTicketClassUniqueID($ticketClassUniqueID, 3600);
+		$this->ndx_model->updateTicketClassUniqueID( $guid, $ticketClassUniqueID );
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_3_FORWARD );
 		$this->clientsidedata_model->setBookingProgressIndicator( 3 );
-		if( $this->functionaccess->isActivityBookingTickets() )
+		if( $this->functionaccess->isActivityBookingTickets() ){
 			redirect( 'EventCtrl/book_step3_forward' );
-		else
-		if( $this->functionaccess->isActivityManageBooking() ){
-			//$this->clientsidedata_model->changeSessionActivityDataEntry( 'ticketclass', 1 );
-			$bookingNumber = $this->clientsidedata_model->getBookingNumber();			
+		}else
+		if( $this->functionaccess->isActivityManageBooking() ){			
+			$bookingNumber = $bookingInfo->BOOKING_NUMBER;
 			$bookingObj    = $this->Booking_model->getBookingDetails( $bookingNumber );
 			$isTicketClassChanged = ( intval($bookingObj->TicketClassUniqueID) !== intval($ticketClassUniqueID) ) ? 1 : 0;
 			$isShowtimeChanged    = ( intval($bookingObj->ShowingTimeUniqueID) !== intval($showtimeID) ) ? 1 : 0;			
 			$appendThisActivityDataEntry = 'isTicketClassChanged='.$isTicketClassChanged.';isShowtimeChanged='.$isShowtimeChanged.';';	
-			$this->clientsidedata_model->appendSessionActivityDataEntryLong(  $appendThisActivityDataEntry );
-			
+			$this->clientsidedata_model->appendSessionActivityDataEntryLong(  $appendThisActivityDataEntry );			
 			redirect( 'EventCtrl/manageBooking_changeShowingTime_process2' );
 		}else{
 			die( "INVALID SESSION ACTIVITY: " );
 		}
 	}//book_step3()
 			
-	function book_step3_forward(){				
-		$this->functionaccess->preBookStep3FWCheck( STAGE_BOOK_3_FORWARD );
-		$this->load->view( 'book/bookStep3' );
+	function book_step3_forward(){
+		$guid;
+		$bookingInfo;
+		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		if( !$this->functionaccess->preBookStep3FWCheck( $bookingInfo, STAGE_BOOK_3_FORWARD ) ) return FALSE;
+		$data[ 'bookingInfo' ] = $bookingInfo;
+		$this->load->view( 'book/bookStep3', $data );
 	}//book_step3_forward
 	
 	function book_step4()
-	{			
+	{
 		$sessionActivity;
 		$eventID;
 		$ticketClassGroupID;
@@ -938,17 +891,23 @@ class EventCtrl extends CI_Controller {
 		$uplbConstituent = Array();
 		$guest_StudentNumPair = "";
 		$guest_EmpNumPair = "";
-				
-		// get essential data
-		$eventID              = $this->clientsidedata_model->getEventID();
-		$showtimeID           = $this->clientsidedata_model->getShowtimeID();
-		$ticketClassGroupID   = $this->clientsidedata_model->getTicketClassGroupID();
-		$ticketClassUID       = $this->clientsidedata_model->getTicketClassUniqueID();		
-		$slots                = intval( $this->clientsidedata_model->getSlotsBeingBooked() );		
-		$guestUUIDs           = $this->clientsidedata_model->getTicketClassSlotUUIDsCookie( $ticketClassUID );	
-		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+	
 		// check if accessible already.
-		$this->functionaccess->preBookStep4PRCheck( $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUID, $slots, $guestUUIDs,  STAGE_BOOK_3_FORWARD );
+		if( !$this->functionaccess->preBookStep4PRCheck( $bookingInfo, STAGE_BOOK_3_FORWARD ) ) {
+			return FALSE;
+		}
+		
+		// get essential data
+		$eventID              = $bookingInfo->EVENT_ID;
+		$showtimeID           = $bookingInfo->SHOWTIME_ID;
+		$ticketClassGroupID   = $bookingInfo->TICKET_CLASS_GROUP_ID;
+		$ticketClassUID       = $bookingInfo->TICKET_CLASS_UNIQUE_ID;
+		$slots                = $bookingInfo->SLOT_QUANTITY;
+		$guestUUIDs           = $bookingInfo->SLOTS_UUID;
+		
+		
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_PROCESS );
 		
 		// tokenize guest UUIDs
@@ -988,6 +947,7 @@ class EventCtrl extends CI_Controller {
 			
 			$this->Guest_model->insertGuestDetails(
 					$bookingNumber,
+					$guestNum,
 					intval( $this->input->post( $identifier."accountNum" ) ),
 					$this->input->post( $identifier."firstName" ),					
 					$this->input->post( $identifier."middleName" ),					
@@ -1017,11 +977,7 @@ class EventCtrl extends CI_Controller {
 				$eachGuest->UUID				
 			);
 			if( $eachGuest->studentNumber != NULL or $eachGuest->employeeNumber != NULL )
-			{
-				/*$uplbConstituent[ $eachGuest->UUID ] = Array(
-					'studentNumber'  => $eachGuest->studentNumber ,
-					'employeeNumber' => $eachGuest->employeeNumber
-				);*/
+			{				
 				$guest_StudentNumPair .= ($eachGuest->studentNumber.'_' );
 				$guest_EmpNumPair .= ($eachGuest->employeeNumber.'_' );
 			}
@@ -1033,11 +989,11 @@ class EventCtrl extends CI_Controller {
 		$guest_EmpNumPair  = substr( $guest_EmpNumPair, 0, strlen($guest_EmpNumPair)-1 );
 		
 		// now set the bookingNumber for cookie access		
-		$this->clientsidedata_model->setBookingNumber( $bookingNumber );
+		$this->ndx_model->updateBookingNumber( $guid, $bookingNumber );
 		
 		// Set payment deadline date and time 
-		$this->clientsidedata_model->setPaymentDeadlineDate( $bookingPaymentDeadline["date"] );
-		$this->clientsidedata_model->setPaymentDeadlineTime( $bookingPaymentDeadline["time"] );
+		$this->ndx_model->updatePaymentDeadlineDate( $guid, $bookingPaymentDeadline["date"] );
+		$this->ndx_model->updatePaymentDeadlineTime( $guid, $bookingPaymentDeadline["time"] );
 		
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );		// our activity tracker
 		$this->clientsidedata_model->setBookingProgressIndicator( 4 );
@@ -1048,8 +1004,8 @@ class EventCtrl extends CI_Controller {
 		*/		
 		if( strlen( $guest_StudentNumPair ) > 0  or strlen( $guest_EmpNumPair ) > 0 ) 
 		{			
-			$this->clientsidedata_model->setUPLBConsStudentNumPair( $guest_StudentNumPair );
-			$this->clientsidedata_model->setUPLBConsEmpNumPair( $guest_EmpNumPair );
+			$this->ndx_model->updateUPLBStudentNumData( $guest_StudentNumPair );
+			$this->ndx_model->updateUPLBEmployeeNumData( $guest_EmpNumPair );
 			
 			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_CLASS_1_FORWARD );		// our activity tracker
 			redirect( 'AcademicCtrl/associateClassToBooking' );
@@ -1058,18 +1014,20 @@ class EventCtrl extends CI_Controller {
 		}
 	}//book_step4
 			
-	function book_step4_forward(){
-			
-		$eventID              = $this->clientsidedata_model->getEventID();
-		$showtimeID           = $this->clientsidedata_model->getShowtimeID();		
-		$bookingNumber        = $this->clientsidedata_model->getBookingNumber();		
+	function book_step4_forward(){				
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		
+		if( !$this->functionaccess->preBookStep4FWCheck( $bookingInfo, STAGE_BOOK_4_FORWARD ) ) return false;		// Access validity indicator
+		
+		$eventID              = $bookingInfo->EVENT_ID;
+		$showtimeID           = $bookingInfo->SHOWTIME_ID;
+		$bookingNumber        = $bookingInfo->BOOKING_NUMBER;
 		$isShowtimeChanged 	  = intval(  $this->clientsidedata_model->getSessionActivityDataEntry( 'isShowtimeChanged' ));
 		$isTicketClassChanged = intval(  $this->clientsidedata_model->getSessionActivityDataEntry( 'isTicketClassChanged' ));
 		$isComingFromTicketClass;
-						
-		$this->functionaccess->preBookStep4FWCheck( STAGE_BOOK_4_FORWARD );		// Access validity indicator		
+
 		$this->seatmaintenance->cleanDefaultedSeats( $eventID, $showtimeID );
-		
 		$data['guests'] 				  = $this->Guest_model->getGuestDetails( $bookingNumber );
 		$data['manageBooking_chooseSeat'] = $this->functionaccess->isActivityManageBookingAndChooseSeat();
 		
@@ -1087,6 +1045,7 @@ class EventCtrl extends CI_Controller {
 			);
 		}
 		$data['isTicketClassChanged'] = $isTicketClassChanged;
+		$data[ 'bookingInfo' ] = $bookingInfo;
 		$this->load->view( 'book/bookStep4', $data);
 	}//book_step4_forward
 	
@@ -1095,156 +1054,313 @@ class EventCtrl extends CI_Controller {
 		/*
 			Created 13FEB2012-2334
 		*/
-		$bookInstanceEncryptionKey;
 		$slots;
-		$x;
-		$uuidEligibility;
-		$sendSeatInfoToView = Array();		
-		$totalCharges = 0;
+		$x;				
+		$totalCharges = FREE_AMOUNT;
 		$bookingNumber;
-		$billingInfo     		   = NULL;		
-		$eventID 		           = $this->clientsidedata_model->getEventID();
-		$showtimeID 	           = $this->clientsidedata_model->getShowtimeID();
-		$slots 			           = intval( $this->clientsidedata_model->getSlotsBeingBooked() );
-		$bookingNumber 	 		   = $this->clientsidedata_model->getBookingNumber();
-		$bookInstanceEncryptionKey = $this->clientsidedata_model->getBookInstanceEncryptionKey();
+		$billingInfo = NULL;		
+		$eventID;
+		$showtimeID;
+		$slots;
+		$bookingNumber;
+		$guid;
+		$bookingInfo;
+		$guestObj;
+		$seat_assignments = Array();
+				
 		
-		// access validity check
-		$this->functionaccess->preBookStep5PRCheck( $eventID, $showtimeID, $slots, $bookingNumber, STAGE_BOOK_4_FORWARD );		
+		if( !$this->input->is_ajax_request() ){
+			//for now, just die, but later, divert to book_step4_forward
+			die('This should be only accessible via AJAX request.');
+		}
+		
+		/* <area id="book_step5_pr_access_elgibility_check" > */ {
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );	
+		$pre_check = $this->functionaccess->preBookStep5PRCheck( $bookingInfo, STAGE_BOOK_4_FORWARD ); // Access validity indicator		
+		if( $pre_check !== TRUE ) return FALSE;
+		}
+		// </area>
+		
+		/* <area id="book_step5_pr_variable_init" > */ {
+		$eventID              = $bookingInfo->EVENT_ID;
+		$showtimeID           = $bookingInfo->SHOWTIME_ID;
+		$bookingNumber        = $bookingInfo->BOOKING_NUMBER;
+		$slots				  = $bookingInfo->SLOT_QUANTITY;
+		// get guest details, assumption: no error here (i.e., no entries in `booking_guests`)
+		$guestObj = $this->Guest_model->getGuestDetails( $bookingNumber );
+		}
+		// </area>
+		
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_PROCESS );
 						
-		/*
+		/* <area id="book_step5_pr_harvest_post_data" > */ {
+		// harvest submitted data and format it accordingly
+		for( $x = 0; $x < $slots; $x++ )
+		{			
+			$seatMatrix 		  = $this->input->post( "g".($x+1)."_seatMatrix" );
+			log_message( 'DEBUG', 'guest seat ' . $seatMatrix );
+			$seatMatrix_tokenized = explode( '_', $seatMatrix );
+			// if guest did not choose seat, submitted data for him is "0" ( not in form of "X_Y" )
+			$guest_chose_seat  =  ( count( $seatMatrix_tokenized ) == 2 );
+			// array index starts at zero, but this represents Guest # x + 1
+			$seat_assignments[ $x ] = Array(
+				"uuid" => $guestObj[ $x ]->UUID,
+				"x" => ( $guest_chose_seat ) ? $seatMatrix_tokenized[0] : "-1",
+				"y" => ( $guest_chose_seat ) ? $seatMatrix_tokenized[1] : "-1"
+			);						
+		}
+		}
+		//</area>
+		
+		/* <area id="book_step5_pr_check_seat_select_required" > */{
+		if( $this->Event_model->isSeatSelectionRequired( $eventID, $showtimeID ) );
+		{			
+			foreach( $seat_assignments as $key => $single_data  )
+			{				
+				if( $single_data[ "x" ] == "-1" or $single_data[ "y" ] == "-1" )
+				{			
+					echo $this->MakeXML_model->XMLize_AJAX_Response(						
+							"error", 
+							"error", 
+							"SEAT_REQUIRED",
+							0, 
+							"Seat selection is required for all guests.",
+							""
+					);
+					// reset our activity tracker so they can submit to this again
+					$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
+					return FALSE;
+				}
+			}
+		}
+		}
+		//</area>
+		
+		/* <area id="book_step5_pr_check_if_seat_existent" > */{			
+			foreach( $seat_assignments as $key => $single_data  )
+			{
+				$trouble = ( !is_numeric( $single_data[ "x" ] ) or !is_numeric( $single_data[ "y" ] ) );
+				/* let's assign the results to the existing array, it will be useful
+					for the ticket class check after this. */
+				if( !$trouble ){
+					$seat_assignments[ $key ][ 'obj' ] =  $this->Seat_model->getSingleActualSeatData(
+						$single_data[ "x" ],
+						$single_data[ "y" ],
+						$eventID,
+						$showtimeID
+					);
+					$trouble = ( $seat_assignments[ $key ][ 'obj' ] === FALSE );
+				}
+				if( $trouble )
+				{
+					echo $this->MakeXML_model->XMLize_AJAX_Response(
+							"error", 
+							"error", 
+							"INVALID_SEAT_DATA|0",
+							0, 
+							"",
+							""
+					);
+					// reset our activity tracker so they can submit to this again
+					$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
+					return FALSE;
+				}
+			}
+		}
+		//</area>
+		
+		/* <area id="book_step5_pr_check_if_seat_is_tc" > ( i.e. anti-"Chrome's inspect element > Edit attribute " ) */{
+			foreach( $seat_assignments as $key => $single_data  )
+			{				
+				if( intval($single_data[ 'obj' ]->Ticket_Class_UniqueID) != $bookingInfo->TICKET_CLASS_UNIQUE_ID )
+				{					
+					log_message( 'DEBUG', "CIRCUMVENT_SEAT_BLOCK A ". intval($single_data[ 'obj' ]->Ticket_Class_UniqueID) . "-". $bookingInfo->TICKET_CLASS_UNIQUE_ID  );
+					log_message( 'DEBUG', "CIRCUMVENT_SEAT_BLOCK B ". $single_data[ "x" ] . "-" .$single_data[ "y" ] );
+					echo $this->MakeXML_model->XMLize_AJAX_Response(
+							"error", 
+							"", 
+							"CIRCUMVENT_SEAT_BLOCK",
+							0, 
+							"",
+							""
+					);					;
+					// reset our activity tracker so they can submit to this again
+					$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
+					return FALSE;
+				}
+			}
+		}
+		//</area>
+		
+		/* <area id="bookstep5_pr_seat_occupy_check" > */ {
+		$seat_occupy_check = $this->seatmaintenance->areSeatsOccupied( $seat_assignments, $eventID, $showtimeID );
+		if( $seat_occupy_check[0] === TRUE )
+		{
+			echo $this->MakeXML_model->XMLize_AJAX_Response(					
+					"error", 
+					"error", 
+					$seat_occupy_check[1]."|".$seat_occupy_check[2], 
+					0, 
+					"Seat is occupied",
+					""
+			);
+			// reset our activity tracker so they can submit to this again
+			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
+			return FALSE;
+		}
+		}
+		//</area>
+		
+		/*<area id="bookstep5_pr_seat_finally_assign_db" > */ {
+		/* 
 			For each seat submitted (chosen by the user), get its visual representation
 			and mark it as assigned
 		*/
 		for( $x = 0; $x < $slots; $x++ )
-		{
-			$seatMatrix 		  = $this->input->post( "g".($x+1)."_seatMatrix" );
-			$seatMatrix_tokenized = explode( '_', $seatMatrix );
-			$guestUUID 			  = $this->input->post(  "g".($x+1)."_uuid" );
-			$sendSeatInfoToView[ $guestUUID ] = $this->Seat_model->getVisualRepresentation( 
-				$seatMatrix_tokenized[0], 
-				$seatMatrix_tokenized[1],
+		{			
+			$sendSeatInfoToView[ $seat_assignments[ $x ][ 'uuid' ] ] = $this->Seat_model->getVisualRepresentation(
+				$seat_assignments[ $x ][ 'x' ],
+				$seat_assignments[ $x ][ 'y' ],
 				$eventID,
 				$showtimeID
-			);			
+			);
 			$this->Seat_model->markSeatAsAssigned(
 				$eventID,
 				$showtimeID,
-				$seatMatrix_tokenized[0], 
-				$seatMatrix_tokenized[1]
+				$seat_assignments[ $x ][ 'x' ],
+				$seat_assignments[ $x ][ 'y' ]
 			);
 			$this->Guest_model->assignSeatToGuest( 
-				$guestUUID, $seatMatrix_tokenized[0], $seatMatrix_tokenized[1] 
+				$seat_assignments[ $x ][ 'uuid' ],
+				$seat_assignments[ $x ][ 'x' ],
+				$seat_assignments[ $x ][ 'y' ]
 			);			
 		}
+		}
+		// </area>
+		
+		/*<area id="book-step5-pr-pre-fw-prerequisite" made="07JUN2012-1755" > */ {
+		//duplicates with area#pre-book-step5-fw-prerequisite
 		$billingInfo  = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
 		$purchases    = $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ];
 		$totalCharges = $billingInfo[ AKEY_AMOUNT_DUE ];
-		$purchaseCount = count( $purchases );
-		$this->encryptPurchaseCookies( $bookInstanceEncryptionKey, $bookingNumber, $purchases );
-		$this->encryptSeatVisualCookie( $bookInstanceEncryptionKey, $sendSeatInfoToView );
-		
-		$this->clientsidedata_model->setPurchaseCount( $purchaseCount );
-		$this->clientsidedata_model->setPurchaseTotalCharge( $totalCharges );
-		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );		
-		if( $totalCharges === FREE_AMOUNT )		
-			redirect( 'EventCtrl/book_step6' );
-		else			
-			$this->clientsidedata_model->setBookingProgressIndicator( 5 );
-			redirect( 'EventCtrl/book_step5_forward' );
-	}//book_step5(..)
-	
-	function book_step5_forward()
-	{
-		$bookInstanceEncryptionKey;		
-		$bookingNumber             = $this->clientsidedata_model->getBookingNumber();
-		$eventID                   = $this->clientsidedata_model->getEventID();
-		$showtimeID                = $this->clientsidedata_model->getShowtimeID();
-		$slots 			           = intval( $this->clientsidedata_model->getSlotsBeingBooked() );
-		$totalCharges 			   = floatval( $this->clientsidedata_model->getPurchaseTotalCharge() );
-		$bookInstanceEncryptionKey = $this->clientsidedata_model->getBookInstanceEncryptionKey();
-		
-		//access validity check
-		if( !$this->functionaccess->preBookStep5FWCheck( $eventID, $showtimeID, $slots, $bookingNumber, $totalCharges, STAGE_BOOK_5_FORWARD ) ) return false;		
-				 																		
-		//	Decoding purchase identifiers		
-		$decodingPurchaseCookieObj = $this->decodePurchaseCookie_And_GetObjs( $bookInstanceEncryptionKey );		
-		if( $decodingPurchaseCookieObj['boolean'] )
-		{
-			$data['purchases'] = $decodingPurchaseCookieObj['textStatusFriendly'];
-		}else{
-			//$this->cancelBookingProcess();
-			echo "Booking process *should BE* cancelled.<br/><br/>";
-			die( var_dump( $decodingPurchaseCookieObj ) );
+		$purchaseCount = count( $purchases );		
+		$this->ndx_model->updatePurchaseID( $guid, $this->prepPurchaseCookies( $purchases ) );
+		$this->ndx_model->updateVisualSeatData( $guid, $this->prepSeatVisualData( $sendSeatInfoToView  ) );		
 		}
+		//</area>
 		
-		//	Decoding seat visual cookie		
-		$decodingSeatVisualsCookieObj = $this->decodeSeatVisualCookie( $bookInstanceEncryptionKey );
-		if($decodingSeatVisualsCookieObj['boolean'] )
-		{
-			$data['seatVisuals'] = $decodingSeatVisualsCookieObj['textStatusFriendly'];
-		}else{
-			
-			die( var_dump( $decodingSeatVisualsCookieObj ) );
-		}				
-		$data['paymentChannels'] = $this->Payment_model->getPaymentChannelsForEvent( $eventID, $showtimeID, FALSE );
-		$data['guests'] 		 = $this->Guest_model->getGuestDetails( $bookingNumber );		
-		$this->load->view( 'book/bookStep5', $data );
+		/* <area id="book-step5-pr-conclusion" > */ {		
+		$redirectURL = "EventCtrl/";
+		$redirectURL .= ( ( $totalCharges === FREE_AMOUNT ) ? 'book_step6' : "book_step5_forward" );
+		if( $totalCharges > FREE_AMOUNT ) $this->clientsidedata_model->setBookingProgressIndicator( 5 );
+		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );	
+		echo $this->MakeXML_model->XMLize_AJAX_Response(					
+			"ajax", 
+			"success", 
+			"PROCEED",
+			0, 
+			"Taking you to the next page, please wait..",
+			base_url().$redirectURL
+		);
+		return TRUE;
+		}
+		//<area>
+	}//book_step5(..)
+		
+	function book_step5_forward()
+	{		
+		
+		$guid;
+		$bookingInfo;
+		$bookingNumber;
+		$eventID;
+		$showtimeID;
+		$excludePaymentMode;
+		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		//access validity check
+		if( !$this->functionaccess->preBookStep5FWCheck( $bookingInfo, STAGE_BOOK_5_FORWARD ) ) return false;
+		
+		$bookingNumber           = $bookingInfo->BOOKING_NUMBER;
+		$eventID                 = $bookingInfo->EVENT_ID;
+		$showtimeID              = $bookingInfo->SHOWTIME_ID;
+					
+		/*  checks for any payment mode exclusion. The function returns an integer, for cases
+			like when we are changing payment modes for a yet-unpaid booking.
+		*/
+		$excludePaymentMode = $this->clientsidedata_model->getPaymentModeExclusion();		
+		
+		$billingInfo  = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
+		/*
+			Though we could just use $billingInfo[ AKEY_AMOUNT_DUE ] instead of settings
+			this thru CI session data, however, in book_step6(), we ought to have first
+			the total charges in deciding the payment mode. If we don't call this function,
+			we have to get cookie-on-server data first then call bookingmaintenance->getBillingRelevantData().
+			But then, this is a circular dependency and wasteful since you have to do
+			some pre-checking whether these values are existing and it removes the essence of
+			functionaccess->preBookStep6PRCheck(..). 
+			Just setting this in CI session cookie and then retrieving from there is 
+			easier.
+		*/
+		$this->clientsidedata_model->setPurchaseTotalCharge(  $billingInfo[ AKEY_AMOUNT_DUE ] );
+		$data['bookingInfo']     = $bookingInfo;
+		$data['purchases']       = $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ];
+		$data['total_charges']   = $billingInfo[ AKEY_AMOUNT_DUE ];
+		$data['seatVisuals']     = $this->Seat_model->make_array_visualSeatData( $bookingInfo->VISUALSEAT_DATA );
+		$data['paymentChannels'] = $this->Payment_model->getPaymentChannelsForEvent( $eventID, $showtimeID, FALSE, $excludePaymentMode );
+		$data['guests'] 		 = $this->Guest_model->getGuestDetails( $bookingNumber );	
+		$this->load->view( 'book/bookStep5', $data );		
 	}// book_step5_forward(..)
 	
 	function book_step6()
-	{		
-		//die( var_dump( $_POST ) );
+	{				
 		$clientUUIDs;
 		$guestSeats = null;
 		$totalCharges;
 		$clientUUIDs;
 		$paymentChannel;
 		$paymentChannel_obj;
+		$guid;
+		$bookingInfo;
 		
-		$bookingNumber             = $this->clientsidedata_model->getBookingNumber();
-		$eventID                   = $this->clientsidedata_model->getEventID();
-		$showtimeID                = $this->clientsidedata_model->getShowtimeID();		
-		$bookInstanceEncryptionKey = $this->clientsidedata_model->getBookInstanceEncryptionKey();
-		$slots 			           = $this->clientsidedata_model->getSlotsBeingBooked();
-		$totalCharges 			   = $this->clientsidedata_model->getPurchaseTotalCharge();
-		$ticketClassUniqueID	   = $this->clientsidedata_model->getTicketClassUniqueID();
-		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		$totalCharges = $this->clientsidedata_model->getPurchaseTotalCharge();
 		/*
 			If total charges is zero, then payment mode unique_id is 0 (factory default - auto
 			confirmation since free), else, the one sent by post.
 		*/
-		$paymentChannel = ( is_float( $totalCharges ) and $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : intval($this->input->post( 'paymentChannel' ) ) ;		
+		$paymentChannel = ( is_float( $totalCharges ) and $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : intval($this->input->post( 'paymentChannel' ) ) ;
 		
 		// access validity check				
-		$this->functionaccess->preBookStep6PRCheck( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots, STAGE_BOOK_5_FORWARD );
+		if( !$this->functionaccess->preBookStep6PRCheck( $totalCharges, $bookingInfo, STAGE_BOOK_5_FORWARD ) ) return false;
 		
+		$bookingNumber           = $bookingInfo->BOOKING_NUMBER;
+		$eventID                 = $bookingInfo->EVENT_ID;
+		$showtimeID              = $bookingInfo->SHOWTIME_ID;
+		$slots					 = $bookingInfo->SLOT_QUANTITY;
+		$ticketClassUniqueID	 = $bookingInfo->TICKET_CLASS_UNIQUE_ID;
+		$billingInfo  			 = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
+		$totalCharges 			 = $billingInfo[ AKEY_AMOUNT_DUE ];
+
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_PROCESS );		
 		// serialize guest UUIDs
-		$clientUUIDs = explode( "_" , $this->input->post( $this->clientsidedata_model->getTicketClassSlotUUIDsCookie( $ticketClassUniqueID ) ) );
+		$clientUUIDs = explode( "_" ,$bookingInfo->SLOTS_UUID );
 		// to be accessed in forward page
-		$this->clientsidedata_model->setPaymentChannel( $paymentChannel );						   
+		$this->clientsidedata_model->setPaymentChannel( $paymentChannel );
 		$this->Payment_model->setPaymentModeForPurchase( $bookingNumber, $paymentChannel, NULL );		
 		$paymentChannel_obj      = $this->Payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );
+		if( $paymentChannel_obj === FALSE )
+		{
+			die('Payment mode not found! Are you hacking the app?');
+			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );
+		}
 		$eventObj                = $this->Event_model->getEventInfo( $eventID );
 		$data['guests']          = $this->Guest_model->getGuestDetails( $bookingNumber );
 		$data['singleChannel']   = $paymentChannel_obj;
-		$data['paymentChannels'] = $this->Payment_model->getPaymentChannelsForEvent( 
-			$eventID, 
-			$showtimeID,
-			( $totalCharges === FREE_AMOUNT )
-		);
-		
-		//	Decoding seat visual cookie		
-		$decodingSeatVisualsCookieObj = $this->decodeSeatVisualCookie( $bookInstanceEncryptionKey );
-		if($decodingSeatVisualsCookieObj['boolean'] )
-		{
-			$data['seatVisuals'] = $decodingSeatVisualsCookieObj['textStatusFriendly'];
-		}else{
-			die( var_dump( $decodingSeatVisualsCookieObj ) );
-		}		
-						
 		if( $totalCharges === FREE_AMOUNT )
 		{
 			$processPaymentResultArr = $this->bookingmaintenance->processPayment( $bookingNumber );
@@ -1308,6 +1424,7 @@ class EventCtrl extends CI_Controller {
 				/*
 					So far, other allowed values for $paymentChannel_obj->Type
 					are { "COD" | "OTHER" }. No need to process those for now.
+					"COD" if processed outside of these if() statements. "OTHER" - later.
 				*/
 			}
 		}
@@ -1356,76 +1473,60 @@ class EventCtrl extends CI_Controller {
 		$eventID;
 		$showtimeID;
 		$bookingNumber;
-		$bookInstanceEncryptionKey;
+		$guid;
+		$bookingInfo;
 		
-		$bookingNumber             = $this->clientsidedata_model->getBookingNumber();
-		$eventID                   = $this->clientsidedata_model->getEventID();
-		$showtimeID                = $this->clientsidedata_model->getShowtimeID();		
-		$bookInstanceEncryptionKey = $this->clientsidedata_model->getBookInstanceEncryptionKey();
-		$totalCharges 			   = $this->clientsidedata_model->getPurchaseTotalCharge();
-		$paymentChannel 		   = ( $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : $this->clientsidedata_model->getPaymentChannel();
-		$slots 			           = $this->clientsidedata_model->getSlotsBeingBooked();
-		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
 		// access validity check				
-		$this->functionaccess->preBookStep6FWCheck( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots, STAGE_BOOK_6_FORWARD );
+		if( !$this->functionaccess->preBookStep6FWCheck( $bookingInfo, STAGE_BOOK_6_FORWARD ) ) return false;
 		
-		$paymentChannel_obj    = $this->Payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );		
+		$bookingNumber           = $bookingInfo->BOOKING_NUMBER;
+		$eventID                 = $bookingInfo->EVENT_ID;
+		$showtimeID              = $bookingInfo->SHOWTIME_ID;
+		$slots					 = $bookingInfo->SLOT_QUANTITY;
+		$ticketClassUniqueID	 = $bookingInfo->TICKET_CLASS_UNIQUE_ID;
+		$billingInfo  			 = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
+		$totalCharges 			 = $this->clientsidedata_model->getPurchaseTotalCharge();
+		$paymentChannel 		 = ( $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : $this->clientsidedata_model->getPaymentChannel();
+						
+		$paymentChannel_obj    = $this->Payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );
 		$data['singleChannel'] = $paymentChannel_obj;
 		$data['guests']        = $this->Guest_model->getGuestDetails( $bookingNumber );
+		$data['purchases']     = ($billingInfo[ AKEY_PAID_PURCHASES_ARRAY ] === FALSE ) ? $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ] : $billingInfo[ AKEY_PAID_PURCHASES_ARRAY ];
+		$data['pddate']        = $data['purchases'][0]->Deadline_Date;
+		$data['pdtime']        = $data['purchases'][0]->Deadline_Time;
+		$data['seatVisuals']   = $this->Seat_model->make_array_visualSeatData( $bookingInfo->VISUALSEAT_DATA );
+		$data['bookingInfo']   = $bookingInfo;
 		
-		//	Decoding purchase identifiers				
-		$decodingPurchaseCookieObj = $this->decodePurchaseCookie_And_GetObjs( $bookInstanceEncryptionKey );		
-		if( $decodingPurchaseCookieObj['boolean'] )
-		{
-			$data['purchases'] = $decodingPurchaseCookieObj['textStatusFriendly'];
-		}else{			
-			echo "<h1>Notice</h1>";
-			echo "<p>You have seen this most probably because you have clicked the<br/>";
-			echo "refresh button on your browser. This is not supported. Please go to the";
-			echo "\"Manage Booking\" section in the homepage to view the details of your booking";
-			echo "</p>";			
-		}
-		//	Decoding seat visual cookie		
-		$decodingSeatVisualsCookieObj = $this->decodeSeatVisualCookie( $bookInstanceEncryptionKey );
-		if($decodingSeatVisualsCookieObj['boolean'] )
-			$data['seatVisuals'] = $decodingSeatVisualsCookieObj['textStatusFriendly'];
-		else{
-			echo "<h1>Notice</h1>";
-			echo "<p>You have seen this most probably because you have clicked the<br/>";
-			echo "refresh button on your browser. This is not supported. Please go to the";
-			echo "\"Manage Booking\" section in the homepage to view the details of your booking";
-			echo "</p>";
-			die();
-		}
 		if( $paymentChannel_obj->Type == "COD" )
 		{			
 			$this->load->view( 'book/bookStep6_COD', $data);
 		}else
 		if( $paymentChannel_obj->Type == "ONLINE" )
-		{										
+		{
 			/*
 				If online payment worked, then booking should not have any more charges as evidenced
-				by return of BOOLEAN FALSE of getUnpaidPurchases
-			*/				
-			if( $this->Payment_model->getUnpaidPurchases( $bookingNumber ) === FALSE )
+				by return of BOOLEAN FALSE of getUnpaidPurchases in bookingmaintenace->getBillingRelevantData(.)
+			*/
+			if( $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ] === FALSE )
 			{
 				$this->load->view( 'confirmReservation/confirmReservation02-free', $data );						
-			}else{
+			}else{				
+				$this->clientsidedata_model->setBookingProgressIndicator( 5 );
 				// set again to be able to access  payment modes page
 				$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );
 				echo "<h1>Notice</h1>";
 				echo "<p>There is something fishy with your online payment.<br/><br/> Please use other payment methods.(Please don't refresh page else error).</p>";
 				echo "<br/>";
 				echo '<a href="'.base_url().'EventCtrl/book_step5_forward">Go back to Payment modes</a>';
-			}			
+			}
 		}else
 		if( $paymentChannel_obj->Type == "FREE" )
-		{	
-			$this->clientsidedata_model->updateSessionActivityStage( -1 );
+		{			
 			$this->load->view( 'confirmReservation/confirmReservation02-free', $data );			
 		}else{
-			echo "WHAT ERROR IS THIS?? PAYMENT_MODE ERROR"; // EC 5111
-			$this->clientsidedata_model->updateSessionActivityStage( -1 );
+			echo "WHAT ERROR IS THIS?? PAYMENT_MODE ERROR"; // EC 5111			
 		}
 	}//book_step6_forward()
 	
@@ -1466,16 +1567,20 @@ class EventCtrl extends CI_Controller {
 		$ticketClassGroupID;
 		$ticketClasses;
 		$bookingStage;
-				
+		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		
 		$sessionActivity    = $this->clientsidedata_model->getSessionActivity();
-		$eventID            = $this->clientsidedata_model->getEventID();
-		$ticketClassGroupID = $this->clientsidedata_model->getTicketClassGroupID();
-		$bookingNumber      = $this->clientsidedata_model->getBookingNumber();
+		$eventID            = $bookingInfo->EVENT_ID;
+		$ticketClassGroupID = $bookingInfo->TICKET_CLASS_GROUP_ID;
+		$bookingNumber      = $bookingInfo->BOOKING_NUMBER;
+		$ticketClassUniqueID = $bookingInfo->TICKET_CLASS_UNIQUE_ID;
 		
 		//access validity check
 		//$this->functionaccess->preCancelBookingProcesss( $eventID, $ticketClassGroupID, STAGE_BOOK_2_PROCESS );	
 		$bookingStage = $this->clientsidedata_model->getSessionActivityStage();
-		if( $bookingStage < STAGE_BOOK_3_PROCESS )
+		if( $bookingStage < STAGE_BOOK_4_FORWARD )
 		{
 			/*
 				At this stage,
@@ -1486,14 +1591,17 @@ class EventCtrl extends CI_Controller {
 				the showing time concerned. Then pass to the free-er function. 
 			*/
 			$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $ticketClassGroupID );
-			$this->Slot_model->freeSlotsBelongingToClasses( $ticketClasses );					
+			$this->Slot_model->freeSlotsBelongingToClasses( $ticketClasses );
+			$param1 = ( $bookingStage < STAGE_BOOK_3_PROCESS ) ? $ticketClassUniqueID : FALSE;
+			$this->bookingmaintenance->freeSlotsBelongingToClasses_NDX( $param1, $bookingInfo->SLOTS_UUID );
 		}else{			
 			/*  Review 23APR2012-0314 - Why is this here?
 				if( $this->functionaccess->isActivityManageBooking() )
 			*/ 
 			$this->bookingmaintenance->deleteBookingTotally_andCleanup( $bookingNumber, NULL );
-		}// end if( $bookingStage < STAGE_BOOK_3_FORWARD )
-		$this->clientsidedata_model->deleteBookingCookies();		
+		}// end if( $bookingStage < STAGE_BOOK_4_FORWARD )
+		$this->ndx_model->delete( $guid );
+		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
 		if( !$this->input->is_ajax_request() ) redirect('/');
 		else		
 			return true;
@@ -1501,59 +1609,73 @@ class EventCtrl extends CI_Controller {
 			
 	function confirm()
 	{
-		/*
-			Created 22FEB2012-2157
-		*/
+		/**
+		*	@created 22FEB2012-2157
+		*	@description Initial landing page for those COD agents in confirming a booking.
+		**/
 		$this->clientsidedata_model->setSessionActivity( CONFIRM_RESERVATION, STAGE_CONFIRM_1_FORWARD );
 		$this->load->view( 'confirmReservation/confirmReservation01' );
 	}
 	
 	function confirm_step2()
 	{
-		/*
-			Created 22FEB2012-2157
-		*/
-		if( !$this->input->is_ajax_request() ) redirect('/');
+		/**
+		*	@created 22FEB2012-2157
+		*	@description Checks whether booking number is for confirmation, and user is an authorized payment agency.
+				Handles redirection to the next step. AJAX only.
+		**/
+		$bNumber;
+		$preCheck;
 		
-		$bNumber         = $this->input->post( 'bookingNumber' );		
-		// access validity function
-		$preCheck = $this->functionaccess->preBookCheckAJAXUnified( Array( $bNumber ), false, STAGE_CONFIRM_1_FORWARD );		
+		if( !$this->input->is_ajax_request() ) redirect('/');		// this is AJAX only		
+		$bNumber         = $this->input->post( 'bookingNumber' );
+		// access validity function + check if accessible already
+		$preCheck = $this->functionaccess->preBookCheckAJAXUnified( Array( $bNumber ), false, STAGE_CONFIRM_1_FORWARD, true );
 		if( strpos( $preCheck, "ERROR" ) === 0 )
-		{   /* 
-				This outputs errors like this is not accessible to non-event mgr users.. bla bla.		
-			*/
-			$breakThem = explode('_', $preCheck );
+		{
+			// This outputs errors like this is not accessible to non-event mgr users.. bla bla.
+			$breakThem = explode('|', $preCheck );
 			echo $this->MakeXML_model->XMLize_AJAX_Response( 
-					"error", "error", "GENERIC_ERROR", 0, $breakThem[1], ""  //???
+					"error", "error", "GENERIC_ERROR", 0, $breakThem[1], ""
 			);
 			return false;
 		}
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_CONFIRM_2_PROCESS );
 		$bNumberExistent = $this->Booking_model->doesBookingNumberExist( $bNumber );
 		if( $bNumberExistent )
-		{	
+		{
 			$singleBooking = $this->Booking_model->getBookingDetails( $bNumber );
 			// run defaulted bookings cleaner first so as to check too if this booking is beyond the payment deadline.
-			$this->bookingmaintenance->cleanDefaultedBookings( $singleBooking->EventID, $singleBooking->ShowingTimeUniqueID ); 
+			$this->bookingmaintenance->cleanDefaultedBookings( $singleBooking->EventID, $singleBooking->ShowingTimeUniqueID );
 			// we do not use $singleBooking as parameter since such booking's `Status` may have been changed by the earlier function call
-			if( $this->Booking_model->isBookingExpired( $bNumber ) )
+			$expired_states = Array( 
+				0 => Array( 0 => false, 1 => false ),
+				1 => Array( 0 => true,  1 => 'NOT-YET-NOTIFIED' ),
+				2 => Array( 0 => true,  1 => 'FOR-DELETION' )
+			);
+			foreach( $expired_states as $key => $singleState )
 			{
-				echo $this->MakeXML_model->XMLize_AJAX_Response( 
-					"error", "deadline lapsed", "BOOKING_DEADLINE_LAPSED", 0, "The deadline of payment/confirmation for the specified booking has passed and as such slots and seats are now forfeited.", ""  //1005
-				);
-				return false;
+				if( $this->Booking_model->isBookingExpired( $bNumber, $singleState[0], $singleState[1]  ) )
+				{
+					echo $this->MakeXML_model->XMLize_AJAX_Response( 
+						"error", "deadline lapsed", "BOOKING_DEADLINE_LAPSED", 0, "The deadline of payment/confirmation for the specified booking has passed and as such slots and seats are now forfeited.", ""  //1005
+					);
+					return false;
+				}
 			}
 			$guestDetails   = $this->Guest_model->getGuestDetails( $bNumber );
 			$bookingDetails = $this->Booking_model->getBookingDetails( $bNumber );
-			$this->setBookingCookiesOuter( 
-				$bookingDetails->EventID, 
+			$this->setBookingCookiesOuterServer(
+				$bookingDetails->EventID,
 				$bookingDetails->ShowingTimeUniqueID,
-				count( $guestDetails ), 
-				$bNumber 
+				count( $guestDetails ),
+				$bNumber
 			);
+			// after the preceeding function call, the cookies-on-server UUID ref is now available	
+			$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();			
 			$this->clientsidedata_model->updateSessionActivityStage( STAGE_CONFIRM_2_FORWARD );
 			echo $this->MakeXML_model->XMLize_AJAX_Response( 
-					"okay", "proceed", "BOOKING_CONFIRM_CLEARED", 0, "The booking is cleared to undergo confirmation.", ""  //1006
+					"error", "proceed", "BOOKING_CONFIRM_CLEARED", 0, "The booking is cleared to undergo confirmation.", ""  //1006
 			);
 			return true;
 		}else{
@@ -1566,19 +1688,37 @@ class EventCtrl extends CI_Controller {
 	
 	function confirm_step2_forward()
 	{
-		$bNumber 		  = $this->clientsidedata_model->getBookingNumber();
-		$data			  = Array();
-		$paymentInstances = Array();
+		/**
+		*	@created 22FEB2012-2157
+		*	@description Page for the summary of the booking, and where agent can finally confirm.
+		**/
+		$bNumber;
+		$bookingDetails;
+		$billingInfoArray;
+		$data			  = Array();		
+		$guid;
+		$bookingInfo;
 		
-		
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );		
 		//access validity check
-		$this->functionaccess->preConfirmStep2FWCheck( $bNumber, STAGE_CONFIRM_2_FORWARD );
-		$this->clientsidedata_model->setBookingNumber( $bNumber );
-		$bookingDetails   = $this->Booking_model->getBookingDetails( $bNumber );		
-		$billingInfoArray = $this->bookingmaintenance->getBillingRelevantData( $bNumber );		
+		$this->functionaccess->preConfirmStep2FWCheck( $bookingInfo, STAGE_CONFIRM_2_FORWARD );
+		// var assignments
+		$bNumber			 = $bookingInfo->BOOKING_NUMBER;		
+		$bookingDetails   	 = $this->Booking_model->getBookingDetails( $bNumber );		
+		$billingInfoArray    = $this->bookingmaintenance->getBillingRelevantData( $bNumber );
+		// to continue or not?
+		if( $billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ] === false ){
+			$data['theMessage'] = "There are no pending payments for this booking/It has been confirmed already."; //1004
+			$data['redirect'] = 0;
+			$data['noButton'] = FALSE;
+			$this->load->view( 'successNotice', $data );
+			return true;
+		}
 		foreach( $billingInfoArray as $key => $value ) $data[ $key ] = $value;
-		
-		$data[ 'guests' ]             = $this->Guest_model->getGuestDetails( $bNumber  );
+		// for view
+		$data[ 'bookingInfo' ]        = $bookingInfo;
+		$data[ 'guests' ]             = $this->Guest_model->getGuestDetails( $bNumber );
 		$data[ 'seatVisuals' ] 		  = $this->getSeatRepresentationsOfGuests( 
 			$bookingDetails->EventID,
 			$bookingDetails->ShowingTimeUniqueID,
@@ -1586,41 +1726,39 @@ class EventCtrl extends CI_Controller {
 			$bookingDetails->TicketClassGroupID,
 			$bookingDetails->TicketClassUniqueID
 		);
-		if( $data[ AKEY_UNPAID_PURCHASES_ARRAY ] === false ){			
-			$data['theMessage'] = "There are no pending payments for this booking/It has been confirmed already."; //1004
-			$data['redirect'] = 0;
-			$data['noButton'] = TRUE;
-			$this->load->view( 'successNotice', $data );
-			return true;
-		}		
-		$data['singleChannel']  =  $this->Payment_model->getSinglePaymentChannel(
-			$this->clientsidedata_model->getEventID(),
-			$this->clientsidedata_model->getShowtimeID(),
-			intval($data['unpaidPurchasesArray'][0]->Payment_Channel_ID )
-		);
-		/*
-			For all the currenly unpaid purchases, the earliest among the deadlines are found
-			in the first entry/index.
-		*/
-		$this->clientsidedata_model->setPaymentDeadlineDate( $data['unpaidPurchasesArray'][0]->Deadline_Date );
-		$this->clientsidedata_model->setPaymentDeadlineTime( $data['unpaidPurchasesArray'][0]->Deadline_Time );
 		
+		$data['singleChannel']  =  $this->Payment_model->getSinglePaymentChannel(
+			$bookingDetails->EventID,
+			$bookingDetails->ShowingTimeUniqueID,
+			intval($data[  AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID )
+		);		
 		$this->load->view( 'confirmReservation/confirmReservation02', $data );
 	}//confirm_step2_forward()
 	
 	function confirm_step3()
-	{		
-		if( !$this->input->is_ajax_request() ) redirect( '/' );				
-		$bNumber    = $this->clientsidedata_model->getBookingNumber();
+	{
+		/**
+		*	@created 22FEB2012-2157
+		*	@description Finally writes to the DB regarding a booking's confirmation. AJAX only.
+		**/
+		$guid;
+		$bookingInfo;
+		$bNumber;
+		$accountNum;
+		
+		if( !$this->input->is_ajax_request() ) redirect( '/' );
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );				
 		$accountNum = $this->clientsidedata_model->getAccountNum();
 		
 		//access validity check		
-		if(!$this->functionaccess->preConfirmStep3PRCheck( $bNumber, $accountNum, STAGE_CONFIRM_2_FORWARD ) ) die();
+		if(!$this->functionaccess->preConfirmStep3PRCheck( $accountNum, $bookingInfo, STAGE_CONFIRM_2_FORWARD ) ) return false;
 						
+		$bNumber = $bookingInfo->BOOKING_NUMBER;
 		if( $this->confirmSlotsOfThisBooking( $bNumber ) )
 		{
 			$result = $this->bookingmaintenance->processPayment( $bNumber );
-			echo $result['status']."_".$result['message'];		
+			echo $result['status']."_".$result['message'];
 			if( $result['boolean'] )
 			{
 				$this->TransactionList_model->createNewTransaction(
@@ -1632,13 +1770,25 @@ class EventCtrl extends CI_Controller {
 					'WIN5',			
 					""
 				);
+				$this->ndx_model->delete( $guid );
+			}else{
+				echo "ERROR_UNKNOWN";			
+				$this->TransactionList_model->createNewTransaction( 
+					$accountNum,
+					'PAYMENT_RECEIPT',
+					'UNKNOWN_FAILURE_PROCESSPAYMENT',
+					$bNumber,
+					'Secret!',
+					'WIN5',			
+					""
+				);	
 			}
 		}else{
 			echo "ERROR_UNKNOWN";			
 			$this->TransactionList_model->createNewTransaction( 
 				$accountNum,
 				'PAYMENT_RECEIPT',
-				'UNKNOWN_FAILURE',
+				'UNKNOWN_FAILURE_CONFIRMSLOTS',
 				$bNumber,
 				'Secret!',
 				'WIN5',			
@@ -2214,15 +2364,13 @@ class EventCtrl extends CI_Controller {
 	function deleteEventCompletely()
 	{
 		$deleteResult;
-		//die( var_dump ($_POST ));
 		$deleteResult = $this->Event_model->deleteAllEventInfo( $this->input->post( 'eventID' ) );
 		if( $deleteResult )
 		{
 			echo "Success";
 		}else{
 			echo "Fail";
-		}
-		
+		}	
 		$this->manage();
 	}//deleteEventCompletely
 	
@@ -2236,7 +2384,7 @@ class EventCtrl extends CI_Controller {
 	
 	function modify_select()
 	{		
-		/* DEPRECATED
+		/* @deprecated
 			Created 16MAR2012-1520
 		*/
 		//START-PART copied from book(
@@ -2260,8 +2408,9 @@ class EventCtrl extends CI_Controller {
 			
 	function getConfiguredShowingTimes( $eventID = null )	
 	{
-		/*
-			Created 30DEC2011-1053
+		/**
+		*	@created 30DEC2011-1053
+		*	@description Gets the showing times that are configured for ticket booking.
 		*/
 		$allConfiguredShowingTimes;
 		$eventID;
@@ -2306,18 +2455,17 @@ class EventCtrl extends CI_Controller {
 
 	function getForCheckInShowingTimes( $eventID = null )	
 	{
-		/*
-			Created 30DEC2011-1053
-		*/
+		/**
+		*	@created 30DEC2011-1053
+		*   @description Gets the showing times that are ready for customer check-in.
+		**/
 		$allConfiguredShowingTimes;
 		$eventID;
-		
 		
 		//Added 29JAN2012-1530: user is accessing via browser address bar, so not allowed
 		if( $this->input->is_ajax_request() === false ) redirect('/');
 				
 		$eventID = $this->input->post( 'eventID' );
-		
 		if( $eventID === false )
 		{
 			echo "INVALID_POST-DATA-REQUIRED";
@@ -2328,17 +2476,19 @@ class EventCtrl extends CI_Controller {
 			echo "ERROR_No showing time for checking-in yet.";
 			return false;
 		}
-		
 		$xmlResult = $this->MakeXML_model->XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes );
 		
 		echo $xmlResult;
 		return true;		
-	}//getForCheckInShowingTimes
+	}//getForCheckInShowingTimes(..)
 	
 	function manage()
 	{
-		//created 20DEC2011-1423
-		$data['events'] = $this->Event_model->getAllEvents();
+		/**
+		*	@created 20DEC2011-1423
+		*	@description Manages events/showing times.
+		**/
+		$data['events']   = $this->Event_model->getAllEvents();
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
 		
 		$this->load->view('manageEvent/home', $data);
@@ -2391,6 +2541,7 @@ class EventCtrl extends CI_Controller {
 		/*
 			Created 02MAR2012-1257
 		*/
+		die('Feature disabled for maintenance');
 		$bookingNumber;
 		$bookingObj;
 		$guestCount;
@@ -2444,6 +2595,7 @@ class EventCtrl extends CI_Controller {
 	
 	function manageBooking_changeSeat_process()
 	{
+		die('Feature disabled for maintenance');
 		$guestCount = $this->clientsidedata_model->getSlotsBeingBooked();
 		$eventID = $this->clientsidedata_model->getEventID();
 		$showtimeID = $this->clientsidedata_model->getShowtimeID();
@@ -2577,8 +2729,7 @@ class EventCtrl extends CI_Controller {
 			redirect('EventCtrl/managebooking_confirm');
 		}
 		
-		// CODE-MISSING: DATABASE COMMIT		
-		//die( var_dump( $_POST ) );
+		// CODE-MISSING: DATABASE COMMIT
 		$data[ 'theMessage' ] = ($processedSeats == 0) ? "No changes to seats have been made." : "The seats have been changed.";
 		$data[ 'redirect' ] = 2;
 		$data[ 'redirectURI' ] = base_url().'EventCtrl/manageBooking';
@@ -2593,6 +2744,7 @@ class EventCtrl extends CI_Controller {
 			Created 03MAR2012-1613
 		*/
 		//die( var_dump( $_POST ) );
+		die('Feature disabled for maintenance');
 		$bookingNumber = $this->input->post( 'bookingNumber' );
 		$bookingObj;
 		$guestCount;
@@ -2637,7 +2789,8 @@ class EventCtrl extends CI_Controller {
 	{
 		/*
 			Created 04MAR2012-1339
-		*/	
+		*/
+		die('Feature disabled for maintenance');
 		$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
 		$eventID = $this->input->post( 'events' );
 		$showtimeID = $this->input->post( 'showingTimes' );
@@ -2667,7 +2820,8 @@ class EventCtrl extends CI_Controller {
 	{
 		/*
 			Created 04MAR2012-1455
-		*/			
+		*/
+		die('Feature disabled for maintenance');		
 		$bookingNumber;
 		$sessionActivity 			= $this->clientsidedata_model->getSessionActivity();
 		$guestUUIDs_SeatUnavailable = Array();
@@ -2864,6 +3018,7 @@ class EventCtrl extends CI_Controller {
 		
 	function managebooking_cancel()
 	{
+		die('Feature disabled for maintenance');
 		$newTicketClassGroupID = $this->clientsidedata_model->getTicketClassGroupID();
 		$eventID =  $this->clientsidedata_model->getEventID();
 		$newShowingTimeID = $this->clientsidedata_model->getShowtimeID();
@@ -2892,6 +3047,7 @@ class EventCtrl extends CI_Controller {
 	
 	function managebooking_cancelchanges()
 	{	
+		die('Feature disabled for maintenance');
 		$promptedIndicator = 'mb_cancelchanges_prompted';
 		$bookingNumber = $this->input->post( 'bookingNumber' );
 		
@@ -2930,12 +3086,84 @@ class EventCtrl extends CI_Controller {
 		echo "Feature coming soon";
 	}
 	
+	function managebooking_changepaymentmode( $bookingNumber_sent = false )
+	{			
+		$bookingNumber;
+		$bookingObj;
+		$accountNum;
+		$guid;
+		die('Feature disabled for maintenance');
+		/*if(  $bookingNumber_sent === false )
+		{	// booking number is not specified in the URL so invalid
+			$this->load->view( 'errorNotice', $this->bookingmaintenance->assembleManageBookingParamAbsent() );
+			return false;
+		}*/
+		
+		//$bookingNumber = mysql_real_escape_string( $bookingNumber_sent );
+		$bookingNumber = $this->input->post( 'booking_number' );
+		$bookingObj    = $this->Booking_model->getBookingDetails( $bookingNumber );
+		$accountNum    = $this->clientsidedata_model->getAccountNum();
+		$guestObj      = NULL;		
+		$sendSeatInfoToView = Array();
+		$bookInstanceEncryptionKey;
+		
+		if( $bookingObj === false )
+		{			
+			$this->load->view( 'errorNotice', $this->bookingmaintenance->assembleGenericBooking404() );
+			return false;
+		}
+		if( !$this->Booking_model->isBookingUnderThisUser( $bookingNumber , $accountNum ) )
+		{			
+			$this->load->view( 'errorNotice', $this->bookingmaintenance->assembleGenericBookingChangeDenied() );
+			return false;
+		}		
+		$guestObj = $this->Guest_model->getGuestDetails( $bookingNumber );		
+		foreach( $guestObj as $singleGuest )
+		{
+			$guestSlotObj = $this->Slot_model->getSlotAssignedToUser_MoreFilter( 
+				$bookingObj->EventID, 
+				$bookingObj->ShowingTimeUniqueID,
+				$bookingObj->TicketClassGroupID, 
+				$bookingObj->TicketClassUniqueID,
+				$singleGuest->UUID
+			);			
+			$sendSeatInfoToView[ $singleGuest->UUID ] = $this->Seat_model->getVisualRepresentation( 
+				$guestSlotObj->Seat_x, 
+				$guestSlotObj->Seat_y,
+				$bookingObj->EventID,
+				$bookingObj->ShowingTimeUniqueID
+			);
+		}
+		$sendSeatInfoToView = $this->bookingmaintenance->getSendSeatInfoToViewData( $bookingNumber );		
+		$this->setBookingCookiesOuterServer( $bookingObj->EventID, 
+			$bookingObj->ShowingTimeUniqueID,
+			count($guestObj),
+			$bookingObj->bookingNumber		
+		);				
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		//<area id="pre-book-step5-fw-prerequisite" made="07JUN2012-1635" >
+		//duplicates with book-step5-pre-fw-prerequisite
+		$billingInfo  = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
+		$purchases    = $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ];
+		$totalCharges = $billingInfo[ AKEY_AMOUNT_DUE ];
+		$purchaseCount = count( $purchases );		
+		$this->ndx_model->updateVisualSeatData( $guid, $this->prepSeatVisualData( $sendSeatInfoToView  ) );
+		$this->clientsidedata_model->setPurchaseCount( $purchaseCount );
+		$this->clientsidedata_model->setPurchaseTotalCharge( $totalCharges );
+		//</area>
+		$this->clientsidedata_model->setPaymentModeExclusion( $purchases[0]->Payment_Channel_ID );
+		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );		
+		$this->clientsidedata_model->setBookingProgressIndicator( 5 );				
+		//redirect('SessionCtrl/gagita');
+		redirect( 'EventCtrl/book_step5_forward' );					
+	}//managebooking_changepaymentmode(..)
+	
 	function managebooking_confirm()
 	{
 		/*
 			Created 08MAR2012-0936
 		*/
-			
+		die('Feature disabled for maintenance');
 		$bookingNumber = $this->clientsidedata_model->getBookingNumber();		
 		$newSeatsUUID = $this->clientsidedata_model->getManageBookingNewSeatUUIDs();
 		$newSeatsMatrix = $this->clientsidedata_model->getManageBookingNewSeatMatrix();
@@ -3011,7 +3239,7 @@ class EventCtrl extends CI_Controller {
 		/*
 			Created 08MAR2012-0952
 		*/
-		
+		die('Feature disabled for maintenance');
 		$bookingNumber 			 = $this->clientsidedata_model->getBookingNumber();
 		$eventID				 =  $this->clientsidedata_model->getEventID();
 		$oldShowingTimeID;
@@ -3088,7 +3316,8 @@ class EventCtrl extends CI_Controller {
 				$paymentID = $this->Payment_model->createPayment( 
 					$bookingNumber,
 					floatval($billingInfoArray['amountDue']),
-					0
+					0,
+					$this->clientsidedata_model->getAccountNum()
 				);
 				/*
 					Set the unpaid purchases as paid.
@@ -3245,7 +3474,8 @@ class EventCtrl extends CI_Controller {
 	}//managebooking_finalize
 	
 	function managebooking_finalize_forward()
-	{		
+	{	
+		die('Feature disabled for maintenance');
 		$bookingNumber 			 = $this->clientsidedata_model->getBookingNumber();
 		$newTicketClassGroupID   = $this->clientsidedata_model->getTicketClassGroupID();
 		$newShowingTimeID 		 = $this->clientsidedata_model->getShowtimeID();
@@ -3256,12 +3486,22 @@ class EventCtrl extends CI_Controller {
 		$paymentMode;
 		
 		if( $bookingNumber === false )
-		{
-			die("You have reached the maximum number of refreshes allowed for this page. Please go to Manage Booking instead. ");
+		{	
+			/*
+				Since we delete cookies at the end of this function/when we have rendered the page, refreshing the
+				page, the app can't find the cookie anymore.
+			*/
+			$data['defaultAction'] = 'Manage Booking';		
+			$data['redirect'] = 2;		
+			$data['error'] = 'CUSTOM';		
+			$data['redirectURI'] = base_url().'EventCtrl/manageBooking';
+			$data['theMessage'] = "Refreshes are not allowed for this page. You are being redirected to Manage Booking instead. Please wait.";				
+			$this->load->view( 'errorNotice', $data );
+			return false;
 		}
 		
 		$bookingObj = $this->Booking_model->getBookingDetails( $bookingNumber );
-		$eventObj = $this->Event_model->getEventInfo( $bookingObj->EventID );
+		$eventObj   = $this->Event_model->getEventInfo( $bookingObj->EventID );
 		
 		$bookingGuests = $this->Guest_model->getGuestDetails( $bookingNumber );	
 		$eventID =  $bookingObj->EventID;
@@ -3282,7 +3522,7 @@ class EventCtrl extends CI_Controller {
 		
 		$newSeatsInfoArray = $this->assembleRelevantDataOfNewSeats( $eventID, $newShowingTimeID, false );
 		$billingInfoArray = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
-		$noPendingPayment = (floatval( $billingInfoArray['amountDue'])  === 0.0 );
+		$noPendingPayment = (floatval( $billingInfoArray['amountDue'])  === FREE_AMOUNT );
 								
 		$data['bookingNumber'] = $bookingNumber;
 		$data['oldSeatVisuals'] = $oldGuestSeatVisualRep;
@@ -3330,6 +3570,7 @@ class EventCtrl extends CI_Controller {
 	
 	function managebooking_pendingchange_viewdetails()
 	{
+		die('Feature disabled for maintenance');
 		$bookingNumber = $this->input->post( 'bookingNumber' );
 		if( $bookingNumber === false ) die( 'Booking number needed. ');		
 		
@@ -3349,14 +3590,14 @@ class EventCtrl extends CI_Controller {
 		redirect('EventCtrl/managebooking_finalize_forward');
 	}//managebooking_pendingchange_viewdetails()
 	
-	
 	function managebooking_upgradeticketclass()
-	{	
+	{			
 		/*
 			Created 08MAR2012-0021
 			Direct handler of upgrading ticket class when clicked in manage booking section.
 			First attempt too on all lowercase in a function name.
 		*/
+		die('Feature disabled for maintenance');
 		$bookingNumber = $this->input->post( 'bookingNumber' );
 		$sessionActivity =  $this->clientsidedata_model->getSessionActivity();		
 		if( ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] === 0 ) === false or
@@ -3412,39 +3653,51 @@ class EventCtrl extends CI_Controller {
 	}//managebooking_upgradeticketclass
 		
 	function postManageBookingCleanup( $redirect = false )
-	{
-		$this->clientsidedata_model->setSessionActivity('MANAGE_BOOKING', 0 );
+	{		
+		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
 		$this->clientsidedata_model->deleteBookingCookies();	
 	}
 	
 	function postBookingCleanup( $doNotRedirect = false )
 	{
-		/*
-			Created 19FEB2012-1751
-			
-			Does anything that should be done after a user successfully books,
+		/**
+		*	@created 19FEB2012-1751
+		*	@description Does everything that should be done after a user successfully books,
 			like clearing cookies
-		*/
-		// deal first with the "X_slot_UUIDs" cookie since it's not included in the pre-determined cookies
-		$redirectTo = $this->session->userdata ('redirect_to');		
-		$ticketClassUniqueID = $this->clientsidedata_model->getTicketClassUniqueID();
-		delete_cookie( $ticketClassUniqueID.'_slot_UUIDs'  );		
-		delete_cookie( 'uplbConstituentStudentNumPair' );
-		delete_cookie( 'uplbConstituentEmpNumPair' );				
-		delete_cookie( 'mbooknsu' );				
-		delete_cookie( 'mbooknsm' );				
-		$this->clientsidedata_model->deleteBookingCookies();
-		$this->session->unset_userdata( 'bookInstanceEncryptionKey' );
-		$this->clientsidedata_model->deleteBookingProgressIndicator( );
+		**/		
+		$redirectTo = $this->session->userdata( AUTH_THEN_REDIRECT );				
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		/* <area id="postbookcleanup_still_cookie_based" > */{
+		delete_cookie( MANAGE_BOOKING_NEW_SEAT_UUIDS );				
+		delete_cookie( MANAGE_BOOKING_NEW_SEAT_MATRIX );
+		delete_cookie( 'debug-PRE' );		
+		delete_cookie( 'debug-POST' );		
+		}
+		// </area>		
+		$this->clientsidedata_model->deleteBookingProgressIndicator();
+		$this->clientsidedata_model->deletePurchaseTotalCharge();
+		$this->clientsidedata_model->deletePaymentChannel( $paymentChannel );
+		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
+		$this->ndx_model->delete( $guid );
 		if( $doNotRedirect ) return true;
 		if( $this->input->is_ajax_request() === FALSE ) {
 			if( $redirectTo !== FALSE )
-			{
-				$this->session->unset_userdata( 'redirect_to' );				
+			{	// redirect to specified page
+				$this->session->unset_userdata( AUTH_THEN_REDIRECT );				
 				redirect( $redirectTo );
 			}else
+				// else, to home
 				redirect( '/' );
 		}
 	}	
+	
+	function resume_booking()
+	{
+		/**
+		*	@created 08JUN2012-1500
+		*
+		**/
+		die('Feature coming later');
+	}
 } //class
 ?>

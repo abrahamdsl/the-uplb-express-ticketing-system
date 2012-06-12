@@ -130,6 +130,7 @@ class Slot_model extends CI_Model {
 	function getSlotAssignedToUser( $UUID )
 	{
 		/*
+			!!! FOR DEPRECATION! Use getSlotAssignedToUser_MoreFilter() instead!
 			Created 19FEB2012-1735
 			
 			Obviously...

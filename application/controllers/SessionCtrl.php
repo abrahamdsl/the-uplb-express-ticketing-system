@@ -5,7 +5,7 @@ class SessionCtrl extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		include_once('_constants.inc');
+		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->library('user_agent');		
 		$this->load->model('Account_model');
 		$this->load->model('BrowserSniff_model');
@@ -58,15 +58,14 @@ class SessionCtrl extends CI_Controller {
 	private function agentDenied()
 	{
 		$this->sorryNoticeHeader();		
-		echo "You need to access this system thru a web browser!";
+		echo "You need to access this system thru an updated web browser!";
 	}
-	
+
 	private function heyRobot()
 	{
-		$this->sorryNoticeHeader();		
-		echo "Thank you for crawling in here dear robot, but I need human visitors!<br/><br/> :trollface: ";
+		$this->load->view("for_robot");
 	}
-	
+		
 	function index()
 	{
 		if( $this->login_model->isUser_LoggedIn() )

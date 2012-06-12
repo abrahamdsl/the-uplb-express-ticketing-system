@@ -55,11 +55,12 @@ class Paypal extends CI_Controller {
 		*/
 		define( 'ISPAYPAL_TEST_MODE', TRUE );
 		
-		include_once('_constants.inc');
+		include_once( APPPATH.'constants/_constants.inc');
 		
 		//EMAIL EXPERIMENTAL
 		$this->load->library('email');
 		$this->load->library('bookingmaintenance');
+		$this->load->library('functionaccess');
 		$this->load->library('paypal_lib');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('email_model');
@@ -101,8 +102,8 @@ class Paypal extends CI_Controller {
 		$testMode_check;
 						
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
-		{   //ec 4100
-			die( "You are not allowed to access this." );
+		{   
+			if( !$this->functionaccess->preBookStep6PR_OnlinePayment_Check( STAGE_BOOK_6_PAYMENTPROCESSING ) ) return false;			
 		}
 		$paypalData = $this->clientsidedata_model->getDataForPaypal();
 		if( $paypalData === false )
@@ -205,8 +206,9 @@ class Paypal extends CI_Controller {
 			log_message('DEBUG', 'IPN Connection from URI ' . $visitorHostName );
 			log_message('DEBUG', 'IPN Connection from Port ' . $_SERVER['REMOTE_PORT'] );
 			log_message('DEBUG', 'IPN START POST DATA ');
-			foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );
-			log_message('DEBUG', 'IPN END POST DATA ');				
+			foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );			
+			log_message('DEBUG', 'IPN END POST DATA ');
+			foreach( $_COOKIE as $key => $value ) log_message('DEBUG', 'COOKIE DATA '.$key.' => "'.$value.'"' );
  		$ipn_init = (isset($this->paypal_lib->ipn_data[ 'txn_id' ])) ? $this->paypal_lib->ipn_data[ 'txn_id' ] : "NULL";
 			log_message('DEBUG', "IPN initial: ".$ipn_init);
 		if ($this->paypal_lib->validate_ipn( $visitorHostName ) ) 
@@ -224,8 +226,9 @@ class Paypal extends CI_Controller {
 					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
 					if( $isPaypalOKObj['boolean'] )
 					{ 
+						$billingInfo = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
 						$guestDetails;
-						$totalCharges = floatval($this->clientsidedata_model->getPurchaseTotalCharge() );
+						$totalCharges = $billingInfo[ AKEY_AMOUNT_DUE ];
 						$paymentDescriptor = 'uxtcharge='.$totalCharges.';mc_fee='.$this->paypal_lib->ipn_data[ 'mc_fee' ].';';
 						$paymentDescriptor .= 'payer_id='.$this->paypal_lib->ipn_data['payer_id'].';'.'txn_id='.$this->paypal_lib->ipn_data['txn_id'].';';
 						$paymentDescriptor .= 'merchant_email='.$this->paypal_lib->ipn_data['business'].';';

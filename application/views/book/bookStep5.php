@@ -12,122 +12,79 @@ $this->load->view('html-generic/metadata.inc');
 	$this->load->view('html-generic/head-title.inc');
 ?>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
-	<!--For modal v1-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>		
-	<?php			
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
+	<!--For modal v1-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+	<?php 
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookPaymentChannelSelection.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep5.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>	
-	<?php			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookPaymentChannelSelection.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep5.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
+	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
-	?>	
+	?>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');				
-?>		
+		$this->load->view('html-generic/overlay_general.inc');
+?>
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
-    </div>            
-    <div id="main_content" >    	
+		?>
+    </div>
+    <div id="main_content" >
     	<div id="centralContainer">
-<?php			
+<?php 
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
-?>		
+?>
 			<div id="page_title" class="page_title_custom" >
 				Payment
 			</div>
 			<div id="top_page_detail" >
 				We sure do have a lot of payment channels for your convenience. Have fun.
-				<br/>				
-			</div>			
+				<br/>
+			</div>
 			
-			<!-- accordion start -->			
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container bookStep2_main_div_custom" >
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 					<div id="title">Event Details</div>
-					<div id="content">	
+					<div id="content">
 						<div class="bookingDetails" >
 							<?php
-								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
+								$this->load->view('html-generic/eventInfoLeft_ndx.inc');
 							?>
-							<div class="top">		
-								<input type="hidden" id="startDate" value="<?php echo $this->input->cookie( 'startDate' ); ?>" />
-								<input type="hidden" id="endDate" value="<?php echo $this->input->cookie( 'endDate' ); ?>" />
-								<input type="hidden" id="startTime" value="<?php echo $this->input->cookie( 'startTime' ); ?>" />
-								<input type="hidden" id="endTime" value="<?php echo $this->input->cookie( 'endTime' ); ?>" />
-								<div class="start">
-									<span class="deed" >
-										Start
-									</span>
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'startTime' ); ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php echo $this->input->cookie( 'startDate' ); ?>										
-									</span>
-								</div>								
-								<div class="end">
-									<span class="deed" >
-										End
-									</span>									
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'endTime' );  ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php
-											if( $this->input->cookie( 'startDate' ) != $this->input->cookie( 'endDate' ) ) echo $this->input->cookie( 'endDate' );
-											else
-												echo '&nbsp';
-										?>
-									</span>
-								</div>
-							</div>
-							<div class="bdtitle" >
-								<?php echo $this->input->cookie( 'eventName' ); ?>
-							</div>
-							<div class="bottom">
-								<?php echo $this->input->cookie( 'location' ); ?>
-								<br/>
-								<br/>
-								<p>
-									You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
-								</p>
-							</div>														
 						</div>
 						<div class="containingClassTable" >
 							<!--
@@ -181,7 +138,7 @@ $this->load->view('html-generic/metadata.inc');
 												<td>&nbsp;</td>
 												<td>&nbsp;</td>
 												<td>Total (in PHP)</td>
-												<td><span class="cost"></span><span class="cost" ><?php echo $this->session->userdata( "totalCharges" ); ?></span></td>
+												<td><span class="cost"></span><span class="cost" ><?php echo $total_charges; ?></span></td>
 											</tr>											
 										</tbody>
 									</table>
@@ -263,12 +220,12 @@ $this->load->view('html-generic/metadata.inc');
 						</a>
 					</div>
 					<?php
-						$slots = $this->input->cookie( 'slots_being_booked' );
+						$slots = $bookingInfo->SLOT_QUANTITY;
 					?>					
 					<div id="tabs">					
 						<ul>
 							<?php 								
-								 for( $x=0, $y = count( $guests); $x< $y; $x++ ){
+								 for( $x=0; $x< $slots; $x++ ){
 							?>
 							<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
 							<?php } ?>
@@ -278,61 +235,24 @@ $this->load->view('html-generic/metadata.inc');
 						?>
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
-								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
-									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
-										<?php echo $singleGuest->Fname; ?>
-									</div>
-									<?php if( $singleGuest->Mname != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-middleNameFld">							
-										<?php echo $singleGuest->Mname; ?>
-									</div>									
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-lastNameFld">							
-										<?php echo $singleGuest->Lname; ?>
-									</div>
-									<div class="row" id="g<?php echo $x+1; ?>-genderFld">							
-										<?php echo $singleGuest->Gender; ?>
-									</div>										
-									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
-										<?php echo $singleGuest->Cellphone; ?>
-									</div>
-									<?php if( $singleGuest->Landline != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
-										<?php echo $singleGuest->Landline; ?>
-									</div>
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
-										<?php echo $singleGuest->Email; ?>
-									</div>							
-								</fieldset>
+								<?php
+									$this->load->view( "html-generic/customer_proper_info.inc", Array(
+											'guestnum' =>  $x,
+											'singleGuest' => $singleGuest			
+										)
+									);
+								?>
 							</div>
-							<div class="right" >
-								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">seat</legend>
-									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ]; ?>" disabled="disabled"   />
-									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
-										
-											<?php
-												if( ( $x+1 ) != 1 )
-												{
-											?>
-												<div class="leftInr" >
-													<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
-												</div>
-											<?php
-												}													
-												if( ( $slots-1 ) != $x ) 
-												{
-											?>
-												<div class="rightInr">
-													<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
-												</div>
-											<?php
-												}
-											?>										
-									</div>
-								</fieldset>								
+							<div class="right" >								
+								<?php
+									$this->load->view( "html-generic/customer_seat_info.inc", Array(
+											'guestnum' =>  $x, 
+											'seatVisuals' => $seatVisuals,
+											'slots' => $slots,
+											'uuid' => $singleGuest->UUID
+										)
+									);
+								?>						
 							</div>
 						</div>		
 						<?php $x++; } ?>

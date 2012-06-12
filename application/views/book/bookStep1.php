@@ -16,28 +16,28 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<?php			
+	<?php
 		$this->load->view('html-generic/jquery-core_choiceB.inc');	
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>" ></script>				
-	<?php			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep1.js'; ?>" ></script>
+	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');	
-	?>	
+	?>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
   	
 </head>
 <body>
@@ -45,49 +45,47 @@ $this->load->view('html-generic/metadata.inc');
 		$this->load->view('html-generic/overlay_general.inc');
 ?>		
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
+		?>
     </div>
-        
-    
-    <div id="main_content" >    	
-    	<div id="centralContainer">           		   
-<?php			
+    <div id="main_content" >
+    	<div id="centralContainer">
+<?php
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
-?>		
+?>
 			<div id="page_title">
 				Book a ticket | Post a Reservation
 			</div>
 			<div style="padding-left:10px; clear: both">
 				The fun starts here.
-				<br/>				
-			</div>			
-			<!-- accordion start -->			
+				<br/>
+			</div>
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container" >
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Select now</div>
-					<div id="content">												
+					<div id="content">
 						<input type="hidden" id="lastFocus" value="" />
 						<input type="hidden" id="slotEnabledClass" value="commonality enabled" />
 						<input type="hidden" id="slotDisabledClass" value="commonality disabled" />
 						<input type="hidden" id="adjustEnabledClass" value="adjustButtons enabled" />
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/book_step2' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'EventCtrl/book_step2' ?>" name="formLogin" id="formMain">
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >
 										Step 1: Select an event
 									</span>
-									<span class="rightSpecialHere" >									
+									<span class="rightSpecialHere" >
 										<span class="center_purest" >
 											<select id="eventSelection" name="events" class="center_purest"  >
 													<option value="NULL" >
@@ -118,13 +116,13 @@ $this->load->view('html-generic/metadata.inc');
 										Step 2: Select a showing time
 									</span>
 									<span class="rightSpecialHere" >
-										<span id="showtimeDummy" class="center_purest" >										
+										<span id="showtimeDummy" class="center_purest" >
 											<input type="text" class="commonality disabled" id="messenger" name="messenger" value="Select an event first" disabled="disabled" style="width: 80%;"  /><br/>										
 										</span>
-										<span id="showtimeCustomError" class="center_purest" >											
+										<span id="showtimeCustomError" class="center_purest" >
 										</span>
-										<span id="showtimeWaiting" class="center_purest"  >										
-											<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" alt="ajax_loader" />
+										<span id="showtimeWaiting" class="center_purest"  >
+											<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" alt="Getting schedules, please wait..." />
 										</span>
 										<span id="showtimeSelectionReal" class="center_purest" >
 											<select id="showingTimeSelection" name="showingTimes" class="center_purest" >
@@ -140,22 +138,22 @@ $this->load->view('html-generic/metadata.inc');
 									</span>
 									<span class="rightSpecialHere" >
 										<input type="text" class="commonality disabled" id="slot" name="slot" value="1"  disabled="disabled" /><br/>
-										<input type="button" value="-" id="reduceSlots" class="adjustButtons disabled" disabled="disabled" />								
-										<input type="button" value="+" id="addSlots" class="adjustButtons disabled" disabled="disabled" />								
+										<input type="button" value="-" id="reduceSlots" class="adjustButtons disabled" disabled="disabled" />
+										<input type="button" value="+" id="addSlots" class="adjustButtons disabled" disabled="disabled" />
 									</span>
-								</div>								
-							</div>							
+								</div>
+							</div>
 						</form>
 					</div>
-				</div>												
+				</div>
 			</div>
 			<!-- accordion end -->
-			<div id="essentialButtonsArea">							
-							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
+			<div id="essentialButtonsArea">
+							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>
 							<!--<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a> -->
-			</div>	
+			</div>
 			<div id="misc" style=" clear:both;"></div>
-		</div>		
+		</div>
     </div><!--end of main content-->
 	
 <?php

@@ -1,10 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 10FEB2012-2240
-
-This deals with booking processes, mostly utilities relating to such.
-
-*/
+/**
+*	Booking Model
+* 	Created 10FEB2012-2240
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	This deals with booking processes, mostly utilities relating to such.
+*
+**/
 
 
 class Booking_model extends CI_Model {
@@ -13,8 +19,7 @@ class Booking_model extends CI_Model {
 	{
 		parent::__construct();		
 	}
-		
-	
+			
 	function createBookingDetails( $bNumber, $eventID, $showingTimeUID, $ticketClassGID, $ticketClassUID, $accountNum)	
 	{
 		/*
@@ -50,8 +55,8 @@ class Booking_model extends CI_Model {
 			
 			22FEB2012-2152: Renamed from 'isBookingNumberInUse' to 'doesBookingNumberExist', so private tag removed
 		*/
-		$sql_command = "SELECT `EventID` from `booking_details` WHERE `bookingNumber` = ?";
-		$arr_result = $this->db->query( $sql_command, array( $bNumber) )->result();
+		$sql_command = "SELECT `EventID` from `booking_details` WHERE `bookingNumber` = ? ";
+		$arr_result = $this->db->query( $sql_command, array( trim($bNumber) ) )->result();
 		
 		return ( count($arr_result) === 1 );
 	}//doesBookingNumberExist
@@ -249,6 +254,25 @@ class Booking_model extends CI_Model {
 		return $this->getAllBookings( $userAccountNum, true );
 	}//getPaidBookings(..)
 	
+	function isBookingBeingBooked( $bookingNumberOrObj )
+	{
+		/**
+		*	@created 07JUN2012-1449
+		*	@purpose Detects if the current booking is being booked. 
+		*	@param $bookingNumberOrObj STRING/MYSQL_OBJ The booking number or booking number object. If booking number is specified,
+				the entries are retrieved from the database, else the object is directly accessed for `Status`.
+		**/
+		
+		$bookingObj = null;
+		if( is_string( $bookingNumberOrObj ) ) 
+			$bookingObj = $this->getBookingDetails( $bookingNumberOrObj );
+		else
+			$bookingObj = $bookingNumberOrObj;
+			
+		if( $bookingObj === false ) return false;		
+		return( $bookingObj->Status == 'BEING_BOOKED' );		
+	}//isBookingBeingBooked(..)
+	
 	function isBookingExpired( $bookingNumberOrObj, $lookStatus2 = false, $oldOrNew = NULL )
 	{
 		/*
@@ -270,7 +294,8 @@ class Booking_model extends CI_Model {
 			return( $bookingObj->Status == 'EXPIRED' );
 		else
 			return( $bookingObj->Status == 'EXPIRED' and $bookingObj->Status2 == $oldOrNew );
-	}//isBookingUpForPayment
+	}//isBookingExpired(..)
+	
 	
 	function isBookingUpForChange( $bookingNumberOrObj )
 	{
@@ -463,4 +488,17 @@ class Booking_model extends CI_Model {
 		);
 	}// updateBookingDetails(..)
 	
-} //modelhbhg
+	function updateBooking2ndStatus( $bNumber, $newVal )
+	{
+		/**
+		*	@created 07JUN2012-1502
+		*	@description Updates the `Status2` column of entries in `booking_details`. Mainly for use
+				when a booking is being booked and we need to track the progress for resume capability if ever
+				the user accidentally closes the window/tab he/she is making his booking and cannot bring it back
+				( maybe there are times that Shift + T  key combination won't work ).
+		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
+		**/
+		$sql_command = "UPDATE `booking_details` SET `Status2` = ? WHERE `bookingNumber` = ?";
+		return $this->db->query( $sql_command, Array( $newVal, $bNumber ) );
+	}// updateBooking2ndStatus(..)
+} //model

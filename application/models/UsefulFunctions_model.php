@@ -1,7 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 15DEC2011-1546
-*/
+/**
+*	Useful Functions Model
+* 	Created15DEC2011-1546
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	Contains a lot of utility functions.
+**/
 
 
 class UsefulFunctions_model extends CI_Model {
@@ -53,27 +61,57 @@ class UsefulFunctions_model extends CI_Model {
 		*/
 		$tokenizedHaystack;
 		$muchTokenizedHaystack = Array();
-		$haystackLength = strlen($haystack);
-		if( $haystack[ $haystackLength - 1 ] === ';' ) 
-			$haystack = substr( $haystack, 0, $haystackLength-1 );
-			
-		$tokenizedHaystack = explode(';', $haystack );		
-		/*
-			Separate via equals sign
-		*/
-		foreach( $tokenizedHaystack as $eachEntry )
-		{
-			$letsDivorce = explode('=', $eachEntry );
-			$muchTokenizedHaystack[ $letsDivorce[0] ] = $letsDivorce[1];
-		}
+		$muchTokenizedHaystack = $this->makeAssociativeArrayThisWIN5_DATA( $haystack );
 		/*
 			Now compare values.
 		*/
 		foreach( $muchTokenizedHaystack as $key => $value ) if( $key == $needle ) return $value;
 		return false;
 	}//getValueOfWIN5_Data
-			
-	function guid(){
+	
+	function makeAssociativeArrayThisWIN5_DATA( $haystack )
+	{
+		/*
+			Warning: the keys are always in string
+		*/
+		$haystackLength = strlen($haystack);
+		if( $haystack[ $haystackLength - 1 ] === ';' ) 
+			$haystack = substr( $haystack, 0, $haystackLength-1 );
+		$tokenizedHaystack = explode(';', $haystack );		
+		$muchTokenizedHaystack = Array();
+		/*
+			Separate via equals sign
+		*/
+		foreach( $tokenizedHaystack as $eachEntry )
+		{
+			$letsDivorce = explode('=', $eachEntry );
+			$muchTokenizedHaystack[ strval($letsDivorce[0]) ] = $letsDivorce[1];
+		}
+		return $muchTokenizedHaystack;
+	}
+	
+	function removeWIN5_Data( $needle, $haystack )
+	{
+		$tokenizedHaystack;
+		$muchTokenizedHaystack = Array();		
+		$exclude = NULL;
+		$newdata = "";
+		
+		
+		$muchTokenizedHaystack = $this->makeAssociativeArrayThisWIN5_DATA( $haystack );
+		echo 'wah';
+		echo var_dump( $muchTokenizedHaystack );
+		/*
+			Now compare values.
+		*/
+		foreach( $muchTokenizedHaystack as $key => $value ) if( $key == $needle ) $exclude = $key;
+		
+		// now, rewrite
+		foreach( $muchTokenizedHaystack as $key => $value ) if( $key !== $exclude ) $newdata .= ( $key."=".$value.";" );
+		return $newdata;
+	}
+	
+	function guid( ){
 		/*
 		Retrieved 21MAY2012-1515
 		http://php.net/manual/en/function.com-create-guid.php
@@ -93,7 +131,7 @@ class UsefulFunctions_model extends CI_Model {
 					.substr($charid,16, 4).$hyphen
 					.substr($charid,20,12)
 					.chr(125);// "}"
-			return $uuid;
+			return $uuid;			
 		}
 	}//guid()
 	

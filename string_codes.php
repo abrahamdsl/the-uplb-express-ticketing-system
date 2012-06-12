@@ -91,7 +91,8 @@ NUM    STRING  								Message
 4004   NOT_FOUND
 4005   NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF The user specified that he is not bookable by other friends. Reserved for future use.
 4006   INVALID_VALUE						The submitted data to the server is in the incorrect format
-4007   CONFIRM_UNAUTHORIZED					You do not have permission to confirm a reservation for this event			
+4007   CONFIRM_UNAUTHORIZED					You do not have permission to confirm a reservation for this event
+4008   PAYMENT_MODE_UNAUTHORIZED			This payment mode is not allowed to be used for this event.
 4030   EVENT_404							Event not found.
 4031   SHOWING_TIME_404						Showing time not found
 4032   BOOKING_404							The specified booking is not found in the system.
@@ -106,6 +107,7 @@ NUM    STRING  								Message
 4203   STUDENTNUM_ALREADY_TAKEN             obviously.
 4204   EMPNUM_ALREADY_TAKEN                 obviously.
 4103   ACCESS_DENIED_INVALID                Happens when a URI is accessed via address bar but only meant to be accessed via AJAX.
+4800   COOKIE_ON_SERVER404					Cookie on server not found.
 4998   INVALID_ENTRIES_SPECIFIED            Invalid entries specified.
 4999   LOGIN_NEEDED                         You have to log-in first before you can access the feature requested
 //server error

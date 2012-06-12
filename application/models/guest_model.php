@@ -1,11 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 10FEB012-2017
-
-This deals with table `booking_guests` or basically anything that we can do for our guests.
-
-*/
-
+/**
+*	Guest Model
+* 	Created 10FEB012-2017
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	This deals with table `booking_guests` or basically anything that we can do for our guests.
+**/
 
 class Guest_model extends CI_Model {
 	
@@ -96,7 +100,7 @@ class Guest_model extends CI_Model {
 		/*
 			Created 12FEB2012-1927
 		*/
-		$sql_command = "SELECT * FROM `booking_guests` WHERE `bookingNumber` = ?";
+		$sql_command = "SELECT * FROM `booking_guests` WHERE `bookingNumber` = ? ORDER BY `Sequence` ASC";
 		$arr_result = $this->db->query( $sql_command, array( $bookingNumber )  )->result();
 		if( count( $arr_result ) < 1 ) return false;
 		else
@@ -167,14 +171,15 @@ class Guest_model extends CI_Model {
 	}//getSingleGuestExtended( .. )
 	
 	
-	function insertGuestDetails( $bookingNumber, $accountNum, $Fname,  $Mname,  $Lname, 
+	function insertGuestDetails( $bookingNumber, $guestNum, $accountNum, $Fname,  $Mname,  $Lname, 
 		$gender, $cellphone, $landline, $email, $studentNum = NULL, $employeeNum = NULL
 	)
 	{
 		// 13MAR2012-1004 | Added $studentNum and $employeeNum
-		$sql_command = "INSERT INTO `booking_guests` VALUES ( UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		$sql_command = "INSERT INTO `booking_guests` VALUES ( UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		$data = Array(
 			'bookingNumber' => $bookingNumber,
+			'Sequence' => $guestNum,
 			'AccountNum' => intval($accountNum),
 			'Fname' => strtoupper( $Fname ),
 			'Mname' => strtoupper( $Mname ),

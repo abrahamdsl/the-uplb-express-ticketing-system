@@ -13,6 +13,7 @@ class SeatCtrl extends CI_Controller {
 		$this->load->model('Event_model');		
 		$this->load->model('login_model');		
 		$this->load->model('MakeXML_model');				
+		$this->load->model('ndx_model');				
 		$this->load->model('Permission_model');				
 		$this->load->model('Seat_model');				
 		
@@ -159,13 +160,22 @@ class SeatCtrl extends CI_Controller {
 		*/
 		$masterSeatMapDetails;
 		$masterSeatMapProperData;						
-		$eventID = $this->input->cookie( 'eventID' );
-		$showtimeID = $this->input->cookie( 'showtimeID' );		
+		$eventID;
+		$showtimeID;
 		$showingTimeObj;
 		$seatMapUniqueID;
-		
+		$guid;
+		$bookingInfo;
+				
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		if( $bookingInfo === false ){
+			echo 'ERROR|Cannot find server-on-cookie';
+			return false;
+		}
+		$eventID = $bookingInfo->EVENT_ID;
+		$showtimeID = $bookingInfo->SHOWTIME_ID;
 		$showingTimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
-		
 		// user is accessing via browser address bar, so not allowed
 		//if( $this->input->is_ajax_request() === false ) redirect('/');
 		
@@ -177,7 +187,7 @@ class SeatCtrl extends CI_Controller {
 		}
 		
 		//get DB entries		
-		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );		
+		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );
 		$seatMapProperData = $this->Seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
 						
 		echo $this->MakeXML_model->XMLize_SeatMap_Actual( $masterSeatMapDetails, $seatMapProperData );
@@ -216,21 +226,34 @@ class SeatCtrl extends CI_Controller {
 	
 	function areSeatsOccupied( )
 	{
-		/*
+		/* @DEPRECATED 11JUN2012-1252 In favor of library seatmaintenance/areSeatsOccupied(..)
 			Created 13FEB2012-2000
 			
 			also checks if seat selection is mandatory.
 		*/
-		$matrices = $this->input->post( 'matrices' );		
-		$eventID = $this->input->post( 'eventID' );
-		$showtimeID = $this->input->post( 'showtimeID' );
+		$guid;
+		$bookingInfo;
+		$matrices;
+		$eventID;
+		$showtimeID;
 		$seatObj;
 		$matrices_tokenized;
-		$slots = $this->clientsidedata_model->getSlotsBeingBooked();
+		$slots;
 		
 		// user is accessing via browser address bar, so not allowed
 		if( $this->input->is_ajax_request() === false ) redirect('/');
-		
+				
+		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
+		$bookingInfo = $this->ndx_model->get( $guid );
+		if( $bookingInfo === false ){
+			echo 'ERROR|Cannot find server-on-cookie';
+			return false;
+		}
+		$matrices = $this->input->post( 'matrices' );
+		log_message( 'DEBUG', 'seat matrix: ' . $matrices );
+		$slots = $bookingInfo->SLOT_QUANTITY;
+		$eventID = $bookingInfo->EVENT_ID;
+		$showtimeID = $bookingInfo->SHOWTIME_ID;
 		if( $matrices === false or $eventID === false or $showtimeID === false )
 		{
 			echo "INVALID|DATA-NEEDED";
@@ -257,7 +280,7 @@ class SeatCtrl extends CI_Controller {
 		}		
 		if( $this->Event_model->isSeatSelectionRequired( $eventID, $showtimeID ) and $slots !== count($matrices_tokenized) )
 		{
-			echo "OK|SEATREQUIRED|Seat selection for this event/showing time is mandatory.";
+			echo "OK|SEATREQUIRED|0";
 			return false;
 		}
 		echo "OK|TRUE";
