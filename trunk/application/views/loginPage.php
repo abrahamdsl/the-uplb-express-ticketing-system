@@ -21,17 +21,17 @@ $this->load->view('html-generic/metadata.inc');
 	?>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/anti-ie.js'; ?>" ></script>					
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/anti-ie.js'; ?>" ></script>
 	<style type="text/css">
 		div.questionableBrowser{
 			height: auto;
 			width: 100%;
 			margin: 5px; 
-			clear:right; 						
+			clear:right;
 			background-color:rgb(255,174,201);
-			padding: 10px;		
+			padding: 10px;
 		}
 		div.questionableBrowserInner{
 			border: 2px solid rgb(255,45,45);
@@ -54,7 +54,7 @@ $this->load->view('html-generic/metadata.inc');
 				As a result, some functionalities might be buggy or not available.
 		<?php 
 				break;
-			case BR_NOT_TESTED_BUT_PERMIT_STILL:				
+			case BR_NOT_TESTED_BUT_PERMIT_STILL:
 				$this->telemetry_model->add( BR_NOT_TESTED_BUT_PERMIT_STILL,  $uuid_new_ident, $_client_iPv4, "REF_".$uuid, "" );
 		?>
 				We have tested a recent version of your browser but not this particular
@@ -68,8 +68,8 @@ $this->load->view('html-generic/metadata.inc');
 	</div>
 </div>
 <?php } ?>
-<div id="main_container">	
-	<div id="header">    	    	        
+<div id="main_container">
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
@@ -77,8 +77,8 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view('html-generic/menu-bar.inc');
 		?>
 		<!-- userInfo bar not needed here -->
-    </div>            
-    <div id="main_content">    	
+    </div>
+    <div id="main_content">
     	<div id="centralContainer">
 			
 			<div id="page_title">
@@ -88,23 +88,22 @@ $this->load->view('html-generic/metadata.inc');
 				Login to access services.
 			</div>
 			
-			<div id="left_content">					
+			<div id="left_content">	
 				<div class="text_box">
 					<form method="post"  action="<?php echo base_url().'SessionCtrl/login' ?>" name="formLogin" id="formMain">
 						<div class="login_form_row">
 							<label class="login_label">Username:</label>
-							<input type="text" name="username" class="login_input" /><br/>							
+							<input type="text" name="username" class="login_input" value="" /><br/>
 							<input type="hidden" name="username_validate" value="0" />
 						</div>
-						
 						<div class="login_form_row">
 							<label class="login_label">Password:</label>
-							<input type="password" name="password" class="login_input" /><br/>							
+							<input type="password" name="password" class="login_input" value="" /><br/>
 							<input type="hidden" name="password_validate" value="0" />
-						</div>                                     
+						</div>
 						<div id="essentialButtonsArea">
-							<a class="button button2" id="buttonOK" ><span class="icon">Log me in</span></a>																										
-						</div>												
+							<a class="button button2" id="buttonOK" ><span class="icon">Log me in</span></a>
+						</div>
 					</form>
 				</div><!--text_box-->
 				<div class="errorNotice">
@@ -115,7 +114,7 @@ $this->load->view('html-generic/metadata.inc');
 							$this->session->userdata('LOGIN_WARNING') != FALSE 
 						){
 					?>
-						<ul class="loginWarning">							
+						<ul class="loginWarning">
 						<?php	
 							foreach($this->session->userdata('LOGIN_WARNING') as $error)
 							{
@@ -127,15 +126,15 @@ $this->load->view('html-generic/metadata.inc');
 							$this->session->set_userdata($data);
 						?>
 						</ul>
-					<?php								
+					<?php
 						}else{
 							echo "&nbsp;";
 						}
 					?>
-				</div>				
+				</div>
 				<div class="signup_div">
 					<h3 style="float:left;">No account yet?</h3>
-					<a href="<?php echo base_url().'/userAccountCtrl/userSignup'; ?>" class="button" id="buttonOK2" ><span class="icon">Sign up</span></a>						
+					<a href="<?php echo base_url().'/userAccountCtrl/userSignup'; ?>" class="button" id="buttonOK2" ><span class="icon">Sign up</span></a>
 				</div>
 				
 			</div><!-- left content -->
@@ -143,7 +142,7 @@ $this->load->view('html-generic/metadata.inc');
 				<h3>Hi!</h3>
 				<p>
 					Thank you for testing this web application. You may use the following accounts in accessing the application if you don't want to try the sign-up process
-					now.										
+					now.
 				</p>
 				<table class="center_purest" style="padding: 10px;">
 					<thead style="font-size: 1.2em;" >
@@ -180,7 +179,7 @@ $this->load->view('html-generic/metadata.inc');
 					Booking tutorial <a href="http://abrahamdslx.blogspot.com/2012/02/booking-event-in-uxt.html">here.</a>
 				</p>
 			</div>
-		</div><!--end of centralContainer-->			
+		</div><!--end of centralContainer-->
 		<div style=" clear:both;"></div>
     </div><!--end of main content-->
 	

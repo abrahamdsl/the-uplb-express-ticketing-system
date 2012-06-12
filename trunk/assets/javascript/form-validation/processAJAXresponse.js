@@ -13,7 +13,11 @@ $(document).ready( function(){
 				title: s_title,
 				message: s_message
 		});
-		
+		if(  s_redirect != "" )
+		{
+			setTimeout( "location.href='" + s_redirect + "'", parseInt( $(xmlText).find('redirect_after').text(),10) );
+		}
 	};
+		
 
 });

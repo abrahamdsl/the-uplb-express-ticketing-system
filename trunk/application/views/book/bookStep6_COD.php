@@ -16,130 +16,88 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep4.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep6.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
 	<!--For modal v1-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
-	
-	<?php			
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
+
+	<?php 
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionOnloadRitual.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionDataCleanup.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep6.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>	
-	<?php			
-		$this->load->view('html-generic/baseURLforJS.inc');	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionOnloadRitual.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookConclusionDataCleanup.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep6.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
+	<?php 
+		$this->load->view('html-generic/baseURLforJS.inc');
 	?>	
-	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>			
+	<!--For modal v1-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');	
+		$this->load->view('html-generic/overlay_general.inc');
 ?>
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
-    </div>            
-    <div id="main_content" >    	
+		?>
+    </div>
+    <div id="main_content" >
     	<div id="centralContainer">
-<?php			
+<?php 
 			$this->load->view( 'html-generic/bookProgressIndicator.inc');
-?>		
+?>
 			<div id="page_title" class="page_title_custom" >
 				Confirmation
 			</div>
 			<div id="top_page_detail" >
 				Thank you for using the application. Have fun.
-				<br/>				
-			</div>			
+				<br/>
+			</div>
 			
-			<!-- accordion start -->			
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container bookStep2_main_div_custom" >
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 					<div class="title">Event Details</div>
-					<div class="content">	
+					<div class="content">
 						<div class="bookingDetails" >
 							<?php
-								$slots = $this->input->cookie( 'slots_being_booked' ); $this->input->cookie( '' );
+								$this->load->view('html-generic/eventInfoLeft_ndx.inc');
 							?>
-							<div class="top">		
-								<input type="hidden" id="startDate" value="<?php echo $this->input->cookie( 'startDate' ); ?>" />
-								<input type="hidden" id="endDate" value="<?php echo $this->input->cookie( 'endDate' ); ?>" />
-								<input type="hidden" id="startTime" value="<?php echo $this->input->cookie( 'startTime' ); ?>" />
-								<input type="hidden" id="endTime" value="<?php echo $this->input->cookie( 'endTime' ); ?>" />
-								<div class="start">
-									<span class="deed" >
-										Start
-									</span>
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'startTime' ); ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php echo $this->input->cookie( 'startDate' ); ?>										
-									</span>
-								</div>								
-								<div class="end">
-									<span class="deed" >
-										End
-									</span>									
-									<span class="contentproper_time" >										
-										<?php echo $this->input->cookie( 'endTime' );  ?>
-									</span>
-									<span class="contentproper_date" >
-										<?php
-											if( $this->input->cookie( 'startDate' ) != $this->input->cookie( 'endDate' ) ) echo $this->input->cookie( 'endDate' );
-											else
-												echo '&nbsp';
-										?>
-									</span>
-								</div>
-							</div>
-							<div class="bdtitle" >
-								<?php echo $this->input->cookie( 'eventName' ); ?>
-							</div>
-							<div class="bottom">
-								<?php echo $this->input->cookie( 'location' ); ?>								
-							</div>														
 						</div>
 						<div class="containingClassTable center_purest" >
 							<div id="bookingNumber" class="properInfo center_purest" >
-								<?php echo $this->input->cookie( 'bookingNumber' ); ?>
+								<?php echo $bookingInfo->BOOKING_NUMBER; ?>
 							</div>
 							<div class="caption center_purest">
-								This is your booking reference number. The only thing you need when paying for your ticket(s), well,
+								This is your booking number. The only thing you need when paying for your ticket(s), well,
 								aside from your money.
 							</div>
 							<div id="paymentDeadline" class="properInfo center_purest" >
-								<?php
-									$pddate = $this->clientsidedata_model->getPaymentDeadlineDate();
-									$pdtime = $this->clientsidedata_model->getPaymentDeadlineTime();
-								?>
 								<input type="hidden" id="pDead_Date" value="<?php echo $pddate; ?>" />
 								<input type="hidden" id="pDead_Time" value="<?php echo $pdtime; ?>" />
 								<span id="date">
@@ -264,7 +222,7 @@ $this->load->view('html-generic/metadata.inc');
 				<div class="accordionImitation" >
 					<div class="title" >Guest Details </div>
 					<?php
-						$slots = $this->input->cookie( 'slots_being_booked' );
+						$slots = $bookingInfo->SLOT_QUANTITY;
 					?>					
 					<div id="tabs">					
 						<ul>

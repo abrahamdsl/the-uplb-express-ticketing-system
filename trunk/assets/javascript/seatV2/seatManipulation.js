@@ -67,7 +67,7 @@ function assembleExistingGuestSeatData(){
 		
 		Needs JQuery.
 	*/	
-	var guestCount = getCookie( 'slots_being_booked' );
+	var guestCount = parseInt( $('input#_js_use_slots').val() ); 
 	var x;
 	var y;
 	
@@ -215,8 +215,8 @@ $(document).ready( function(){
 					$("span#hallSeatingCapacity").html( usableCapacity );
 					$("span#place").html( hallName );
 				}else{
-					// means, we are in booking - picking  a seat
-					ticketClassBeingBooked = getCookie( 'ticketClassUniqueID' ); 
+					// means, we are in booking - picking  a seat					
+					ticketClassBeingBooked = parseInt( $('input#_js_use_ticketClassUniqueID').val() );  
 				}
 				
 				/* insert the inner div on which we will attach the drag_drop_multi_select() function, and then the table

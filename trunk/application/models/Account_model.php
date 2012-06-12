@@ -162,7 +162,8 @@ class Account_model extends CI_Model {
 			$returnThis['status'] = 1;
 			return $returnThis;
 		}else
-		/*
+		/*	12JUN2012-1322: Should be deprecated/improved to not restrict online payment
+			detection to Paypal or $pChannelID === 2 but on `payment_channel`.`type`
 			By default, the $pChannelID equals 2 means that the payment is via Paypal
 			so this is allowed for all users.
 		*/

@@ -11,13 +11,13 @@
 *	This contains utilities regarding bookings. Most of the contents were originally in EventCtrl controller.
 *   There are some constants in use in this file. Such should be defined in the Controller where this library
 *    is called.
-*/
+**/
 
 class BookingMaintenance{
 	var $bookingNumberGlobal;
 	var $CI;
 	
-	public function __construct( $params = NULL )
+	function __construct( $params = NULL )
     {		
 	
 		$this->CI = & get_instance();
@@ -31,10 +31,68 @@ class BookingMaintenance{
 		$this->CI->load->model('TicketClass_model');		
 		$this->CI->load->model('TransactionList_model');		
 		$this->CI->load->model('UsefulFunctions_model');
-        $bookingNumberGlobal = (is_array($params) )?  $params[0] : $this->CI->clientsidedata_model->getBookingNumber();		
+        $bookingNumberGlobal = (is_array($params) ) ?  $params[0] : FALSE;
     }
 	
-	public function assembleNoMoreSlotSameTicketClassNotification( $eventID, $showtimeID, $slots, $bookingNumber )
+	private function properDetermineOnlinePaymentCode( $paymentModeObj )
+	{	
+		/**
+		*	@description Determines which is the online payment processor. Extracts
+				WIN5 DATA from the `internal_data` field of `payment_channel`
+		*/
+		if( $paymentModeObj->internal_data_type == 'WIN5' )
+		{
+			$processorValue = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'processor', $paymentModeObj->internal_data );
+			if( $processorValue === false ) return false;
+			else{
+				switch( strtolower($processorValue) )
+				{
+					case "paypal"       : return PAYMODE_PAYPAL;
+					case "2checkout"    : return PAYMODE_2CO;
+					case "moneybookers" : return PAYMODE_MONYEBOOKERS;
+					default				: return false;
+				}
+			}
+		}else{			
+			//if XML, later.
+			return false;
+		}
+	}// properDetermineOnlinePaymentCode(..)
+	
+	function assembleGenericBooking404()
+	{
+		$data = Array();
+		$data['defaultAction'] = 'home';
+		$data['redirect'] = 2;		
+		$data['error'] = 'CUSTOM';		
+		$data['redirectURI'] = base_url();		
+		$data['theMessage'] = "Booking number is not found in the system.";
+		return $data;
+	}
+		
+	function assembleGenericBookingChangeDenied()
+	{
+		$data = Array();
+		$data['defaultAction'] = 'home';
+		$data['redirect'] = 2;		
+		$data['error'] = 'CUSTOM';		
+		$data['redirectURI'] = base_url();		
+		$data['theMessage'] = "You have no right to make changes to this booking.";
+		$this->load->view( 'errorNotice', $data );
+		return $data;
+	}
+		
+	function assembleManageBookingParamAbsent()
+	{
+		$data = Array();
+		$data['defaultAction'] = 'Manage Booking';		
+		$data['redirect'] = 2;		
+		$data['error'] = 'NO_DATA';		
+		$data['redirectURI'] = base_url().'EventCtrl/manageBooking';					
+		return $data;
+	}
+	
+	function assembleNoMoreSlotSameTicketClassNotification( $eventID, $showtimeID, $slots, $bookingNumber )
 	{
 		// Error code 2050
 		$data = Array();
@@ -54,7 +112,7 @@ class BookingMaintenance{
 		return $data;
 	}//assembleNoMoreSlotSameTicketClassNotification(..)
 	
-	public function assembleOnlinePaymentProcessorNotSupported( $otherMsgs = "" )
+	function assembleOnlinePaymentProcessorNotSupported( $otherMsgs = "" )
 	{
 		// Error code 5105
 		$data = Array();
@@ -69,7 +127,7 @@ class BookingMaintenance{
 		return $data;
 	}//assembleOnlinePaymentProcessorNotSupported
 	
-	public function assembleErrorPaymentNotification( $otherMsgs = "" )
+	function assembleErrorPaymentNotification( $otherMsgs = "" )
 	{
 		// Error code 5104
 		$data = Array();
@@ -82,7 +140,7 @@ class BookingMaintenance{
 		return $data;
 	}//assembleErrorPaymentNotification()
 	
-	public function assemblePaypalPaymentMissingCrucial( $otherMsgs = "" )
+	function assemblePaypalPaymentMissingCrucial( $otherMsgs = "" )
 	{
 		// Error code 5105
 		$data = Array();
@@ -97,7 +155,7 @@ class BookingMaintenance{
 		return $data;
 	}// assemblePaypalPaymentMissingCrucial()
 	
-	public function assemblePaypalPaymentUserCancelledNotification( $otherMsgs = "" )
+	function assemblePaypalPaymentUserCancelledNotification( $otherMsgs = "" )
 	{
 		// Error code 5105
 		$data = Array();
@@ -111,7 +169,7 @@ class BookingMaintenance{
 		return $data;
 	}//assembleErrorPaymentNotification()
 	
-	public function assemblePaypalFishy( $otherMsgs = "" )
+	function assemblePaypalFishy( $otherMsgs = "" )
 	{
 		// Error code  5103
 		$data = Array();
@@ -120,7 +178,7 @@ class BookingMaintenance{
 		$data['theMessage'] = "We have received your payment through PayPal but it did not pass our standards. (i.e., it was held by PayPal";
 		$data['theMessage'] .= "pending review for fraud). ";
 		$data['theMessage'] .= '<br/><br/>Please choose another payment mode or try again.<br/><br/>Please contact us to refund the amount ';
-		$data['theMessage'] .= 'that may have been charged.<br/><br/>';
+		$data['theMessage'] .= 'that may have been charged if you want.<br/><br/>';
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
 		$data['redirect']	= 2;
@@ -128,7 +186,23 @@ class BookingMaintenance{
 		return $data;
 	}//assemblePaypalFishy(..)
 	
-	public function cancelPendingChanges( $bookingNumberOrObj, $reason = 1 )
+	function assembleShowtime404()
+	{	
+		return Array(
+			'error' => "CUSTOM",
+			'theMessage' => "Internal Server Error.<br/>Showing time specified not found. Are you trying to hack the app?"
+		);
+	}//assembleShowtime404()
+	
+	function assembleTicketClassOnDB404()
+	{
+		return Array(
+			'error' => "CUSTOM",
+			'theMessage' => "INTERNAL SERVER ERROR<br/><br/>Cannot find DB records for the selected ticket class. Please contact the system administrator."
+		);
+	}//assembleTicketClassOnDB404()
+	
+	function cancelPendingChanges( $bookingNumberOrObj, $reason = 1 )
 	{
 		/*
 			Called by EventCtrl->{ managebooking_cancelchanges() | book_step2() }
@@ -235,10 +309,10 @@ class BookingMaintenance{
 		$this->CI->TransactionList_model->createNewTransaction(
 			$this->CI->session->userdata('accountNum'),
 			$reasonText,
-			'TICKET_CLASS_UPGRADE',			
+			'TICKET_CLASS_UPGRADE',
 			$eachBooking->bookingNumber,
 			'Secret!',
-			'WIN5',			
+			'WIN5',
 			Array(
 				'backToShowingTime'	=> $oldShowtimeID,
 				'backToTicketClassGroupID' => $oldTicketClassGroupID,
@@ -248,7 +322,7 @@ class BookingMaintenance{
 		return true;
 	}//cancelPendingChanges(..)
 	
-	public function cleanDefaultedBookings( $eventID, $showtimeID )
+	function cleanDefaultedBookings( $eventID, $showtimeID )
 	{	
 		/*
 			 This checks if there are bookings marked as PENDING-PAYMENT' and yet
@@ -284,7 +358,7 @@ class BookingMaintenance{
 		}//if	  
 	}//cleanDefaultedBookings
 	
-	public function cleanDefaultedSlots( $eventID, $showtimeID, $ticketClassesObjSENT = NULL )
+	function cleanDefaultedSlots( $eventID, $showtimeID, $ticketClassesObjSENT = NULL )
 	{
 		/*
 			@purpose This part checks if there are event_slots (i.e., records in `event_slot` ) that the status
@@ -349,9 +423,8 @@ class BookingMaintenance{
 				}
 			}//foreach		  
 	}//cleanDefaultedSlots
-	
-	
-	public function deleteBookingTotally_andCleanup( $bookingNumber, $expiryCleanup = NULL )
+			
+	function deleteBookingTotally_andCleanup( $bookingNumber, $expiryCleanup = NULL )
 	{
 		/*
 			Called by EventCtrl->{ book_step2, cancelBooking, cancelBookingProcess )
@@ -368,7 +441,7 @@ class BookingMaintenance{
 		if( $expiryCleanup === NULL ){
 			$bookingStage = $this->CI->clientsidedata_model->getSessionActivityStage();
 		}
-		// CODE MISSING: DATABASE Checkpoint		
+		// CODE MISSING: DATABASE Checkpoint
 		foreach( $guestObjArray as $eachGuest )
 		{
 			$eventSlot = $this->CI->Slot_model->getSlotAssignedToUser( $eachGuest->UUID );			
@@ -398,27 +471,6 @@ class BookingMaintenance{
 		return true;
 	}//deleteBookingTotally_andCleanup
 	
-	private function properDetermineOnlinePaymentCode( $paymentModeObj )
-	{		
-		if( $paymentModeObj->internal_data_type == 'WIN5' )
-		{
-			$processorValue = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'processor', $paymentModeObj->internal_data );
-			if( $processorValue === false ) return false;
-			else{
-				switch( strtolower($processorValue) )
-				{
-					case "paypal"       : return PAYMODE_PAYPAL;
-					case "2checkout"    : return PAYMODE_2CO;
-					case "moneybookers" : return PAYMODE_MONYEBOOKERS;
-					default				: return false;
-				}
-			}
-		}else{			
-			//if XML, later.
-			return false;
-		}
-	}// properDetermineOnlinePaymentCode(..)
-	
 	function determineOnlinePaymentModeCode( $passedData )
 	{
 		/**
@@ -436,7 +488,7 @@ class BookingMaintenance{
 		return $this->properDetermineOnlinePaymentCode( $paymentModeObj );
 	}//determineOnlinePaymentModeCode(..)
 	
-	public function forfeitSlotsOfNoShowGuests( $eventID, $showtimeID )
+	function forfeitSlotsOfNoShowGuests( $eventID, $showtimeID )
 	 {
 		/*
 			A lot of non-harmful bugs in the functions in booking_model where this is called.
@@ -465,14 +517,15 @@ class BookingMaintenance{
 		
 	 }// forfeitSlotsOfNoShowGuests(..)
 	
-	public function getBillingRelevantData( $bookingNumber )
+	function getBillingRelevantData( $bookingNumber )
 	{
-			/*
-				@created 09MAR2012-1125. 
+			/**
+			*	@created 09MAR2012-1125. 
 				
-				@purpose Gets entries in table `purchase` which have connection with the booking number specified,
-				computes the amount due and returns the array containing such data.				
-			*/
+			*	@purpose Gets entries in table `purchase` which have connection with the booking number specified,
+				computes the amount due and returns the array containing such data.	
+			*	@returns Associative array, containing the data requested.
+			**/
 			$unpaidPurchasesArray = $this->CI->Payment_model->getUnpaidPurchases( $bookingNumber );
 			$paidPurchasesArray   = $this->CI->Payment_model->getPaidPurchases( $bookingNumber );
 			$unpaidTotal 		  = $this->CI->Payment_model->sumTotalCharges( $unpaidPurchasesArray );
@@ -481,22 +534,58 @@ class BookingMaintenance{
 			
 			if( $amountDue < 0 ) $amountDue = FREE_AMOUNT;	// we don't have to refund ( signified by negative here )
 			return Array(
-				AKEY_UNPAID_PURCHASES_ARRAY => $unpaidPurchasesArray,			
-				AKEY_PAID_PURCHASES_ARRAY   => $paidPurchasesArray,			
+				AKEY_UNPAID_PURCHASES_ARRAY => $unpaidPurchasesArray,
+				AKEY_PAID_PURCHASES_ARRAY   => $paidPurchasesArray,
 				AKEY_UNPAID_TOTAL		    => $unpaidTotal,
 				AKEY_PAID_TOTAL 		    => $paidTotal,
 				AKEY_AMOUNT_DUE             => $amountDue
 			);
 	}//getBillingRelevantData
+	
+	function getSendSeatInfoToViewData( $bookingNumber )
+	{
+		/**
+		*	@created 07JUN2012-1807
+		*	@description Assembles data related to seating for display in the forward pages.
+		*	@returns Array,						
+				<key: Guest UUID>
+					-> <MATRIX_X>_<MATRIX_Y>
+		**/
+		$bookingObj = $this->CI->Booking_model->getBookingDetails( $bookingNumber );
+		$guestObj   = $this->CI->Guest_model->getGuestDetails( $bookingNumber );
+		$sendSeatInfoToView = Array();
 		
+		if( is_array( $guestObj ) and count( $guestObj ) > 0 )
+		{
+			foreach( $guestObj as $singleGuest )
+			{
+				$guestSlotObj = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter( 
+					$bookingObj->EventID, 
+					$bookingObj->ShowingTimeUniqueID,
+					$bookingObj->TicketClassGroupID, 
+					$bookingObj->TicketClassUniqueID,
+					$singleGuest->UUID
+				);			
+				$sendSeatInfoToView[ $singleGuest->UUID ] = $this->CI->Seat_model->getVisualRepresentation( 
+					$guestSlotObj->Seat_x, 
+					$guestSlotObj->Seat_y,
+					$bookingObj->EventID,
+					$bookingObj->ShowingTimeUniqueID
+				);
+			}
+		}		
+		return $sendSeatInfoToView;
+		
+	}// getSendSeatInfoToViewData(..)
+	
 	function processPayment( $bNumber, $customData = "" )
-	{	
-		/*
-			@created 28FEB2012-1148
-			@calledBy called by book_step6 & its forward, confirm_step3
-			@purpose Moved from confirm_step3,so this can be used in BookStep6 when
-			there are no charges (FREE ).
-		*/		
+	{
+		/**
+		*	@created 28FEB2012-1148
+		*	@calledBy called by book_step6 & its forward, confirm_step3
+		*	@purpose Moved from confirm_step3,so this can be used in BookStep6 when
+			there are no charges ( FREE ).
+		**/		
 		$result = Array(
 			//error code 5104
 			'boolean' => FALSE,
@@ -504,36 +593,62 @@ class BookingMaintenance{
 			'message' => 'Something went wrong.'
 		);
 		$userPermitted;
+		$paymentModeObj;
 		$bookingDetails  = $this->CI->Booking_model->getBookingDetails( $bNumber );
-		$billingData	 = $this->getBillingRelevantData( $bNumber );		
+		$billingData	 = $this->getBillingRelevantData( $bNumber );				
 				
+		log_message('DEBUG', 'bookingmaintenance\processpayment() accessed');
 		if( $billingData[ AKEY_UNPAID_PURCHASES_ARRAY ] === false )
 		{			
 			$result['status'] = "ERROR";
 			$result['message'] = "Already paid."; //1004
 			return $result;
 		}
-		$userPermitted = $this->CI->Account_model->isUserAuthorizedPaymentAgency(
-				$this->CI->clientsidedata_model->getAccountNum(),
-				$bookingDetails->EventID,
-				$bookingDetails->ShowingTimeUniqueID,
-				$billingData[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID
+		$paymentChannel  = $billingData[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID;
+		$paymentModeObj = $this->CI->Payment_model->getSinglePaymentChannel( 
+			$bookingDetails->EventID, 
+			$bookingDetails->ShowingTimeUniqueID, 
+			$paymentChannel
 		);
-		if( $userPermitted['value'] === false ){
+		if( $paymentModeObj === FALSE )
+		{
+			log_message('DEBUG', 'PAYMENT MODE NOT ALLOWED FOR EVENT ' . $bookingDetails->EventID . " " . $bookingDetails->ShowingTimeUniqueID );
 			$result['status'] = "ERROR";
-			$result['message'] = "You do not have permission to confirm a reservation for this event.<br/><br/>*"; //4007
-			$result['message'] .= $userPermitted['comment'];
-			return $result;			
+			$result['message'] = "This payment mode is not allowed to be used for this event."; //4008			
+			return $result;
+		}
+		/*
+			For online payment modes (i.e. PayPal ), you don't need to check whether a user
+			is authorized payment agency.
+		*/
+		if( $paymentModeObj->Type != "ONLINE" ){
+			$userPermitted = $this->CI->Account_model->isUserAuthorizedPaymentAgency(
+					$this->CI->clientsidedata_model->getAccountNum(),
+					$bookingDetails->EventID,
+					$bookingDetails->ShowingTimeUniqueID,
+					$paymentChannel
+			);
+			if( $userPermitted['value'] === false ){
+				log_message('DEBUG', 'PAYMENT AGENT DENIED.');
+				$result['status'] = "ERROR";
+				$result['message'] = "You do not have permission to confirm a reservation for this event.<br/><br/>*"; //4007
+				$result['message'] .= $userPermitted['comment'];
+				return $result;			
+			}
+		}else{
+			log_message('DEBUG', 'Online payment mode detected ' . $paymentModeObj->Name );
 		}
 		$totalCharges = floatval( $billingData[ AKEY_AMOUNT_DUE ] );
 		$paymentID    = $this->CI->Payment_model->createPayment( 
 			$bNumber, 
 			$totalCharges, 
 			$billingData[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID,
+			$this->CI->clientsidedata_model->getAccountNum(),
 			$customData
 		);
 		if( $paymentID !== false )
 		{
+			log_message('DEBUG', 'Payment created for ' . $bNumber  . ' : ' . $paymentID );
 			foreach( $billingData[ AKEY_UNPAID_PURCHASES_ARRAY ] as $singlePurchase)
 			{
 				$this->CI->Payment_model->setAsPaid( $bNumber, $singlePurchase->UniqueID, $paymentID );
@@ -543,12 +658,52 @@ class BookingMaintenance{
 			$result['status'] = "OKAY";
 			$result['message'] = "Succesfully proccessed payment."; //1003
 			return $result;	
-		}else{			
+		}else{
+			log_message('DEBUG', 'Unknown error occurred during payment creation' );
 			$result['boolean'] = FALSE;
 			$result['status'] = "ERROR";
 			$result['message'] = "Unknown error occurred when confirming payment. Please try again."; //5102
 			return $result;
 		}
 	}//processPayment(..)
+	
+	function freeSlotsBelongingToClasses_NDX( $selectedTicketClass = FALSE, $slot_uuid_db_entry )
+	{
+		/**
+		*	@created 09JUN2012-1607
+		*	@description Supersedes Slot_model->freeSlotsBelongingToClasses(.)	
+						
+		*	@param $selectedTicketClass - INT - The ticket class selected. 
+										- BOOLEAN FALSE - If we just want to make the slot UUIDs available for booking.
+		**/
+		$unlock_slot_UUIDs = "";		
+		if( $selectedTicketClass === FALSE )
+		{
+			/* The current cookie-on-server's SLOTS_UUID value is the slot UUIDs
+				separated by underscores. We just need to explode it.
+			*/
+			$free_these_UUIDs = explode('_' ,$slot_uuid_db_entry);
+		}else{
+			/* The current cookie-on-server's SLOTS_UUID value is of type WIN5, with keys as 
+				the  respective Ticket Class Unique IDs. We get it and remove the entry for
+				the ticket class the user selects.
+			*/
+			$unlock_slot_UUIDs = $this->CI->UsefulFunctions_model->removeWIN5_Data( $selectedTicketClass, $slot_uuid_db_entry );
+			/*
+				We then make an associative array out of it, so that we can easily access the UUID
+				values in the foreach() later.
+			*/
+			$free_these_UUIDs = $this->CI->UsefulFunctions_model->makeAssociativeArrayThisWIN5_DATA( $unlock_slot_UUIDs );
+		}
+				
+		foreach( $free_these_UUIDs as $value )
+		{								
+			$explodedUUIDs = explode( '_', $value );		// explode via delimiter underscore
+			foreach( $explodedUUIDs as $uuid ) 
+			{				
+				$this->CI->Slot_model->setSlotAsAvailable( $uuid );	// free slots
+			}
+		}
+	}//freeSlotsBelongingToClasses_NDX
 }//class
 	

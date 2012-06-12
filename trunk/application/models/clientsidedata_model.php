@@ -1,17 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 08MAR2012-0044
-
-Okay, so I just realized how messy my processes are in accessing client-side data (cookies and
-CI-session). So now, I made this to centralize them all. It's like Object-oriented programming. hehehe.
-
-Also, first model to completely be in lowercase. Yeah, because most web hosts are using Linux
-and this OS is case-sensitive when it comes to files.
-
-So for now, there are only get, set and delete operations.
-
+/**
+*	Client-side Data Access Model
+* 	Created 08MAR2012-0044
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	This centralizes our access to cookies and CodeIgniter's session data (which is actually a cookie
+     called 'ci_session' by default
+*   Also, first model to completely be in lowercase. Yeah, because most web hosts are using Linux and this OS
+    is case-sensitive when it comes to files.
 */
-
 
 class clientsidedata_model extends CI_Model {
 	function __construct()
@@ -19,43 +20,8 @@ class clientsidedata_model extends CI_Model {
 		parent::__construct();
 		$this->load->helper('cookie');
 		$this->load->library('session');
-	
-		/*define define define*/
-		define("BOOKING_PROGRESS_INDICATOR", 'book_step');
-		define("BOOK_INSTANCE_ENCRYPTION_KEY", 'bookInstanceEncryptionKey');
-		define("EVENT_NAME", 'eventName');
-		define("EVENT_LOCATION", 'location');
-		define("EVENT_ID", 'eventID');
-		define("SHOWTIME_ID", 'showtimeID');
-		define("TICKET_CLASS_UNIQUE_ID", 'ticketClassUniqueID');
-		define("TICKET_CLASS_GROUP_ID", 'ticketClassGroupID');
-		define("START_DATE", 'startDate');
-		define("START_TIME", 'startTime');
-		define("END_DATE", 'endDate');
-		define("END_TIME", 'endTime');
-		define("SLOT_QUANTITY", 'slots_being_booked');
-		define("SLOT_SAME_TICKETCLASS", 'is_there_slot_in_same_tclass');
-		define("BOOKING_NUMBER", 'bookingNumber');
-		define("PURCHASE_IDS",  "purchases_identifiers");
-		define("PURCHASE_COUNT",  "purchases_count");
-		define("TOTAL_CHARGE",  "totalCharges");
-		define("VISUALSEAT_DATA",  "visualseat_data");
-		define("MANAGE_BOOKING_NEW_SEAT_UUIDS",  "mbooknsu");
-		define("MANAGE_BOOKING_NEW_SEAT_MATRIX",  "mbooknsm");
-		define("CLASS_UUIDs",  "class_uuids");
-		define("UPLB_CLASS_UUID",  "uplbClassUUID");
-		define("RECEPTIONIST_ACTIVITY",  "checkIn_or_Out");
-		define("UPLB_CONS_STUDENT_PAIR",  "uplbConstituentStudentNumPair");
-		define("UPLB_CONS_EMP_PAIR",  "uplbConstituentEmpNumPair");
-		define("PAYPAL_ACCESS_INDICATOR", "paypalAccessible" );
-		define("PAYPAL_CRUCIALDATA_ERR_INDICATOR", "ppcrucdata404" );
-		define("PAYPAL_DATA", "paypalData" );
-		define("PAYPAL_IPN", "paypalIPN" );
-		define("SLOT_UUID_JOINER", "_slot_UUIDs" );
-		define("PAYMENT_DEADLINE_DATE", "paymentDeadline_Date" );
-		define("PAYMENT_DEADLINE_TIME", "paymentDeadline_Time" );
-		define("PAYMENT_CHANNEL", "paymentChannel" );
-		define("RESETPASS_BY_ADMIN_PRESENCE", "adminresetspasswords" );
+		include_once( APPPATH.'constants/_constants.inc');
+		include_once( APPPATH.'constants/clientsidedata.inc');
 	}
 	
 	function deleteAdminResetsPasswordIndicator()
@@ -68,6 +34,11 @@ class clientsidedata_model extends CI_Model {
 	{
 		return $this->deleteCookieUnified(SLOT_SAME_TICKETCLASS );
 	}	
+	
+	function deleteBookingCookiesOnServerUUIDRef()
+	{
+		return $this->session->unset_userdata( BOOKING_COOKIES_ON_SERVER_UUID );
+	}
 	
 	function deleteBookingProgressIndicator()
 	{		
@@ -151,6 +122,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( PAYMENT_DEADLINE_TIME );
 	}
 	
+	function deletePaymentModeExclusion()
+	{
+		return $this->deleteCookieUnified( PAYMENT_MODE_EXCLUSION );
+	}
+	
 	function deletePaypalAccessible()
 	{
 		// Uses SESSION data
@@ -187,6 +163,11 @@ class clientsidedata_model extends CI_Model {
 	function deleteReceptionistActivity()
 	{
 		return $this->deleteCookieUnified( RECEPTIONIST_ACTIVITY );
+	}
+	
+	function deleteRedirectionURLAfterAuth()
+	{
+		return $this->deleteCookieUnified( AUTH_THEN_REDIRECT );
 	}
 	
 	function deleteShowtimeID()
@@ -253,6 +234,11 @@ class clientsidedata_model extends CI_Model {
 	function getAvailabilityOfSlotInSameTicketClass( )
 	{
 		return $this->getCookieUnified(SLOT_SAME_TICKETCLASS );
+	}
+	
+	function getBookingCookiesOnServerUUIDRef()
+	{
+		return $this->session->userdata( BOOKING_COOKIES_ON_SERVER_UUID );
 	}
 	
 	function getBookingNumber()
@@ -343,6 +329,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->getCookieUnified( PAYMENT_DEADLINE_TIME );
 	}
 	
+	function getPaymentModeExclusion()
+	{
+		return $this->getCookieUnified( PAYMENT_MODE_EXCLUSION );
+	}
+	
 	function getPaypalCrucialDataErrorNoticeAccessible()
 	{
 		// Uses SESSION data
@@ -376,6 +367,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->getCookieUnified( RECEPTIONIST_ACTIVITY );
 	}
 	
+	function getRedirectionURLAfterAuth()
+	{
+		return $this->getCookieUnified( AUTH_THEN_REDIRECT );
+	}
+		
 	function getShowtimeID()
 	{
 		return $this->getCookieUnified( SHOWTIME_ID );
@@ -464,6 +460,8 @@ class clientsidedata_model extends CI_Model {
 	
 	function setBookingProgressIndicator( $value )
 	{
+		// USES SESSION DATA
+		@$this->session->unset_userdata( BOOKING_PROGRESS_INDICATOR );
 		return $this->session->set_userdata( BOOKING_PROGRESS_INDICATOR, $value );
 	}
 	
@@ -472,7 +470,7 @@ class clientsidedata_model extends CI_Model {
 		// USES SESSION DATA
 		 // just some random range
 		  $bookInstanceEncryptionKey = rand( 9928192, 139124824 );
-		  $this->session->set_userdata( 'bookInstanceEncryptionKey', $bookInstanceEncryptionKey );
+		  return $this->session->set_userdata( BOOK_INSTANCE_ENCRYPTION_KEY, $bookInstanceEncryptionKey );
 	}
 	
 	function setClassUUIDs($value = NULL, $expiry = 3600 )
@@ -491,7 +489,7 @@ class clientsidedata_model extends CI_Model {
 	}
 	
 	function setBookingNumber( $value = NULL, $expiry = 3600 )
-	{
+	{	// DEPRECATED-NDX
 		return $this->setCookieUnified( BOOKING_NUMBER, $value, $expiry );
 	}
 	
@@ -551,6 +549,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->setCookieUnified( PAYMENT_DEADLINE_TIME, $value, $expiry );
 	}
 	
+	function setPaymentModeExclusion( $value = NULL, $expiry = 3600 )
+	{
+		return $this->setCookieUnified( PAYMENT_MODE_EXCLUSION, $value, $expiry );
+	}
+	
 	function setPaypal_IPN_Data( $value = NULL, $expiry = 3600 )
 	{		
 		return $this->setCookieUnified( PAYPAL_IPN, $value, $expiry );
@@ -564,6 +567,7 @@ class clientsidedata_model extends CI_Model {
 	
 	function setPurchaseIDs( $value = NULL, $expiry = 3600 )
 	{
+		@$this->deleteCookieUnified( PURCHASE_IDS );
 		return $this->setCookieUnified( PURCHASE_IDS, $value, $expiry );
 	}
 	
@@ -588,6 +592,11 @@ class clientsidedata_model extends CI_Model {
 	function setReceptionistActivity( $value = NULL, $expiry = 3600 )
 	{
 		return $this->setCookieUnified(  RECEPTIONIST_ACTIVITY, $value, $expiry );
+	}	
+	
+	function setRedirectionURLAfterAuth( $value = NULL, $expiry = 3600 )
+	{
+		return $this->setCookieUnified( AUTH_THEN_REDIRECT, $value, $expiry );
 	}
 	
 	function setShowtimeID( $value = NULL, $expiry = 3600 )
@@ -616,7 +625,7 @@ class clientsidedata_model extends CI_Model {
 	}
 	
 	function setTicketClassSlotUUIDsCookie( $uniqueID, $value = NULL, $expiry = 3600 )
-	{
+	{	// DEPRECATED
 		return $this->setCookieUnified( $uniqueID.SLOT_UUID_JOINER, $value, $expiry );
 	}
 	
@@ -639,16 +648,16 @@ class clientsidedata_model extends CI_Model {
 	{
 		return $this->setCookieUnified( UPLB_CONS_STUDENT_PAIR, $value, $expiry );
 	}
-	
-	
-	
+			
 	function setVisualSeatInfo( $value = NULL, $expiry = 3600 )
 	{
+		@$this->deleteCookieUnified( VISUALSEAT_DATA );
 		return $this->setCookieUnified( VISUALSEAT_DATA, $value, $expiry );
 	}
 	
-	// lalalala, set cookies at konting session (paypal) yung mga nasa taas
-		
+	/**
+	*	Those above are about setting session data and cookies.
+	**/
 	
 	function appendSessionActivityDataEntry( $field, $value )
 	{
@@ -743,7 +752,7 @@ class clientsidedata_model extends CI_Model {
 	function getAccountNum()
 	{
 		//session data!
-		return $this->session->userdata( 'accountNum' );
+		return $this->session->userdata( ACCOUNT_NUM );
 	}
 	
 	function getSessionActivity( )
@@ -752,8 +761,8 @@ class clientsidedata_model extends CI_Model {
 			Created 04MAR2012-1241
 		*/
 		$returnThis = Array();
-		$returnThis[0] = $this->session->userdata( 'activity_name' );
-		$returnThis[1] = $this->session->userdata( 'activity_stage' );
+		$returnThis[0] = $this->session->userdata( ACTIVITY_NAME );
+		$returnThis[1] = $this->session->userdata( ACTIVITY_STAGE );
 		return $returnThis;
 	}//
 	
@@ -770,7 +779,7 @@ class clientsidedata_model extends CI_Model {
 	function getSessionActivityDataEntry( $field )
 	{
 		// CREATED 05MAR2012-1902		
-		$activityData = $this->input->cookie( 'activity_data' );
+		$activityData = $this->input->cookie( ACTIVITY_DATA );
 		$activityData_tokenized;
 		if( $activityData !== false )
 		{			
@@ -822,34 +831,57 @@ class clientsidedata_model extends CI_Model {
 		/*
 			Created 09FEB2012-0052. Moved from EventCtrl for refactoring purposes.
 			
-			Sets cookies needed in booking process. Called in EventCtrl/book_step2
+			Sets cookies needed in booking process. First called in EventCtrl/book_step2
 		*/		
 		$cookie_names = $this->getBookingCookieNames();
 		$y = count($cookie_names);
-		
+		//<area type="debug">
+		$cookie = Array(
+				'name' =>  'debug-PRE',
+				'value' => 'tang',
+				'expire' => 3600				// change later to how long ticketclass hold time
+			);
+		$this->input->set_cookie($cookie);
+		//</area>
 		for( $x=0; $x<$y; $x++ )
 		{
 			$cookie = Array(
 				'name' =>  $cookie_names[ $x ],
 				'value' => $cookie_values[ $x ],
+				'expire' => 3600				// change later to how long ticketclass hold time				 				
+			);
+			$this->input->set_cookie($cookie);			
+		}
+		//<area type="debug">
+		$cookie = Array(
+				'name' =>  'debug-POST',
+				'value' => 'eight-o-clock',
 				'expire' => 3600				// change later to how long ticketclass hold time
 			);
-			$this->input->set_cookie($cookie);		
-		}	
+		$this->input->set_cookie($cookie);		
+		//</area>
+		$y = count($cookie_names);
+		for( $x=0; $x<$y; $x++ )
+		{
+			log_message('DEBUG', 'Cookie try| ' .$cookie_names[ $x ]."|".$cookie_values[ $x ] );
+		}
 	}// setBookingCookies
+	
+	function setBookingCookiesOnServerUUIDRef( $UUID )
+	{
+		return $this->session->set_userdata( BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
+	}
 	
 	function setSessionActivity( $name, $stage, $data = NULL )
 	{
 		/*
 			Created 02MAR2012-2055
 		*/		
-		$this->session->set_userdata( 'activity_name', $name );	
+		$this->session->set_userdata( ACTIVITY_NAME, $name );	
 		$this->updateSessionActivityStage( $stage );
 		$this->updateSessionActivityData( $data );
 	}//setSessionActivity()
-	
-	
-	
+		
 	function updateSessionActivityData( $data )
 	{
 		// CREATED 04MAR2012-1238
@@ -857,9 +889,9 @@ class clientsidedata_model extends CI_Model {
 		$dataLen = strlen( $data );
 		if( $data[ $dataLen-1 ] != ';' ) $data .= ";";
 		$cookie = array(
-			'name'   => 'activity_data',
+			'name'   => ACTIVITY_DATA,
 			'value'  => 'TEMP|'.$data,
-			'expire' => '3600'
+			'expire' => 3600
 		);
 		$this->input->set_cookie($cookie);
 	}
@@ -867,8 +899,8 @@ class clientsidedata_model extends CI_Model {
 	function updateSessionActivityStage( $stage )
 	{
 		// CREATED 04MAR2012-1238
-		@$this->session->unset_userdata( 'activity_stage' );
-		$this->session->set_userdata( 'activity_stage', $stage );
+		@$this->session->unset_userdata( ACTIVITY_STAGE );
+		$this->session->set_userdata( ACTIVITY_STAGE, $stage );
 	}
 	
 }

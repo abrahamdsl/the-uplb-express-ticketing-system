@@ -1,11 +1,15 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
+*	Seat Maintenance Library
+* 	Created late 01APR2012-1010
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
 *	Sari-saring seat methods.
-*
-*
-*
 */
-
 class SeatMaintenance{	
 	var $CI;
 	
@@ -20,7 +24,53 @@ class SeatMaintenance{
 		$this->CI->load->model('TicketClass_model');				
     }
 	
-	public function cleanDefaultedSeats( $eventID, $showtimeID )
+	function areSeatsOccupied( $seat_assignments, $eventID, $showtimeID )
+	{
+		/**
+		*	@created 11JUN2012-1201
+		*	@description Checks if the seats specified by the coordinates
+				are occupied/not available for selection.
+		*	@param  $seat_assignments ARRAY ASSOCIATIVE 2D
+					indices are guest numbers - 1 ( zero-indexing ).
+					Then second dimension have indices:
+						- uuid : guest's UUIS
+						- x    : seat matrix X coordinate
+						- y    : seat matrix Y coordinate
+		*	@history This is formerly SeatCtrl/areSeatsOccupied
+		*	@returns Array with indices
+					 0 : BOOLEAN, if FALSE - no seats are occupied. Else, there is or an error
+					 1 : For use only if index 0 is TRUE: specifies what occurred
+					 2 : Expounds on index 1
+		**/		
+		$slots = count( $seat_assignments );
+		
+		if( $slots  < 1 ) return Array( TRUE, "INVALID", "DATA" );
+		for( $x = 0; $x < $slots; $x++ )
+		{
+			/* if either seat matrix coordinate is -1, this means no seat 
+				is selected by guest so there's no point in checking if it is available
+				or not
+			*/
+			if( $seat_assignments[ $x ][ 'x' ] == "-1" or $seat_assignments[ $x ][ 'y' ] == "-1" ) continue;
+			$isSeatAvailableResult = $this->CI->Seat_model->isSeatAvailable( 
+				$seat_assignments[ $x ][ 'x' ],
+				$seat_assignments[ $x ][ 'y' ],
+				$eventID,
+				$showtimeID
+			);
+			if( !$isSeatAvailableResult['boolean'] ){
+				if( $isSeatAvailableResult['throwException'] === NULL ){
+					return Array( TRUE, "OCCUPIED", $seat_assignments[ $x ][ 'x' ]."_".$seat_assignments[ $x ][ 'y' ] );
+				}else{
+				// error in operation, so far, only no such seat found.
+					return Array( TRUE, "INVALID", $x );
+				}
+			}
+		}
+		return Array( FALSE, NULL, NULL );
+	}//areSeatsOccupied(..)
+	
+	function cleanDefaultedSeats( $eventID, $showtimeID )
 	{
 		/*
 			Determine if there are seats marked as 'pending-payment' ( `Status` = -4 )
@@ -41,7 +91,7 @@ class SeatMaintenance{
 		}	
 	}//cleanDefaultedSeats(..)
 	
-	public function getExistingSeatData_ForManageBooking( $guestsObjOrBookingNum, $eventID, $showtimeID, $isTicketClassChanged )
+	function getExistingSeatData_ForManageBooking( $guestsObjOrBookingNum, $eventID, $showtimeID, $isTicketClassChanged )
 	{
 		$seatDetailsOfGuest = Array();
 		$guestsObj = ( is_array( $guestsObjOrBookingNum) ) ? $guestsObjOrBookingNum : $this->CI->Guest_model->getGuestDetails( $guestsObjOrBookingNum );
@@ -186,4 +236,5 @@ class SeatMaintenance{
 		return true;
 	}// insertSeatsOnEventManipulate()
 	
+
 }

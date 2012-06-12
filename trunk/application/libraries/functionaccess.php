@@ -22,8 +22,10 @@ class FunctionAccess{
     {
 		$this->CI = & get_instance();
 		$this->CI->load->model('clientsidedata_model');
+		$this->CI->load->model('MakeXML_model');
 		
         $this->__reinit();
+		include_once( APPPATH.'constants/_constants.inc');
     }
 	
 	public function __reinit(){
@@ -50,13 +52,27 @@ class FunctionAccess{
 		return ($this->isActivityManageBooking() and $this->sessionActivity_x[1] == STAGE_BOOK_4_FORWARD );
 	}
 	
-	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage )
+	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj )
 	{
-		$notAllowed    = "ERROR_You are not allowed to access this functionality/page."; // 4100
-		$notAllowedYet = "ERROR_You are not allowed in this stage yet."; //4102
-		$redirect	   = "REDIRECT_to stage ".$this->sessionActivity_x[1]; //3100
-		$crucialData   = "ERROR_Crucial data missing."; //4002
-		
+		/**
+		*	With the introduction of $this->getRedirectionURL(.), we should remove underscore as our
+		*   delimiter since there can be underscores in a URL.
+		*/
+		$notAllowed    = "ERROR|You are not allowed to access this functionality/page."; // 4100
+		$notAllowedYet = "ERROR|You are not allowed in this stage yet."; //4102
+		$redirect	   = "REDIRECT|You already underwent this part! Any changes you make here will not be saved. You will now be redirected to an advanced stage.|".( $this->getRedirectionURL( $this->sessionActivity_x[1] ) ); //3100
+		$crucialData   = "ERROR|Crucial data missing."; //4002
+		$cns_404	   = "ERROR|COOKIE-ON-SERVER-NOT-FOUND"; //4800
+		if( $bookingInfoObj === FALSE )
+		{			
+			 if( $outputError )
+			{
+				 echo $cns_404;
+				 return false;
+			 }else{
+				return $cns_404;
+			 }
+		}
 		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() )
 		{			
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool ) )
@@ -103,32 +119,48 @@ class FunctionAccess{
 		}
 	}//preBookCheckAJAXUnified
 	
-	public function preBookCheckUnified( $checkArraysBool, $stage )
+	public function preBookCheckUnified( $checkArraysBool, $stage, $bookingInfoObj )
 	{
-		
+		if( $bookingInfoObj === FALSE )
+		{
+			 $data['error'] = "CUSTOM";
+			 $data['theMessage'] = "Cookie data on server not found! You might still be not allowed to access this stage.";
+			 $this->CI->load->view( 'errorNotice', $data );
+			 return false;
+		}
 		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() )
 		{				
+			//echo var_dump($checkArraysBool);
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool, true ) )
 			{
+				//echo var_dump($this->sessionActivity_x);
+				//echo var_dump($stage);
 				if( $this->sessionActivity_x[1] < $stage )
 				{
 					 $data['error'] = "CUSTOM";
 					 $data['theMessage'] = "You are not allowed in this stage yet."; //4102
+					 $data['redirect'] = 2;
+					 $data['redirectURI'] = base_url().$this->getRedirectionURL( $this->sessionActivity_x[1] );
+					 $data[ 'defaultAction' ] = "Earlier Stage";					 
 					 $this->CI->load->view( 'errorNotice', $data );
 					 return false;
 				}else
 				if( $this->sessionActivity_x[1] > $stage )
 				{
-					$this->redirectBookForward();
+					$this->redirectBookForward( $this->sessionActivity_x[1] );
 				}else{
 					return true;
 				}
 			}else{
-				$data['error'] = "CUSTOM";
-				 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here."; //4102
-				 $this->CI->load->view( 'errorNotice', $data );				 
-				 return false;
-				 
+				if( $this->sessionActivity_x[1] > $stage )
+				{
+					$this->redirectBookForward( $this->sessionActivity_x[1] );
+				}else{
+					$data['error'] = "CUSTOM";
+					 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here."; //4102
+					 $this->CI->load->view( 'errorNotice', $data );				 
+					 return false;
+				}
 			}
 		}else{
 			 redirect('EventCtrl/book');
@@ -138,52 +170,85 @@ class FunctionAccess{
 	
 	public function preBookStep2Check( $eventID, $showtimeID, $slots, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $slots ), $stage );
+		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $slots ), $stage, true );
 	}
 	
-	public function preBookStep2FWCheck( $eventID, $showtimeID, $stage )
+	public function preBookStep2FWCheck( $bookingInfoObj, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID ), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfoObj );
 	}
 	
-	public function preBookStep3PRCheck( $eventID, $showtimeID, $TC_GID, $TC_UID, $stage )
+	public function preBookStep3PRCheck( $bookingInfoObj, $ticketClassUniqueID, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $TC_GID, $TC_UID ), $stage );
+		return $this->preBookCheckUnified( Array( $ticketClassUniqueID ), $stage, $bookingInfoObj );
 	}
 	
-	public function preBookStep3FWCheck( $stage )
+	public function preBookStep3FWCheck( $bookingInfoObj, $stage )
 	{		
-		return $this->preBookCheckUnified( Array(), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfoObj );
 	}
 	
-	public function preBookStep4PRCheck( $eventID, $showtimeID, $TC_GID, $TC_UID, $slots, $g_uuid, $stage )
+	public function preBookStep4PRCheck( $bookingInfo, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $TC_GID, $TC_UID, $slots, $g_uuid ), $stage );
+		return $this->preBookCheckUnified( Array( ), $stage, $bookingInfo );
 	}
 	
-	public function preBookStep4FWCheck( $stage )
+	public function preBookStep4FWCheck( $bookingInfo, $stage )
 	{		
-		return $this->preBookCheckUnified( Array(), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfo );
 	}
 	
-	public function preBookStep5PRCheck( $eventID, $showtimeID, $slots, $bookingNumber, $stage )
+	public function preBookStep5PRCheck( $bookingInfo, $stage )
+	{
+		echo var_dump($stage);
+		echo var_dump($this->sessionActivity_x);
+		$pre_check = $this->preBookCheckAJAXUnified( Array(), FALSE, $stage, $bookingInfo );
+		echo 'WAHHHHHH----------';
+		echo var_dump( $pre_check );
+		if( $pre_check !== TRUE )
+		{
+			$pre_check_tokenized = explode( '|', $pre_check );
+			$is_error = ($pre_check_tokenized[0] == "ERROR" );
+			$type = ( $is_error ) ? "error" : "okay";
+			$title = ( $is_error ) ? "error" : "already passed";
+			$message = $pre_check_tokenized[1];
+			$redirect = "";
+			$redirectAfter = 0;
+			if($pre_check_tokenized[0] == "REDIRECT" ){
+				$redirect = $pre_check_tokenized[2]; 
+				$redirectAfter = 4000;
+			}
+			echo $this->CI->MakeXML_model->XMLize_AJAX_Response(					
+					$type, 
+					$title,
+					$pre_check_tokenized[0],
+					0, 
+					$message,
+					base_url().$redirect,
+					$redirectAfter
+			);
+		}
+		return $pre_check;
+	}
+		
+	public function preBookStep5FWCheck( $bookingInfo, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $slots, $bookingNumber ), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfo );
 	}
 	
-	public function preBookStep5FWCheck( $eventID, $showtimeID, $slots, $bookingNumber, $totalCharges, $stage )
+	public function preBookStep6PRCheck( $paymentChannel, $bookingInfo, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $slots, $bookingNumber, $totalCharges ), $stage );
+		return $this->preBookCheckUnified( Array( $paymentChannel ), $stage, $bookingInfo );
 	}
 	
-	public function preBookStep6PRCheck( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots, $stage )
+	public function preBookStep6PR_OnlinePayment_Check( $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots ), $stage );
+		return $this->preBookCheckUnified( Array( ), $stage, TRUE );
 	}
 	
-	public function preBookStep6FWCheck( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots, $stage )
+	public function preBookStep6FWCheck( $bookingInfo, $stage )
 	{		
-		return $this->preBookCheckUnified( Array( $eventID, $showtimeID, $bookingNumber, $totalCharges, $paymentChannel, $slots ), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfo );
 	}
 	
 	public function preCancelBookingProcesss( $eventID, $tcGID, $stage  )
@@ -191,41 +256,48 @@ class FunctionAccess{
 		return $this->preBookCheckUnified( Array( $eventID, $tcGID ), $stage );
 	}
 	
-	public function preConfirmStep2FWCheck( $bNumber, $stage )
+	public function preConfirmStep2FWCheck( $bookingInfo, $stage )
 	{
-		return $this->preBookCheckUnified( Array( $bNumber ), $stage );
+		return $this->preBookCheckUnified( Array(), $stage, $bookingInfo );
 	}
 	
-	public function preConfirmStep3PRCheck( $bNumber, $accountNum, $stage )
+	public function preConfirmStep3PRCheck( $accountNum, $bookingInfo, $stage )
 	{
-		return $this->preBookCheckAJAXUnified( Array( $bNumber, $accountNum ), true, $stage );
+		return $this->preBookCheckAJAXUnified( Array( $accountNum ), false, $stage, $bookingInfo );
 	}
 	
-	private function redirectBookForward()
+	private function redirectBookForward( $stage )
 	{
 		/*
 			You have to change redirection address if you change function names
-			in EventCtrl, and EventCtrl itself.
+			in EventCtrl, and EventCtrl's filename itself.
 		*/
 		
-		switch( intval( $this->sessionActivity[1] ) )
-		{
-			case STAGE_BOOK_1_PROCESS: redirect('EventCtrl/book'); break;
-			case STAGE_BOOK_1_FORWARD: redirect('EventCtrl/book_forward'); break;
-			case STAGE_BOOK_2_PROCESS: redirect('EventCtrl/book_step2'); break;
-			case STAGE_BOOK_2_FORWARD: redirect('EventCtrl/book_step2_forward'); break;
-			case STAGE_BOOK_3_PROCESS: redirect('EventCtrl/book_step3'); break;
-			case STAGE_BOOK_3_FORWARD: redirect('EventCtrl/book_step3_forward'); break;
-			case STAGE_BOOK_3_CLASS_1_FORWARD: redirect('EventCtrl/meow'); break;
-			case STAGE_BOOK_3_CLASS_2_FORWARD: redirect('EventCtrl/meow2'); break;
-			case STAGE_BOOK_4_PROCESS: redirect('EventCtrl/book_step4'); break;
-			case STAGE_BOOK_4_FORWARD: redirect('EventCtrl/book_step4_forward'); break;
-			case STAGE_BOOK_5_PROCESS: redirect('EventCtrl/book_step5'); break;
-			case STAGE_BOOK_5_FORWARD: redirect('EventCtrl/book_step5_forward'); break;
-			case STAGE_BOOK_6_PROCESS: redirect('EventCtrl/book_step6'); break;
-			case STAGE_BOOK_6_PAYMENTPROCESSING: redirect('paypal/process'); break;
-			case STAGE_BOOK_6_FORWARD: redirect('EventCtrl/book_step6_forward'); break;
-			default: die("INTERNAL-SERVER-ERROR_I don't know where to redirect you."); //3999
-		}
+		redirect( $this->getRedirectionURL( $stage ) );
 	}//redirectBookForward()
+	
+	private function getRedirectionURL( $stage )
+	{
+		log_message('DEBUG', 'getredirectionurl ' . $stage );
+		switch( $stage )
+		{
+			case STAGE_BOOK_1_PROCESS: return 'EventCtrl/book';  break;
+			case STAGE_BOOK_1_FORWARD: return 'EventCtrl/book_forward';  break;
+			case STAGE_BOOK_2_PROCESS: return 'EventCtrl/book_step2';  break;
+			case STAGE_BOOK_2_FORWARD: return 'EventCtrl/book_step2_forward';  break;
+			case STAGE_BOOK_3_PROCESS: return 'EventCtrl/book_step3';  break;
+			case STAGE_BOOK_3_FORWARD: return 'EventCtrl/book_step3_forward';  break;			
+			case STAGE_BOOK_4_PROCESS: return 'EventCtrl/book_step4';  break;
+			case STAGE_BOOK_4_CLASS_1_FORWARD: return 'EventCtrl/meow';  break;
+			case STAGE_BOOK_4_CLASS_2_FORWARD: return 'EventCtrl/meow2';  break;
+			case STAGE_BOOK_4_FORWARD: return 'EventCtrl/book_step4_forward';  break;
+			case STAGE_BOOK_5_PROCESS: return 'EventCtrl/book_step5';  break;
+			case STAGE_BOOK_5_FORWARD: return 'EventCtrl/book_step5_forward';  break;
+			case STAGE_BOOK_6_PROCESS: return 'EventCtrl/book_step6';  break;
+			case STAGE_BOOK_6_PAYMENTPROCESSING: return 'paypal/process';  break;
+			case STAGE_BOOK_6_FORWARD: return 'EventCtrl/book_step6_forward';  break;
+			default: return "INTERNAL-SERVER-ERROR_I don't know where to redirect you."; //3999
+		}
+	}
+	
 }//class

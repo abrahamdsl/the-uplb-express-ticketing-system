@@ -4,10 +4,8 @@ class userAccountCtrl extends CI_Controller {
 
 	function __construct()
 	{
-		parent::__construct();
-		
-		define( 'ADMIN_MANAGE_USER', 'ADMIN_MANAGE-USER');
-		
+		parent::__construct();		
+		include_once( APPPATH.'constants/_constants.inc');		
 		$this->load->library('session');
 		$this->load->model('login_model');
 		$this->load->model('Academic_model');
@@ -20,25 +18,19 @@ class userAccountCtrl extends CI_Controller {
 		
 		if( !$this->login_model->isUser_LoggedIn() )
 		{	// error code 4999
-			redirect('SessionCtrl/authenticationNeeded');
+			$allowed_without_auth = Array(
+				'/userAccountCtrl/userSignup'				
+			);
+			if( !in_array( $_SERVER[ 'REDIRECT_QUERY_STRING' ], $allowed_without_auth ) ) {
+				$this->clientsidedata_model->setRedirectionURLAfterAuth( $_SERVER[ 'REDIRECT_QUERY_STRING' ] );
+				redirect('SessionCtrl/authenticationNeeded');
+			}
 		}	
 	}
 	
 	function index()
 	{
-		/*
-		
-			login-login
-			
-		*/
-		
-		if( $this->login_model->isUser_LoggedIn() )
-		{
-			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
-			$this->load->view('homepage', $data);
-		}else{			
-			$this->userSignup();
-		}	
+		redirect('SessionCtrl');
 	}//index
 	
 	function addpaymentmode()
@@ -371,8 +363,7 @@ class userAccountCtrl extends CI_Controller {
 		$data['mode'] = 1;
 		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
-	
-	
+		
 	function managepaymentmode_save()
 	{
 		//form-validation skipped here. let javascript take care of that.
@@ -438,7 +429,7 @@ class userAccountCtrl extends CI_Controller {
 			return false;
 		}
 	}//managepaymentmode_save()
-	
+
 	private function manageuser_common( $checkPermissionOnly = false )
 	{
 		/*
@@ -458,7 +449,7 @@ class userAccountCtrl extends CI_Controller {
 		
 		return $data;
 	}// manageuser_common(..)
-	
+
 	private function manageuser_precheck( $stage = 2 )
 	{
 		$sessionActivity = $this->clientsidedata_model->getSessionActivity( );				
@@ -469,7 +460,7 @@ class userAccountCtrl extends CI_Controller {
 			return false;
 		}
 	}//manageuser_precheck(..)
-	
+
 	function manageUser_step2()
 	{		
 		$this->manageuser_precheck( 2 );		
@@ -477,7 +468,7 @@ class userAccountCtrl extends CI_Controller {
 		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
 		$this->load->view( 'manageUser/manageUser02', $data);		
 	}//manageUser_step2
-	
+
 	function manageuser_editroles()
 	{
 		$this->manageuser_precheck( 3 );		
@@ -536,7 +527,7 @@ class userAccountCtrl extends CI_Controller {
 			$this->load->view( 'errorNotice', $data );						
 		}
 	}//manageuser_editroles_save()
-	
+
 	function manageuser_resetpassword()
 	{
 		$this->manageuser_precheck( 2 );		
@@ -545,7 +536,7 @@ class userAccountCtrl extends CI_Controller {
 		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
 		$this->load->view( 'manageUser/resetPassword', $data);
 	}
-	
+
 	function newUserWelcome()
 	{
 		$step;

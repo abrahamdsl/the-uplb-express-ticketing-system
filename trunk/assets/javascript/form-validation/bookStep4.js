@@ -35,7 +35,7 @@ function createSeatmapOnPage( args )
 }
 
 function formSubmit( ){
-	var slots = parseInt( ( getCookie('slots_being_booked')) ); 
+	var slots = parseInt( $('input#_js_use_slots').val() ); 
 	var x;		
 	var y;
 	var matrices = "";		// serialized seat identifiers to be sent to the server to check if occupied
@@ -73,79 +73,85 @@ function formSubmit( ){
 			
 		}		
 
-		if( matrices.length > 0 ) // check for these seats if occupied
-		{			
-			ajaxObj = $.ajax({	
+		//<area id="new_bookstep4_submit_js" >
+		{
+			var x = $.ajax({	
 				type: 'POST',
-				aynsc: false,
-				url: CI.base_url + 'SeatCtrl/areSeatsOccupied',
-				timeout: 50000,
-				data: { 'matrices' : matrices.substring( 0, matrices.length-1 ), // substring removes the trailing dash
-						'eventID' : getCookie( 'eventID' ),
-						'showtimeID' : getCookie( 'showtimeID' )
-				},
-				success: function(data){						
-						if( data.startsWith("OK") )
+				url: $('form').first().attr('action'),
+				timeout: 10000,
+				data: $('form').first().serialize(),				
+				success: function(data){
+					$.fn.makeOverlayForResponse( data );
+					
+					// custom processing for us
+					var s_type = $(data).find('type').text();
+					var s_message = $(data).find('message').text();
+					var s_resultstring = $(data).find('resultstring').text();
+					var resultData = s_resultstring.split('|');
+					if( s_type == "error"){
+						if( resultData[0] == "OCCUPIED" ) 
 						{
-							resultData = data.split('|');
-							if( resultData[1] == "FALSE" )
+							$('div#' + resultData[1] ).removeClass( 'otherGuest' );
+							$('div#' + resultData[1] ).removeClass( 'ui-selected' );
+							$('div#' + resultData[1] ).addClass( 'occupiedSameClass' );
+							$('div#' + resultData[1] ).unbind();
+							guestConcerned = parseInt( matrix_count[ resultData[1] ] );
+							manipulateGuestSeat( "DESELECT", resultData[1] );
+							if( isModeManageBookingChooseSeat )
 							{
-								$('div#' + resultData[2] ).removeClass( 'otherGuest' );
-								$('div#' + resultData[2] ).removeClass( 'ui-selected' );
-								$('div#' + resultData[2] ).addClass( 'occupiedSameClass' );
-								$('div#' + resultData[2] ).unbind();
-								guestConcerned = parseInt( matrix_count[ resultData[2] ] );
-								manipulateGuestSeat( "DESELECT", resultData[2] );
-								if( isModeManageBookingChooseSeat )
-								{
-									makeSeatUsedByThisBookingAvailable();	// in seatManipulation.js - fallback to the previously selected seats
-								}
-								$.fn.nextGenModal({
-								   msgType: 'error',
-								   title: 'You were overtaken',
-								   message: 'Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[2] ] + ' (Guest ' + matrix_count[ resultData[2] ] + ').<br/><br/> Please choose another seat.'
-								});
-								
-								return false;
-							}else
-							if( resultData[1] == "SEATREQUIRED" ){
-								$.fn.nextGenModal({
-								   msgType: 'error',
-								   title: 'seat selection required',
-								   message: 'You must select seats for all guests in this booking.'
-								});								
-								return false;							
-							}else{
-								$('input[type!="hidden"]').attr( 'disabled', 'disabled' );	
-								document.forms[0].submit();
+								makeSeatUsedByThisBookingAvailable();	// in seatManipulation.js - fallback to the previously selected seats
 							}
-						}else{							
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'You were overtaken',
+							   message: 'Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[1] ] + ' (Guest ' + matrix_count[ resultData[1] ] + ').<br/><br/> Please choose another seat.'
+							});							
+							return false;
+						}else
+						if(resultData[0] == "SEAT_REQUIRED" ){
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'seat selection required',
+							   message: 'You must select seats for all guests in this booking.'
+							});								
+							return false;
+						}else
+						if( resultData[0] == "CIRCUMVENT_SEAT_BLOCK" ){
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'seat selection denied',
+							   message: 'The seat you have selected is not assigned to your ticket class.'
+							});								
+							return false;
+						}if( resultData[0] == "INVALID_SEAT_DATA" ){
+							$.fn.nextGenModal({
+							   msgType: 'error',
+							   title: 'error',
+							   message: 'Invalid seat data received by the server or seat is non-existent. Are you hacking the app?'
+							});								
+							return false;
+						}else{
 							$.fn.nextGenModal({
 								   msgType: 'error',
 								   title: 'Internal server error',
 								   message: 'Something went wrong. Please try again.<br/><br/> ' + data
 							});
-							stillLoop = false;
-							return false;
 						}
+					}
 				}
 			});	
-			ajaxObj.fail(	function(jqXHR, textStatus) { 		
-						$.fn.nextGenModal({
-							   msgType: 'error',
-							   title: 'Connection timeout',
-							   message: 'It seems you have lost your internet connection. Please try again. <br/<br/>' + textStatus
-						});
-						return false;
-			});				
-		}else{
-			/*
-				This will be only executed when user is managing his booking - changing seat(s).
-				He did not choose a new seat so just submit
-			*/			
-			document.forms[0].submit();
 		}
+		x.fail(	function(jqXHR, textStatus) { 		
+			$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'Connection timeout',
+				   message: 'It seems you have lost your internet connection. Please try again. <br/<br/>' + textStatus
+			});
+			return false;
+		});		
+		//</area>
 }
+
 function manipulateGuestSeat( mode, matrixInfo )
 {						
 	/*
@@ -254,7 +260,7 @@ $(document).ready( function(){
 	});
 	
 	$('#buttonOK').click( function(){
-		var slots = parseInt( ( getCookie('slots_being_booked')) ); 
+		var slots = parseInt( $('input#_js_use_slots').val() );
 		var x;
 		var y;
 		var seatMatrixIdentifier;

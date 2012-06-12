@@ -1,11 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 19JAN2012-1104
-
-This deals with all of tables `seat_map`, `seats_actual`, `seats_default`
-
-*/
-
+/**
+*	Seat Model
+* 	Created  19JAN2012-1104
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	This deals with all of tables `seat_map`, `seats_actual`, `seats_default`
+**/
 
 class Seat_model extends CI_Model {
 	
@@ -201,8 +205,7 @@ class Seat_model extends CI_Model {
 			Created 13FEB2012-2009
 		*/
 		$sql_command = "SELECT * FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? ";
-		$arr_result = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID ) )->result();
-		
+		$arr_result = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID ) )->result();	
 		if( count( $arr_result ) > 0 )
 			return $arr_result[0];
 		else
@@ -409,6 +412,18 @@ class Seat_model extends CI_Model {
 		// if there was one cell retrieved, then such seat map with the UniqueID exists
 		return ( $query->num_rows == 1 );
 	}//isSeatMapUniqueIDExistent
+	
+	function make_array_visualSeatData( $visualSeatData )
+	{
+		$vsd_tokenized = explode( '.', $visualSeatData );
+		$returnThis = Array();
+		foreach( $vsd_tokenized as $value )
+		{
+			$pair_tokenized = explode( '_', $value );
+			$returnThis[ $pair_tokenized[0] ] = $pair_tokenized[1];
+		}
+		return $returnThis;
+	}
 	
 	function markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, $status, $comment = "", 
 		$ticketClassGroupID = NULL, $ticketClassUniqueID= NULL

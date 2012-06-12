@@ -1,4 +1,5 @@
 <?php
+		define( 'ADMIN_MANAGE_USER', 'ADMIN_MANAGE-USER');
 		/*
 			DB history indicator
 		*/
@@ -31,6 +32,7 @@
 		define( 'CHECK_IN', 'CHECKIN_IN' );
 		define( 'CHECK_OUT', 'CHECKIN_OUT' );
 		define( 'SEAT_CREATE', 'SEAT_CREATE' );
+		define( 'IDLE', 'IDLE' );
 		
 		/*
 			Array keys
@@ -89,5 +91,11 @@
 			Post indicators
 		*/
 		define( 'PIND_SLOT_SAME_TC_NO_MORE_USER_NOTIFIED', 'noMoreSlotSameTicketClassNotified' );
+	
+		/*
+			Unclassified
+		*/
+		define( 'DO_NOT_SHOW_SEATINFO_INDICATOR', '_DO-NOT-SHOW' );
+		define( 'AUTH_THEN_REDIRECT' , 'redirect_to' );
 		
 ?>

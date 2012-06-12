@@ -1,16 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 30DEC2011-1407
-
-Created basically for Booking Step 1 as the need for AJAX arose.
-It is decided that XMLizing data from the server is best than returning a simple string.
-
+/**
+*	XML Maker Model
+* 	Created 30DEC2011-1407
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	Created basically for Booking Step 1 as the need for AJAX arose.
+*	It is decided that XMLizing data from the server is best than returning a simple string.
+*
 *****
 * Library "xml_writer" courtesy of Joost van Veen, 10 mrt 2009, Accent Webdesign
 * Downloaded 30DEC2011 from https://github.com/accent-interactive/xml_writer
 *****
-
-*/
+*
+**/
 
 
 class MakeXML_model extends CI_Model {
@@ -41,7 +47,7 @@ class MakeXML_model extends CI_Model {
    }// createTempFile(..)
    
    function XMLize_AJAX_Response( 
-	$type="error", $title, $resultString, $resultCode = 0, $message, $redirectTo = ""
+	$type="error", $title, $resultString, $resultCode = 0, $message, $redirectTo = "", $redirectAfter = 1000
    )
    {
 		/*
@@ -55,7 +61,10 @@ class MakeXML_model extends CI_Model {
 		$xml->addNode( 'resultcode' , $resultCode  );
 		$xml->addNode( 'title', $title );
 		$xml->addNode( 'message', $message );
-		if( strlen( $redirectTo ) >  0 ) $xml->addNode( 'redirect', $redirectTo );
+		if( strlen( $redirectTo ) >  0 ){
+			$xml->addNode( 'redirect', $redirectTo );
+			$xml->addNode( 'redirect_after', $redirectAfter );
+		}
 		
 		return $xml->getXml();		 
    }//XMLize_AJAX_Response

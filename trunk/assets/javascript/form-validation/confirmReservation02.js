@@ -1,7 +1,12 @@
 var confirmed = false;
 
 function goHome(){
-	window.location = CI.base_url;
+	$.fn.nextGenModal({
+	   msgType: 'ajax',
+	   title: 'please wait',
+	   message: 'Taking you to the home page...'
+	});	
+	setTimeout( "location.href='" + CI.base_url + "'", 1200 );
 }
 
 function formSubmit()
@@ -74,6 +79,7 @@ $(document).ready( function(){
 				   title: 'leaving already?',
 				   message: 'Are you sure you want to leave this page without confirming this reservation?',
 				   yesFunctionCall: 'goHome',
+				   closeOnChoose: false
 			});
 		}else{
 			goHome();

@@ -148,7 +148,7 @@ $(document).ready( function(){
 		} );
 		
 		$('#buttonOK').click( function(){
-			var slots = parseInt( ( getCookie('slots_being_booked')) ); 
+			var slots = parseInt( $('input#_js_use_slots').val() ); 
 			var x;
 			var y;
 			var allInputs;			

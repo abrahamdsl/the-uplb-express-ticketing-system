@@ -14,9 +14,9 @@
 
 	$error - STRING - REQUIRED - What type of error. If "CUSTOM", then custom message should be displayed.
 	$theMessage	- STRING - NOT_REQUIRED - As in the message you want the user to see.
-	$redirect	- BOOLEAN - NOT_REQUIRED - If the page should redirect or not. 				
+	$redirect	- INT - NOT_REQUIRED - If the page should redirect or not. 
 				* Value 0 don't redirect whatever happens
-				* Non-presence or value 1 indicates automatic redirection to homepage.	
+				* Non-presence or value 1 indicates automatic redirection to homepage.
 				* Value 2 redirect to location specified by $redirectURI
 	$redirectURI  - STRING (URI) - Where we should redirect.
 	$defaultAction - STRING - NOT_REQUIRED - Default is "Home". Indicates what the main
@@ -45,17 +45,17 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<!--For overlay-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<?php			
-		$this->load->view('html-generic/jquery-core_choiceB.inc');	
+	<?php 
+		$this->load->view('html-generic/jquery-core_choiceB.inc');
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>	
 	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/errorNotice.js'; ?>"/></script>-->
 	<script type="text/javascript" />
@@ -65,7 +65,7 @@ $this->load->view('html-generic/doctype.inc');
 					<?php if(( !isset( $defaultAction ) or strtolower($defaultAction) === "home" ) === FALSE ){ ?>
 						window.location = CI.base_url;
 					<?php 
-						}else{						
+						}else{
 					?>
 						window.history.back();
 					<?php } ?>
@@ -80,37 +80,37 @@ $this->load->view('html-generic/doctype.inc');
 						}
 					?>
 					
-				});		
+				});	
 		});
 	</script>
-	<?php			
+	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<!--For overlay-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/overlay_general.js'; ?>"/></script>
 </head>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
-?>		
+?>
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
-    </div>            
-    <div id="main_content" >    	
+		?>
+    </div>
+    <div id="main_content" >
     	<div id="centralContainer">
 			<div id="page_title" class="page_title_custom" >
 				Error
-			</div>			
-			<!-- accordion start -->			
+			</div>
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<div class="accordionImitation cEvent04_container errorNotice_div_custom">
 					<div id="title"></div>
@@ -134,7 +134,7 @@ $this->load->view('html-generic/doctype.inc');
 						<?php if( $error == "NO_PERMISSION" ){ ?>
 							<p>
 								You are trying to access a page which
-								requires certain permissions to be granted first to your account.																
+								requires certain permissions to be granted first to your account.
 							</p>
 						<?php }else ?>
 						<?php if( $error == "CUSTOM" ){ ?>
@@ -149,17 +149,17 @@ $this->load->view('html-generic/doctype.inc');
 									echo "Redirecting you to homepage ... ";
 								}else{
 									if( $redirect == 2 )
-									{								
+									{
 										echo "Redirecting you to ".$defaultAction."...";
 									}
 								}
-							?>												
+							?>
 						</p>
 					</div>
-				</div>												
+				</div>
 			</div>
 			<!-- accordion end -->
-			<div id="essentialButtonsArea">							
+			<div id="essentialButtonsArea">
 							<a class="button" id="buttonOK" >
 								<span class="icon">
 									<?php if( !isset( $defaultAction ) or strtolower($defaultAction) === "home" ){ ?>
@@ -168,7 +168,7 @@ $this->load->view('html-generic/doctype.inc');
 										}else{
 											echo $defaultAction;
 										}
-									?>										
+									?>
 								</span>
 							</a>
 							<?php 

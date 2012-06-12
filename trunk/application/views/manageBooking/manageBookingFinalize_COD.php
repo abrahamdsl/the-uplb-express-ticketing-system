@@ -16,38 +16,38 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/accordionImitate.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent01.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>				
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBookingFinalize_COD.css'; ?>"/>	
-<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBookingFinalize_COD.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
 	
-	<?php			
+	<?php
 		$this->load->view('html-generic/jquery-core.inc');
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/tabsEssentials.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBookConclusionDataCleanup.js'; ?>" ></script>	
-	<?php			
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBookConclusionDataCleanup.js'; ?>" ></script>
+	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
-	?>	
+	?>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
 	<script type="text/javascript" >
 	 $(document).ready( function(){
 		$('div.pChannelDetails').show();
@@ -60,22 +60,22 @@ $this->load->view('html-generic/metadata.inc');
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');		
+		$this->load->view('html-generic/overlay_general.inc');
 ?>
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
-    </div>            
+		?>
+    </div>
     <div id="main_content" > 
-		<?php			
+		<?php 
 			$bookingNumber = $this->input->cookie( 'bookingNumber' );
 			$isUpChange = $this->Booking_model->isBookingUpForChange( $bookingNumber );
 		?>
@@ -85,7 +85,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>
 			<div id="top_page_detail" >
 				Thank you for using the application. Have fun.
-				<br/>				
+				<br/>
 			</div>			
 			
 			<!-- accordion start -->			
@@ -459,14 +459,22 @@ $this->load->view('html-generic/metadata.inc');
 										<span><?php echo $singleChannel->Comments;?></span>
 									</div>
 									<?php } ?>
+									<div class="row">
+										<form method="post" action="<?php echo base_url();?>EventCtrl/managebooking_changepaymentmode" >
+										<span>&nbsp;</span>
+										<span><input type="submit" value="Change payment mode" /></span>
+										<input type="hidden" name="booking_number" value="<?php echo $bookingNumber;?>" />
+										</form>
+									</div>
 								</div>								
 							</div>
 						</div>
 					</div>	
 				</div>
 			<!-- accordion end -->
-			<div id="essentialButtonsArea">							
-							<a class="button" id="buttonOK" ><span class="icon">Home</span></a>
+			<div id="essentialButtonsArea">
+				<a class="button" id="buttonMB" href="<?php echo base_url();?>EventCtrl/manageBooking" ><span class="icon">Manage Booking</span></a>
+				<a class="button" id="buttonOK" ><span class="icon">Home</span></a>						
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		

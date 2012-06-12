@@ -1,10 +1,19 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
-created 05MAR2012-1733 while on the bus pauwi. hahaha. Justice for Ray Bernard!!!
-
-This deals with transaction activity.
+/**
+*	Transaction Model
+* 	Created late 05MAR2012-1733 while on the bus pauwi, pagkakuha ng last proceeds ng Full Merit
+		Scholarship. HAHAHA. Sorry ka, code ko to gusto kong gawing diary. LOOLS. Sige na, just this one.
+		Anyways Justice for Ray Bernard!!!  (Indignation rally din today for him, he was killed yesterday).
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	This deals with transaction activity.
+*	Just added the word 'list' to this model so as to avoid potential conflicts with MySQL or any
+	other DB for that matter. For as we all know, there are 'transactions' in a DB.
 */
-
 
 class TransactionList_model extends CI_Model {
 
