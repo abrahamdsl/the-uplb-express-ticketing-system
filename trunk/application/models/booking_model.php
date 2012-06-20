@@ -362,6 +362,10 @@ class Booking_model extends CI_Model {
 		/*
 			Created 01MAR2012-2351
 		*/
+		/*
+			Suggestion 14JUN2012-1357: If bookingObj === false, return some other value (of course
+			not BOOLEAN ).
+		*/
 		$bookingObj = $this->getBookingDetails( $bookingNumber );
 		if( $bookingObj === false ) return false;
 		return ( intval( $bookingObj->MadeBy ) === $accountNum ) ;

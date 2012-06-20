@@ -179,16 +179,20 @@ class Paypal extends CI_Controller {
 		// order status page which presents the user with the status of their
 		// order based on a database (which can be modified with the IPN code 
 		// below).	
-		$bookingNumber;
+		$isActivityManageBooking;
+		$forwardStage;
+		$forwardURL = "EventCtrl/";
 		
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
 		{	 //ec 4100
 			die( "You are not allowed to access this." );
-		}		
-		$bookingNumber = $this->clientsidedata_model->getBookingNumber();		
-		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_FORWARD ); 
+		}
+		$isActivityManageBooking = $this->functionaccess->isActivityManageBooking();
+		$forwardStage = $isActivityManageBooking ? STAGE_MB9_FINAL_FW : STAGE_BOOK_6_FORWARD;
+		$forwardURL .= $isActivityManageBooking ? 'managebooking_finalize_forward'  : 'book_step6_forward';
+		$this->clientsidedata_model->updateSessionActivityStage( $forwardStage ); 
 		$this->clientsidedata_model->setBookingProgressIndicator( 6 );
-		redirect('EventCtrl/book_step6_forward');		
+		redirect( $forwardURL );		
 	}// success()
 	
 	function ipn()
@@ -201,6 +205,8 @@ class Paypal extends CI_Controller {
 		*/
 		$visitorIP = $this->UsefulFunctions_model->VisitorIP();
         $visitorHostName = gethostbyaddr( $visitorIP );
+		
+		/* <area id="paypal_ipn_postdata_debug" > */ {
 			log_message('DEBUG', 'IPN function accessed');
 			log_message('DEBUG', 'IPN Connection from IP ' . $visitorIP );
 			log_message('DEBUG', 'IPN Connection from URI ' . $visitorHostName );
@@ -209,8 +215,10 @@ class Paypal extends CI_Controller {
 			foreach( $_POST as $key => $value ) log_message('DEBUG', 'POST DATA '.$key.' => "'.$value.'"' );			
 			log_message('DEBUG', 'IPN END POST DATA ');
 			foreach( $_COOKIE as $key => $value ) log_message('DEBUG', 'COOKIE DATA '.$key.' => "'.$value.'"' );
- 		$ipn_init = (isset($this->paypal_lib->ipn_data[ 'txn_id' ])) ? $this->paypal_lib->ipn_data[ 'txn_id' ] : "NULL";
+			$ipn_init = (isset($this->paypal_lib->ipn_data[ 'txn_id' ])) ? $this->paypal_lib->ipn_data[ 'txn_id' ] : "NULL";
 			log_message('DEBUG', "IPN initial: ".$ipn_init);
+		}
+		// </area> 
 		if ($this->paypal_lib->validate_ipn( $visitorHostName ) ) 
 		{
 			$bookingNumber = $this->paypal_lib->ipn_data[ 'item_number' ];
@@ -226,33 +234,68 @@ class Paypal extends CI_Controller {
 					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
 					if( $isPaypalOKObj['boolean'] )
 					{ 
-						$billingInfo = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
-						$guestDetails;
-						$totalCharges = $billingInfo[ AKEY_AMOUNT_DUE ];
-						$paymentDescriptor = 'uxtcharge='.$totalCharges.';mc_fee='.$this->paypal_lib->ipn_data[ 'mc_fee' ].';';
+						$billingInfoArray = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
+						$bookingObj       = $this->Booking_model->getBookingDetails( $bookingNumber ); 
+						$infoArray = Array(
+							"eventID" => $bookingObj->EventID,
+							"showtimeID" => $bookingObj->ShowingTimeUniqueID,
+							"ticketClassGroupID" => $bookingObj->TicketClassGroupID,
+							"ticketClassUniqueID" => $bookingObj->TicketClassUniqueID
+						);
+						// manage booking centric or not? act if ever.
+						$isThisForManageBooking = $this->Booking_model->isBookingUpForChange( $bookingNumber );
+						if( $isThisForManageBooking ){
+							$infoArray[ "transactionID" ] = $this->UsefulFunctions_model->getValueOfWIN5_Data( 
+								'transaction', 
+								$billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Comments
+							);
+						}
+						//payment descriptor mess
+						$totalCharges = $billingInfoArray[ AKEY_AMOUNT_DUE ];
+ 						$paymentDescriptor = 'uxtcharge='.$totalCharges.';';
 						$paymentDescriptor .= 'payer_id='.$this->paypal_lib->ipn_data['payer_id'].';'.'txn_id='.$this->paypal_lib->ipn_data['txn_id'].';';
 						$paymentDescriptor .= 'merchant_email='.$this->paypal_lib->ipn_data['business'].';';
 						$paymentDescriptor .= 'processor=paypal;';
-						$this->bookingmaintenance->processPayment( $bookingNumber, $paymentDescriptor );
-												
-						//EMAIL EXPERIMENTAL
-						$guestDetails = $this->guest_model->getGuestDetails( $bookingNumber );
-						if( $guestDetails !== false )
+						// now call payment gateway
+						$response_pandc = $this->bookingmaintenance->pay_and_confirm(
+							$bookingNumber,
+							$isThisForManageBooking ? MANAGE_BOOKING :BOOK, 
+							$paymentDescriptor,
+							$totalCharges,
+							STAGE_CONFIRM_2_FORWARD,
+							$infoArray,
+							Array(
+								intval( @$billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID )
+							)
+						);
+						if( $response_pandc[ "boolean" ] )
 						{
-							$this->emailMain( 1, $bookingNumber , $guestDetails[0]->Email );
-							$guestCount = count(  $guestDetails );
-							if( $guestCount  > 1 ) {
-								for( $xy = 1; $xy < $guestCount; $xy++ )
-								{
-									 $this->emailMain( 2, $bookingNumber , $guestDetails[$xy]->Email );
+							// payment creation and slot confirmation successful
+							//EMAIL EXPERIMENTAL
+							$guestDetails = $this->guest_model->getGuestDetails( $bookingNumber );
+							if( $guestDetails !== false )
+							{
+								$this->emailMain( 1, $bookingNumber , $guestDetails[0]->Email );
+								$guestCount = count(  $guestDetails );
+								if( $guestCount  > 1 ) {
+									for( $xy = 1; $xy < $guestCount; $xy++ )
+									{
+										 $this->emailMain( 2, $bookingNumber , $guestDetails[$xy]->Email );
+									}
 								}
-							}							
+							}
+							//END EMAIL
+						}else{
+							// HOW ABOUT HERE????
+							$sendback = "ERROR|". $response_pandc[ "code" ]."|". $response_pandc[ "message" ];
+							if( isset( $response_pandc["misc"] ) ) foreach( $response_pandc["misc"] as $val ) $sendback .= ( $val."|" ); 
+							log_message("DEBUG", "paypal::ipn PAYMENT GATEWAY Error : " . $sendback);
 						}
-						//END EMAIL
 					}else{
-						$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );	// set again to be able to access  payment modes page
-						$data = $this->bookingmaintenance->assemblePaypalFishy( $isPaypalOKObj['details'] );
-						$this->load->view('errorNotice', $data );
+						/* Email/notify user back in app that there's something wrong with paypal payment. 
+						   Can opt to refund later but choose another payment method for now.
+						   Set payment mode of unpaid purchases back to default -1.
+						*/
 					}
 			}
 		}else{
@@ -266,7 +309,7 @@ class Paypal extends CI_Controller {
 	{		
 		$this->email_model->initializeFromSales();
 		
-		$this->email->from('sales@uplbtickets.info', 'The UPLB Ticketing System');
+		$this->email->from('sales@uplbtickets.com', 'The UPLB Express Ticketing System');
 		$this->email->to( $destination ); 						
 
 		if( $mode === 1 )

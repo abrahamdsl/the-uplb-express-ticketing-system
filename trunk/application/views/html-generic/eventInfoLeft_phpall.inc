@@ -11,11 +11,7 @@
 *	From the title, the purpose of this is kinda obvious. :D
 
 *	Specially designed for Manage Booking First step. 
- 
-*	By the way, here are:  
-	* CONSTANTS declared at the top of the page this is used, via define(.., ..)
-	SLOTS - STRING/INT - how many slots/tickets are being booked.
-	
+ 	
 	* the variables that should be present in the PHP page this is used.	
 	 (for all cases)
 		$showtimeObj - MYSQL_OBJ - the showtime object - basically, entry from the `showing_time` table.
@@ -28,6 +24,7 @@
 	$isActivityManageBooking - BOOLEAN - obviously
 	$topOtherClass - STRING - classes (CSS) in string separated by spaces for further customization of div.top
 	$bottomOtherClass - STRING - classes (CSS) in string separated by spaces for further customization of div.bottom
+	$slots - STRING/INT - how many slots/tickets are being booked.
 */
 
 if( !isset( $isActivityManageBooking  ) ) $isActivityManageBooking  = false;
@@ -104,7 +101,7 @@ if( !isset( $bottomOtherClass ) )  $bottomOtherClass = "";
 		}else{
 	?>
 			<p>
-				You are booking <?php echo SLOTS; ?> ticket<?php if(SLOTS > 1) echo 's'; ?>.
+				You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
 			</p>
 			<table class="center_purest" >
 				<tr>
@@ -113,7 +110,7 @@ if( !isset( $bottomOtherClass ) )  $bottomOtherClass = "";
 				</tr>
 				<tr>
 					<td style="width: 85%;" >Total payments for your current booking:</td>
-					<td>PHP <?php echo $existingPayments; ?></td>
+					<td> PHP <?php // echo $existingPayments; ?></td>
 				</tr>								
 			</table>
 	<?php }

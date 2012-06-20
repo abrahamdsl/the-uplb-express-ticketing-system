@@ -406,7 +406,7 @@ class Event_model extends CI_Model {
 			date_default_timezone_set('Asia/Manila');
 			$currentDate = date( 'Y-m-d' );
 			$currentTime = date( 'H:i:s' );
-			log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline: '.$currentDate." - ".$currentTime );
+			log_message( 'debug', 'Event_model::getShowingTimePaymentDeadline: '.$currentDate." - ".$currentTime );
 			$showtime = $this->getSingleShowingTime( $eventID, $uniqueID );			
 			if( $showtime === false ) return false;
 			switch( $showtime->Book_Completion_Option )
@@ -448,7 +448,7 @@ class Event_model extends CI_Model {
 				$deadline["date"] = $showtime->StartDate;
 				$deadline["time"] = date( 'H:i', strtotime( '-45 min', $showtime->StartTime ) );
 			}
-			log_message( 'debug', 'Eventmodel-getShowingTimePaymentDeadline computed:'.$deadline["date"]." ".$deadline["time"] );
+			log_message( 'debug', 'Event_model::getShowingTimePaymentDeadline computed:'.$deadline["date"]." ".$deadline["time"] );
 			return $deadline;
 	}//getShowingTimePaymentDeadline(..)
 	
@@ -556,6 +556,8 @@ class Event_model extends CI_Model {
 		*/
 		$showtimeObj = $this->getSingleShowingTime( $eventID, $showtimeID );
 		if( $showtimeObj === false ) return false;
+			log_message('DEBUG','Event_model::isSeatSelectionRequired | intval ' . intval( $showtimeObj->SeatRequiredOnConfirmation ) );
+			log_message('DEBUG','Event_model::isSeatSelectionRequired | bool ' . intval( ( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 ) ) );
 		return( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 );	
 	}
 	

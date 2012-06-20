@@ -143,7 +143,7 @@ $this->load->view('html-generic/metadata.inc');
 							$data['existingTCName'] 		 = $ticketClassesName[ $singleBooking->EventID ][ $singleBooking->TicketClassGroupID ][ $singleBooking->TicketClassUniqueID ];
 							$data['isActivityManageBooking'] = TRUE;
 							$data['bottomOtherClass']		 = "bottomspecialOnMB01";
-							$data['slots'] 					 = $guestCount[ $singleBooking->bookingNumber ];
+							$data['slots'] 					 = count( $this->Guest_model->getGuestDetails( $singleBooking->bookingNumber ) );
 							$this->load->view('html-generic/eventInfoLeft_phpall.inc', $data);
 						?>
 					</div>
@@ -190,11 +190,12 @@ $this->load->view('html-generic/metadata.inc');
 							<form method="post" action="<?php echo base_url().'EventCtrl/viewdetails'; ?>" >
 								<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 							</form>
-						</div>
+						</div>-->
 						<div class="metrotile" name="changeshowingtime" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeshowingtime.png" alt="Change showing time" /></a>
-								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_changeShowingTime'; ?>" >
+								<form method="post" action="<?php echo base_url().'EventCtrl/mb_prep'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
+									<input type="hidden" name="next" value="managebooking_changeshowingtime"   />
 								</form>
 						</div>
 						<div class="metrotile" name="upgradeticketclass" >
@@ -211,7 +212,7 @@ $this->load->view('html-generic/metadata.inc');
 						</div>-->
 						<div class="metrotile" name="changeseat" >
 								<a href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeseat.png" alt="Change Seat" /></a>
-								<form method="post" action="<?php echo base_url().'EventCtrl/manageBooking_changeSeat'; ?>" >
+								<form method="post" action="<?php echo base_url().'EventCtrl/managebooking_changeseat'; ?>" >
 									<input type="hidden" name="bookingNumber" value="<?php echo $singleBooking->bookingNumber; ?>"   />
 								</form>
 						</div>

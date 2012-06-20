@@ -23,6 +23,7 @@ class FunctionAccess{
 		$this->CI = & get_instance();
 		$this->CI->load->model('clientsidedata_model');
 		$this->CI->load->model('MakeXML_model');
+		$this->CI->load->model('ndx_model');
 		
         $this->__reinit();
 		include_once( APPPATH.'constants/_constants.inc');
@@ -48,7 +49,10 @@ class FunctionAccess{
 	}
 	
 	public function isActivityManageBookingAndChooseSeat()
-	{				
+	{	
+		/*
+			@DEPRECATED 16JUN2012-1410
+		*/
 		return ($this->isActivityManageBooking() and $this->sessionActivity_x[1] == STAGE_BOOK_4_FORWARD );
 	}
 	
@@ -118,6 +122,23 @@ class FunctionAccess{
 			 }
 		}
 	}//preBookCheckAJAXUnified
+	
+	public function preManageBookCheckUnified( $checkArraysBool, $stage, $m_bookingInfoObj )
+	{
+		/**
+		*	@created 14JUN2012-1334
+		**/
+		if( !$this->isActivityManageBooking() ){
+			echo 'Your activity is not manage booking!';
+			return FALSE;
+		}
+		if( $m_bookingInfoObj === FALSE ){
+			echo 'M COOKIE ON SERVER NOT FOUND';
+			return FALSE;
+		}		
+		$bookingInfoObj = ( $m_bookingInfoObj === TRUE ) ? TRUE : $this->CI->ndx_model->get( @$m_bookingInfoObj->CURRENT_UUID );
+		return $this->preBookCheckUnified( $checkArraysBool, $stage, $bookingInfoObj );
+	}
 	
 	public function preBookCheckUnified( $checkArraysBool, $stage, $bookingInfoObj )
 	{
@@ -200,11 +221,7 @@ class FunctionAccess{
 	
 	public function preBookStep5PRCheck( $bookingInfo, $stage )
 	{
-		echo var_dump($stage);
-		echo var_dump($this->sessionActivity_x);
 		$pre_check = $this->preBookCheckAJAXUnified( Array(), FALSE, $stage, $bookingInfo );
-		echo 'WAHHHHHH----------';
-		echo var_dump( $pre_check );
 		if( $pre_check !== TRUE )
 		{
 			$pre_check_tokenized = explode( '|', $pre_check );
@@ -263,10 +280,41 @@ class FunctionAccess{
 	
 	public function preConfirmStep3PRCheck( $accountNum, $bookingInfo, $stage )
 	{
-		return $this->preBookCheckAJAXUnified( Array( $accountNum ), false, $stage, $bookingInfo );
+		return $this->preBookCheckAJAXUnified( Array( $accountNum ), true, $stage, $bookingInfo );
 	}
 	
-	private function redirectBookForward( $stage )
+	function preManageBookingChangeSeatCheck( $bNum, $mbookingInfo , $allowedStages ){
+		
+		return $this->preManageBookCheckUnified( Array( $bNum ), $allowedStages, $mbookingInfo );
+	}
+	
+	function preManageBookingChangeShowtimeCheck( $mbookingInfo , $stage ){
+		
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingChangeShowtimePRCheck( $showtimeID, $mbookingInfo , $stage ){
+		
+		return $this->preManageBookCheckUnified( Array( $showtimeID ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingChangeShowtimePR2Check( $mbookingInfo , $stage ){
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingConfirm( $mbookingInfo , $stage ){
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingFinalize( $paymentMode, $mbookingInfo , $stage ){
+		return $this->preManageBookCheckUnified( Array( $paymentMode ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingFinalizeFW( $mbookingInfo, $stage ){
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
+	function redirectBookForward( $stage )
 	{
 		/*
 			You have to change redirection address if you change function names
@@ -276,7 +324,7 @@ class FunctionAccess{
 		redirect( $this->getRedirectionURL( $stage ) );
 	}//redirectBookForward()
 	
-	private function getRedirectionURL( $stage )
+	function getRedirectionURL( $stage )
 	{
 		log_message('DEBUG', 'getredirectionurl ' . $stage );
 		switch( $stage )
@@ -296,7 +344,9 @@ class FunctionAccess{
 			case STAGE_BOOK_6_PROCESS: return 'EventCtrl/book_step6';  break;
 			case STAGE_BOOK_6_PAYMENTPROCESSING: return 'paypal/process';  break;
 			case STAGE_BOOK_6_FORWARD: return 'EventCtrl/book_step6_forward';  break;
-			default: return "INTERNAL-SERVER-ERROR_I don't know where to redirect you."; //3999
+			case STAGE_MB4_CONFIRM_PR: 
+			case STAGE_MB4_CONFIRM_FW: return 'EventCtrl/managebooking_confirm'; break;
+			default: return "SessionCtrl/redirect_unknown/".$stage; //3999
 		}
 	}
 	

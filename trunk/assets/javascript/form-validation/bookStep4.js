@@ -16,8 +16,7 @@ function createSeatmapOnPage( args )
 	var x = $.ajax({	
 		type: 'POST',
 		url: CI.base_url + '/SeatCtrl/getActualSeatsData',
-		timeout: 50000,
-		/*data: { 'uniqueID': args["seatMapUniqueID"] },*/	// data is determined by the cookies, erase this on finality
+		timeout: 120000,
 		success: function(data){
 			alreadyConfiguredSeat = false;			
 			$(document).manipulateSeatAJAX( data );			// make now the HTML						
@@ -78,7 +77,7 @@ function formSubmit( ){
 			var x = $.ajax({	
 				type: 'POST',
 				url: $('form').first().attr('action'),
-				timeout: 10000,
+				timeout: 45000,
 				data: $('form').first().serialize(),				
 				success: function(data){
 					$.fn.makeOverlayForResponse( data );

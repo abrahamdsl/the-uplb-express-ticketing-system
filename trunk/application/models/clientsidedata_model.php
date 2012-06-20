@@ -96,6 +96,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( EVENT_NAME );
 	}
 	
+	function deleteManageBookingCookiesOnServerUUIDRef( )
+	{
+		return $this->session->unset_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID );
+	}
+	
 	function deleteManageBookingNewSeatMatrix()
 	{
 		return $this->deleteCookieUnified( MANAGE_BOOKING_NEW_SEAT_MATRIX );
@@ -295,6 +300,11 @@ class clientsidedata_model extends CI_Model {
 	function getEventName()
 	{
 		return $this->getCookieUnified( EVENT_NAME );
+	}
+	
+	function getManageBookingCookiesOnServerUUIDRef()
+	{
+		return $this->session->userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID );
 	}
 	
 	function getManageBookingNewSeatMatrix()
@@ -872,12 +882,17 @@ class clientsidedata_model extends CI_Model {
 		return $this->session->set_userdata( BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
 	}
 	
+	function setManageBookingCookiesOnServerUUIDRef( $UUID )
+	{
+		return $this->session->set_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
+	}
+
 	function setSessionActivity( $name, $stage, $data = NULL )
 	{
 		/*
 			Created 02MAR2012-2055
 		*/		
-		$this->session->set_userdata( ACTIVITY_NAME, $name );	
+		$this->session->set_userdata( ACTIVITY_NAME, $name );
 		$this->updateSessionActivityStage( $stage );
 		$this->updateSessionActivityData( $data );
 	}//setSessionActivity()
@@ -899,7 +914,7 @@ class clientsidedata_model extends CI_Model {
 	function updateSessionActivityStage( $stage )
 	{
 		// CREATED 04MAR2012-1238
-		@$this->session->unset_userdata( ACTIVITY_STAGE );
+		//@$this->session->unset_userdata( ACTIVITY_STAGE );
 		$this->session->set_userdata( ACTIVITY_STAGE, $stage );
 	}
 	

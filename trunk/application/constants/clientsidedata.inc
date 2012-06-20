@@ -40,4 +40,5 @@
 		define("PAYMENT_CHANNEL", "paymentChannel" );
 		define("RESETPASS_BY_ADMIN_PRESENCE", "adminresetspasswords" );
 		define("BOOKING_COOKIES_ON_SERVER_UUID", 'bconsu');
+		define("MANAGE_BOOKING_COOKIES_ON_SERVER_UUID", 'mbconsu');
 ?>

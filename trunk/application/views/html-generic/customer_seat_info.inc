@@ -1,6 +1,6 @@
 								<fieldset>
 									<legend class="field_grouping_bar specialOnBook3">seat</legend>									
-									<input type="text" class="seatText" name="g<?php echo $guestnum+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $uuid ]; ?>" disabled="disabled" />
+									<input type="text" class="seatText" name="g<?php echo $guestnum+1; ?>_seatVisual" value="<?php if(isset($seatVisuals[ $uuid ])){ echo $seatVisuals[ $uuid ]; } else { echo "NONE"; } ?>" disabled="disabled" />
 									<div class="row anchorBelow" id="g<?php echo $guestnum+1; ?>-navigation" >									
 										
 											<?php

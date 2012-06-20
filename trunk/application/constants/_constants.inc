@@ -37,10 +37,10 @@
 		/*
 			Array keys
 		*/
-		define( 'AKEY_UNPAID_PURCHASES_ARRAY', 'unpaidPurchasesArray' );		
-		define( 'AKEY_PAID_PURCHASES_ARRAY', 'paidPurchasesArray' );		
-		define( 'AKEY_UNPAID_TOTAL', 'unpaidTotal' );		
-		define( 'AKEY_PAID_TOTAL', 'paidTotal' );		
+		define( 'AKEY_UNPAID_PURCHASES_ARRAY', 'unpaidPurchasesArray' );
+		define( 'AKEY_PAID_PURCHASES_ARRAY', 'paidPurchasesArray' );
+		define( 'AKEY_UNPAID_TOTAL', 'unpaidTotal' );
+		define( 'AKEY_PAID_TOTAL', 'paidTotal' );
 		define( 'AKEY_AMOUNT_DUE', 'amountDue' );
 		
 		/*
@@ -63,14 +63,14 @@
 		define( 'PAYMODE_MONYEBOOKERS', "moneybookers" );
 		
 		/*
-			Session stages						
+			Session stages
 		*/
 		define( 'STAGE_BOOK_1_PROCESS', 0 );
 		define( 'STAGE_BOOK_1_FORWARD', 1 );
 		define( 'STAGE_BOOK_2_PROCESS', 2 );
 		define( 'STAGE_BOOK_2_FORWARD', 3 );
 		define( 'STAGE_BOOK_3_PROCESS', 4 );
-		define( 'STAGE_BOOK_3_FORWARD', 5 );		
+		define( 'STAGE_BOOK_3_FORWARD', 5 );
 		define( 'STAGE_BOOK_4_PROCESS', 6 );
 		define( 'STAGE_BOOK_4_CLASS_1_FORWARD', 7 );	// only if student number/emp num is entered in book_4_forward
 		define( 'STAGE_BOOK_4_CLASS_2_FORWARD', 8 );	// only if student number/emp num is entered in book_4_forward
@@ -87,15 +87,63 @@
 		define( 'STAGE_CONFIRM_3_PROCESS', 104 );
 		define( 'STAGE_CONFIRM_3_FORWARD', 105 );
 		
+		define( 'STAGE_MB0_HOME', 200 );
+		define( 'STAGE_MB0_PREP_PR', 201 );
+		define( 'STAGE_MB0_PREP_FW', 202 );
+		define( 'STAGE_MB1_SELECT_SHOWTIME_PR', 203 );
+		define( 'STAGE_MB1_SELECT_SHOWTIME_FW', 204 );
+		define( 'STAGE_MB2_SELECT_TICKETCLASS_1_PR', 205 );
+		define( 'STAGE_MB2_SELECT_TICKETCLASS_2_PR', 206 );
+		define( 'STAGE_MB2_SELECT_TICKETCLASS_FW', 207 );
+		define( 'STAGE_MB2_SELECT_TICKETCLASS_3_PR', 208 );
+		//!!! define( 'STAGE_MB3_SELECT_SEAT_FORCED', 209 );
+		//!!! define( 'STAGE_MB3_SELECT_SEAT_OPT', 210);
+		//!!! define( 'STAGE_MB3_SELECT_SEAT_SOMEGUEST', 211 );
+		define( 'STAGE_MB3_SELECT_SEAT_1_PR', 211 ); 
+		define( 'STAGE_MB3_SELECT_SEAT_2_PR', 212 ); 
+		define( 'STAGE_MB3_SELECT_SEAT_FW', 213 );
+		define( 'STAGE_MB3_SELECT_SEAT_PR', 214 );
+		define( 'STAGE_MB4_CONFIRM_PR', 217 );
+		define( 'STAGE_MB4_CONFIRM_FW', 219 );
+		define( 'STAGE_MB5_SELECT_PAYMENT_PR', 220 ); 
+		define( 'STAGE_MB5_SELECT_PAYMENT_FW', 221 );
+		define( 'STAGE_MB7_PAYMENT_PR', 222 );
+		define( 'STAGE_MB7_PAYMENT_ONLINE_PR', 223 );
+		define( 'STAGE_MB8_PENDINGCHANGEVD_PR', 224 );
+		define( 'STAGE_MB8_PENDINGCHANGEVD_FW', 225 );
+		define( 'STAGE_MB9_FINAL_PR', 226 );
+		define( 'STAGE_MB9_FINAL_FW', 227 );
+		/*
+			In Manage Booking, these are used to signify
+			stages passed.
+		*/
+		define( 'MB_STAGEPASS1_SHOWTIME', 'showingtime' );
+		define( 'MB_STAGEPASS2_TICKETCLASS', 'ticketclass' );
+		define( 'MB_STAGEPASS3_SEAT', 'seat' );
+		define( 'MB_STAGEPASS4_NEWCOST', 'newcost' );
+		/*
+			In Manage Booking, these are used to signify whether
+			a stage is passable or not.
+		*/
+		define( 'MB_STAGESTAT_NOTMEANT',  0 );
+		define( 'MB_STAGESTAT_CANPASS',  1 );
+		define( 'MB_STAGESTAT_SHOULDPASS',  2 );
+		define( 'MB_STAGESTAT_PASSED',  3 );
+		define( 'MB_STAGESTAT_CHANGED',  4 );
 		/* 
 			Post indicators
 		*/
 		define( 'PIND_SLOT_SAME_TC_NO_MORE_USER_NOTIFIED', 'noMoreSlotSameTicketClassNotified' );
+		define( 'PIND_SEAT_SAME_TC_NO_MORE_USER_NOTIFIED', 'noMoreSeatSameTicketClassNotified' );
+		define( 'PIND_CHANGE_SEAT_NOTIFIED', 'option_change_seat_notified' );
 	
 		/*
 			Unclassified
 		*/
 		define( 'DO_NOT_SHOW_SEATINFO_INDICATOR', '_DO-NOT-SHOW' );
 		define( 'AUTH_THEN_REDIRECT' , 'redirect_to' );
+		define( 'SEAT_COORD404', '-1' );
+		define( 'UP_STUDENTNUM_MINREQUIREMENT_LEN', 8);
+		define( 'UP_EMPNUM_MINREQUIREMENT_LEN', 8);
 		
 ?>

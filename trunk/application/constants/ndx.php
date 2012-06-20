@@ -1,6 +1,6 @@
 <?php
 /**
-*	Constants of New Data Access Model
+*	Constants of New Data Access For Booking Model
 * 	Created late 09JUN2012-1201
 *	Part of "The UPLB Express Ticketing System"
 *   Special Problem of Abraham Darius Llave / 2008-37120
@@ -33,4 +33,17 @@
 		define( 'COL_PAYMENT_DEADLINE_TIME', 'PAYMENT_DEADLINE_TIME' );
 		define( 'COL_UPLB_STUDENTNUM_DATA', 'UPLB_STUDENTNUM_DATA' );
 		define( 'COL_UPLB_EMPNUM_DATA', 'UPLB_EMPNUM_DATA' );
+
+		/*
+			For manage booking ndx.
+		*/
+
+		define( 'COL_DB_MB_TABLE_NAME', '_managebooking_cookies' );
+		define( 'COL_UUID_MB' , 'UUID_MB' );
+		define( 'COL_GO_SHOWTIME', 'GO_SHOWTIME' );
+		define( 'COL_GO_TICKETCLASS', 'GO_TICKETCLASS' );
+		define( 'COL_GO_SEAT', 'GO_SEAT' );
+		define( 'COL_GO_PAYMENT', 'GO_PAYMENT' );
+		define( 'COL_CURRENT_UUID', 'CURRENT_UUID' );
+		define( 'COL_NEW_UUID', 'NEW_UUID' );
 ?>
