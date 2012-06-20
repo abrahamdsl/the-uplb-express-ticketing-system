@@ -470,7 +470,7 @@ class Payment_model extends CI_Model {
 								return $returnThis;	
 							 }
 		}//switch
-		$returnThis['details'] = "Unspecified reason."; 
+		$returnThis['details'] = $_IPN_Array['payment_status']." : Unspecified/Unknown reason."; 
 		return $returnThis;	
 	}//isPaypalPaymentOK(..)
 	

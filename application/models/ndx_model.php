@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-*	New Data Access Model
+*	New Data Access Model For Booking Cookies
 * 	Created late 09JUN2012-1201
 *	Part of "The UPLB Express Ticketing System"
 *   Special Problem of Abraham Darius Llave / 2008-37120
@@ -8,10 +8,11 @@
 *	University of the Philippines Los Banos
 *	------------------------------
 *
+*	Introducing cookie-on-server!
 *	Default lifetime is 1 hour (60 minutes).
 *	Made in response to cookie-setting bug I encountered when introducing
 		the "Change Payment mode" feature.
-*	All cookie data previously are now stored in DB. Anyway, servers today
+*	All booking cookie data previously are now stored in DB. Anyway, servers today
 		are that powerful now.
 */
 

@@ -23,7 +23,7 @@ function formSubmit()
 				});						
 		},
 		success: function(data){
-			var response = data.split('_');
+			var response = data.split('|');
 			setTimeout( function(){}, 1000 );			
 			if( response[0].startsWith( 'OK' ) )
 			{

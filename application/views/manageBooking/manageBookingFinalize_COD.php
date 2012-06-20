@@ -43,6 +43,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBookConclusionDataCleanup.js'; ?>" ></script>
+
 	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>
@@ -60,7 +61,7 @@ $this->load->view('html-generic/metadata.inc');
 </head>
 <body>
 <?php
-		$this->load->view('html-generic/overlay_general.inc');
+	$this->load->view('html-generic/overlay_general.inc');
 ?>
 <div id="main_container">
 	<div id="header">
@@ -76,7 +77,7 @@ $this->load->view('html-generic/metadata.inc');
     </div>
     <div id="main_content" > 
 		<?php 
-			$bookingNumber = $this->input->cookie( 'bookingNumber' );
+			$bookingNumber = $bookingInfo->BOOKING_NUMBER;
 			$isUpChange = $this->Booking_model->isBookingUpForChange( $bookingNumber );
 		?>
     	<div id="centralContainer">	
@@ -86,9 +87,9 @@ $this->load->view('html-generic/metadata.inc');
 			<div id="top_page_detail" >
 				Thank you for using the application. Have fun.
 				<br/>
-			</div>			
+			</div>
 			
-			<!-- accordion start -->			
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container bookStep2_main_div_custom" >
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 					<div class="title">Event Details</div>
@@ -102,7 +103,7 @@ $this->load->view('html-generic/metadata.inc');
 								aside from your money.
 							</div>
 						</div>
-						<div class="containingClassTable center_purest" >							
+						<div class="containingClassTable center_purest" >
 							
 							<div id="paymentDeadline" class="properInfo center_purest" >
 								<input type="hidden" id="pDead_Date" value="<?php echo $this->session->userdata( 'paymentDeadline_Date' ); ?>" />
@@ -117,10 +118,10 @@ $this->load->view('html-generic/metadata.inc');
 											No need to show seconds if zero
 										*/
 										$splitted = explode(':', $paymentDeadline['time']);
-										$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
+										$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';
 										echo date( $timeFormat." A", strtotime($paymentDeadline['time'])); 
-									?>									
-								</span>								
+									?>
+								</span>
 							</div>
 							<div class="center_purest caption ">
 								Deadline for payment, else 
@@ -131,14 +132,13 @@ $this->load->view('html-generic/metadata.inc');
 								<?php } ?>
 								
 								We advise you be at the collecting agency 15 minutes before the deadline.
-							</div>							
-										
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="accordionImitation cEvent04_container aci1_Book3Special">				
+				<div class="accordionImitation cEvent04_container aci1_Book3Special">
 						<div id="title">Details</div>
-						<div id="content">																															
+						<div id="content">
 							<input type="hidden" name="bookingNumber" value="<?php echo $bookingNumber; ?>" />
 								<div>
 									<div class="KoreanPeninsula" >
@@ -156,11 +156,10 @@ $this->load->view('html-generic/metadata.inc');
 											Quantity
 										</span>
 										<span class="rightSpecialHere" >
-											<!--<input type="text" class="commonality disabled" id="slot" name="slot_visual" value="<?php echo $guestCount; ?>" style="background-color: white; color: black;" disabled="disabled" /><br/>-->
 											<span class="center_purest" style="font-size: 1.2em;" >
 												<?php echo $guestCount;  ?>
 											</span>
-											<input type="hidden" name="slot" value="<?php echo $guestCount; ?>" ><br/>									
+											<input type="hidden" name="slot" value="<?php echo $guestCount; ?>" ><br/>
 										</span>
 									</div>
 									<?php
@@ -176,16 +175,16 @@ $this->load->view('html-generic/metadata.inc');
 										<?php
 												$x = 2;		
 												// determine if this is a red-eye show
-												$redEye = FALSE;													
+												$redEye = FALSE;
 												$dateStart = strtotime( $currentShowingTime->StartDate );
 												$timeStart = strtotime( $currentShowingTime->StartTime );
 												$dateEnd = strtotime( $currentShowingTime->EndDate );
-												$timeEnd = strtotime( $currentShowingTime->EndTime );																										
-												if( $timeEnd < $timeStart ) $redEye = TRUE;										
+												$timeEnd = strtotime( $currentShowingTime->EndTime );
+												if( $timeEnd < $timeStart ) $redEye = TRUE;
 											?>
 											<table class="center_purest schedulesCentral">
 												<thead>
-													<tr>											
+													<tr>
 														<td class="iNeedMostSpace" >Date</td>
 														<td class="iNeedMoreSpace" >Time Start</td>
 														<?php if( $redEye) { ?><td class="iNeedMoreSpace" >Date End</td><?php }  ?>
@@ -194,20 +193,20 @@ $this->load->view('html-generic/metadata.inc');
 												</thead>
 												<tbody>
 												
-													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
+													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >
 														<td class="BCST_date" >
-															<span><?php echo date('Y-M-d l', $dateStart); ?></span>														
+															<span><?php echo date('Y-M-d l', $dateStart); ?></span>
 														</td>
-														<td class="BCST_time_start">	
-															<span><?php echo date('h:i:s A', $timeStart); ?></span>														
+														<td class="BCST_time_start">
+															<span><?php echo date('h:i:s A', $timeStart); ?></span>
 														</td>	
 													<?php if( $redEye) { ?>	
 														<td class="BCST_date_end" >
-															<span><?php echo date('Y-M-d l', $dateEnd); ?></span>														
+															<span><?php echo date('Y-M-d l', $dateEnd); ?></span>
 														</td>
 													<?php }  ?>
 														<td class="BCST_time_end">
-															<span><?php echo date('h:i:s A', $timeEnd); ?></span>														
+															<span><?php echo date('h:i:s A', $timeEnd); ?></span>
 														</td>
 													</tr>
 												</tbody>
@@ -225,18 +224,18 @@ $this->load->view('html-generic/metadata.inc');
 										</span>
 										<span class="rightSpecialHere" >
 										<?php
-												$x = 2;		
+												$x = 2;
 												// determine if this is a red-eye show
-												$redEye = FALSE;													
+												$redEye = FALSE;
 												$dateStart = strtotime( $newShowingTime->StartDate );
 												$timeStart = strtotime( $newShowingTime->StartTime );
 												$dateEnd = strtotime( $newShowingTime->EndDate );
-												$timeEnd = strtotime( $newShowingTime->EndTime );																										
-												if( $timeEnd < $timeStart ) $redEye = TRUE;										
+												$timeEnd = strtotime( $newShowingTime->EndTime );
+												if( $timeEnd < $timeStart ) $redEye = TRUE;
 											?>
 											<table class="center_purest schedulesCentral">
 												<thead>
-													<tr>											
+													<tr>
 														<td class="iNeedMostSpace" >Date</td>
 														<td class="iNeedMoreSpace" >Time Start</td>
 														<?php if( $redEye) { ?><td class="iNeedMoreSpace" >Date End</td><?php }  ?>
@@ -245,20 +244,20 @@ $this->load->view('html-generic/metadata.inc');
 												</thead>
 												<tbody>
 												
-													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
+													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >
 														<td class="BCST_date" >
-															<span><?php echo date('Y-M-d l', $dateStart); ?></span>														
+															<span><?php echo date('Y-M-d l', $dateStart); ?></span>
 														</td>
-														<td class="BCST_time_start">	
-															<span><?php echo date('h:i:s A', $timeStart); ?></span>														
+														<td class="BCST_time_start">
+															<span><?php echo date('h:i:s A', $timeStart); ?></span>
 														</td>	
 													<?php if( $redEye) { ?>	
 														<td class="BCST_date_end" >
-															<span><?php echo date('Y-M-d l', $dateEnd); ?></span>														
+															<span><?php echo date('Y-M-d l', $dateEnd); ?></span>
 														</td>
 													<?php }  ?>
 														<td class="BCST_time_end">
-															<span><?php echo date('h:i:s A', $timeEnd); ?></span>														
+															<span><?php echo date('h:i:s A', $timeEnd); ?></span>
 														</td>
 													</tr>
 												</tbody>
@@ -274,11 +273,14 @@ $this->load->view('html-generic/metadata.inc');
 										<span class="rightSpecialHere" >
 											<table class="center_purest schedulesCentral">
 												<thead>
-													<tr>											
+													<tr>
 														<td class="iNeedMostSpace" >Name</td>
+														<?php if($isUpChange){ ?>
 														<td class="iNeedMoreSpace" >Former Seat</td>
 														<td class="iNeedMoreSpace" >New Seat</td>
-														<!--<td class="iNeedMoreSpace" >Status</td>-->
+														<?php }else{ ?>
+														<td class="iNeedMoreSpace" >Seat</td>
+														<?php } ?>
 													</tr>
 												</thead>
 												<tbody>
@@ -288,33 +290,23 @@ $this->load->view('html-generic/metadata.inc');
 													{
 														$allegedNewSeat =  (isset($newSeatData[ $singleGuest->UUID ][ 'visual_rep' ])) ?  $newSeatData[ $singleGuest->UUID ][ 'visual_rep' ] : "NONE";
 												?>
-													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >																						
+													<tr <?php if( $x % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?> >
 														<td class="guestname" >
-															<?php echo $singleGuest->Lname.', '.$singleGuest->Fname.' '.$singleGuest->Mname;?>													
+															<?php echo $singleGuest->Lname.', '.$singleGuest->Fname.' '.$singleGuest->Mname;?>
 														</td>
-														<td class="oldseat">	
+														<td class="oldseat">
 															<?php 
 																$oldSeat = (strlen($oldSeatVisuals[ $singleGuest->UUID ][ 'visual_rep' ]) > 0 ) ? $oldSeatVisuals[ $singleGuest->UUID ][ 'visual_rep' ] : "NONE";
 																echo $oldSeat;
 															?>
-														</td>													
+														</td>
+														<?php if( $isUpChange ){ ?>
 														<td class="newseat" >
 															<?php 
 																echo $allegedNewSeat;
 															?>
-														</td>												
-														<!--<td class="status">
-															<?php
-															if( $allegedNewSeat == "NONE" )
-															{
-															?>
-																RETAINED
-															<?php
-															}else{
-															?>
-																WILL BE CHANGED
-															<?php } ?>
-														</td>-->
+														</td>
+														<?php } ?>
 													</tr>
 												<?php
 													$x++;
@@ -323,15 +315,15 @@ $this->load->view('html-generic/metadata.inc');
 												</tbody>
 											</table>
 										</span>
-									</div>																
-								</div>													
+									</div>
+								</div>
 						</div>
-					</div>				
+					</div>
 					<div class="accordionImitation cEvent04_container aci2_Book3Special">
 						<div class="title part2">Payment Details</div>
 						<div class="content paymentDetailsContent">	
 								<div class="bookingDetails" style="padding-bottom: 50px;" >
-									<span class="sectionChief" >Billing Summary</span>																																								
+									<span class="sectionChief" >Billing Summary</span>
 									<table id="billingSummary" class="bStep5tbl center_purest" >
 										<thead>
 											<tr>
@@ -352,24 +344,24 @@ $this->load->view('html-generic/metadata.inc');
 												<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 												<td>
 												<?php
-													$thisItemAmount = floatval($singlePurchase->Amount); 												
+													$thisItemAmount = floatval($singlePurchase->Amount); 
 													if ( $thisItemAmount < 0 )
 														echo '('.$thisItemAmount.')';
 													else
 														echo $thisItemAmount;
 												?>
 												</td>
-											</tr>												
-											<?php } 											
+											</tr>
+											<?php }
 											?>
 										</tbody>
-									</table>		
+									</table>
 									<?php
 										if( is_array($paidPurchasesArray) and count($paidPurchasesArray) > 0 )
 										{
 									?>
-									<br/>								
-									<span class="sectionChief" >Less Purchases</span>																																								
+									<br/>
+									<span class="sectionChief" >Less Purchases</span>
 									<table id="billingSummary" class="bStep5tbl center_purest" >
 										<thead>
 											<tr>
@@ -390,21 +382,21 @@ $this->load->view('html-generic/metadata.inc');
 												<td><?php echo $singlePurchase->Charge_type_Description; ?></td>
 												<td>
 												<?php
-													$thisItemAmount = floatval($singlePurchase->Amount); 												
+													$thisItemAmount = floatval($singlePurchase->Amount);
 													if ( $thisItemAmount < 0 )
 														echo '('.$thisItemAmount.')';
 													else
 														echo $thisItemAmount;
 												?>
 												</td>
-											</tr>												
-											<?php } 											
+											</tr>
+											<?php }
 											?>
 										</tbody>
 									</table>
 									<?php } ?>
 									
-									<div id="totalX" class="purchase center_purest" >																																											
+									<div id="totalX" class="purchase center_purest" >
 										<table id="total" class="bStep5tbl center_purest">
 											<tbody>
 												<tr>
@@ -412,13 +404,13 @@ $this->load->view('html-generic/metadata.inc');
 													<td>&nbsp;</td>
 													<td>Total Amount Due (in PHP)</td>
 													<td id="value_proper" ><span class="cost" ><?php echo $amountDue; ?></span></td>
-												</tr>											
+												</tr>
 											</tbody>
 										</table>
 									</div>
 								</div>
 								<div class="containingClassTable" >
-								<span class="sectionChief" >Payment mode</span>																														
+								<span class="sectionChief" >Payment mode</span>
 								<div id="pc<?php echo $singleChannel->UniqueID; ?>_details" class="pChannelDetails" >
 									<div id="pChannelName" class="properInfo center_purest" >
 										<?php echo $singleChannel->Name; ?>
@@ -466,7 +458,7 @@ $this->load->view('html-generic/metadata.inc');
 										<input type="hidden" name="booking_number" value="<?php echo $bookingNumber;?>" />
 										</form>
 									</div>
-								</div>								
+								</div>
 							</div>
 						</div>
 					</div>	
@@ -474,7 +466,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">
 				<a class="button" id="buttonMB" href="<?php echo base_url();?>EventCtrl/manageBooking" ><span class="icon">Manage Booking</span></a>
-				<a class="button" id="buttonOK" ><span class="icon">Home</span></a>						
+				<a class="button" id="buttonOK" ><span class="icon">Home</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		

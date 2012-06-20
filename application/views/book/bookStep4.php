@@ -1,6 +1,5 @@
 <?php 
 	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
-	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 4 );
 ?>
 <?php
 $this->load->view('html-generic/doctype.inc');
@@ -11,7 +10,7 @@ $this->load->view('html-generic/metadata.inc');
 ?>
 
 <?php
-	$this->pageTitle = "Change seat - Manage Booking";
+	$this->pageTitle = ( $isActivityManageBooking ) ? "Change seat - Manage Booking " : "Choose seat - Purchase Ticket";
 	$this->thisPage_menuCorrespond = "BOOK";
 	$this->load->view('html-generic/segoefont_loader.inc');	
 	$this->load->view('html-generic/head-title.inc');
@@ -100,7 +99,7 @@ $this->load->view('html-generic/metadata.inc');
 						{
 			?>
 				You have selected a different ticket class. This requires you to choose new seat(s). Your
-				former seats are still reserved until you confirm the changes to this booking.
+				former seats are still reserved until you confirm/cancel the changes to this booking.
 			<?php }
 			?>
 			<?php } ?>
@@ -127,12 +126,11 @@ $this->load->view('html-generic/metadata.inc');
 					<div class="title part2" >Guest Details</div>
 					<?php
 						$slots = $bookingInfo->SLOT_QUANTITY;
-						$submitFunction = ($manageBooking_chooseSeat) ? 'manageBooking_changeSeat_process' : 'book_step5';
 					?>
-					<input type="hidden" id="manageBookingChooseSeat" value="<?php echo intval($manageBooking_chooseSeat); ?>"/>
-					<input type="hidden" id="_js_use_slots" value="<?php echo $bookingInfo->SLOT_QUANTITY ?>" />
+					<input type="hidden" id="manageBookingChooseSeat" value="<?php echo intval($isActivityManageBooking); ?>"/>
+					<input type="hidden" id="_js_use_slots" value="<?php echo $slots ?>" />
 					<input type="hidden" id="_js_use_ticketClassUniqueID" value="<?php echo $bookingInfo->TICKET_CLASS_UNIQUE_ID ?>" />
-					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/'.$submitFunction; ?>" id="formMain">					
+					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step5'; ?>" id="formMain">					
 					
 					<div id="tabs">					
 						<ul>
@@ -183,7 +181,7 @@ $this->load->view('html-generic/metadata.inc');
 									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
 									<?php 
 										$seatMatrixVal = "0";
-										if( $manageBooking_chooseSeat )
+										if( $isActivityManageBooking )
 										{
 											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];											 											 
 											 if( $guestSeatObj['Matrix_x'] == NULL or $guestSeatObj['Matrix_y'] == NULL )
@@ -199,7 +197,6 @@ $this->load->view('html-generic/metadata.inc');
 										}
 									?>
 									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="<?php echo $seatMatrixVal;?>" />
-									<input type="hidden" name="g<?php echo $x+1; ?>_uuid" value="<?php echo $singleGuest->UUID; ?>"   />
 									<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
 									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >																			
 											<?php
@@ -232,7 +229,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">							
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
-							<a class="button" id="buttonReset<?php if($manageBooking_chooseSeat) echo "2"; ?>" ><span class="icon">Cancel</span></a>
+							<a class="button" id="buttonReset<?php if($isActivityManageBooking) echo "2"; ?>" ><span class="icon">Cancel</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		

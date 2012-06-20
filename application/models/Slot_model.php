@@ -295,12 +295,15 @@ class Slot_model extends CI_Model {
 	
 	function setSlotAsBeingBooked( $uuid )
 	{
-		/*
-			Created 05FEB2012-2123
-						
-		*/
-		$sql_command = "UPDATE `event_slot` SET `Status` = 'BEING_BOOKED', `Start_Contact` = CURRENT_TIMESTAMP WHERE `UUID` = ?";
-		return $this->db->query( $sql_command, array( $uuid ) );
+		/**
+		*	@created 05FEB2012-2123
+		*	@description Obviously
+		*	@revised 20JUN2012-1523 Instead of using MySQL's CURRENT_TIMESTAMP constant, we substituted it for
+				getting the time via PHP as this is much more fool-proof regarding hosting server's time differences.
+		**/
+		date_default_timezone_set('Asia/Manila');
+		$sql_command = "UPDATE `event_slot` SET `Status` = 'BEING_BOOKED', `Start_Contact` = ? WHERE `UUID` = ?";
+		return $this->db->query( $sql_command, array( date("Y-m-d H:i:s") , $uuid ) );
 	}//setSlotAsBeingBooked
 	
 	function setSlotAsBooked( $uuid )

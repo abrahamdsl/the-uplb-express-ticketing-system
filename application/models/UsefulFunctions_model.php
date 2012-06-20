@@ -62,11 +62,12 @@ class UsefulFunctions_model extends CI_Model {
 		$tokenizedHaystack;
 		$muchTokenizedHaystack = Array();
 		$muchTokenizedHaystack = $this->makeAssociativeArrayThisWIN5_DATA( $haystack );
+		if( $muchTokenizedHaystack === FALSE ) return FALSE;
 		/*
 			Now compare values.
 		*/
 		foreach( $muchTokenizedHaystack as $key => $value ) if( $key == $needle ) return $value;
-		return false;
+		return FALSE;
 	}//getValueOfWIN5_Data
 	
 	function makeAssociativeArrayThisWIN5_DATA( $haystack )
@@ -75,6 +76,7 @@ class UsefulFunctions_model extends CI_Model {
 			Warning: the keys are always in string
 		*/
 		$haystackLength = strlen($haystack);
+		if( $haystackLength < 1 ) return FALSE;
 		if( $haystack[ $haystackLength - 1 ] === ';' ) 
 			$haystack = substr( $haystack, 0, $haystackLength-1 );
 		$tokenizedHaystack = explode(';', $haystack );		
@@ -99,8 +101,6 @@ class UsefulFunctions_model extends CI_Model {
 		
 		
 		$muchTokenizedHaystack = $this->makeAssociativeArrayThisWIN5_DATA( $haystack );
-		echo 'wah';
-		echo var_dump( $muchTokenizedHaystack );
 		/*
 			Now compare values.
 		*/

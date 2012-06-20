@@ -1,6 +1,5 @@
 <?php
-	$sessionActivity =  $this->clientsidedata_model->getSessionActivity();
-	$isActivityManageBooking = ( $sessionActivity[0] == "MANAGE_BOOKING" and $sessionActivity[1] == 2 );
+	$isActivityManageBooking = $this->functionaccess->isActivityManageBooking();
 ?>
 <?php
 $this->load->view('html-generic/doctype.inc');
@@ -101,7 +100,7 @@ $this->load->view('html-generic/metadata.inc');
 					<div id="content">	
 						<div class="bookingDetails" >
 							<?php
-								$this->load->view('html-generic/eventInfoLeft_ndx.inc');
+								$this->load->view('html-generic/eventInfoLeft_ndx.inc', Array( 'isActivityManageBooking' => $isActivityManageBooking ));
 							?>
 						</div>
 						<div class="containingClassTable" >

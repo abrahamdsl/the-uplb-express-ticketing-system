@@ -188,6 +188,13 @@ class SessionCtrl extends CI_Controller {
 		$this->telemetry_model->add(4,$this->UsefulFunctions_model->guid(),$this->UsefulFunctions_model->VisitorIP(),'REF_'.$this->session->userdata('telemetry_uuid'),'' );
 		$this->session->unset_userdata('telemetry_uuid');
 		redirect('/');
-	} //logout		
+	} //logout
+	
+	function redirect_unknown()
+	{
+		echo print_r( $_COOKIE[ 'ci_session' ] );
+		echo "The server do not know where to redirect you."; //3999
+	}
+	
 }//class
 ?>

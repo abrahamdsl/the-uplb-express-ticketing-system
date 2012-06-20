@@ -265,7 +265,7 @@ $this->load->view('html-generic/metadata.inc');
 							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
 			</div>	
 			<div id="misc" style=" clear:both;"></div>
-		</div>		
+		</div>
     </div><!--end of main content-->
 	
 <?php

@@ -56,22 +56,45 @@ if( !isset( $isActivityManageBooking  ) ) $isActivityManageBooking  = false;
 	<?php echo $bookingInfo->EVENT_NAME; ?>
 </div>
 <div class="bottom">
-	<?php echo $bookingInfo->EVENT_LOCATION; ?>
+	<?php echo $bookingInfo->EVENT_LOCATION; 
+		  $slots = $bookingInfo->SLOT_QUANTITY;
+	?>
 	<br/>
-	<br/>	
-	<p>
-		You are booking <?php echo $bookingInfo->SLOT_QUANTITY; ?> ticket<?php if($bookingInfo->SLOT_QUANTITY > 1) echo 's'; ?>.
-	</p>
-	<?php if( $isActivityManageBooking ) {?>
-	<table class="center_purest" >
-		<tr>
-			<td>Ticket class of your current booking:</td>
-			<td> <?php echo $existingTCName; ?></td>
-		</tr>
-		<tr>
-			<td style="width: 85%;" >Total payments for your current booking:</td>
-			<td>PHP <?php echo $existingPayments; ?></td>
-		</tr>								
-	</table>
-	<?php } ?>
+	<br/>
+	<?php 
+		$stage = $this->clientsidedata_model->getSessionActivityStage();
+		$is_tc_displayable = ( $stage === STAGE_MB2_SELECT_TICKETCLASS_FW or  $stage > STAGE_BOOK_2_FORWARD );
+		if( !$isActivityManageBooking )
+		{
+	?>
+			<p>
+				<?php echo $slots; ?> Guest<?php if($slots > 1) echo 's'; ?>
+			</p>
+			<?php if( $is_tc_displayable ){ ?>
+			<p>
+				<?php echo $existingTCName; ?> Class
+			</p>
+			<?php } ?>
+	<?php 
+		}else{
+	?>
+	
+			<p>
+				You are booking <?php echo $slots; ?> ticket<?php if($slots > 1) echo 's'; ?>.
+			</p>
+			<table class="center_purest" >
+			<?php if( $is_tc_displayable ){ ?>
+				<tr>
+					<td>Ticket class of your current booking:</td>
+					<td> <?php echo $existingTCName; ?></td>
+				</tr>
+			<?php } ?>
+				<tr>
+					<td style="width: 85%;" >Total payments for your current booking:</td>
+					<td>PHP <?php echo $existingPayments; ?></td>
+				</tr>
+			</table>
+	<?php 
+		}
+	?>
 </div>	

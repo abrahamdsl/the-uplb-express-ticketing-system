@@ -413,14 +413,15 @@ class Seat_model extends CI_Model {
 		return ( $query->num_rows == 1 );
 	}//isSeatMapUniqueIDExistent
 	
-	function make_array_visualSeatData( $visualSeatData )
+	function make_array_visualSeatData( $guestObj, $visualSeatData )
 	{
 		$vsd_tokenized = explode( '.', $visualSeatData );
 		$returnThis = Array();
+		$x = 0;
 		foreach( $vsd_tokenized as $value )
 		{
-			$pair_tokenized = explode( '_', $value );
-			$returnThis[ $pair_tokenized[0] ] = $pair_tokenized[1];
+			log_message("DEBUG",'Seat_model::make_array_visualSeatData seat value : ' . $value );
+			$returnThis[ $guestObj[ $x++ ]->UUID ] = ( strval($value) === "0" or strval($value) === "FALSE" ) ? "NONE" : $value;
 		}
 		return $returnThis;
 	}
