@@ -69,13 +69,13 @@ class Slot_model extends CI_Model {
 		*/
 		if( is_array( $ticketClasses ) === false or count( $ticketClasses ) < 1 ) return false; 
 		foreach( $ticketClasses as $singleClass )
-		{			
+		{
 			$explodedUUIDs;
 			$slotUUIDs_str;
 			
 			// get the cookie that contains the slot UUIDs
 			$slotUUIDs_str = $this->input->cookie( $singleClass->UniqueID."_slot_UUIDs" );	
-			if( $slotUUIDs_str === false ) continue;			
+			if( $slotUUIDs_str === false ) continue;
 			delete_cookie( $singleClass->UniqueID."_slot_UUIDs" );			
 			$explodedUUIDs = explode( '_', $slotUUIDs_str );		// explode via delimiter underscore
 			foreach( $explodedUUIDs as $uuid )

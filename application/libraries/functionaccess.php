@@ -314,6 +314,10 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
+	function preManageBookingUpgTC_Check( $mbookingInfo , $stage ){		
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
 	function redirectBookForward( $stage )
 	{
 		/*

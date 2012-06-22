@@ -34,19 +34,28 @@ function cancelBookingProcess()
 
 $(document).ready( function(){
 	if( typeof doNotProcessTime == 'undefined' ) $(document).makeTimestampFriendly();
+	var longmsg = 'All slots and seats we have temporarily reserved for you will be made as available again for others';
+	var cb = 'Cancel booking ';
+	var yfc = 'cancelBookingProcess';
 	
 	$('#buttonReset').click( function(){			
 		$.fn.nextGenModal({
 			   msgType: 'warning',
-			   title: 'Cancel booking process?',
-			   message: 'Are you sure you want to do this? All slots we have temporarily reserved will be made as available again for others.',
-			   yesFunctionCall: 'cancelBookingProcess',
+			   title: cb + 'process?',
+			   message: 'Are you sure you want to do this? ' + longmsg + '.',
+			   yesFunctionCall: yfc,
 			   closeOnChoose: false
 			});
 	});
 	
 	$('#buttonReset2').click( function(){		
-		cancelBookingProcess();
+		$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: cb + 'changes?',
+			   message: longmsg + ', continue?',
+			   yesFunctionCall: yfc,
+			   closeOnChoose: false
+			});
 	});
 		
 });

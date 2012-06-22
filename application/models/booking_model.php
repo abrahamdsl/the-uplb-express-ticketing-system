@@ -222,15 +222,15 @@ class Booking_model extends CI_Model {
 		/*
 			@created 09MAR2012-1406
 			@purpose Gets all bookings of a guest.
+			@revised 22JUN2012-1208 Corrected error in SQL command wherein selling date and time
+				was included. Criteria for inclusion changed to status != ARCHIVED
 		*/
 		date_default_timezone_set('Asia/Manila');
 		$statusFilter = ( $getOnlyPaidOnes ) ? "AND `booking_details`.`Status` = 'PAID'" : "";
 		$sql_command = " SELECT * FROM `showing_time` INNER JOIN `booking_details` ON
 			`showing_time`.`EventID` = `booking_details`.`EventID` INNER JOIN `event` ON 
-			`showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`Status` = 'CONFIGURED' AND
-			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` AND
-			CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= CURRENT_TIMESTAMP AND
-			CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= CURRENT_TIMESTAMP "; 
+			`showing_time`.`EventID` =  `event`.`EventID` WHERE `showing_time`.`Status` != 'ARCHIVED' AND
+			`showing_time`.`UniqueID` = `booking_details`.`ShowingTimeUniqueID` "; 
 		$sql_command .= $statusFilter;
 		$sql_command .= ( $userAccountNum !== FALSE ) ? " AND `booking_details`.`MadeBy` = ?;" : "";
 		$arr_result = $this->db->query( $sql_command, Array ( $userAccountNum ) )->result();	

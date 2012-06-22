@@ -11,7 +11,7 @@ class EventCtrl2 extends CI_Controller {
 	{
 		parent::__construct();	
 		
-		include_once('_constants.inc');
+		include_once( APPPATH.'constants/_constants.inc');
 				
 		$this->load->helper('cookie');
 		$this->load->model('login_model');

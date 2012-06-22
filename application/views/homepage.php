@@ -69,10 +69,10 @@ $this->load->view('html-generic/metadata.inc');
 						if( $permissions->CUSTOMER )
 						{
 					?>															
-					<div class="metrotile" id="mtile1" >
+					<div class="metrotile mtile1" >
 							<a href="<?php echo base_url(); ?>EventCtrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" alt="Purchase ticket" /></a>
 					</div>
-					<div class="metrotile" id="mtile2"  >
+					<div class="metrotile mtile2"  >
 							<a href="<?php echo base_url()."EventCtrl/manageBooking"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/managebooking.png" alt="Manage Booking" /></a>
 					</div>
 					<!--
@@ -97,15 +97,15 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Event Management</a></h3>
 				<div>
-					<div class="metrotile" id="mtile3"  >
+					<div class="metrotile mtile3"  >
 							<a href="<?php echo base_url(); ?>EventCtrl/create"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createevent.png" alt="Create Event" /></a>
 					</div>
-					<div class="metrotile" id="mtile5" >
+					<div class="metrotile mtile5" >
 							<a  href="<?php echo base_url(); ?>EventCtrl2/manageEvent" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-modifyevent.png" alt="Modify Event" /></a>
 					</div>
-					<div class="metrotile" id="mtile6"  >
+					<div class="metrotile mtile6"  >
 							<a href="<?php echo base_url(); ?>EventCtrl/confirm" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-confirmreservation.png" alt="Confirm Reservation" /></a>
-					</div>							
+					</div>
 				</div>
 				<?php
 					} // ender for event management
@@ -116,10 +116,10 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Checking in</a></h3>
 				<div>
-					<div class="metrotile" id="mtile7"  >
+					<div class="metrotile mtile7"  >
 						<a href="<?php echo base_url(); ?>AcademicCtrl/check_start/1"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-receiveguests.png" alt="Receive Guests" /></a>
 					</div>
-					<div class="metrotile" id="mtile3" >
+					<div class="metrotile mtile3" >
 						<a href="<?php echo base_url(); ?>AcademicCtrl/check_start/2"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-checkout.png" alt="Check-out Guests" /></a>
 					</div>
 				</div>
@@ -132,16 +132,16 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Administration</a></h3>
 				<div>					
-					<div class="metrotile" id="mtile2"  >
+					<div class="metrotile mtile2"  >
 						<a href="<?php echo base_url().'SeatCtrl/create'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createseatmap.png" alt="Create Seat Map" /></a>
 					</div>
-					<div class="metrotile" id="mtile7"  >
+					<div class="metrotile mtile7"  >
 						<a href="<?php echo base_url().'SeatCtrl/manageseatmap'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageseatmaps.png" alt="Manage Seat Map" /></a>
 					</div>
-					<div class="metrotile" id="mtile5"  >
+					<div class="metrotile mtile5"  >
 						<a href="<?php echo base_url().'userAccountCtrl/manageuser'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageusers.png" alt="Manage Users" /></a>
 					</div>
-					<div class="metrotile" id="mtile4"  >
+					<div class="metrotile mtile4"  >
 						<a href="<?php echo base_url().'userAccountCtrl/managepaymentmode'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-managepaymentmodes.png" alt="Manage Payment Modes" /></a>
 					</div>
 				</div>
@@ -154,10 +154,10 @@ $this->load->view('html-generic/metadata.inc');
 				?>
 				<h3><a href="#">Faculty Lounge</a></h3>
 				<div>
-					<div class="metrotile" id="mtile4"  >
+					<div class="metrotile mtile4"  >
 							<a href="<?php echo base_url()."AcademicCtrl/createClass"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createclass.png" alt="Create a new class" /></a>
 					</div>
-					<div class="metrotile" id="mtile6"  >
+					<div class="metrotile mtile6"  >
 							<a href="<?php echo base_url()."AcademicCtrl/manageClasses"; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-seeattendingstudents.png" alt="See going students" /></a>
 					</div>
 				</div>

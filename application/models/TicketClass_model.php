@@ -103,7 +103,7 @@ class TicketClass_model extends CI_Model {
 			
 			Returns MYSQL_OBJ or BOOLEAN FALSE on error.
 		*/
-		$ticketClassByPriceArray = $this->getTicketClassesOrderByPrice( $eventID, $groupID );
+		$ticketClassByPriceArray = $this->getTicketClassesOrderByPrice( $eventID, $groupID, TRUE );
 		if( $ticketClassByPriceArray === false or count($ticketClassByPriceArray) < 1 ) return false;
 		return $ticketClassByPriceArray[0];
 	}//getMostExpensiveTicketClass
@@ -180,7 +180,7 @@ class TicketClass_model extends CI_Model {
 		return $array_result;
 	}//getTicketClassesExceptThisUniqueID
 	
-	function getTicketClassesOrderByPrice( $eventID, $groupID )
+	function getTicketClassesOrderByPrice( $eventID, $groupID, $doNotAssociative = FALSE )
 	{
 		/*
 			Created 08MAR2012-0319
@@ -191,11 +191,16 @@ class TicketClass_model extends CI_Model {
 		if( count( $arr_result) == 0 )
 			return false;
 		else{
-			foreach( $arr_result as $eachTC )
+			if( $doNotAssociative )
 			{
-				$newArray[ $eachTC->UniqueID ] = $eachTC;
+				return $arr_result;
+			}else{
+				foreach( $arr_result as $eachTC )
+				{
+					$newArray[ $eachTC->UniqueID ] = $eachTC;
+				}
+				return $newArray;
 			}
-			return $newArray;
 		}
 	}//  getTicketClassesOrderByPrice
 	

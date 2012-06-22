@@ -91,6 +91,49 @@ class SeatMaintenance{
 		}	
 	}//cleanDefaultedSeats(..)
 	
+	function getAllGuestSeatData( $slots, $currentBookingInfo, $bookingInfo, &$seat_assignments )
+	{
+	/**
+	*	@created 22JUN2012-1451
+	*	@description Gets guests' seat data depending on the slots assigned to them.
+	*	@remarks The parameter $seat_assignments is directly manipulated back in the
+			function since it is passed to here by reference!
+	*	@history moved from EventCtrl/book_step5::area#bookstep5_pr_seat_finally_assign_db
+	*	@calledby EventCtrl/book_step5; EventCtrl/cancelBookingProcess
+	**/
+		for( $x = 0; $x < $slots; $x++ )
+		{
+			$slot_old_st = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter( 
+				$currentBookingInfo->EVENT_ID,
+				$currentBookingInfo->SHOWTIME_ID,
+				$currentBookingInfo->TICKET_CLASS_GROUP_ID,
+				$currentBookingInfo->TICKET_CLASS_UNIQUE_ID,
+				$seat_assignments[ $x ][ "uuid" ]
+			);
+			$slot_new_st = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter(
+				$bookingInfo->EVENT_ID,
+				$bookingInfo->SHOWTIME_ID,
+				$bookingInfo->TICKET_CLASS_GROUP_ID,
+				$bookingInfo->TICKET_CLASS_UNIQUE_ID,
+				$seat_assignments[ $x ][ "uuid" ]
+			);
+			if( is_null($slot_old_st->Seat_x) or is_null($slot_old_st->Seat_y) )
+			{
+				$seat_assignments[ $x ][ "old_st" ]= FALSE;
+			}else{
+				$seat_assignments[ $x ][ "old_st" ][ "x" ] = $slot_old_st->Seat_x;
+				$seat_assignments[ $x ][ "old_st" ][ "y" ] = $slot_old_st->Seat_y;
+			}
+			if( is_null($slot_new_st->Seat_x) or is_null($slot_new_st->Seat_y) )
+			{
+				$seat_assignments[ $x ][ "new_st" ]= FALSE;
+			}else{
+				$seat_assignments[ $x ][ "new_st" ][ "x" ] = $slot_new_st->Seat_x;
+				$seat_assignments[ $x ][ "new_st" ][ "y" ] = $slot_new_st->Seat_y;
+			}
+		}//for
+	}//getAllGuestSeatData(..)
+	
 	function getExistingSeatData_ForManageBooking( $guestsObjOrBookingNum, $eventID, $showtimeID, $isTicketClassChanged )
 	{
 		$seatDetailsOfGuest = Array();
