@@ -96,7 +96,7 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( EVENT_NAME );
 	}
 	
-	function deleteManageBookingCookiesOnServerUUIDRef( )
+	function deleteManageBookingCookiesOnServerUUIDRef()
 	{
 		return $this->session->unset_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID );
 	}

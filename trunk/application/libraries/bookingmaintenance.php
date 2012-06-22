@@ -40,7 +40,7 @@ class BookingMaintenance{
 		/**
 		*	@description Determines which is the online payment processor. Extracts
 				WIN5 DATA from the `internal_data` field of `payment_channel`
-		*/
+		**/
 		if( $paymentModeObj->internal_data_type == 'WIN5' )
 		{
 			$processorValue = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'processor', $paymentModeObj->internal_data );
@@ -172,6 +172,17 @@ class BookingMaintenance{
 		$data['redirectURI'] = base_url().$redirectURI;		
 		return $data;
 	}//assembleOnlinePaymentProcessorNotSupported
+	
+	function assembleTCHighestAlready()
+	{
+		return Array(
+			 'error' => "CUSTOM",
+			 'theMessage' => "You are already booked in the top ticket class. There's no other class to upgrade anymore.",
+			 'redirect' => FALSE,
+			 'redirectURI' => base_url().'EventCtrl/manageBooking',
+			 'defaultAction' => 'Manage Booking'
+		);
+	}//assembleTCHighestAlready(..)
 	
 	function assembleErrorPaymentNotification( $redirectURI, $otherMsgs = "" )
 	{
@@ -1151,7 +1162,7 @@ class BookingMaintenance{
 		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.		
 		**/
 		if( !isset( $m_bookingInfo->GO_SHOWTIME ) ) return FALSE;
-		return ( @$m_bookingInfo->GO_SHOWTIME == MB_STAGESTAT_CHANGED );
+		return ( intval(@$m_bookingInfo->GO_SHOWTIME) === MB_STAGESTAT_CHANGED );
 	}
 	
 	function isTicketClassChanged( $m_bookingInfo )
@@ -1162,7 +1173,7 @@ class BookingMaintenance{
 				 is changed as  a result of making changes to the booking.
 		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.		
 		**/
-		return ( @$m_bookingInfo->GO_TICKETCLASS == MB_STAGESTAT_CHANGED );
+		return ( intval(@$m_bookingInfo->GO_TICKETCLASS) == MB_STAGESTAT_CHANGED );
 	}
 	
 	function getMBReasonOnSeatPage( $isShowtimeChanged, $isTicketClassChanged )

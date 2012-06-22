@@ -8,7 +8,7 @@ class AcademicCtrl extends CI_Controller {
 	{
 		parent::__construct();		
 		
-		include_once('_constants.inc');
+		include_once( APPPATH.'constants/_constants.inc');
 		
 		$this->load->library('session');
 		$this->load->model('login_model');

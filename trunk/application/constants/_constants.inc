@@ -33,7 +33,10 @@
 		define( 'CHECK_OUT', 'CHECKIN_OUT' );
 		define( 'SEAT_CREATE', 'SEAT_CREATE' );
 		define( 'IDLE', 'IDLE' );
-		
+		/*
+			Database Indicators
+		*/
+		define('BOOKDETAIL_STAT2_FOR_DELETION', 'FOR-DELETION' );
 		/*
 			Array keys
 		*/

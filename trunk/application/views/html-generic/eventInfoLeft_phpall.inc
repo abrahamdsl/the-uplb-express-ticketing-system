@@ -25,18 +25,22 @@
 	$topOtherClass - STRING - classes (CSS) in string separated by spaces for further customization of div.top
 	$bottomOtherClass - STRING - classes (CSS) in string separated by spaces for further customization of div.bottom
 	$slots - STRING/INT - how many slots/tickets are being booked.
+	$output_datetime - BOOLEAN - Output the hidden elements relating to date and time or not?
 */
 
 if( !isset( $isActivityManageBooking  ) ) $isActivityManageBooking  = false;
 if( !isset( $topOtherClass ) ) $topOtherClass  = "";
 if( !isset( $bottomOtherClass ) )  $bottomOtherClass = "";
+if( !isset( $output_datetime ) )  $output_datetime = TRUE;
 ?>
 
 <div class="top <?php echo $topOtherClass; ?>">		
+	<?php if( $output_datetime ){ ?>
 	<input type="hidden" id="startDate" value="<?php echo $showtimeObj->StartDate ?>" />
 	<input type="hidden" id="endDate"   value="<?php echo $showtimeObj->EndDate ?>"   />
 	<input type="hidden" id="startTime" value="<?php echo $showtimeObj->StartTime ?>" />
 	<input type="hidden" id="endTime"   value="<?php echo $showtimeObj->EndTime ?>"   />
+	<?php } ?>
 	<div class="start">
 		<span class="deed" >
 			Start
@@ -88,7 +92,7 @@ if( !isset( $bottomOtherClass ) )  $bottomOtherClass = "";
 	<br/>
 	<br/>		
 	<?php if( $isActivityManageBooking ) {
-		if( $this->clientsidedata_model->getSessionActivityStage() == 0 )
+		if( $this->clientsidedata_model->getSessionActivityStage() == STAGE_MB0_HOME )
 		{
 	?>
 			<p>

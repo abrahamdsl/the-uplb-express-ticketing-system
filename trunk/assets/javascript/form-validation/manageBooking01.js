@@ -5,37 +5,36 @@ function formSubmit( args )
 
 function deleteBookingX( args )
 {	
-	var x = $.ajax({	
+	var x = $.ajax({
 		type: 'POST',
 		url: CI.base_url + 'EventCtrl/cancelBooking',
 		timeout: 30000,	
 		data: { 'bookingNumber' : args[0] },
-		beforeSend: function(){			
+		beforeSend: function(){	
 			$.fn.nextGenModal({
 				   msgType: 'ajax',
 				   title: 'processing',
 				   message: 'Cancelling your booking...'
 				});	
-			setTimeout( function(){}, 2000 );			
+			setTimeout( function(){}, 1000 );
 		},
 		success: function(data){
 			var response = data.split('_');
-			setTimeout( function(){}, 1000 );			
+			setTimeout( function(){}, 1000 );
 			if( response[0].startsWith( 'OK' ) )
 			{
 				$.fn.nextGenModal({
 					   msgType: 'okay',
 					   title: 'success',
 					   message: 'This booking is now cancelled. You may seek refund (if any) from the payment channel you used.'
-				});								
+				});
 				$('h3#h_' + args[0] ).remove();
-				$('div#' + args[0] ).remove();
-				if( $('div#accordion h3').size() > 0 )
-				{
-					$('div#accordion h3').first().click();
-				}else{
-					$('div#accordion2').show();
-				}				
+				$('div#proper_' + args[0] ).remove();
+				if( $('div#accordion h3').size() < 2 ){
+					$('h3#h_nobooking').show();
+					$('div#d_nobooking').show();
+				}
+				$('div#accordion h3').first().click();
 			}else
 			if( response[0].startsWith( 'ERROR' ) )
 			{
@@ -46,7 +45,7 @@ function deleteBookingX( args )
 				});
 			}
 		},
-		error: function(jqXHR, textStatus, errorThrown){ 				
+		error: function(jqXHR, textStatus, errorThrown){
 				$.fn.nextGenModal({
 				   msgType: 'error',
 				   title: 'Something went wrong',
@@ -58,18 +57,26 @@ function deleteBookingX( args )
 }
 
 $(document).ready( function(){
+	$.fn.disploading = function(){
+		$.fn.nextGenModal({
+		   msgType: 'ajax',
+		   title: 'processing',
+		   message: 'Taking you to the next page, please wait...'
+		});
+	};
+
 	$('div#accordion2').accordion();
-	if( $('div#accordion h3').size() != 0 ) $('div#accordion2').hide();
+	if( $('div#accordion').children("div.ui-accordion-content").size() == 1 ) $('[id$="nobooking"]').show();
 	
 	$('div.metrotile').click( function(e){
-		var thisID = $(this).attr( 'name' );
+		var thisID = $(this).attr( 'id' );
 		var bNumber;
 		
-		if( $(this).attr( 'id' ) === 'purchaseticket' ) return true;
+		if( thisID.startsWith( 'purchaseticket' ) ) return true;
 		e.preventDefault();
-		bNumber = $(this).siblings('input[name="bookingNumber"]').first().val();
-		if( thisID == "cancel" )
+		if( thisID.startsWith( "cancelbooking" ) )
 		{
+			bNumber = $(this).siblings('input[name="bookingNumber"]').first().val();
 			$.fn.nextGenModal({
 				   msgType: 'warning',
 				   title: 'Confirm',
@@ -79,16 +86,9 @@ $(document).ready( function(){
 				   yFC_args: new Array( bNumber )
 			});
 		}else{
-			$(this).children('form').first().submit();
+			$.fn.disploading();
+			var gothere = $(this).children("a").attr("href");
+			setTimeout(  "location.href='" + gothere + "'", 500 );
 		}
-		/*if( thisID == "changeseat" )
-		{
-			$(this).children('form').first().submit();
-		}else
-		if( thisID == "changeshowingtime" )
-		{
-			$(this).children('form').first().submit();
-		}*/
-		
 	});
 });
