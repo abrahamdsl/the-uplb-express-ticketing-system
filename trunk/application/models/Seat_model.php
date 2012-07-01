@@ -148,12 +148,15 @@ class Seat_model extends CI_Model {
 	
 	function getLapsedHoldingTimeSeats( $eventID, $showtimeID )
 	{
-		/*
-			Created 08MAR2012-1214
-		*/
+		/**
+		*	@created 08MAR2012-1214
+		*	@revised 23JUN2012-1433 Instead of using MySQL's CURRENT_TIMESTAMP constant, we substituted it for
+			getting the time via PHP as this is much more fool-proof regarding hosting server's time differences.
+		**/
+		date_default_timezone_set('Asia/Manila');
 		$sql_command = "SELECT * FROM `seats_actual` WHERE `EventID` = ?  AND `Showing_Time_ID` = ? AND";
-		$sql_command .= " `Status` = -4 AND CURRENT_TIMESTAMP >= `Comments`";
-		$arrayResult = $this->db->query( $sql_command, array( $eventID, $showtimeID ) )->result();
+		$sql_command .= " `Status` = -4 AND ? >= `Comments`";
+		$arrayResult = $this->db->query( $sql_command, array( $eventID, $showtimeID, date("Y-m-d H:i:s") ) )->result();
 		
 		if( count( $arrayResult) === 0 )
 			return false;
@@ -523,7 +526,24 @@ class Seat_model extends CI_Model {
 		
 		return $transactionResult;
 	}//updateSeatMapUsableCapacity
-		
+
+	function updateSingleeatComment( $comments, $eventID, $showtimeID, $x, $y )
+	{
+		/**
+		*	@created 01JUL2012-1554
+		*	@description  Just updates the comment field of an entry in `seats_actual`.
+						Arose due to the need to set in that field/column the expiration date of the holding
+						time for that seat, notwithstanding the lapse of the payment deadline for the booking
+						that holds the seat.
+		**/
+		$sql_command = "UPDATE `seats_actual` SET `Comments` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ?";
+		$sql_command .= " AND `Matrix_x` = ? AND `Matrix_y` = ?" ;
+		return $this->db->query( $sql_command, Array(
+				$comments, $eventID, $showtimeID, $x, $y 
+			)
+		);
+	}//updateSingleeatComment
+	
 }//class
 
 

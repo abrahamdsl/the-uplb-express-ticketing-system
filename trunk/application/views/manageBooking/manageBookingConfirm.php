@@ -39,14 +39,15 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookPaymentChannelSelection.js'; ?>" ></script>
-	<?php			
+	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<!--For modal v1-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
   	
 </head>
 <body>
@@ -83,6 +84,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" style="clear:both;" >
+				<input type="hidden" id="doNotProcessTime" value="1" />
 				<form method="post"  action="<?php echo base_url().'EventCtrl/managebooking_finalize' ?>" name="formLogin" id="formMain">					
 					<div class="accordionImitation cEvent04_container aci1_Book3Special">				
 						<div id="title">Details</div>
@@ -448,9 +450,9 @@ $this->load->view('html-generic/metadata.inc');
 				</form>
 			</div>
 			<!-- accordion end -->
-			<div id="essentialButtonsArea">							
-							<a class="button" id="buttonOK" ><span class="icon">Confirm</span></a>														
-							<a class="button" id="buttonReset" ><span class="icon">Start Over</span></a> 
+			<div id="essentialButtonsArea">
+							<a class="button" id="buttonOK" ><span class="icon">Confirm</span></a>
+							<a class="button" id="buttonReset<?php if( $this->functionaccess->isChangingPaymentMode() ) echo 'p'; ?>" ><span class="icon">Cancel</span></a>
 			</div>	
 			<div id="misc" style=" clear:both;"></div>
 		</div>		

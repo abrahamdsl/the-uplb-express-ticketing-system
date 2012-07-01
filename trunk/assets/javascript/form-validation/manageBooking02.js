@@ -120,17 +120,20 @@ $(document).ready( function(){
 	
 
 	$.fn.getShowingTimes();
+	var is_pChannel = ( $('select[name="paymentChannel"]').size() > 0 );
+	var whichElement = is_pChannel ? "paymentChannel" : "showingTimes";
+	var whichElement_sel = is_pChannel ? "payment method" : "showing time";
 	
 	$('a#buttonOK').click( function(){
-		if( $('select[name="paymentChannel"] option:selected').val() == "NULL" ){			
+		if( $('select[name="' + whichElement + '"] option:selected').val() == "NULL" ){			
 			$.fn.nextGenModal({
 			   msgType: 'error',
 			   title: 'input needed',
-			   message: 'Please select payment method first.'
+			   message: 'Please select ' + whichElement_sel +' first.'
 			});
 			return false;
 		}
 		document.forms[0].submit();
-		
 	});
+	
 });

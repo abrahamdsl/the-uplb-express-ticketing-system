@@ -79,9 +79,20 @@ class ndx_model extends CI_Model {
 		*	@created 09JUN2012-1244
 		*	@description Well, obviously, deletes.
 		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
-		**/		
+		**/
+		if( is_null( $uuid ) or $uuid === FALSE ) return TRUE;
 		return $this->db->delete( COL_DB_TABLE_NAME, Array( COL_UUID => $uuid ) );
 	}//delete(..)
+	
+	function deleteExpiredBookingCookiesOnServer(){
+		/**
+		*	@created 24JUN2012-1916
+		*	@description Deletes any booking cookies-on-server that is expired.
+		**/
+		$sql_command = "DELETE FROM `" . COL_DB_TABLE_NAME . "` WHERE CONCAT(`";
+		$sql_command .= COL_EXPIRE_DATE . "`,' ',`".COL_EXPIRE_TIME . "`) <= ? ";
+		return $this->db->query( $sql_command, Array( date("Y-m-d H:i:s"),  ) );
+	}//deleteExpiredBookingCookiesOnServer()
 	
 	function get( $uuid )
 	{

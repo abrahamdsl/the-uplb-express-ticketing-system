@@ -250,11 +250,13 @@ class Event_model extends CI_Model {
 			
 	function getConfiguredShowingTimes( $eventID = NULL , $validToday = false )
 	{
-		/* Created 29DEC2011-2055					
-		
-			30DEC2011-1900: added param $validToday - which serves if to check if today's date is well within the
-			showing time
-		*/
+		/**
+		* 	@created 29DEC2011-2055					
+		*	@revised 30DEC2011-1900: added param $validToday - which serves if to check if today's date is well within the
+				showing time
+		*	@revised 23JUN2012-1433 Instead of using MySQL's CURRENT_TIMESTAMP constant, we substituted it for
+				getting the time via PHP as this is much more fool-proof regarding hosting server's time differences.
+		**/
 		$query_obj;
 		
 		if( $eventID == NULL ) return NULL;
@@ -271,20 +273,16 @@ class Event_model extends CI_Model {
 		}else{	// compare today's date against the online selling availability of showing times
 			date_default_timezone_set('Asia/Manila');
 		
-			// assemble today's date that is compatible with MySQL comparison
-			// YYYY-MM-DD
-			$dateToday = date( 'Y-m-d ' );			
-			$timeToday = date( 'H:i:s' );
+			// assemble today's date and time that is compatible with MySQL comparison
+			$currentTimestamp = date( 'Y-m-d H:i:s' );
 			
-			// review 01MAR2012-2235 -  and why you didn't use constant CURRENT_TIMESTAMP but instead
-			// $dateToday and $timeToday pa?
 			$sql = "SELECT * FROM `showing_time` WHERE `EventID` = ? AND (`Status` = 'CONFIGURED' OR `Status` = 'STRAGGLE' )AND 
 					CONCAT(`Selling_Start_Date`,' ',`Selling_Start_Time`) <= ? AND
 					CONCAT(`Selling_End_Date`,' ',`Selling_End_Time`) >= ?;";
 			$query_obj = $this->db->query( $sql, array(
 					$eventID,
-					$dateToday.$timeToday,					
-					$dateToday.$timeToday
+					$currentTimestamp,					
+					$currentTimestamp
 				)
 			);			
 		}

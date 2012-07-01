@@ -64,7 +64,14 @@ $(document).ready( function(){
 			getUserInfo( "DEFAULT", guestID );
 		}else{
 			var username = prompt( "Please enter your friend's username." );			
-			if( username.length > 1 ) getUserInfo( username, guestID );			
+			if( username.length > 1 ) getUserInfo( username, guestID );
+			else{
+				$.fn.nextGenModal({
+				   msgType: 'error',
+				   title: 'are you kidding me?',
+				   message: 'Insufficient username length.'
+				});
+			}
 		}
 	 });
 	

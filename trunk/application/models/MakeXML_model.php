@@ -27,6 +27,50 @@ class MakeXML_model extends CI_Model {
 		$this->load->library('xml_writer');
 	}
 	
+	function toArray($xml) {
+		/**
+		*	@created 27JUN2012-2045
+		*	@description Parses XML to Array.
+		*	@author thedoc8786 at gmail dot com 23-Mar-2012 07:42
+		*	@source http://php.net/manual/en/book.simplexml.php#comments
+		**/
+        $array = json_decode( json_encode($xml), TRUE);
+        
+        foreach ( array_slice($array, 0) as $key => $value ) {
+            if ( empty($value) ) $array[$key] = NULL;
+            elseif ( is_array($value) ) $array[$key] = $this->toArray($value);
+        }
+        return $array;
+    }//toArray(.)
+	
+	function toArray_prep( $xml, $return_root = FALSE )
+	{
+		/**
+		*	@created 27JUN2012-2130
+		*	@description Gateway to $this->toArray().
+		*	@returns See $this->toArray()
+		**/
+		$arrayized = $this->toArray( $xml );
+		if( $return_root ) return $arrayized;
+		else{
+			// only one element, however, index 0 is named STRING
+			// so to dynamically select, this is the solution.
+			foreach( $arrayized as $xml_elements ) return $xml_elements;
+		}
+	}
+	
+	function readXML( $xmlFile ){
+		/**
+		*	@created 27JUN2012-2130
+		*	@description Reads the XML file in the server and returns the content as string.
+		*	@parameter $xmlFile STRING Contains the *absolute* path (except TLD ) of the XML file
+		**/
+		$fp = fopen( $xmlFile, "r" );
+		$contents = fread( $fp , filesize( $xmlFile ) );
+		fclose( $fp );
+		return $contents;
+	}
+	
 	function createTempFile(){
 		/*
 			Imported 30DEC2011-1412 from CMSC 150 Project. :-)
@@ -131,6 +175,58 @@ class MakeXML_model extends CI_Model {
 		}
 		
 	}// XMLize_ConfiguredShowingTimes(..)
+	
+	function XMLize_GuestSeatNotAvailable( $guest_no_seat )
+	{
+		/**
+		*	@created 27JUN2012-1652
+		*	@description Turns the submitted Array ( which is a list of guests whose seats are not
+				available in the new booking settings ) to XML file.
+		*	@returns Array:
+				index 0 - BOOLEAN
+				index 1 - Message if error | Filename of the XML if success
+		**/
+		$XMLfile = $this->createTempFile();
+		$fp;
+		
+		if( !is_array( $guest_no_seat ) )
+		{
+			return Array( FALSE, "INVALID_DATA" );
+		}
+		
+		$fp = fopen( $XMLfile, "w" );
+		if( $fp != NULL )
+		{
+			// Initiate class
+			$xml = new xml_writer;
+			$xml->setRootName( 'guest_no_seat' );
+			$xml->initiate();
+			
+			foreach( $guest_no_seat as $uuid => $singleGuest )
+			{
+				// start branch 1 (guest)
+				$xml->startBranch( 'guest' );
+				$xml->addNode( 'uuid' , $uuid );
+				$xml->addNode( 'lname' , $singleGuest->Lname );
+				$xml->addNode( 'fname', $singleGuest->Fname );
+				$xml->addNode( 'mname', $singleGuest->Mname );
+				$xml->addNode( 'x', $singleGuest->Seat_x );
+				$xml->addNode( 'y', $singleGuest->Seat_y );
+				$xml->addNode( 'v_rep', $singleGuest->v_rep );
+				
+				//end branch 1
+				 $xml->endBranch();
+			}
+			$xmlContent = $xml->getXml();
+			// Print the XML to screen
+			fwrite( $fp,  $xmlContent );
+			fclose( $fp );
+			return Array( TRUE, $XMLfile );
+		}else{
+			// cannot write to current disk!
+			return Array( FALSE, "ERROR_CANNOT-WRITE-TO-DISK" );
+		}	
+	}// XMLize_GuestSeatNotAvailable(..)
 	
 	function XMLize_UserInfoForBooking( $mainInfo = FALSE, $uplbConstituencyInfo = FALSE )
 	{

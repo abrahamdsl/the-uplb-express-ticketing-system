@@ -129,6 +129,7 @@ NUM    STRING  								Message
 //.. 5300 - 5350 EMAIL
 5310   EMAIL_INFO_404						One or more necessary email info assumed to be in the database is not found. <specify whenever possible>
 //.. ..5310-5320 EMAIL-SALES
+5400   INTERNAL_FUNC_PARAM_GEN_ERR			Generic error due to an unexpected/invalid value of a parameter needed in an internal function, or no parameter is passed at all.
 
 
 5500   PAYMENT_MODE_ADD_ERR					Something went wrong while adding the payment mode. It may have been not saved.
@@ -151,8 +152,9 @@ SOME OTHER REMARKS
 
 BOOKING_CHANGE_LAPSE_FREED
 BOOKING_CHANGE_SUCCESS_FREED
-TICKET_CLASS_UPGRADE
-BOOKING_CHANGE_CONFIRM - {} BY_AUTHORIZED_AGENT 
+BOOKING_CHANGE - UPDATED_BOOKING_DETAILS
+BOOKING_NEW_PAYMENT - { BY_AUTHORIZED_AGENT | ONLINE_PAYMENT | AUTOMATIC_FREE }  
+BOOKING_CHANGE_CONFIRM - { BY_AUTHORIZED_AGENT | ONLINE_PAYMENT | AUTOMATIC_FREE }  
 -----------------
 ****
 * BOOKING STATUS

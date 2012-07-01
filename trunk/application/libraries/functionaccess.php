@@ -56,6 +56,11 @@ class FunctionAccess{
 		return ($this->isActivityManageBooking() and $this->sessionActivity_x[1] == STAGE_BOOK_4_FORWARD );
 	}
 	
+	public function isChangingPaymentMode()
+	{
+		return ($this->CI->clientsidedata_model->getPaymentModeExclusion() !== FALSE );
+	}
+	
 	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj )
 	{
 		/**
@@ -129,6 +134,7 @@ class FunctionAccess{
 		*	@created 14JUN2012-1334
 		**/
 		if( !$this->isActivityManageBooking() ){
+			//ON-HOLD if( $this->sessionActivity_x[0] == IDLE ) return TRUE;	// idle too is okay.
 			echo 'Your activity is not manage booking!';
 			return FALSE;
 		}
@@ -288,6 +294,11 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( $bNum ), $allowedStages, $mbookingInfo );
 	}
 	
+	function preManageBookingCancelChanges( $mbookingInfo , $stage ){
+		
+		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
+	}
+	
 	function preManageBookingChangeShowtimeCheck( $mbookingInfo , $stage ){
 		
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
@@ -302,6 +313,24 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
+	function preManageBookingCheck()
+	{
+		if( !($this->sessionActivity_x[0] == MANAGE_BOOKING or $this->sessionActivity_x[0] == IDLE)  ){
+			if( !( $this->sessionActivity_x[1] == STAGE_BOOK_1_FORWARD 
+					or $this->sessionActivity_x[1] == STAGE_MB1_SELECT_SHOWTIME_FW ) 
+			){  // if when (managing a ) booking and in the event and showtime selection page only, then it's
+				// just okay to access manage booking instead.
+				$this->redirectBookForward( $this->sessionActivity_x[1] );
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+	
+	function preManageBookingChangePMode( $bookingNumber, $mbookingInfo, $stage ){
+		return $this->preManageBookCheckUnified( Array( $bookingNumber ), $stage, $mbookingInfo );
+	}
+	
 	function preManageBookingConfirm( $mbookingInfo , $stage ){
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
@@ -314,17 +343,25 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
+	function preManageBookingPendingViewDetails( $bookingNumber, $mbookingInfo, $stage ){
+		return $this->preManageBookCheckUnified( Array( $bookingNumber ), $stage, $mbookingInfo );
+	}
+	
+	function preManageBookingNoSeatAllCheck( $stage ){		
+		return $this->preBookCheckUnified( Array(), $stage, TRUE );
+	}
+	
 	function preManageBookingUpgTC_Check( $mbookingInfo , $stage ){		
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
-	function redirectBookForward( $stage )
+	function redirectBookForward( $stage_sent = FALSE )
 	{
 		/*
 			You have to change redirection address if you change function names
 			in EventCtrl, and EventCtrl's filename itself.
 		*/
-		
+		$stage = ( $stage_sent === FALSE ) ? $this->sessionActivity_x[1] : $stage_sent;
 		redirect( $this->getRedirectionURL( $stage ) );
 	}//redirectBookForward()
 	
@@ -350,6 +387,7 @@ class FunctionAccess{
 			case STAGE_BOOK_6_FORWARD: return 'EventCtrl/book_step6_forward';  break;
 			case STAGE_MB4_CONFIRM_PR: 
 			case STAGE_MB4_CONFIRM_FW: return 'EventCtrl/managebooking_confirm'; break;
+			case STAGE_MB0_HOME: return 'EventCtrl/manageBooking'; break;
 			default: return "SessionCtrl/redirect_unknown/".$stage; //3999
 		}
 	}

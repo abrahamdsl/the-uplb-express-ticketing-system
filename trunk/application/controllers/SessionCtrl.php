@@ -125,7 +125,7 @@ class SessionCtrl extends CI_Controller {
 				$this->session->set_userdata('telemetry_uuid', $uuid);
 			}else{
 				$this->session->unset_userdata('JUST_LOGGED_OUT');
-			}			
+			}
 			$this->load->view('loginPage', $data );			
 		}
 	} // index
@@ -158,15 +158,17 @@ class SessionCtrl extends CI_Controller {
 		if( $this->Account_model->isUserExistent( $username, $password ) ) 
 		{   //if something was submitted, this will return true
 			$this->login_model->setUserSession(
-				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
-				$this->Account_model->getUser_Names( $this->input->post('username') )
+				$this->Account_model->getAccountNumber(  $username ),
+				$this->Account_model->getUser_Names( $username )
 			);
 			/*
 				Redirect to EventCtrl's function that delete's this current user's expired bookings.
 			*/
+			log_message('DEBUG', "user '" .$username."' logged in" );
 			redirect('EventCtrl/preclean');
 		}else{	
 			// ec 4003
+			log_message('DEBUG', "user '" .$username."' ATTEMPTED logged in - invalid credentials" );
 			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
 			$this->session->set_userdata($data);
 			$this->index();

@@ -20,7 +20,6 @@ class Email_model extends CI_Model {
 	{
 		parent::__construct();		
 		define( 'DEFAULT_SENDER_NAME', 'The UPLB Express Ticketing System' );
-		
 		define( 'DB_IDENT_EMAIL_CI_DEFAULT_PROTOCOL', 'EMAIL_CI_DEFAULT_PROTOCOL'  );
 		define( 'DB_IDENT_EMAIL_SALES', 'EMAIL_SALES' );
 		define( 'DB_IDENT_EMAIL_SALES_PASSWORD', 'EMAIL_SALES_PASSWORD' );
@@ -79,33 +78,6 @@ class Email_model extends CI_Model {
 		return( $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SALES_SERVER_PATH ) );
 	}//getSalesEmailServerPath(..)
 	
-	private function getSalesEmailInfoFromDB( $includePass = false )
-	{
-		/**
-		*	@created 21MAY2012-1335
-		*	@purpose Gets the email address of the "Sales Email" from the Database.
-		             Such values should be changeable/set up by the system administrator.
-		
-		*   @returns Array, associative.
-					 Keys: "email", "password"
-					 Values of "email" : * either the email address in string (as entered in the DB)
-									     * or if not found, BOOLEAN false.
-					 Values of "password" : * if $includePass is BOOLEAN false, NULL.
-											* else
-												* password in the DB, unencrypted.
-												* or if not found, BOOLEAN false.
-        *												
-		**/
-		$returnThis = Array( "EMAIL" => NULL, "EMAIL" => NULL );
-		
-		$returnThis[ "EMAIL" ]       = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SALES );
-		if( $includePass === true ){
-		   $returnThis[ "PASSWORD" ] = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SALES_PASSWORD );		
-		}
-		
-		return $returnThis;
-	}//getSalesEmailInfoFromDB(..)
-	
 	private function getSMTPHost()
 	{		
 		/**
@@ -142,7 +114,7 @@ class Email_model extends CI_Model {
 			// EC 4310
 			$errorMsg = 'One or more necessary email info assumed to be in the database is not found.';
 			log_message( 'ERROR', 'Email_model->initializeFromSales(): ERROR , '.$errorMsg );
-			foreach( $config as $key => $eachEntry ) log_message('DEBUG', 'Gaga ' . $key . ' => '. $eachEntry);			
+			foreach( $config as $key => $eachEntry ) log_message('DEBUG', 'Info ' . $key . ' => '. $eachEntry);			
 			$returnThis[ 'message' ] = $errorMsg;
 			return $returnThis;
 		}
@@ -159,6 +131,42 @@ class Email_model extends CI_Model {
 		$senderName_local = ( $senderName === "DEFAULT" ) ?  DEFAULT_SENDER_NAME : $senderName;
 		$this->email->from( $emailAdd_local, $senderName_local );
 	}
+	
+	function getDefaultSenderName()
+	{
+		/**
+		*	@created 25JUN2012-1306
+		*	@description Gets the default sender name for use in our emails. 
+		**/
+		return DEFAULT_SENDER_NAME;
+	}
+	
+	function getSalesEmailInfoFromDB( $includePass = false )
+	{
+		/**
+		*	@created 21MAY2012-1335
+		*	@purpose Gets the email address of the "Sales Email" from the Database.
+		             Such values should be changeable/set up by the system administrator.
+		
+		*   @returns Array, associative.
+					 Keys: "email", "password"
+					 Values of "email" : * either the email address in string (as entered in the DB)
+									     * or if not found, BOOLEAN false.
+					 Values of "password" : * if $includePass is BOOLEAN false, NULL.
+											* else
+												* password in the DB, unencrypted.
+												* or if not found, BOOLEAN false.
+        *												
+		**/
+		$returnThis = Array( "EMAIL" => NULL, "EMAIL" => NULL );
+		
+		$returnThis[ "EMAIL" ]       = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SALES );
+		if( $includePass === true ){
+		   $returnThis[ "PASSWORD" ] = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SALES_PASSWORD );		
+		}
+		
+		return $returnThis;
+	}//getSalesEmailInfoFromDB(..)
 	
 	function message( $message )
 	{

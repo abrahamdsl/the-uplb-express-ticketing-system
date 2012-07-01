@@ -104,18 +104,23 @@
 		//!!! define( 'STAGE_MB3_SELECT_SEAT_SOMEGUEST', 211 );
 		define( 'STAGE_MB3_SELECT_SEAT_1_PR', 211 ); 
 		define( 'STAGE_MB3_SELECT_SEAT_2_PR', 212 ); 
-		define( 'STAGE_MB3_SELECT_SEAT_FW', 213 );
-		define( 'STAGE_MB3_SELECT_SEAT_PR', 214 );
+		define( 'STAGE_MB3_SELECT_SEAT_3_PR_SOMEUNAVAIL', 213 ); 
+		define( 'STAGE_MB3_SELECT_SEAT_3_PR_CHANGEOPT', 214 ); 
+		define( 'STAGE_MB3_SELECT_SEAT_FW', 215 );
+		define( 'STAGE_MB3_SELECT_SEAT_PR', 216 );
 		define( 'STAGE_MB4_CONFIRM_PR', 217 );
-		define( 'STAGE_MB4_CONFIRM_FW', 219 );
-		define( 'STAGE_MB5_SELECT_PAYMENT_PR', 220 ); 
-		define( 'STAGE_MB5_SELECT_PAYMENT_FW', 221 );
-		define( 'STAGE_MB7_PAYMENT_PR', 222 );
-		define( 'STAGE_MB7_PAYMENT_ONLINE_PR', 223 );
-		define( 'STAGE_MB8_PENDINGCHANGEVD_PR', 224 );
-		define( 'STAGE_MB8_PENDINGCHANGEVD_FW', 225 );
-		define( 'STAGE_MB9_FINAL_PR', 226 );
-		define( 'STAGE_MB9_FINAL_FW', 227 );
+		define( 'STAGE_MB4_CONFIRM_FW', 218 );
+		define( 'STAGE_MB5_SELECT_PAYMENT_PR', 219 ); 
+		define( 'STAGE_MB5_SELECT_PAYMENT_FW', 225 );
+		define( 'STAGE_MB7_PAYMENT_PR', 226 );
+		define( 'STAGE_MB7_PAYMENT_ONLINE_PR', 227 );
+		define( 'STAGE_MB8_PENDINGCHANGEVD_PR', 228 );
+		define( 'STAGE_MB8_PENDINGCHANGEVD_FW', 229 );
+		define( 'STAGE_MB9_FINAL_PR', 230 );
+		define( 'STAGE_MB9_FINAL_FW', 231 );
+		
+		define( 'STAGE_MBX_CANCEL_PR', 250 );
+		define( 'STAGE_MBX_CANCEL_FW', 251 );
 		/*
 			In Manage Booking, these are used to signify
 			stages passed.
@@ -139,6 +144,7 @@
 		define( 'PIND_SLOT_SAME_TC_NO_MORE_USER_NOTIFIED', 'noMoreSlotSameTicketClassNotified' );
 		define( 'PIND_SEAT_SAME_TC_NO_MORE_USER_NOTIFIED', 'noMoreSeatSameTicketClassNotified' );
 		define( 'PIND_CHANGE_SEAT_NOTIFIED', 'option_change_seat_notified' );
+		define( 'PIND_MBCANCELCHANGE_PROMPT', 'mb_cancelchanges_prompted' );
 	
 		/*
 			Unclassified

@@ -19,6 +19,7 @@ class SeatMaintenance{
 		$this->CI->load->model('clientsidedata_model');
 		$this->CI->load->model('Event_model');				
 		$this->CI->load->model('Guest_model');				
+		$this->CI->load->model('MakeXML_model');				
 		$this->CI->load->model('Seat_model');				
 		$this->CI->load->model('Slot_model');				
 		$this->CI->load->model('TicketClass_model');				
@@ -32,10 +33,14 @@ class SeatMaintenance{
 				are occupied/not available for selection.
 		*	@param  $seat_assignments ARRAY ASSOCIATIVE 2D
 					indices are guest numbers - 1 ( zero-indexing ).
-					Then second dimension have indices:
-						- uuid : guest's UUIS
+					Then second dimension has indices:
+						- uuid : guest's UUIDs
 						- x    : seat matrix X coordinate
 						- y    : seat matrix Y coordinate
+						- old_st : Array(
+								- x : old seat matrix X coordinate
+								- y : old seat matrix Y coordinate
+						)
 		*	@history This is formerly SeatCtrl/areSeatsOccupied
 		*	@returns Array with indices
 					 0 : BOOLEAN, if FALSE - no seats are occupied. Else, there is or an error
@@ -52,6 +57,15 @@ class SeatMaintenance{
 				or not
 			*/
 			if( $seat_assignments[ $x ][ 'x' ] == "-1" or $seat_assignments[ $x ][ 'y' ] == "-1" ) continue;
+			if( isset( $seat_assignments[ $x ][ "old_st" ] ) )
+			{
+				// If submitted seat is the same as the old seat, skipped for availability check.
+				if( $seat_assignments[ $x ][ 'x' ] == $seat_assignments[ $x ][ "old_st" ][ "x" ]
+					and $seat_assignments[ $x ][ 'y' ] == $seat_assignments[ $x ][ "old_st" ][ "y" ] )
+				{
+					continue;
+				}
+			}
 			$isSeatAvailableResult = $this->CI->Seat_model->isSeatAvailable( 
 				$seat_assignments[ $x ][ 'x' ],
 				$seat_assignments[ $x ][ 'y' ],
@@ -69,6 +83,23 @@ class SeatMaintenance{
 		}
 		return Array( FALSE, NULL, NULL );
 	}//areSeatsOccupied(..)
+	
+	function arrayizeGuestNoSeatInfo()
+	{
+		/**
+		*	@created 28JUN2012-1242
+		*	@description Converts back the XML-ized guest-no-seat info to array.
+		*	@returns Array
+		*		index 0 - BOOLEAN indicator of whether success or not
+		*		index 1 - if index 0 is FALSE, string containing the error info
+		*				  else, the Array we want
+		**/
+		$xmlfile = $this->CI->clientsidedata_model->getGuestNoSeatXMLFile();
+		if( $xmlfile === FALSE ) return Array( FALSE, 'FILEPTR404' );
+		$xml_contents = $this->CI->MakeXML_model->readXML( $xmlfile );
+		if( $xml_contents === FALSE ) return Array( FALSE, 'FILE404' );
+		return Array( TRUE, $this->CI->MakeXML_model->toArray_prep( new SimpleXMLElement($xml_contents) ) );
+	}//arrayizeGuestNoSeatInfo()
 	
 	function cleanDefaultedSeats( $eventID, $showtimeID )
 	{
@@ -133,74 +164,60 @@ class SeatMaintenance{
 			}
 		}//for
 	}//getAllGuestSeatData(..)
-	
-	function getExistingSeatData_ForManageBooking( $guestsObjOrBookingNum, $eventID, $showtimeID, $isTicketClassChanged )
+
+	function getSeatRepresentationsOfGuests( $eventID, $showtimeID, $guest_arr,
+		$ticketClassGroupID = NULL, $ticketClassUniqueID = NULL
+	)
 	{
+		/**
+		*	@created 03MAR2012-1147
+		*	@description Gets seat representations of guests.
+		*	@history 11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID		
+		*	@history 28JUN2012-1438 Moved from EventCtrl
+		**/
 		$seatDetailsOfGuest = Array();
-		$guestsObj = ( is_array( $guestsObjOrBookingNum) ) ? $guestsObjOrBookingNum : $this->CI->Guest_model->getGuestDetails( $guestsObjOrBookingNum );
-				
-		foreach( $guestsObj as $singleGuest )
+		foreach( $guest_arr as $singleGuest )
 		{
-			/*
-				Iterate through each guest to determine seat data for use in the view.
-			*/
 			$seatVisualRepStr = false;
 			$seatMatrixRepObj = false;
-			
-			$seatMatrixRepObj = $this->CI->Slot_model->getSeatAssignedToUser( $singleGuest->UUID );
-			if( $seatMatrixRepObj !== false ){		// there is seat assigned for this user
-				$seatVisualRepStr = $this->CI->Seat_model->getVisualRepresentation(
-					$seatMatrixRepObj['Matrix_x'],
-					$seatMatrixRepObj['Matrix_y'],
-					$eventID,
-					$showtimeID
+
+			if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
+			{
+				 $slotObj = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter(
+					 $eventID, 
+					 $showtimeID,
+					 $ticketClassGroupID, 
+					 $ticketClassUniqueID,
+					 $singleGuest->UUID 
 				);
+				$seatMatrixRepObj = Array(
+					'Matrix_x' => (is_null ($slotObj->Seat_x) ) ? "" : $slotObj->Seat_x,
+					'Matrix_y' => (is_null ($slotObj->Seat_y) ) ? "" : $slotObj->Seat_y
+				);
+			}else{
+				$seatMatrixRepObj = $this->CI->Slot_model->getSeatAssignedToUser( $singleGuest->UUID );
 			}
-			/* For now, set if seat is available for this user. */
-			$seatDetailsOfGuest[ $singleGuest->UUID ] = Array(					
-				'available'  => ($seatMatrixRepObj !== false) ? TRUE: FALSE,
-				'Matrix_x'   => ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_x'] : "" ,
-				'Matrix_y'   => ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_y'] : "",
-				'visual_rep' => ($seatMatrixRepObj !== false) ? $seatVisualRepStr : ""
-			);				
-			if($seatMatrixRepObj !== false){
-				$seatAvailabilityCheck = $this->CI->Seat_model->isSeatAvailable( 
-					$seatMatrixRepObj['Matrix_x'], 
-					$seatMatrixRepObj['Matrix_y'],
-					$eventID,
-					$showtimeID
-				);
-				/*
-					Further checks and sets depending on whether guest
-					changed ticket class or seat is not in the new class.
-				*/
-				if( ( $this->CI->Seat_model->isSeatInThisTicketClass( 
-							$seatMatrixRepObj['Matrix_x'], 
-							$seatMatrixRepObj['Matrix_y'],
-							$eventID, 
-							$showtimeID, 
-							$this->CI->clientsidedata_model->getTicketClassGroupID(),
-							$this->CI->clientsidedata_model->getTicketClassUniqueID()
-						) and
-						$seatAvailabilityCheck['boolean'] === true
-					)=== FALSE
-				){
-					if( $isTicketClassChanged or $this->CI->Seat_model->isSeatAssignedToGuest( 
-													$seatMatrixRepObj['Matrix_x'], 
-													$seatMatrixRepObj['Matrix_y'],
-													$eventID, 
-													$showtimeID, 
-													$singleGuest->UUID
-												) === false 
-					){
-						$seatDetailsOfGuest[ $singleGuest->UUID ]['available'] = false;
-					}
-				}				
-			}//if($seatMatrixRepObj !== false){
-		}//foreach guest
-			
+			if( $seatMatrixRepObj !== false ){	// there is seat assigned for this user
+				if( is_null($slotObj->Seat_x) or is_null($slotObj->Seat_y) )
+				{
+					 $seatVisualRepStr = "NONE";
+				}else{
+					$seatVisualRepStr = $this->CI->Seat_model->getVisualRepresentation(
+						$seatMatrixRepObj['Matrix_x'],
+						$seatMatrixRepObj['Matrix_y'],
+						$eventID,
+						$showtimeID
+					);
+				}
+			}
+			$seatDetailsOfGuest[ $singleGuest->UUID ] = Array(
+				'matrix_x' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_x'] : ""  ),
+				'matrix_y' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_y'] : ""  ),
+				'visual_rep' =>  $seatVisualRepStr
+			);
+		}
 		return $seatDetailsOfGuest;
-	}//getExistingSeatData_ForManageBooking(..)
+	}//getSeatRepresentationsOfGuests(..)
 	
 	function insertSeatsOnEventManipulate( $eventID, $showtimeID, $tcgID, $seatmapUID, $createEvent = true, $tcgChanged = true )
 	{

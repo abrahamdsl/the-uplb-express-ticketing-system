@@ -97,7 +97,7 @@ function formSubmit()
 					lastTrObj.append( '<td>' + seatVisual + '</td>');
 					isThereGuest = 1;
 					guestCount++;
-					console.log( guestNames );
+					//console.log( guestNames );
 				});	
 				$('form#guestdetails input[name="bookingNumber2"]').val( bookingNumber );
 				$('div#bookingDetails').show();

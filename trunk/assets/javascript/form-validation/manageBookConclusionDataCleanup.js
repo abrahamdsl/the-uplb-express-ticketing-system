@@ -16,9 +16,10 @@ $(window).unload( function() {
 				title: 'please wait...',
 				message: 'Deleting relevant data to your transaction...'
 			});
+			setTimeout( function(){}, 500 );
 		},
 		url: CI.base_url + 'EventCtrl/postManageBookingCleanUp',
-		timeout: 5000,		
+		timeout: 5000
 	});	
     return true;
 });

@@ -70,15 +70,60 @@ class BookingMaintenance{
 		);
 	}//assembleBookingChangeOkay()
 	
+	function assembleCancelChangesConfirmFirst( $bookingNumber )
+	{
+		$msg = "Are you sure you want to cancel the changes you have made to this booking?";
+		$msg .= "<br/><br/>Doing so will revert it to former state.";
+		return Array(
+			'title' => 'Be careful on what you wish for ...',
+			'yesURI' => base_url().'EventCtrl/managebooking_cancelchanges/'.$bookingNumber,
+			'noURI' => base_url().'EventCtrl/mb_prep/404/'.$bookingNumber,
+			'theMessage' => $msg,
+			'formInputs' => Array( PIND_MBCANCELCHANGE_PROMPT => '1' )
+		);
+	}//assembleCancelChangesOK()
+	
+	function assembleCancelChangesFail( $customData = "" )
+	{
+		return Array(
+			'error' => "CUSTOM",
+			'defaultAction' => 'Manage Booking',
+			'redirect' => 2,
+			'redirectURI' => base_url().'EventCtrl/manageBooking',
+			'theMessage' => "Something went wrong while cancelling changes to this booking.<br/><br/>".$customData
+		);
+	}//assembleCancelChangesOK()
+	
+	function assembleCancelChangesOK()
+	{
+		return Array(
+			'defaultAction' => 'Manage Booking',
+			'redirect' => 2,
+			'redirectURI' => base_url().'EventCtrl/manageBooking',
+			'theMessage' => "The changes were cancelled and booking reverted to its original state."
+		);
+	}//assembleCancelChangesOK()
+	
+	function assembleChangePMode_NoDue()
+	{
+		return Array(
+			'defaultAction' => 'Manage Booking',
+			'redirect' => 2,
+			'error' => 'CUSTOM',
+			'redirectURI' => base_url().'EventCtrl/manageBooking',
+			'theMessage' => "No unpaid purchases found for this booking so you cannot change payment mode."
+		);
+	}
+	
 	function assembleGenericBooking404()
 	{
-		$data = Array();
-		$data['defaultAction'] = 'home';
-		$data['redirect'] = 2;		
-		$data['error'] = 'CUSTOM';		
-		$data['redirectURI'] = base_url();		
-		$data['theMessage'] = "Booking number is not found in the system.";
-		return $data;
+		return Array(
+			'defaultAction' => 'Home',
+			'redirect' => 2,
+			'error' => 'CUSTOM',
+			'redirectURI' => base_url(),
+			'theMessage' => "Booking number is not found in the system."
+		);
 	}
 		
 	function assembleGenericBookingChangeDenied()
@@ -113,6 +158,21 @@ class BookingMaintenance{
 		);
 	}
 	
+	function assembleManageBookingGuestSeatNotAvail( $tableProper )
+	{
+		$msg = "The seats of the following guests are not available in the new showing time";
+		$msg .= " you have selected.<br/>";
+		$theMessage2 = "<br/>Do you want to select other seat(s) for these guests? (You can do it later)";
+		
+		return Array(
+			'title' => 'Oops, some technicality',
+			'theMessage' => $msg.$tableProper.$theMessage2,
+			'yesURI' => base_url().'EventCtrl/managebooking_changeseat',
+			'noURI' => base_url().'EventCtrl/managebooking_confirm',
+			'formInputs' => Array( PIND_SEAT_SAME_TC_NO_MORE_USER_NOTIFIED => '1' )
+		);
+	}
+	
 	function assembleNoChangeInBooking()
 	{
 		return Array(
@@ -132,7 +192,7 @@ class BookingMaintenance{
 		$data['theMessage'] .= 'Would you like to continue by selecting any other ticket class?';
 		$data['theMessage'] .= ' Please note that price differences if any will be charged.';
 		$data['yesURI'] = base_url().'EventCtrl/managebooking_changeshowingtime_process';
-		$data['noURI'] = base_url().'EventCtrl/manageBooking_cancel';
+		$data['noURI'] = base_url().'EventCtrl/mb_prep/404/'.$bookingNumber;
 		$data['formInputs'] = Array( 
 			PIND_SLOT_SAME_TC_NO_MORE_USER_NOTIFIED => '1',
 			'events' => $eventID,							
@@ -224,7 +284,7 @@ class BookingMaintenance{
 		return $data;
 	}// assemblePaypalPaymentMissingCrucial()
 	
-	function assemblePaypalPaymentUserCancelledNotification( $otherMsgs = "" )
+	function assemblePaypalPaymentUserCancelledNotification( $isActivityMB, $otherMsgs = "" )
 	{
 		// Error code 5105
 		$data = Array();
@@ -234,7 +294,7 @@ class BookingMaintenance{
 		$data['theMessage'] .= $otherMsgs;
 		$data['defaultAction'] = 'Payment page';
 		$data['redirect']	= 2;
-		$data['redirectURI'] = base_url().'EventCtrl/book_step5_forward';
+		$data['redirectURI'] = base_url().'EventCtrl/'. (  $isActivityMB ? 'managebooking_confirm' : 'book_step5_forward' );
 		return $data;
 	}//assembleErrorPaymentNotification()
 	
@@ -322,12 +382,19 @@ class BookingMaintenance{
 		$reasonText;
 		$rollBackInfo;
 		$transactionID;
-		$transactionFailed;		
+		$transactionFailed;
+		$returnThis = Array( "boolean" => FALSE, "code" => 0, "message" => "NULL" );
 		
 		
 		if( is_string( $bookingNumberOrObj ) )
 		{
 			$eachBooking = $this->CI->Booking_model->getBookingDetails( $bookingNumberOrObj );
+			if( $eachBooking === FALSE )
+			{
+				$returnThis[ "code" ] = 4032;
+				$returnThis[ "message" ] = "FATAL ERROR: The specified booking is not found in the system.";
+				return $returnThis;
+			}
 		}else{
 			$eachBooking = $bookingNumberOrObj;
 		}
@@ -345,8 +412,10 @@ class BookingMaintenance{
 			$transactionID = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'transaction' ,$billingInfoArray['unpaidPurchasesArray'][0]->Comments );
 			
 			if( $transactionID === false )
-			{   // error code 5200
-				die("ERROR_FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking."); //error code 5200
+			{
+				$returnThis[ "code" ] = 5200;
+				$returnThis[ "message" ] = "FATAL ERROR: Cannot find transaction ID when rolling back lapsed change on booking.";
+				return $returnThis;
 			}
 			$transactionFailed 		= $this->CI->TransactionList_model->getTransaction( $transactionID );
 			$rollBackInfo 			= $transactionFailed->Data;
@@ -354,33 +423,37 @@ class BookingMaintenance{
 			$oldTicketClassGroupID  = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( OLD_SHOWTIME_TC_GROUP_ID , $rollBackInfo );
 			$oldTicketClassUniqueID = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( OLD_SHOWTIME_TC_UNIQUE_ID , $rollBackInfo );
 		}else{
-			//error code 5101
-			die("ERROR_FATAL ERROR: Billing info for this booking number suddenly became none?");  
+			$returnThis[ "code" ] = 5101;
+			$returnThis[ "message" ] = "FATAL ERROR: Billing info for this booking number suddenly became none?";
+			return $returnThis;
 		}
-		// wait, is this necessary to be in foreach??
-		foreach( $billingInfoArray['unpaidPurchasesArray'] as $unpaidPurchase )
-		{																				
-			$bookingGuest = $this->CI->Guest_model->getGuestDetails( $eachBooking->bookingNumber );
-			foreach( $bookingGuest as $eachGuest )
+		// free slots and seats
+		$bookingGuest = $this->CI->Guest_model->getGuestDetails( $eachBooking->bookingNumber );
+		foreach( $bookingGuest as $eachGuest )
+		{
+			// Get the new slot assigned to user.				
+			$supposedlyNewSlot = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter( 
+				$eachBooking->EventID,
+				$eachBooking->ShowingTimeUniqueID,
+				$eachBooking->TicketClassGroupID,
+				$eachBooking->TicketClassUniqueID,
+				$eachGuest->UUID					
+			);
+			// Free the seat assigned to the supposedly new slot of the user
+			if( !is_null($supposedlyNewSlot->Seat_x) and !is_null($supposedlyNewSlot->Seat_y) )
 			{
-				// Get the new slot assigned to user.				
-				$supposedlyNewSlot = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter( 
-					$eachBooking->EventID,
-					$eachBooking->ShowingTimeUniqueID,
-					$eachBooking->TicketClassGroupID,
-					$eachBooking->TicketClassUniqueID,
-					$eachGuest->UUID					
-				);
-				// Free the seat assigned to the supposedly new slot of the user
 				$this->CI->Seat_model->markSeatAsAvailable(
 					$eachBooking->EventID,
 					$eachBooking->ShowingTimeUniqueID,
 					$supposedlyNewSlot->Seat_x,
 					$supposedlyNewSlot->Seat_y,
-					BOOKING_CHANGE_LAPSE_FREED
-				);				
-				$this->CI->Slot_model->setSlotAsAvailable( $supposedlyNewSlot->UUID );		// obviously
+					$reasonText
+				);
 			}
+			$this->CI->Slot_model->setSlotAsAvailable( $supposedlyNewSlot->UUID );		// obviously
+		}
+		foreach( $billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ] as $unpaidPurchase )
+		{																							
 			// Delete this purchase entry
 			$this->CI->Payment_model->deleteSinglePurchase( $eachBooking->bookingNumber, $unpaidPurchase->UniqueID );
 		}//foreach unpaidPurchase
@@ -399,8 +472,8 @@ class BookingMaintenance{
 		}
 		$this->CI->TransactionList_model->createNewTransaction(
 			$this->CI->session->userdata('accountNum'),
+			"BOOKING_CHANGE",
 			$reasonText,
-			'TICKET_CLASS_UPGRADE',
 			$eachBooking->bookingNumber,
 			'Secret!',
 			'WIN5',
@@ -410,7 +483,8 @@ class BookingMaintenance{
 				'backToTicketClassUniqueID' => $oldTicketClassUniqueID
 			)
 		);
-		return true;
+		$returnThis[ "boolean" ] = TRUE;
+		return $returnThis;
 	}//cancelPendingChanges(..)
 	
 	function cleanDefaultedBookings( $eventID, $showtimeID )
@@ -788,7 +862,7 @@ class BookingMaintenance{
 		{
 			$transactionID = $unpaidPurchaseObj_or_transID;
 		}else{
-			$rollbackData   = strval( $unpaidPurchaseObj_or_transID->Comments);
+			$rollbackData   = strval( @$unpaidPurchaseObj_or_transID->Comments);
 			$transactionID  = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data( 'transaction' , $rollbackData );
 		}
 		$transactionObj = $this->CI->TransactionList_model->getTransaction( $transactionID );
@@ -802,7 +876,7 @@ class BookingMaintenance{
 		return $returnThis;
 	}//getSlotRollbackDataOfPurchase(..)
 	
-	function pay_and_confirm( $bookingNumber, $from, $paymentChannel = NULL, $totalCharges, $paymentProcessingStage, $info, $agent = NULL )
+	function pay_and_confirm( $bookingNumber = FALSE, $from, $paymentChannel = NULL, $totalCharges = FALSE, $paymentProcessingStage, $info, $agent = NULL )
 	{
 		/**
 		*	@created 18JUN2012-1249
@@ -810,18 +884,18 @@ class BookingMaintenance{
 				and managebooking_finalize : payment and confirmation of slots are processed here.
 				Needs _constants.inc included.
 		*	@param $bookingNumber - obviously.
-		*	@param $from - where this activity is from.
-		*	@param $totalCharges - what is the total charges
-		*	@param $paymentProcessingStage - what stage number should we mark upon accessing this function.
+		*	@param $from - INT, REQUIRED. where this activity is from.
+		*	@param $totalCharges - INT, REQUIRED.what is the total charges
+		*	@param $paymentProcessingStage - INT, REQUIRED. what stage number should we mark upon accessing this function.
 		*	@param $info ARRAY - Containing info regarding this. Structure is:
-						"eventID" => INT, obviously
-						"showtimeID" => INT, obviously. If manage booking, this is the new showtime ID.
-						"ticketClassGroupID" => INT, obviously. If manage booking, this is the new TCG ID.
-						"ticketClassUniqueID" => INT, obviously. If manage booking, this is the new TCU ID.
+						"eventID" => INT, REQUIRED. obviously
+						"showtimeID" => INT, REQUIRED. obviously. If manage booking, this is the new showtime ID.
+						"ticketClassGroupID" => INT, REQUIRED. obviously. If manage booking, this is the new TCG ID.
+						"ticketClassUniqueID" => INT, REQUIRED. obviously. If manage booking, this is the new TCU ID.
 					* Manage booking specific:
 						"transactionID" => string, OPTIONAL . rollback data if ever.
 		*   @param $agent ARRAY - Present only if the caller of this is a payment agency (i.e. COD or PayPal ).	Structure:
-					0 - paymentChannel UniqueID					
+					0 - paymentChannel UniqueID
 		*	@returns ARRAY. Structure:
 				"boolean"	=> BOOLEAN. Whether transaction here is successful or not in general.
 				"code"		=> INT. Code number of the error, if any. Values:
@@ -832,6 +906,7 @@ class BookingMaintenance{
 					*   16   - error after calling processPayment()
 					*	17	- Online payment processor detected. However, not supported as of the meantime.
 					*  5110 - Error getting online payment processor data.
+					*  5400 - Parameter check FAILED.
 				"message"  =>  STRING. Explanation of the error, if any.
 				"misc"     =>  ARRAY. Miscellaneous ifnfo, especially when code is 2.
 				"redirect" =>  STRING. Only for online payment processors. Redirect here to be able to
@@ -839,19 +914,75 @@ class BookingMaintenance{
 				"redirect_access_code" => INT. Needs to be set to CI session's "activity_stage" to be able
 					to access "redirect"
 		**/
+		/* area="pandc_var_declare" */{
+		$pre_check_success = FALSE;
+		$pre_check_msg = "NULL";
+		$returnThis = Array(
+			"boolean" => $pre_check_success,
+			"code" => 0,
+			"message" => $pre_check_msg
+		);
+		$eventObj;
+		$guestObj;
+		$slots;
+		$mb_trans_id;
+		}
+		//</area>
 		
+		log_message('DEBUG', 'bookingmaintenance\pay_and_confirm() accessed');
+		
+		/* <area id="pandc_param_check" > */ {
+			for(;;){
+				log_message('DEBUG', 'Loop');
+				
+				if( $bookingNumber === FALSE )
+				{
+					$pre_check_msg = "UNDEFINED PARAMETER BOOKING NUMBER"; break;
+				}
+				if( $from === FALSE ){
+					$pre_check_msg = "UNDEFINED PARAMETER FROM"; break;
+				}
+				if( !isset($info[ "eventID" ] ) or !is_numeric( $info[ "eventID" ] ) ){
+					$pre_check_msg = "INVALID PARAMETER EVENTID"; break;
+				}
+				if( !isset($info[ "showtimeID" ] ) or !is_numeric( $info[ "showtimeID" ] ) ){
+					$pre_check_msg = "INVALID PARAMETER SHOWTIMEID"; break;
+				}
+				if( !isset($info[ "ticketClassGroupID" ] ) or !is_numeric( $info[ "ticketClassGroupID" ] ) ){
+					$pre_check_msg = "INVALID PARAMETER TCG-ID"; break;
+				}
+				if( !isset($info[ "ticketClassUniqueID" ] ) or !is_numeric( $info[ "ticketClassUniqueID" ] ) ){
+					$pre_check_msg = "INVALID PARAMETER TCU-ID"; break;
+				}
+				if( isset($info[ "transactionID" ] ) and !is_numeric( $info[ "transactionID" ] ) ){
+					$pre_check_msg = "INVALID PARAMETER TRANSACTIONID"; break;
+				}
+				if( !is_numeric( $totalCharges ) ){
+					$pre_check_msg = "INVALID PARAMETER TOTALCHARGES"; break;
+				}
+				if( !is_numeric( $paymentProcessingStage ) ){
+					$pre_check_msg = "INVALID PARAMETER PAYMENT PROCESSING STAGE"; break;
+				}
+				$pre_check_success  = TRUE;
+				break;
+			}//for	
+			if( !$pre_check_success )
+			{
+				$returnThis["code"] = 5400;
+				$returnThis["message"] = $pre_check_msg;
+				return $returnThis;
+			}
+		}
+		// </area>
+		log_message('DEBUG', 'Param check passed.');
 		$eventObj           = $this->CI->Event_model->getEventInfo( $info[ "eventID" ] );
 		$guestObj 		    = $this->CI->Guest_model->getGuestDetails( $bookingNumber );
 		$paymentChannel_obj = $this->CI->Payment_model->getSinglePaymentChannel( 
 							$info[ "eventID" ], $info[ "showtimeID" ], $paymentChannel );
 		$slots	    = count( $guestObj );
 		$mb_trans_id = isset($info["transactionID"]) ? $info["transactionID"] : NULL ;
-		$returnThis = Array(
-			"boolean" => false,
-			"code" => 0,
-			"message" => "NULL"
-		);
-		log_message('DEBUG', 'bookingmaintenance\pay_and_confirm() accessed');
+		$unpaidPurchases = FALSE;
+		
 		if( !is_null($paymentChannel) ) $this->CI->Payment_model->setPaymentModeForPurchase( $bookingNumber, $paymentChannel, NULL );
 		if( $totalCharges === FREE_AMOUNT or isset( $agent[0] ) ){
 			$processPaymentResultArr = $this->processPayment(
@@ -880,6 +1011,7 @@ class BookingMaintenance{
 			*/
 			//if( $from == BOOK )
 			//{	// 18JUN2012-1315: Is this really needed?
+				$unpaidPurchases = $this->CI->Payment_model->getUnpaidPurchases( $bookingNumber );
 				$this->CI->Booking_model->markAsPendingPayment( $bookingNumber, ( $from == BOOK ) ? "NEW" : "MODIFY" );
 				foreach( $guestObj as $eachGuest )
 				{
@@ -891,6 +1023,16 @@ class BookingMaintenance{
 						$eachGuest->UUID
 					);
 					$this->CI->Slot_model->setSlotAsPendingPayment( $slotAssignedObj->UUID );
+					if( !is_null( $slotAssignedObj->Seat_x ) and !is_null( $slotAssignedObj->Seat_y ) )
+					{
+						$this->CI->Seat_model->updateSingleeatComment( 
+							$unpaidPurchases[0]->Deadline_Date." ".$unpaidPurchases[0]->Deadline_Time, 
+							$info[ "eventID" ], 
+							$info[ "showtimeID" ], 
+							$slotAssignedObj->Seat_x,
+							$slotAssignedObj->Seat_y 
+						);
+					}
 				}
 			//}
 			if( $paymentChannel_obj->Type == "ONLINE" )
@@ -1111,6 +1253,7 @@ class BookingMaintenance{
 		*	@param $selectedTicketClass - INT - The ticket class selected. 
 										- BOOLEAN FALSE - If we just want to make the slot UUIDs available for booking.
 		**/
+		log_message('DEBUG','library bookingmaintenance::freeSlotsBelongingToClasses_NDX triggerred');
 		$unlock_slot_UUIDs = "";		
 		if( $selectedTicketClass === FALSE )
 		{
