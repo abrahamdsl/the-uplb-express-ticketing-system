@@ -8,6 +8,7 @@
 		define("EVENT_NAME", 'eventName');
 		define("EVENT_LOCATION", 'location');
 		define("EVENT_ID", 'eventID');
+		define("GUEST_NOSEAT_XML_FILE", 'gnxmlf');
 		define("SHOWTIME_ID", 'showtimeID');
 		define("TICKET_CLASS_UNIQUE_ID", 'ticketClassUniqueID');
 		define("TICKET_CLASS_GROUP_ID", 'ticketClassGroupID');

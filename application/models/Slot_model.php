@@ -58,15 +58,15 @@ class Slot_model extends CI_Model {
 	
 	function freeSlotsBelongingToClasses( $ticketClasses )
 	{
-		/*
-			Created 06FEB2012-1855
-			
-			Only to be called during booking proceedings since the cookies
+		/**
+		*	@DEPRECATED 23JUN2012-1317
+		*	@created 06FEB2012-1855
+		*	@description Only to be called during booking proceedings since the cookies
 			specified here are only made/avaialble during such.
 			
 			Parameter definition:
 			$ticketClasses			- an array of MYSQL_OBJs
-		*/
+		**/
 		if( is_array( $ticketClasses ) === false or count( $ticketClasses ) < 1 ) return false; 
 		foreach( $ticketClasses as $singleClass )
 		{

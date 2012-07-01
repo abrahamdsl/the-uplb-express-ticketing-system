@@ -96,6 +96,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( EVENT_NAME );
 	}
 	
+	function deleteGuestNoSeatXMLFile()
+	{
+		return $this->session->unset_userdata( GUEST_NOSEAT_XML_FILE );
+	}
+	
 	function deleteManageBookingCookiesOnServerUUIDRef()
 	{
 		return $this->session->unset_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID );
@@ -129,7 +134,7 @@ class clientsidedata_model extends CI_Model {
 	
 	function deletePaymentModeExclusion()
 	{
-		return $this->deleteCookieUnified( PAYMENT_MODE_EXCLUSION );
+		return $this->session->unset_userdata( PAYMENT_MODE_EXCLUSION );
 	}
 	
 	function deletePaypalAccessible()
@@ -302,6 +307,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->getCookieUnified( EVENT_NAME );
 	}
 	
+	function getGuestNoSeatXMLFile( )
+	{
+		return $this->session->userdata( GUEST_NOSEAT_XML_FILE );
+	}
+
 	function getManageBookingCookiesOnServerUUIDRef()
 	{
 		return $this->session->userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID );
@@ -341,7 +351,7 @@ class clientsidedata_model extends CI_Model {
 	
 	function getPaymentModeExclusion()
 	{
-		return $this->getCookieUnified( PAYMENT_MODE_EXCLUSION );
+		return $this->session->userdata( PAYMENT_MODE_EXCLUSION );
 	}
 	
 	function getPaypalCrucialDataErrorNoticeAccessible()
@@ -503,6 +513,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->setCookieUnified( BOOKING_NUMBER, $value, $expiry );
 	}
 	
+	function setGuestNoSeatXMLFile( $value )
+	{
+		return $this->session->set_userdata( GUEST_NOSEAT_XML_FILE , $value );
+	}
+	
 	function setDataForPaypal( $value = NULL, $expiry = 3600 )
 	{
 		return $this->setCookieUnified( PAYPAL_DATA, $value, $expiry );
@@ -559,9 +574,9 @@ class clientsidedata_model extends CI_Model {
 		return $this->setCookieUnified( PAYMENT_DEADLINE_TIME, $value, $expiry );
 	}
 	
-	function setPaymentModeExclusion( $value = NULL, $expiry = 3600 )
+	function setPaymentModeExclusion( $value = NULL )
 	{
-		return $this->setCookieUnified( PAYMENT_MODE_EXCLUSION, $value, $expiry );
+		return $this->session->set_userdata( PAYMENT_MODE_EXCLUSION, $value );
 	}
 	
 	function setPaypal_IPN_Data( $value = NULL, $expiry = 3600 )

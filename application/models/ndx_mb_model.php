@@ -81,6 +81,28 @@ class ndx_mb_model extends CI_Model {
 			return FALSE;
 	}//delete(..)
 	
+	function deleteExpiredManageBookingCookiesOnServer()
+	{
+		/**
+		*	@created 24JUN2012-1916
+		*	@description Deletes any MANAGE booking cookies-on-server that is expired,
+				and the booking cookies-on-server that is currently on-record by those
+				MB c-o-s.
+		**/
+		$result = TRUE;
+		$sql_command = "SELECT * FROM `" . COL_DB_MB_TABLE_NAME . "` WHERE CONCAT(`";
+		$sql_command .= COL_EXPIRE_DATE . "`,' ',`".COL_EXPIRE_TIME . "`) <= ? ";
+		$arr_result = $this->db->query( $sql_command, Array( date("Y-m-d H:i:s"),  ) )->result();
+		
+		if( count($arr_result) > 0 )
+		{
+			foreach( $arr_result as $record ) {
+				$result = $result AND $this->delete( $record->UUID_MB );
+			}
+		}
+		return $result;
+	}//deleteExpiredManageBookingCookiesOnServer()
+	
 	function get( $uuid )
 	{
 		/**

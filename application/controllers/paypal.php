@@ -160,10 +160,11 @@ class Paypal extends CI_Controller {
 	}
 		
 	function cancel()
-	{		
-		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_5_FORWARD );	// set again to be able to access  payment modes page
-		$data = $this->bookingmaintenance->assemblePaypalPaymentUserCancelledNotification();
-		$this->load->view('errorNotice', $data );		
+	{	
+		$isMB =  $this->functionaccess->isActivityManageBooking();
+		// set again to be able to access  payment modes page
+		$this->clientsidedata_model->updateSessionActivityStage( $isMB ? STAGE_MB4_CONFIRM_FW : STAGE_BOOK_5_FORWARD );	
+		$this->load->view('errorNotice', $this->bookingmaintenance->assemblePaypalPaymentUserCancelledNotification( $isMB ) );		
 	}
 	
 	function success()
@@ -226,9 +227,11 @@ class Paypal extends CI_Controller {
 						
 			switch( $this->paypal_lib->ipn_data[ 'payment_status' ] )
 			{
-				case "Refunded":				
+				case "Refunded":
+						log_message('DEBUG','IPN received for '. $bookingNumber . ' is REFUND ');
 						break;
 				case "Reversal":
+						log_message('DEBUG','IPN received for '. $bookingNumber . ' is REVERSAL ');
 						break;
 				default: 
 					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
@@ -294,8 +297,9 @@ class Paypal extends CI_Controller {
 					}else{
 						/* Email/notify user back in app that there's something wrong with paypal payment. 
 						   Can opt to refund later but choose another payment method for now.
-						   Set payment mode of unpaid purchases back to default -1.
 						*/
+						log_message('DEBUG','PAYPAL Payment Questionable');
+						echo "QUESTIONABLE";
 					}
 			}
 		}else{
@@ -307,10 +311,13 @@ class Paypal extends CI_Controller {
 	
 	private function emailMain( $mode = 1, $bookingNumber = "NULL", $destination )
 	{		
-		$this->email_model->initializeFromSales();
+		$this->email_model->initializeFromSales( TRUE );
 		
-		$this->email->from('sales@uplbtickets.com', 'The UPLB Express Ticketing System');
-		$this->email->to( $destination ); 						
+		$this->email->from(
+			$this->email_model->senderEmailAddr,
+			$this->email_model->getDefaultSenderName()
+		);
+		$this->email->to( $destination );
 
 		if( $mode === 1 )
 		{
@@ -323,8 +330,8 @@ class Paypal extends CI_Controller {
 		$this->email->message('We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.');	
 		
 		$this->email->send();
-		log_message('DEBUG', 'email bug 1');
-		log_message('DEBUG', var_dump( $this->email->print_debugger() ) );
+		log_message('DEBUG', 'email bug 1 ' . $this->email_model->senderEmailAddr . " ". $this->email_model->getDefaultSenderName() );
+		log_message('DEBUG', print_r( $this->email->print_debugger() ) );
 		log_message('DEBUG', 'email bug 2');
 	}
 }

@@ -91,20 +91,36 @@ $this->load->view('html-generic/metadata.inc');
 			<?php } ?>
 			</div>
 			<div id="top_page_detail" >
-			<?php if( !$isActivityManageBooking ) {?>
-				Now, there's no more racing and haggling in line outside the auditorium to race for seats.
-				<br/>
-			<?php }else{ 
-					if( $isTicketClassChanged )
-						{
+			<?php
+				$still = "Your former seats are still reserved until you confirm/cancel the changes to this booking.";
+				if( $isSeatSelectionRequired ){
 			?>
-				You have selected a different ticket class. This requires you to choose new seat(s). Your
-				former seats are still reserved until you confirm/cancel the changes to this booking.
-			<?php }
+				You have selected an event or its showing time that requires seats to be chosen during the booking process.
+			<?php	if( $isActivityManageBooking ) { echo $still; } ?>
+			<?php }else{
 			?>
-			<?php } ?>
+					<?php if( $isActivityManageBooking ) {?>
+							<?php if( $isTicketClassChanged )
+								{
+							?>
+								You have selected a different ticket class and is given the option to whether choose new seats or not.
+							<?php 
+								}
+							?>
+							
+					<?php 
+						echo $still;
+						}else{
+					?>
+						Now, there's no more racing and haggling in line outside the auditorium to race for seats.
+					<?php 
+						}
+					?>
+			<?php 
+				}
+			?>
+			<br/>
 			</div>
-			
 			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container bookStep2_main_div_custom" >
 				<div class="accordionImitation cEvent04_container aci1_Book3Special">
@@ -146,34 +162,13 @@ $this->load->view('html-generic/metadata.inc');
 						?>
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
-								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
-									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
-										<?php echo $singleGuest->Fname; ?>
-									</div>
-									<?php if( $singleGuest->Mname != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-middleNameFld">							
-										<?php echo $singleGuest->Mname; ?>
-									</div>									
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-lastNameFld">							
-										<?php echo $singleGuest->Lname; ?>
-									</div>
-									<div class="row" id="g<?php echo $x+1; ?>-genderFld">							
-										<?php echo $singleGuest->Gender; ?>
-									</div>										
-									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
-										<?php echo $singleGuest->Cellphone; ?>
-									</div>
-									<?php if( $singleGuest->Landline != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
-										<?php echo $singleGuest->Landline; ?>
-									</div>
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
-										<?php echo $singleGuest->Email; ?>
-									</div>																
-								</fieldset>
+								<?php
+									$this->load->view( "html-generic/customer_proper_info.inc", Array(
+											'guestnum' =>  $x,
+											'singleGuest' => $singleGuest			
+										)
+									);
+								?>
 							</div>
 							<div class="right" >
 								<fieldset>								
@@ -183,14 +178,9 @@ $this->load->view('html-generic/metadata.inc');
 										$seatMatrixVal = "0";
 										if( $isActivityManageBooking )
 										{
-											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];											 											 
-											 if( $guestSeatObj['Matrix_x'] == NULL or $guestSeatObj['Matrix_y'] == NULL )
-											 {
-												 $seatMatrixValOld = "0";
-											 }else{
-												$seatMatrixValOld = $guestSeatObj['Matrix_x'].'_'.$guestSeatObj['Matrix_y'];
-											 }
-											 $seatMatrixVal = ($guestSeatObj['available'] === true ) ? $seatMatrixValOld : "0";
+											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];
+											 $seatMatrixVal = ($guestSeatObj['visual_rep'] == "NONE" ) ? "0" : $guestSeatObj['matrix_x'].'_'.$guestSeatObj['matrix_y'];
+											 $seatMatrixValOld = $seatMatrixVal;
 									?>									
 									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix_old" value="<?php echo $seatMatrixValOld;?>" />
 									<?php

@@ -5,6 +5,7 @@ class Account_model extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
+		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->library('session');
 	}
 	
@@ -141,12 +142,15 @@ class Account_model extends CI_Model {
 	
 	function isUserAuthorizedPaymentAgency( $accountNum, $eventID, $showtimeID, $pChannelID )
 	{
-		/*
-			Created 23FEB2012-0138
-			
-			Checks if a user has permissions to confirm a client's booking/reservation
-			using the specified payment method.
-		*/		
+		/**
+		*	@created 23FEB2012-0138
+		*	@description Checks if a user has permissions to confirm a client's booking/reservation
+			using the specified payment method. 
+		*	@remarks This does not care about online payment methods. Before this is called,
+				the payment should be checked if it's online since we do not have limitations
+				on who can pay via online payment.
+		*	@revised 25JUN2012-1358
+		**/
 		$returnThis = Array(
 			'value' => false,
 			'status' => null,
@@ -156,18 +160,7 @@ class Account_model extends CI_Model {
 			By default, the $pChannelID equals zero means that this is the payment
 			channel "AUTOMATIC_CONFIRMATION_SINCE_FREE".
 		*/
-		if( intval($pChannelID) === 0 )
-		{
-			$returnThis['value'] = true;
-			$returnThis['status'] = 1;
-			return $returnThis;
-		}else
-		/*	12JUN2012-1322: Should be deprecated/improved to not restrict online payment
-			detection to Paypal or $pChannelID === 2 but on `payment_channel`.`type`
-			By default, the $pChannelID equals 2 means that the payment is via Paypal
-			so this is allowed for all users.
-		*/
-		if( intval($pChannelID) === 2 )
+		if( intval($pChannelID) === FACTORY_AUTOCONFIRMFREE_UNIQUEID )
 		{
 			$returnThis['value'] = true;
 			$returnThis['status'] = 1;

@@ -237,61 +237,24 @@ $this->load->view('html-generic/metadata.inc');
 						?>
 						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
 							<div class="left" >
-								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">personal</legend>								
-									<div class="row" id="g<?php echo $x+1; ?>-firstNameFld" >
-										<?php echo $singleGuest->Fname; ?>
-									</div>
-									<?php if( $singleGuest->Mname != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-middleNameFld">							
-										<?php echo $singleGuest->Mname; ?>
-									</div>									
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-lastNameFld">							
-										<?php echo $singleGuest->Lname; ?>
-									</div>
-									<div class="row" id="g<?php echo $x+1; ?>-genderFld">							
-										<?php echo $singleGuest->Gender; ?>
-									</div>										
-									<div class="row" id="g<?php echo $x+1; ?>-cellPhoneFld" >
-										<?php echo $singleGuest->Cellphone; ?>
-									</div>
-									<?php if( $singleGuest->Landline != "" ){ ?>
-									<div class="row" id="g<?php echo $x+1; ?>-landlineFld" >
-										<?php echo $singleGuest->Landline; ?>
-									</div>
-									<?php } ?>
-									<div class="row" id="g<?php echo $x+1; ?>-email_01Fld" >
-										<?php echo $singleGuest->Email; ?>
-									</div>							
-								</fieldset>
+								<?php
+									$this->load->view( "html-generic/customer_proper_info.inc", Array(
+											'guestnum' =>  $x,
+											'singleGuest' => $singleGuest			
+										)
+									);
+								?>
 							</div>
 							<div class="right" >
-								<fieldset>
-									<legend class="field_grouping_bar specialOnBook3">seat</legend>
-									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="<?php echo $seatVisuals[ $singleGuest->UUID ]; ?>" disabled="disabled"   />									
-									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >									
-										
-											<?php
-												if( ( $x+1 ) != 1 )
-												{
-											?>
-												<div class="leftInr" >
-													<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
-												</div>
-											<?php
-												}													
-												if( ( $slots-1 ) != $x ) 
-												{
-											?>
-												<div class="rightInr">
-													<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
-												</div>
-											<?php
-												}
-											?>										
-									</div>
-								</fieldset>								
+								<?php
+									$this->load->view('html-generic/customer_seat_info.inc', Array(
+											"seatVisuals" => $seatVisuals,
+											"uuid" => $singleGuest->UUID,
+											"guestnum" => $x,
+											"slots" => $slots
+										)
+									);
+								?>							
 							</div>
 						</div>		
 						<?php $x++; } ?>

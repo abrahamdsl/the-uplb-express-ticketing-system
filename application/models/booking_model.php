@@ -202,15 +202,17 @@ class Booking_model extends CI_Model {
 	
 	function getPaymentPeriodExpiredBookings( $eventID, $showtimeID )
 	{
-		/*
-			Created 25FEB2012-1247
-		*/
+		/**
+		*	@created 25FEB2012-1247
+		*	@revised 23JUN2012-1433 Instead of using MySQL's CURRENT_TIMESTAMP constant, we substituted it for
+				getting the time via PHP as this is much more fool-proof regarding hosting server's time differences.
+		**/
 		date_default_timezone_set('Asia/Manila');
 		$sql_command = "SELECT * FROM `booking_details` INNER JOIN `purchase` ON `booking_details`.`bookingNumber`";
 		$sql_command .=  " =`purchase`.`bookingNumber` WHERE `EventID` = ? AND `ShowingTimeUniqueID` = ? AND";
-		$sql_command .= " `Status` = 'PENDING-PAYMENT' AND `purchase`.`Amount` > 0 AND CURRENT_TIMESTAMP >=";
+		$sql_command .= " `Status` = 'PENDING-PAYMENT' AND `purchase`.`Amount` > 0 AND ? >=";
 		$sql_command .= " CONCAT(`purchase`.`Deadline_Date`,' ',`purchase`.`Deadline_Time`);";		
-		$arr_result = $this->db->query( $sql_command, Array( $eventID, $showtimeID ) )->result();
+		$arr_result = $this->db->query( $sql_command, Array( $eventID, $showtimeID, date("Y-m-d H:i:s") ) )->result();
 		if( count( $arr_result ) < 1 )
 			return false;
 		else
@@ -249,8 +251,6 @@ class Booking_model extends CI_Model {
 			paid bookings for management of guest like 
 			changing of seats, upgrading to a higher ticket class and the likes.
 		*/
-		date_default_timezone_set('Asia/Manila');
-		
 		return $this->getAllBookings( $userAccountNum, true );
 	}//getPaidBookings(..)
 	
@@ -359,15 +359,15 @@ class Booking_model extends CI_Model {
 	
 	function isBookingUnderThisUser( $bookingNumber, $accountNum )
 	{
-		/*
-			Created 01MAR2012-2351
-		*/
-		/*
-			Suggestion 14JUN2012-1357: If bookingObj === false, return some other value (of course
-			not BOOLEAN ).
-		*/
+		/**
+		*	@created 01MAR2012-2351
+		*	@description Checks if the booking is under the specified user via the supplied account number.
+		*	@returns NULL - If booking number is not found in the system, else
+					 BOOLEAN
+		*	@revised 25JUN2012-1405
+		**/
 		$bookingObj = $this->getBookingDetails( $bookingNumber );
-		if( $bookingObj === false ) return false;
+		if( $bookingObj === false ) return NULL;
 		return ( intval( $bookingObj->MadeBy ) === $accountNum ) ;
 	}//isBookingUnderThisUser(..)
 	

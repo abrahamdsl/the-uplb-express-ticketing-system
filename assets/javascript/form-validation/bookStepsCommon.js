@@ -1,6 +1,6 @@
 function cancelBookingProcess()
 {	
-	var whichMsg = ( typeof buttonReset2 == 'undefined' ) ? 'Cancelling your reserved slots ...' : 'Cleaning-up some data...'
+	var whichMsg = ( typeof buttonReset2 == 'undefined' && typeof buttonResetp == 'undefined' ) ? 'Cancelling your reserved slots ...' : 'Cleaning-up some data...';
 	$.fn.nextGenModal({
 	   msgType: 'ajax',
 	   title: 'processing',
@@ -11,8 +11,7 @@ function cancelBookingProcess()
 		type: 'POST',
 		url: CI.base_url + 'EventCtrl/cancelBookingProcess',
 		timeout: 10000,
-		data:  null,
-		success: function(data){				
+		success: function(data){		
 			window.location = CI.base_url;
 		}
 	});	
@@ -53,6 +52,16 @@ $(document).ready( function(){
 			   msgType: 'warning',
 			   title: cb + 'changes?',
 			   message: longmsg + ', continue?',
+			   yesFunctionCall: yfc,
+			   closeOnChoose: false
+			});
+	});
+	// for payment mode
+	$('#buttonResetp').click( function(){		
+		$.fn.nextGenModal({
+			   msgType: 'warning',
+			   title: 'confirm',
+			   message: 'Are you sure you want to roll back payment arrangement for this booking?',
 			   yesFunctionCall: yfc,
 			   closeOnChoose: false
 			});

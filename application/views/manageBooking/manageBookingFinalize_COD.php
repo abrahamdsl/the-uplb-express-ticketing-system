@@ -52,9 +52,10 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" >
 	 $(document).ready( function(){
 		$('div.pChannelDetails').show();
-		$('a#buttonOK').click( function(){
-			$(window).unload();
-			window.location = CI.base_url;
+		$('button#change_p').click( function(){
+			// this prevents calling of EventCtrl/postManageBookingCleanup when change payment
+			// mode is clicked
+			_dev_test_proceed = false;
 		});
 	 });
 	</script>
@@ -452,11 +453,9 @@ $this->load->view('html-generic/metadata.inc');
 									</div>
 									<?php } ?>
 									<div class="row">
-										<form method="post" action="<?php echo base_url();?>EventCtrl/managebooking_changepaymentmode" >
-										<span>&nbsp;</span>
-										<span><input type="submit" value="Change payment mode" /></span>
-										<input type="hidden" name="booking_number" value="<?php echo $bookingNumber;?>" />
-										</form>
+										<a href="<?php echo base_url()."EventCtrl/managebooking_changepaymentmode/".$bookingNumber; ?>" >
+											<input type="button" id="change_p" value="Change Payment Mode" />
+										</a>
 									</div>
 								</div>
 							</div>
@@ -466,7 +465,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">
 				<a class="button" id="buttonMB" href="<?php echo base_url();?>EventCtrl/manageBooking" ><span class="icon">Manage Booking</span></a>
-				<a class="button" id="buttonOK" ><span class="icon">Home</span></a>
+				<a class="button" id="buttonOK" href="<?php echo base_url();?>" ><span class="icon">Home</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>
 		</div>		

@@ -1,7 +1,5 @@
 /*
 17FEB2012-1242: I am thinking of merging this with CreateEvent_005.js
-
-Requires that cookie 'slots_being_booked' accessible (i.e., unencrypted)
 */
 
 
@@ -35,7 +33,8 @@ function adjustColumnIndicators( rows, cols )
 	var concernedDiv_bottom;	
 	for( x = 0; x < y; x++ )
 	{		
-		aisleIndex = aisles[x];		
+		aisleIndex = aisles[x];
+		//console.log("making it aisle: " + aisleIndex );
 		$('table.textUnselectable div#top_' + aisleIndex).html( 'A' );		// mark them as aisle
 		$('table.textUnselectable div#bottom_' + aisleIndex).html( 'A' );
 		// from the div to the right until end, adjust
@@ -58,29 +57,23 @@ function adjustColumnIndicators( rows, cols )
 }//adjustColumnIndicators
 
 function assembleExistingGuestSeatData(){
-	/*
-		Created 03MAR2012-1228
+	/**
+	*	@created 03MAR2012-1228
+	*	@revised 28JUN2012-1225
 		Only used during Change Booking - Change seat.
-		
-		Gets existing seat data from the page, stores it in
+	*	@description Gets existing seat data from the page, stores it in
 		the globally accessible Array 'existingGuestSeatData'
-		
-		Needs JQuery.
-	*/	
+	* 	@dependencies Needs JQuery.
+	**/	
 	var guestCount = parseInt( $('input#_js_use_slots').val() ); 
 	var x;
 	var y;
 	
 	for( x = 1; x <= guestCount; x++ )
 	{
-		var guestUUID = $( 'input[name="g' + x + '_uuid"]' ).val();
 		var matrixRep = $( 'input[name="g' + x + '_seatMatrix"]' ).val();
-		if( matrixRep !== "0" )
-		{
-			existingGuestSeatData[ x-1 ] = new Array();
-			existingGuestSeatData[ x-1 ]['matrixRep'] =  matrixRep;
-			existingGuestSeatData[ x-1 ]['uuid'] =  guestUUID;
-		}
+		existingGuestSeatData[ x-1 ] = new Array();
+		existingGuestSeatData[ x-1 ]['matrixRep'] = ( matrixRep === "0" ) ? false : matrixRep;
 	}
 }//assembleExistingGuestSeatData(..)
 
@@ -111,18 +104,20 @@ function makeSeatUsedByThisBookingAvailable(){
 	var y = existingGuestSeatData.length;
 	var x;	
 	var divID;
-	
 	for( x = 0; x<y; x++ )
 	{
 		guestConcerned = ( x + 1 );
-		divID = existingGuestSeatData[x]['matrixRep'];		
-		if( $('div#seatSelectionTable div#' + divID).hasClass('otherClass') === false )
+		divID = existingGuestSeatData[x]['matrixRep'];
+		if( divID !== false )
 		{
-			$('div#seatSelectionTable div#' + divID).removeClass( 'occupiedSameClass' );		
-			$('div#seatSelectionTable div#' + divID).trigger('click.ddms_item_clicked');
-			manipulateGuestSeat( "SELECT", divID );
-			$('div#seatSelectionTable div#' + divID).addClass( 'otherGuest' );		
-			//postChooseCleanup();		
+			if( $('div#seatSelectionTable div#' + divID).hasClass('otherClass') === false )
+			{
+				$('div#seatSelectionTable div#' + divID).removeClass( 'occupiedSameClass' );		
+				$('div#seatSelectionTable div#' + divID).trigger('click.ddms_item_clicked');
+				manipulateGuestSeat( "SELECT", divID );
+				$('div#seatSelectionTable div#' + divID).addClass( 'otherGuest' );		
+				//postChooseCleanup();		
+			}
 		}
 	}
 }// makeSeatUsedByThisBooking(..)
@@ -236,6 +231,7 @@ $(document).ready( function(){
 				$(allTRs[rows+1]).append('<td></td>');
 				// -- the actual guides
 				for(y=1;y<=cols;y++){
+						//console.log( 'guide ' + y );
 						$(allTRs[0]).append('<td><div class="guide top" id="top_' + parseInt(y-1) + '" >' + y +'</div></td>');
 						$(allTRs[rows+1]).append('<td><div class="guide bottom" id="bottom_' + parseInt(y-1) + '" >' + y +'</div></td>');
 				}

@@ -34,6 +34,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
 	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -75,6 +76,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>
 			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container" >
+				<input type="hidden" id="doNotProcessTime" value="1" />
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Select now</div>
 					<div id="content">
@@ -191,7 +193,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">
 							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>
-							<!--<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a> -->
+							<a class="button" id="buttonReset2" ><span class="icon">Cancel</span></a>
 			</div>	
 			<div id="misc" style=" clear:both;"></div>
 		</div>		
