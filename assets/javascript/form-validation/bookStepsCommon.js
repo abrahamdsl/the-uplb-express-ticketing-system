@@ -9,7 +9,7 @@ function cancelBookingProcess()
 	// now, ajax-time!
 	var cancelPOST = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'EventCtrl/cancelBookingProcess',
+		url: CI.base_url + 'eventctrl/cancelBookingProcess',
 		timeout: 10000,
 		success: function(data){		
 			window.location = CI.base_url;

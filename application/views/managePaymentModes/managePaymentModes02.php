@@ -24,7 +24,7 @@ $this->load->view('html-generic/metadata.inc');
 		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
@@ -85,7 +85,7 @@ $this->load->view('html-generic/metadata.inc');
 						<?php
 							$function = (isset($singleChannel)) ? 'managepaymentmode_save' : 'addpaymentmode_step2';
 						?>
-						<form method="post"  action="<?php echo base_url().'userAccountCtrl/'.$function; ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'useracctctrl/'.$function; ?>" name="formLogin" id="formMain">
 							<input type="hidden" name="mode" value="<?php echo $mode; ?>" />
 							<?php if(isset($singleChannel)){ ?>
 								<input type="hidden" name="uniqueID" value="<?php echo $singleChannel->UniqueID; ?>" />

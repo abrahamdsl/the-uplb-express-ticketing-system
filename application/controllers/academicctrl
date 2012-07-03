@@ -2,7 +2,7 @@
 /*
 	Created 13MAR2012-0945
 */
-class AcademicCtrl extends CI_Controller {
+class academicctrl extends CI_Controller {
 
 	function __construct()
 	{
@@ -12,19 +12,19 @@ class AcademicCtrl extends CI_Controller {
 		
 		$this->load->library('session');
 		$this->load->model('login_model');
-		$this->load->model('Academic_model');
-		$this->load->model('Account_model');
-		$this->load->model('Booking_model');
-		$this->load->model('Event_model');
+		$this->load->model('academic_model');
+		$this->load->model('account_model');
+		$this->load->model('booking_model');
+		$this->load->model('event_model');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('Guest_model');
-		$this->load->model('MakeXML_model');
-		$this->load->model('Permission_model');
-		$this->load->model('UsefulFunctions_model');
+		$this->load->model('makexml_model');
+		$this->load->model('permission_model');
+		$this->load->model('usefulfunctions_model');
 		
 		if( !$this->login_model->isUser_LoggedIn() )
 		{	
-			redirect('SessionCtrl/authenticationNeeded');
+			redirect('sessionctrl/authenticationNeeded');
 		}
 	}
 	
@@ -43,7 +43,7 @@ class AcademicCtrl extends CI_Controller {
 			$data[ 'error' ] = "CUSTOM";
 			$data[ 'theMessage' ] = "Please specify valid data!";
 			$data[ 'redirect' ] = FALSE;
-			$data[ 'redirectURI' ] = base_url().'AcademicCtrl/'.$functionNext;
+			$data[ 'redirectURI' ] = base_url().'academicctrl/'.$functionNext;
 			$data[ 'defaultAction' ] = $functionCaption;		
 			$this->load->view( 'errorNotice', $data );
 			return false;
@@ -59,7 +59,7 @@ class AcademicCtrl extends CI_Controller {
 		}
 		$this->clientsidedata_model->setSessionActivity( ACTIVITY_CREATE_CLASS, 2 );
 		$this->clientsidedata_model->setUPLBClassUUID( $classID );		 
-		redirect( 'AcademicCtrl/createClass_step2_forward');	
+		redirect( 'academicctrl/createClass_step2_forward');	
 	}// addEventToClass(..)
 	
 	function associateClassToBooking()
@@ -67,11 +67,11 @@ class AcademicCtrl extends CI_Controller {
 		$eventID    	= $this->clientsidedata_model->getEventID();
 		$showtimeID 	= $this->clientsidedata_model->getShowtimeID();
 		$bookingNumber =  $this->clientsidedata_model->getBookingNumber();
-		$activeClasses  = $this->Academic_model->getActiveClasses( $eventID, $showtimeID );
+		$activeClasses  = $this->academic_model->getActiveClasses( $eventID, $showtimeID );
 		
 		if( count( $activeClasses ) < 1 ){
 			$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
-			redirect('EventCtrl/book_step4_forward');
+			redirect('eventctrl/book_step4_forward');
 		}
 		$uplbConstituent = Array();
 		
@@ -101,7 +101,7 @@ class AcademicCtrl extends CI_Controller {
 		{
 			$splitted = explode('_', $key );
 			$serialized .= $splitted[2]."-";			
-			$selectedOnes[ $splitted[2]  ] = $this->Academic_model->getSingleClass_ByUUID(  $splitted[2] );
+			$selectedOnes[ $splitted[2]  ] = $this->academic_model->getSingleClass_ByUUID(  $splitted[2] );
 		}
 		
 		$data['guests'] = $this->Guest_model->getGuestDetails( $bookingNumber );
@@ -121,12 +121,12 @@ class AcademicCtrl extends CI_Controller {
 				$splitted = explode('_', $key );
 				if( is_array( $splitted ) and count( $splitted ) == 2 )
 				{
-					$this->Academic_model->insertAttendanceForClass( $splitted[0], $splitted[1]	);
+					$this->academic_model->insertAttendanceForClass( $splitted[0], $splitted[1]	);
 				}
 			}
 		}
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_4_FORWARD );
-		redirect( 'EventCtrl/book_step4_forward');
+		redirect( 'eventctrl/book_step4_forward');
 	}
 	
 	function createClassAccess_preCheck( $stageAccepted, $forward = false )
@@ -166,15 +166,15 @@ class AcademicCtrl extends CI_Controller {
 
 		if( $this->createClassData_preCheck($title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) === false ) die('ACCESS-NOT-GRANTED');
 		
-		if( !$this->Academic_model->isClassExisting( $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) 
+		if( !$this->academic_model->isClassExisting( $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2 ) 
 		)
 		{
-			$classNum = $this->Academic_model->createNewClass();
+			$classNum = $this->academic_model->createNewClass();
 			if(  $classNum !== false )
 			{			
 			 $this->clientsidedata_model->updateSessionActivityStage( 2 );
 			 $this->clientsidedata_model->setUPLBClassUUID( $classNum );			 
-			 redirect( 'AcademicCtrl/createClass_step2_forward');		
+			 redirect( 'academicctrl/createClass_step2_forward');		
 			}else{
 			 die('Something went wrong while creating your class.');
 			}
@@ -188,13 +188,13 @@ class AcademicCtrl extends CI_Controller {
 		$this->createClassAccess_preCheck( 2, false );
 		$configuredEventsInfo = array();		
 		// get all events first		
-		$allEvents = $this->Event_model->getAllEvents();		
+		$allEvents = $this->event_model->getAllEvents();		
 		// using all got events, check ready for sale ones (i.e. configured showing times)
-		$showingTimes = $this->Event_model->getReadyForSaleEvents( $allEvents );	
+		$showingTimes = $this->event_model->getReadyForSaleEvents( $allEvents );	
 		// get event info from table `events` 
 		foreach( $showingTimes as $key => $singleShowingTime )
 		{
-			$configuredEventsInfo[ $key ] = $this->Event_model->retrieveSingleEventFromAll( $key, $allEvents );
+			$configuredEventsInfo[ $key ] = $this->event_model->retrieveSingleEventFromAll( $key, $allEvents );
 		}
 		//store to $data for passing to view			
 		$data['configuredEventsInfo'] =  $configuredEventsInfo;
@@ -236,12 +236,12 @@ class AcademicCtrl extends CI_Controller {
 		{
 			foreach( $val as $showtimeID )
 			{
-				$this->Academic_model->createEventClassPair( $eventID, $showtimeID, $classID );
+				$this->academic_model->createEventClassPair( $eventID, $showtimeID, $classID );
 			}
 		}
 		$data['theMessage'] = "You have successfully associated your class to the events you have selected.";
 		$data['redirect'] = TRUE;
-		$data['redirectURI'] = base_url().'AcademicCtrl/manageClasses';
+		$data['redirectURI'] = base_url().'academicctrl/manageClasses';
 		$data['defaultAction'] = 'Manage Classes';
 		$this->load->view( 'successNotice', $data );
 		$this->clientsidedata_model->updateSessionActivityStage( -1 );
@@ -250,13 +250,13 @@ class AcademicCtrl extends CI_Controller {
 	function check_start( $activity )
 	{		
 		// get all events first		
-		$allEvents = $this->Event_model->getAllEvents();		
+		$allEvents = $this->event_model->getAllEvents();		
 		// using all got events, check ready for sale ones (i.e. configured showing times)
-		$showingTimes = $this->Event_model->getReadyForSaleEvents( $allEvents );	
+		$showingTimes = $this->event_model->getReadyForSaleEvents( $allEvents );	
 		// get event info from table `events` 
 		foreach( $showingTimes as $key => $singleShowingTime )
 		{
-			$configuredEventsInfo[ $key ] = $this->Event_model->retrieveSingleEventFromAll( $key, $allEvents );
+			$configuredEventsInfo[ $key ] = $this->event_model->retrieveSingleEventFromAll( $key, $allEvents );
 		}
 		//store to $data for passing to view			
 		$data['configuredEventsInfo'] =  $configuredEventsInfo;
@@ -275,7 +275,7 @@ class AcademicCtrl extends CI_Controller {
 			
 			$this->clientsidedata_model->setEventID( $eventID );
 			$this->clientsidedata_model->setShowtimeID( $showtimeID );
-			redirect( 'AcademicCtrl/checkin_main_forward' );
+			redirect( 'academicctrl/checkin_main_forward' );
 	}//checkin_main()
 	
 	function checkin_main_forward()
@@ -284,8 +284,8 @@ class AcademicCtrl extends CI_Controller {
 			$showtimeID  = $this->clientsidedata_model->getShowtimeID();
 			$activity = $this->clientsidedata_model->getReceptionistActivity( );
 			
-			$eventObj	 = $this->Event_model->getEventInfo( $eventID );
-			$showtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
+			$eventObj	 = $this->event_model->getEventInfo( $eventID );
+			$showtimeObj = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );
 			if( $eventObj === false or $showtimeObj === false )
 			{
 				die("INTERNAL-SERVER-ERROR_Invalid inputs.");
@@ -302,8 +302,8 @@ class AcademicCtrl extends CI_Controller {
 	{		
 		$data['title'] = 'Be careful on what you wish for ...';
 		$data['theMessage'] = "Are you sure you want to delete this class? ";				
-		$data['yesURI'] = base_url().'AcademicCtrl/deleteClassProcess';
-		$data['noURI'] = base_url().'AcademicCtrl/manageClasses';
+		$data['yesURI'] = base_url().'academicctrl/deleteClassProcess';
+		$data['noURI'] = base_url().'academicctrl/manageClasses';
 		$data['formInputs'] = Array( 			 
 			 'classID' => $uniqueID
 		);
@@ -313,13 +313,13 @@ class AcademicCtrl extends CI_Controller {
 	function deleteClassProcess()
 	{
 		$classID = $this->input->post( 'classID' );
-		if( $classID === false ) redirect( 'SessionCtrl' );
-		$this->Academic_model->deleteClassEventAssociationViaClass( $classID );
-		$this->Academic_model->deleteUPLBClassStudentPairViaClass( $classID );
-		$this->Academic_model->deleteUPLBCLass( $classID );
+		if( $classID === false ) redirect( 'sessionctrl' );
+		$this->academic_model->deleteClassEventAssociationViaClass( $classID );
+		$this->academic_model->deleteUPLBClassStudentPairViaClass( $classID );
+		$this->academic_model->deleteUPLBCLass( $classID );
 		$data[ 'theMessage' ] = "Successfully deleted your class.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'AcademicCtrl/manageClasses';
+			$data[ 'redirectURI' ] = base_url().'academicctrl/manageClasses';
 			$data[ 'defaultAction' ] = 'Manage Class';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -328,8 +328,8 @@ class AcademicCtrl extends CI_Controller {
 	function deleteClassEventAssociation()
 	{
 		$uniqueID = $this->input->post( 'ec_uniqueid' );
-		$this->Academic_model->deleteClassEventAssociation( $uniqueID );
-		redirect('AcademicCtrl/manageClasses');
+		$this->academic_model->deleteClassEventAssociation( $uniqueID );
+		redirect('academicctrl/manageClasses');
 	}
 		
 	function isBookingFineForConsumption()
@@ -353,7 +353,7 @@ class AcademicCtrl extends CI_Controller {
 			return false;
 		}
 		$bookingNumber = $this->input->post( 'bookingNumber' );
-		$bookingObj = $this->Booking_model->getBookingDetails( $bookingNumber );
+		$bookingObj = $this->booking_model->getBookingDetails( $bookingNumber );
 		if( $bookingObj === FALSE ){
 			echo "FALSE_Booking number not found!";
 			return false;
@@ -374,7 +374,7 @@ class AcademicCtrl extends CI_Controller {
 		$guestDetails = $this->Guest_model->getGuestDetails_ForCheckIn( $bookingNumber );
 		$alreadyEntered = $this->Guest_model->getGuestsAlreadyEnteredEvent( $bookingNumber );
 		$alreadyExited = $this->Guest_model->getGuestsAlreadyExitedEvent( $bookingNumber );
-		$XMLed_guestDetails = $this->MakeXML_model->XMLize_AllDetailsForCheckin( $guestDetails, $alreadyEntered, $alreadyExited );
+		$XMLed_guestDetails = $this->makexml_model->XMLize_AllDetailsForCheckin( $guestDetails, $alreadyEntered, $alreadyExited );
 		echo "TRUE_".$XMLed_guestDetails;
 		return true;
 	}
@@ -390,7 +390,7 @@ class AcademicCtrl extends CI_Controller {
 		$processedCount = 0;
 		$bookingNumber = $this->input->post( 'bookingNumber2' );
 		$activity 	   = intval($this->input->post( 'activity' ));
-		$bookingObj = $this->Booking_model->getBookingDetails( $bookingNumber );
+		$bookingObj = $this->booking_model->getBookingDetails( $bookingNumber );
 		if( $bookingObj === false )	// signifies non-existence
 		{
 			echo "FALSE_Booking number does not exist."; return false;
@@ -410,13 +410,13 @@ class AcademicCtrl extends CI_Controller {
 			if( $activity == 1 )
 			{	//check-in
 				if( isset( $alreadyEntered[ $key] ) ) continue;
-				$this->Academic_model->recordEntry( $guestUUID );
+				$this->academic_model->recordEntry( $guestUUID );
 			}else{
 				if( !isset( $alreadyEntered[ $key] ) )
 				{
-					$this->Academic_model->recordEntry( $guestUUID );
+					$this->academic_model->recordEntry( $guestUUID );
 				}
-				$this->Academic_model->recordExit( $guestUUID );
+				$this->academic_model->recordExit( $guestUUID );
 			}
 			$processedCount++;
 		}
@@ -426,9 +426,9 @@ class AcademicCtrl extends CI_Controller {
 		{
 			if( count( $guestDetails ) === count( $alreadyEntered ) )
 			{
-				$this->Booking_model->markAsConsumed_Full( $bookingNumber );
+				$this->booking_model->markAsConsumed_Full( $bookingNumber );
 			}else{
-				$this->Booking_model->markAsConsumed_Partial( $bookingNumber );
+				$this->booking_model->markAsConsumed_Partial( $bookingNumber );
 			}
 		}
 		echo "TRUE_Okay succeeded.";
@@ -439,7 +439,7 @@ class AcademicCtrl extends CI_Controller {
 	function manageClasses()
 	{
 		$accountNum  = $this->session->userdata( 'accountNum' );
-		$myClasses = $this->Academic_model->getFacultyClasses( $accountNum );
+		$myClasses = $this->academic_model->getFacultyClasses( $accountNum );
 		if( $myClasses === false )
 		if( $myClasses === false )
 		{			
@@ -452,14 +452,14 @@ class AcademicCtrl extends CI_Controller {
 		$data['eventClassPair'] = Array();
 		foreach( $myClasses as $singleClass )
 		{
-			$data['eventClassPair'][ $singleClass->UUID ] = $this->Academic_model->getClassEventPairing( $singleClass->UUID );
+			$data['eventClassPair'][ $singleClass->UUID ] = $this->academic_model->getClassEventPairing( $singleClass->UUID );
 		}		
 		$this->load->view( 'seeAttendanceRecord/attendance01-b.php', $data );
 	}
 	
 	function modifyClass( $uniqueID )
 	{
-		$data['classObj'] = $this->Academic_model->getSingleClass_ByUUID( $uniqueID );
+		$data['classObj'] = $this->academic_model->getSingleClass_ByUUID( $uniqueID );
 		$this->load->view('createClass/createClass01.php', $data );
 	}// modifyClass(..)
 	
@@ -476,9 +476,9 @@ class AcademicCtrl extends CI_Controller {
 			die("Data required");
 		}
 							
-		$ECPairObj = $this->Academic_model->getClassEventPairing_ByEC_UID( $EC_UniqueID );
-		$classData = $this->Academic_model->getSingleClass_ByUUID( $ECPairObj->UPLBClassID );
-		$studentsUnderEvent = $this->Academic_model->getClassStudentPairing( $ECPairObj->UPLBClassID );
+		$ECPairObj = $this->academic_model->getClassEventPairing_ByEC_UID( $EC_UniqueID );
+		$classData = $this->academic_model->getSingleClass_ByUUID( $ECPairObj->UPLBClassID );
+		$studentsUnderEvent = $this->academic_model->getClassStudentPairing( $ECPairObj->UPLBClassID );
 		if( $studentsUnderEvent !== false )
 		{
 			foreach( $studentsUnderEvent as $key => $eachStudent )
@@ -499,13 +499,13 @@ class AcademicCtrl extends CI_Controller {
 		{
 			foreach( $studentsUnderEvent as $singleStudent )
 			{
-				$transResult =  $this->Academic_model->getAttendanceRecord( $singleStudent->GuestUUID, $EC_UniqueID );
+				$transResult =  $this->academic_model->getAttendanceRecord( $singleStudent->GuestUUID, $EC_UniqueID );
 				if( $transResult !== false ) $attendanceData[] = $transResult;
 			}		
 		}
 		$data['attendanceData'] = $attendanceData;
 		$data['singleClass'] = $classData;
-		$data['showingTime'] = $this->Event_model->getSingleShowingTime( $ECPairObj->EventID, $ECPairObj->ShowtimeID );
+		$data['showingTime'] = $this->event_model->getSingleShowingTime( $ECPairObj->EventID, $ECPairObj->ShowtimeID );
 		$this->load->view( 'seeAttendanceRecord/attendance02.php', $data );
 	}
 	
@@ -524,18 +524,18 @@ class AcademicCtrl extends CI_Controller {
 		if( strlen( $classID ) < 1 ) redirect('/');
 		if( $this->createClassData_preCheck($title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, 'modifyClass/'.$classID, 'Modify Class'  ) === false ) die();
 		
-		if( $this->Academic_model->isClassExisting( $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, $classID ) 
+		if( $this->academic_model->isClassExisting( $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, $classID ) 
 		)
 		{
 			echo 'Class already exists.<br/><br/><a href="javascript: window.history.back();">Go back</a>';
 			return false;
 		}	
 		
-		if( $this->Academic_model->updateClassDetails($classID, $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, $comments ) )
+		if( $this->academic_model->updateClassDetails($classID, $title, $num, $lectSect, $recitSect, $term, $ay1, $ay2, $comments ) )
 		{
 			$data[ 'theMessage' ] = "Successfully updated your class details.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'AcademicCtrl/manageClasses';
+			$data[ 'redirectURI' ] = base_url().'academicctrl/manageClasses';
 			$data[ 'defaultAction' ] = 'Manage Classes';	
 			$this->load->view( 'successNotice', $data );
 			return true;

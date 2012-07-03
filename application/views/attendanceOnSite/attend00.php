@@ -81,7 +81,7 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="adjustEnabledClass" value="adjustButtons enabled" />
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
 						
-						<form method="post"  action="<?php echo base_url().'AcademicCtrl/checkin_main' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'academicctrl/checkin_main' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >

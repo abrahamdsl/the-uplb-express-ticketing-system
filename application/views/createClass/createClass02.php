@@ -21,7 +21,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
@@ -35,7 +35,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>				
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/managebooking02.js'; ?>" ></script>				
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>
@@ -73,7 +73,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
-			<form method="post"  action="<?php echo base_url().'AcademicCtrl/createClass_step3' ?>" name="formLogin" id="formMain">
+			<form method="post"  action="<?php echo base_url().'academicctrl/createClass_step3' ?>" name="formLogin" id="formMain">
 			<div id="accordion" >
 				<?php
 					foreach( $configuredShowingTimes as $eventID => $showingTimes )

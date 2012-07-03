@@ -17,7 +17,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/partitionermain.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_basic.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managePaymentModes.css'; ?>"/>		
 	<!--For modal v1-->	
@@ -70,7 +70,7 @@ $this->load->view('html-generic/metadata.inc');
 				Manage Seat Maps
 			</div>
 			<div style="float:right;width: 270px;; margin-top: 17px; margin-left: 80%; position: absolute; z-index: 10;">
-				<p style="font-size: 2em;" ><a href="<?php echo base_url();?>SeatCtrl/create" >Add</a></p>
+				<p style="font-size: 2em;" ><a href="<?php echo base_url();?>seatctrl/create" >Add</a></p>
 			</div>
 			<div style="padding-left:10px; clear: both">
 				Manipulate ALL the seat maps.
@@ -117,13 +117,13 @@ $this->load->view('html-generic/metadata.inc');
 					<div class="containingClassTable" >								
 						<div class="metrotile" name="edit" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericedit.png" alt="Edit payment mode" /></a>
-							<form method="post" action="<?php echo base_url().'SeatCtrl/editseatmap'; ?>" class="notyet" >
+							<form method="post" action="<?php echo base_url().'seatctrl/editseatmap'; ?>" class="notyet" >
 								<input type="hidden" name="uniqueID" value="<?php echo  $singleSeatmap->UniqueID; ?>" />
 							</form>
 						</div>
 						<div class="metrotile" name="delete" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericdelete.png" alt="Delete payment mode" /></a>
-							<form method="post" action="<?php echo base_url().'SeatCtrl/deleteseatmap'; ?>" >								
+							<form method="post" action="<?php echo base_url().'seatctrl/deleteseatmap'; ?>" >								
 								<input type="hidden" name="uniqueID" value="<?php echo  $singleSeatmap->UniqueID; ?>" />
 							</form>
 						</div>						

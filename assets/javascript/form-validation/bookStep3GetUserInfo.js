@@ -8,7 +8,7 @@ function getUserInfo( username, guestID )
 	
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'userAccountCtrl/getUserInfoForBooking',
+		url: CI.base_url + 'useracctctrl/getUserInfoForBooking',
 		timeout: 15000,
 	    data: { 'username': username },
 		success: function(data){		

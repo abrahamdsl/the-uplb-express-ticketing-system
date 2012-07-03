@@ -200,7 +200,7 @@ class Guest_model extends CI_Model {
 			Review | 10MAR2012-1131 | Isn't this already being done by slot_model->setSlotAsAvailable( $uuid )?
 			Created 14FEB2012-1104
 			
-			-Shouldn't this be in Slot_model?
+			-Shouldn't this be in slot_model?
 			
 			This only removes the seat from the `event_slot` table.
 			Back in the controller where this was called, you should call 

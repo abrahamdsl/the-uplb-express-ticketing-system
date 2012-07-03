@@ -54,7 +54,7 @@ $this->load->view('html-generic/metadata.inc');
 			<div class="accordionContainer center_purest" >
 				<div id="accordion" >
 					<h3><a href="#" >Basic details</a></h3>					
-					<form method="post"  action="<?php echo base_url().'EventCtrl/create_step2' ?>" name="formLogin" id="formMain" >						
+					<form method="post"  action="<?php echo base_url().'eventctrl/create_step2' ?>" name="formLogin" id="formMain" >						
 						<div>
 							<div class="mainWizardMainSections" >
 								<span class="MWMS1" >

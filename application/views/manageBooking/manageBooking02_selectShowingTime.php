@@ -21,7 +21,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
@@ -33,7 +33,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/managebooking02.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
 	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -87,7 +87,7 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
 						<input type="hidden" id="excludeShowingTime" value="<?php echo $existingShowtimeID; ?>" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/managebooking_changeshowingtime_process' ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'eventctrl/managebooking_changeshowingtime_process' ?>" name="formLogin" id="formMain">
 						<input type="hidden" name="bookingNumber" value="<?php echo $bookingNumber; ?>" />
 							<div>
 								<div class="KoreanPeninsula" >

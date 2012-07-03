@@ -104,7 +104,7 @@ $this->load->view('html-generic/metadata.inc');
 							?>
 						</div>
 						<div class="containingClassTable" >
-							<form method="post"  action="<?php echo base_url().'EventCtrl/book_step3'; ?>" id="formMain">
+							<form method="post"  action="<?php echo base_url().'eventctrl/book_step3'; ?>" id="formMain">
 								<table class="center_purest schedulesCentral">
 									<thead>
 										<tr>
@@ -131,7 +131,7 @@ $this->load->view('html-generic/metadata.inc');
 													<?php echo ( floatval($TCD->Price) * intval( $bookingInfo->SLOT_QUANTITY ) ); ?>
 												</td>
 												<td>
-													<?php if( 	$this->UsefulFunctions_model->getValueOfWIN5_Data(
+													<?php if( 	$this->usefulfunctions_model->getValueOfWIN5_Data(
 																	$TCD->UniqueID, $bookingInfo->SLOTS_UUID
 																) !== false 
 														   )

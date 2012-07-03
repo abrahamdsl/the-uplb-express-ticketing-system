@@ -143,8 +143,8 @@ $this->load->view('html-generic/metadata.inc');
 					<?php
 						$slots = $this->input->cookie( 'slots_being_booked' );					
 					?>
-					<input type="hidden" id="manageBookingChooseSeat" value="0"/>					
-					<form name="formMain" method="post" action="<?php echo base_url().'AcademicCtrl/associateClassToBooking_process2'; ?>" id="formMain">					
+					<input type="hidden" id="managebookingChooseSeat" value="0"/>					
+					<form name="formMain" method="post" action="<?php echo base_url().'academicctrl/associateClassToBooking_process2'; ?>" id="formMain">					
 					
 					<div id="tabs">					
 						<ul>

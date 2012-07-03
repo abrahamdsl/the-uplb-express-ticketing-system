@@ -5,7 +5,7 @@
 					<?php echo ucfirst( $this->input->cookie( "firstName") )." ".ucfirst( $this->input->cookie( "middleName") )."&nbsp;".ucfirst( $this->input->cookie( "lastName") ); ?>				
 				</li>
 				<li class="last">
-					<a href="<?php echo base_url().'SessionCtrl/logout'; ?>" class='underline'>Log out</a>
+					<a href="<?php echo base_url().'sessionctrl/logout'; ?>" class='underline'>Log out</a>
 				</li>
 			</ul>			
 		</div>

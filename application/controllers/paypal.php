@@ -65,8 +65,8 @@ class Paypal extends CI_Controller {
 		$this->load->model('clientsidedata_model');
 		$this->load->model('email_model');
 		$this->load->model('guest_model');
-		$this->load->model('Payment_model');
-		$this->load->model('UsefulFunctions_model');
+		$this->load->model('payment_model');
+		$this->load->model('usefulfunctions_model');
 	}
 			
 	private function serializeIPN( $IPN_str )
@@ -80,7 +80,7 @@ class Paypal extends CI_Controller {
 	function index()
 	{		
 		// This is not intended to give a user interface.
-		redirect('EventCtrl');
+		redirect('eventctrl');
 	}
 	
 	function process()
@@ -115,7 +115,7 @@ class Paypal extends CI_Controller {
 		/*
 			Check for and act on the localhost controversy!			
 		*/
-		if( $this->UsefulFunctions_model->getRealIpAddr() == "127.0.0.1" )
+		if( $this->usefulfunctions_model->getRealIpAddr() == "127.0.0.1" )
 		{
 			$prepURL = str_replace('localhost', NON_HOSTING_IPADDR, $prepURL );
 			$prepURL = str_replace('127.0.0.1', NON_HOSTING_IPADDR, $prepURL );
@@ -182,7 +182,7 @@ class Paypal extends CI_Controller {
 		// below).	
 		$isActivityManageBooking;
 		$forwardStage;
-		$forwardURL = "EventCtrl/";
+		$forwardURL = "eventctrl/";
 		
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
 		{	 //ec 4100
@@ -204,7 +204,7 @@ class Paypal extends CI_Controller {
 			All lines indented by another column than usual are for debugging only.
 			Remove only when you are now so confident on how this works.
 		*/
-		$visitorIP = $this->UsefulFunctions_model->VisitorIP();
+		$visitorIP = $this->usefulfunctions_model->VisitorIP();
         $visitorHostName = gethostbyaddr( $visitorIP );
 		
 		/* <area id="paypal_ipn_postdata_debug" > */ {
@@ -234,11 +234,11 @@ class Paypal extends CI_Controller {
 						log_message('DEBUG','IPN received for '. $bookingNumber . ' is REVERSAL ');
 						break;
 				default: 
-					$isPaypalOKObj = $this->Payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
+					$isPaypalOKObj = $this->payment_model->isPaypalPaymentOK($this->paypal_lib->ipn_data );
 					if( $isPaypalOKObj['boolean'] )
 					{ 
 						$billingInfoArray = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
-						$bookingObj       = $this->Booking_model->getBookingDetails( $bookingNumber ); 
+						$bookingObj       = $this->booking_model->getBookingDetails( $bookingNumber ); 
 						$infoArray = Array(
 							"eventID" => $bookingObj->EventID,
 							"showtimeID" => $bookingObj->ShowingTimeUniqueID,
@@ -246,9 +246,9 @@ class Paypal extends CI_Controller {
 							"ticketClassUniqueID" => $bookingObj->TicketClassUniqueID
 						);
 						// manage booking centric or not? act if ever.
-						$isThisForManageBooking = $this->Booking_model->isBookingUpForChange( $bookingNumber );
+						$isThisForManageBooking = $this->booking_model->isBookingUpForChange( $bookingNumber );
 						if( $isThisForManageBooking ){
-							$infoArray[ "transactionID" ] = $this->UsefulFunctions_model->getValueOfWIN5_Data( 
+							$infoArray[ "transactionID" ] = $this->usefulfunctions_model->getValueOfWIN5_Data( 
 								'transaction', 
 								$billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Comments
 							);

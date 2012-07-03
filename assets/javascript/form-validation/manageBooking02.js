@@ -23,7 +23,7 @@ $(document).ready( function(){
 		// now contact server to request for "for sale" showing times of the selected event
 		var requestST_POST = $.ajax({
 			type: 'POST',
-			url: CI.base_url + "EventCtrl/getConfiguredShowingTimes" , // URL, CI.base_url found in the page
+			url: CI.base_url + "eventctrl/getConfiguredShowingTimes" , // URL, CI.base_url found in the page
 			timeout: 40000,
 			data: { 'eventID': $('select#eventSelection option:selected').val(), 
 					'excludeShowingTime' : $('input#excludeShowingTime').val()

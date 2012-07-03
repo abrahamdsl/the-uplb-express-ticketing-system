@@ -2,7 +2,7 @@
 /*
 	Created 13MAR2012-0535
 */
-class Academic_model extends CI_Model {
+class academic_model extends CI_Model {
 	
 	function __construct()
 	{
@@ -232,7 +232,7 @@ class Academic_model extends CI_Model {
 		/*
 			--------------------------------
 			For DEPRECIATION - 17APR2012-1519
-			*Formerly used by EventCtrl/book_step4 but not anymore
+			*Formerly used by eventctrl/book_step4 but not anymore
 			
 			---------------------------------
 			Created 21MAR2012-1416

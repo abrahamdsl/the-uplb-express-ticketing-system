@@ -58,7 +58,7 @@ $this->load->view('html-generic/doctype.inc');
 				?>
 				<h3><a href="#"><?php echo $eachEvent->EventID." | ".$eachEvent->Name; ?></a></h3>
 				<div>			
-					<form method="post"  action="<?php echo base_url().'EventCtrl/deleteEventCompletely' ?>" name="formDelete__<?php echo $eachEvent->EventID; ?>" id="form_<?php echo $eachEvent->EventID; ?>">
+					<form method="post"  action="<?php echo base_url().'eventctrl/deleteEventCompletely' ?>" name="formDelete__<?php echo $eachEvent->EventID; ?>" id="form_<?php echo $eachEvent->EventID; ?>">
 						<input type="hidden" name="eventID" value="<?php echo $eachEvent->EventID; ?>" />
 						<input type="submit" id="deleteAll_<?php echo $eachEvent->EventID; ?>" value="Delete all" />
 					</form>

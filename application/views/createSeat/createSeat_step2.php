@@ -69,7 +69,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>				
 			<!-- accordion start -->
 			<!--  -->
-			<form method="post"  action="<?php echo base_url().'SeatCtrl/create_step3' ?>" name="formLogin" id="formMain">						
+			<form method="post"  action="<?php echo base_url().'seatctrl/create_step3' ?>" name="formLogin" id="formMain">						
 						<input type="hidden" id="rows" value="<?php echo $rows; ?>" />
 						<input type="hidden" id="cols" value="<?php echo $cols; ?>" />
 						<input type="hidden" id="rows_touchable" value="<?php echo $rows; ?>" />

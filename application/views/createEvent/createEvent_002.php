@@ -74,7 +74,7 @@ $this->load->view('html-generic/metadata.inc');
 				<div class="accordionImitation">
 					<div id="title">Choose date and time</div>
 					<div id="content">
-						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step3' ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'eventctrl/create_step3' ?>" name="formLogin" id="formMain">
 							<input type="hidden" name="timeFrames_hidden" id="TF_hidden" value="" />
 							<input type="hidden" name="dateFrames_hidden" id="DF_hidden" value="" />													
 							<div class="center_purest" id="cEvent02_container" >

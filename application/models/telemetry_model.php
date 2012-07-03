@@ -13,7 +13,7 @@
  *
 **/
 
-class Telemetry_model extends CI_Model {
+class telemetry_model extends CI_Model {
 
 	function __construct()
 	{

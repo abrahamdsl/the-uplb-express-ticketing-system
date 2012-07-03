@@ -12,7 +12,7 @@
  *
 **/
 
-class Email_model extends CI_Model {
+class email_model extends CI_Model {
 	var $senderEmailAddr = NULL;
 	var $senderName = NULL;
 	
@@ -113,7 +113,7 @@ class Email_model extends CI_Model {
 		{
 			// EC 4310
 			$errorMsg = 'One or more necessary email info assumed to be in the database is not found.';
-			log_message( 'ERROR', 'Email_model->initializeFromSales(): ERROR , '.$errorMsg );
+			log_message( 'ERROR', 'email_model->initializeFromSales(): ERROR , '.$errorMsg );
 			foreach( $config as $key => $eachEntry ) log_message('DEBUG', 'Info ' . $key . ' => '. $eachEntry);			
 			$returnThis[ 'message' ] = $errorMsg;
 			return $returnThis;

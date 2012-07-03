@@ -14,7 +14,7 @@ a new whole page after the server successfully processed the data
 */
 
 
-class CoordinateSecurity_model extends CI_Model {
+class coordinatesecurity_model extends CI_Model {
 	
 	function __construct()
 	{

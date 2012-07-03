@@ -72,7 +72,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
-				<form method="post"  action="<?php echo base_url().'AcademicCtrl/associateClassToBooking_process1' ?>" name="formLogin" id="formMain">					
+				<form method="post"  action="<?php echo base_url().'academicctrl/associateClassToBooking_process1' ?>" name="formLogin" id="formMain">					
 					<div id="tabs">
 					<ul>						
 						<?php

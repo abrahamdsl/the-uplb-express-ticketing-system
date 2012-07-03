@@ -13,7 +13,7 @@ function formSubmit()
 {
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'EventCtrl/confirm_step3',
+		url: CI.base_url + 'eventctrl/confirm_step3',
 		timeout: 30000,		
 		beforeSend: function(){			
 			$.fn.nextGenModal({

@@ -15,7 +15,7 @@
 	other DB for that matter. For as we all know, there are 'transactions' in a DB.
 */
 
-class TransactionList_model extends CI_Model {
+class transactionlist_model extends CI_Model {
 
 	function __construct()
 	{

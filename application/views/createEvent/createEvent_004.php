@@ -69,7 +69,7 @@ $this->load->view('html-generic/metadata.inc');
 				<div class="accordionImitation cEvent04_container">
 					<div id="title">Choose them</div>
 					<div id="content">
-						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step5' ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'eventctrl/create_step5' ?>" name="formLogin" id="formMain">
 						<div>
 							<div class="starBoardSide" >
 								<table class="center_purest schedulesCentral">

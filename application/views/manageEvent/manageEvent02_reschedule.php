@@ -120,7 +120,7 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="adjustEnabledClass" value="adjustButtons enabled" />
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons disabled" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl2/reschedule_process' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'eventctrl2/reschedule_process' ?>" name="formLogin" id="formMain">							
 							<input type="hidden" name="eventID" value="<?php echo $eventObj->EventID; ?>" />
 							<input type="hidden" name="showtimeID" value="<?php echo $eventObj->UniqueID; ?>" />
 							<div>

@@ -19,14 +19,14 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking01.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/managebooking01.js'; ?>" ></script>
 	<?php 
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>
@@ -84,13 +84,13 @@ $this->load->view('html-generic/metadata.inc');
 						foreach( $bookings as $singleBooking )
 						{ 
 							$x++;
-							$isExpired   	 = $this->Booking_model->isBookingExpired( $singleBooking );
-							$isBeingBooked   = $this->Booking_model->isBookingBeingBooked( $singleBooking );
+							$isExpired   	 = $this->booking_model->isBookingExpired( $singleBooking );
+							$isBeingBooked   = $this->booking_model->isBookingBeingBooked( $singleBooking );
 							$isExpired_State = ( $isExpired ) ? $singleBooking->Status2 : NULL;
-							$isUpChange  	 = $this->Booking_model->isBookingUpForChange( $singleBooking );
-							$isUpPayment 	 = $this->Booking_model->isBookingUpForPayment( $singleBooking );
+							$isUpChange  	 = $this->booking_model->isBookingUpForChange( $singleBooking );
+							$isUpPayment 	 = $this->booking_model->isBookingUpForPayment( $singleBooking );
 							$isPendingChange = ( $isUpChange  or $isUpPayment );
-							$isRolledBack    = $this->Booking_model->isBookingRolledBack( $singleBooking );
+							$isRolledBack    = $this->booking_model->isBookingRolledBack( $singleBooking );
 
 							$displayThis = $singleBooking->bookingNumber;
 							$displayThis .= "&nbsp;&nbsp;|&nbsp;&nbsp;".$singleBooking->Name;
@@ -107,7 +107,7 @@ $this->load->view('html-generic/metadata.inc');
 									$argumentArray = Array( 'bool' => true, 'Status2' => BOOKDETAIL_STAT2_FOR_DELETION );
 									$this->bookingmaintenance->deleteBookingTotally_andCleanup( $singleBooking->bookingNumber, $argumentArray );
 								}else
-									$this->Booking_model-> markAsExpired_ForDeletion( $singleBooking->bookingNumber );
+									$this->booking_model-> markAsExpired_ForDeletion( $singleBooking->bookingNumber );
 						?>
 							<div class="warning" > 
 								You were not able to pay for this booking on the deadline. Your slots and seats if any have been forfeited. All data
@@ -140,7 +140,7 @@ $this->load->view('html-generic/metadata.inc');
 							</div>
 						<?php 
 								// since user was notified already, then clear the `Status2` column by calling this
-								$this->Booking_model->markAsPaid( $singleBooking->bookingNumber );	
+								$this->booking_model->markAsPaid( $singleBooking->bookingNumber );	
 							} 
 						?>
 				<?php 
@@ -164,7 +164,7 @@ $this->load->view('html-generic/metadata.inc');
 									{
 								?>
 								<div class="metrotile" id="resumebooking_<?php echo $x; ?>" >
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/8/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/8/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-resumebooking.png" alt="Resume Booking" />
 									</a>
 								</div>
@@ -173,13 +173,13 @@ $this->load->view('html-generic/metadata.inc');
 									if( $isPendingChange or $isExpired ) {
 								?>
 										<div class="metrotile" id="viewdetails_<?php echo $x; ?>" >
-											<a href="<?php echo base_url().'EventCtrl/mb_prep/6/'.$singleBooking->bookingNumber; ?>">
+											<a href="<?php echo base_url().'eventctrl/mb_prep/6/'.$singleBooking->bookingNumber; ?>">
 												<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View pending details" />
 											</a>
 										</div>
 										<?php if( $isUpChange ) { ?>									
 											<div class="metrotile" id="cancelchanges_<?php echo $x; ?>" >
-												<a href="<?php echo base_url().'EventCtrl/mb_prep/7/'.$singleBooking->bookingNumber; ?>">
+												<a href="<?php echo base_url().'eventctrl/mb_prep/7/'.$singleBooking->bookingNumber; ?>">
 													<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelchanges.png" alt="Cancel changes" />
 												</a>
 											</div>											
@@ -189,35 +189,35 @@ $this->load->view('html-generic/metadata.inc');
 								<?php } else { ?>
 								<!--
 								<div class="metrotile" id="viewdetails_<?php echo $x; ?>" >
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/5/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/5/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" />
 									</a>
 								</div>-->
 								<div class="metrotile" id="changeshowingtime_<?php echo $x; ?>" >
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/1/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/1/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeshowingtime.png" alt="Change showing time" />
 									</a>
 								</div>
 								<div class="metrotile" id="upgradeticketclass_<?php echo $x; ?>" >
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/2/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/2/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-upgradeticketclass.png" alt="Upgrade Ticket Class" />
 									</a>
 								</div>
 								<!--
 								<div>
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/4/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/4/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-customer-manageclass.png" alt="Manage Associated Classes" />
 									</a>						
 								</div>
 								-->						
 								<div class="metrotile" id="changeseat_<?php echo $x; ?>" >
-									<a href="<?php echo base_url().'EventCtrl/mb_prep/3/'.$singleBooking->bookingNumber; ?>">
+									<a href="<?php echo base_url().'eventctrl/mb_prep/3/'.$singleBooking->bookingNumber; ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-changeseat.png" alt="Change Seat" />
 									</a>
 								</div>
 								<div class="metrotile" id="cancelbooking_<?php echo $x; ?>" >
-									<?php /*Does not need to call EventCtrl/mb_prep - AJAX handles this directly in the page.*/ ?>
-									<a href="<?php echo base_url().'EventCtrl/#' ?>">
+									<?php /*Does not need to call eventctrl/mb_prep - AJAX handles this directly in the page.*/ ?>
+									<a href="<?php echo base_url().'eventctrl/#' ?>">
 										<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-cancelbooking.png" alt="Cancel Booking" />
 									</a>									
 								</div>

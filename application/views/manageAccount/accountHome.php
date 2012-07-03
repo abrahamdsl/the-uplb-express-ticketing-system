@@ -56,7 +56,7 @@ $this->load->view('html-generic/doctype.inc');
 				Change your basic account and system settings.
 			</div>				
 			<!-- start of form -->			
-			<form method="post"  action="<?php echo base_url().'userAccountCtrl/manageAccountSave' ?>" name="formSignup" id="formMain">
+			<form method="post"  action="<?php echo base_url().'useracctctrl/manageAccountSave' ?>" name="formSignup" id="formMain">
 				<div class="center_pure">
 					<fieldset class="fieldsCollection">						
 						<legend class="field_grouping_bar">login credentials</legend>
@@ -80,7 +80,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span class="critical" >*</span>
 							</div>
 							<div class="collection">
-								<a href="<?php echo base_url(); ?>userAccountCtrl/changePassword_step1">Change Password</a>
+								<a href="<?php echo base_url(); ?>useracctctrl/changePassword_step1">Change Password</a>
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>

@@ -154,7 +154,7 @@ $this->load->view('html-generic/metadata.inc');
 							<a class="button" id="buttonOK2" ><span class="icon" >Confirm Entry</span></a>							
 							<a class="button" id="buttonOK" ><span class="icon" >Check Details</span></a>
 							<a class="button" id="buttonOK3" ><span class="icon" >Clear Fields</span></a>
-							<a class="button" id="buttonReset" href="<?php echo base_url(); ?>AcademicCtrl/check_start/2" ><span class="icon" >Change session</span></a>							
+							<a class="button" id="buttonReset" href="<?php echo base_url(); ?>academicctrl/check_start/2" ><span class="icon" >Change session</span></a>							
 				</div>
 				<div class="buttonfooterSeparator" ></div>
 			</div>						

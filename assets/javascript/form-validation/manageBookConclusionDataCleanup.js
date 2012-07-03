@@ -18,7 +18,7 @@ $(window).unload( function() {
 			});
 			setTimeout( function(){}, 500 );
 		},
-		url: CI.base_url + 'EventCtrl/postManageBookingCleanUp',
+		url: CI.base_url + 'eventctrl/postManageBookingCleanUp',
 		timeout: 5000
 	});	
     return true;

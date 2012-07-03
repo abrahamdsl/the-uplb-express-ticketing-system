@@ -48,7 +48,7 @@ $this->load->view('html-generic/doctype.inc');
 				<br/><br/>					
 			</div>							
 				<div id="essentialButtonsArea">
-								<a href="<?php echo base_url().'SessionCtrl/' ?>" class="button" id="buttonOK" ><span class="icon">Start</span></a>						
+								<a href="<?php echo base_url().'sessionctrl/' ?>" class="button" id="buttonOK" ><span class="icon">Start</span></a>						
 				</div>		
 			<div style=" clear:both;"></div>
 		</div>

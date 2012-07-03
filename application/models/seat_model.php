@@ -11,7 +11,7 @@
 *	This deals with all of tables `seat_map`, `seats_actual`, `seats_default`
 **/
 
-class Seat_model extends CI_Model {
+class seat_model extends CI_Model {
 	
 	function __construct()
 	{
@@ -345,7 +345,7 @@ class Seat_model extends CI_Model {
 			So therefore, to know what if a seat is not available, back in the calling function,
 			the code should be like:
 			
-			$isSeatAvailableResult = $this->Seat_model->isSeatAvailable( .. );
+			$isSeatAvailableResult = $this->seat_model->isSeatAvailable( .. );
 			if( $isSeatAvailableResult['boolean'] )
 				// seat is available
 			else
@@ -423,7 +423,7 @@ class Seat_model extends CI_Model {
 		$x = 0;
 		foreach( $vsd_tokenized as $value )
 		{
-			log_message("DEBUG",'Seat_model::make_array_visualSeatData seat value : ' . $value );
+			log_message("DEBUG",'seat_model::make_array_visualSeatData seat value : ' . $value );
 			$returnThis[ $guestObj[ $x++ ]->UUID ] = ( strval($value) === "0" or strval($value) === "FALSE" ) ? "NONE" : $value;
 		}
 		return $returnThis;

@@ -3,7 +3,7 @@
 	This is used in manage ticket class if (isset($tcg_not_shared) ) === TRUE
 */
 $managetc = isset($tcg_not_shared);
-$submiturl = ($managetc ) ? 'EventCtrl2/managetc_update_seats' : 'EventCtrl/create_step6_seats';
+$submiturl = ($managetc ) ? 'eventctrl2/managetc_update_seats' : 'eventctrl/create_step6_seats';
 ?>
 <div id="basic-modal-content-freeform" >
 	<input type="hidden" name="uniqueID" id="seatMapUID" value="0" />

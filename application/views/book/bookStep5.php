@@ -149,7 +149,7 @@ $this->load->view('html-generic/metadata.inc');
 								<br/>
 								<br/>
 								<input type="hidden" id="lastPChannel" value="0" />
-								<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step6' ?>" id="formMain">
+								<form name="formMain" method="post" action="<?php echo base_url().'eventctrl/book_step6' ?>" id="formMain">
 									<select name="paymentChannel" class="pChannel"  >
 											<option value="NULL" >Select payment option</option>										
 										<?php

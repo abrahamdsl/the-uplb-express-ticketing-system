@@ -42,7 +42,7 @@ function createSeatmapOnPage( args )
 	// ajax-time!	
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'SeatCtrl/getMasterSeatmapData',
+		url: CI.base_url + 'seatctrl/getMasterSeatmapData',
 		timeout: 50000,		
 		data: { 'uniqueID': antishowstopper_seatmapid },				
 		success: function(data){

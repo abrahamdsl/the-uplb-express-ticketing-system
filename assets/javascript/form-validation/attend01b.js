@@ -18,7 +18,7 @@ function confirmActivity( args )
 	var guestCountSelected = $('input[type="checkbox"]:checked').size();	
 	var y = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'AcademicCtrl/confirmActivity',
+		url: CI.base_url + 'academicctrl/confirmActivity',
 		timeout: 30000,
 		//data: { 'bookingNumber' : bookingNumber, 'activity': args[0] },
 		data: $('form#guestdetails').serialize() + '&activity=' + args[0],
@@ -56,7 +56,7 @@ function formSubmit()
 	bookingNumber = $('input[name="bookingNumber"]').val();
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + 'AcademicCtrl/isBookingFineForConsumption',
+		url: CI.base_url + 'academicctrl/isBookingFineForConsumption',
 		timeout: 30000,
 		data: { 'bookingNumber' : bookingNumber },
 		beforeSend: function(){			
