@@ -3,9 +3,9 @@
 CREATED 27 MAR 2012 0341
 
 Difference is that this is dedicated mostly to
-event manager only, because EventCtrl is so ballooned already.
+event manager only, because eventctrl is so ballooned already.
 */
-class EventCtrl2 extends CI_Controller {
+class eventctrl2 extends CI_Controller {
 
 	function __construct()
 	{
@@ -15,39 +15,39 @@ class EventCtrl2 extends CI_Controller {
 				
 		$this->load->helper('cookie');
 		$this->load->model('login_model');
-		$this->load->model('Academic_model');
-		$this->load->model('Account_model');
-		$this->load->model('Booking_model');
+		$this->load->model('academic_model');
+		$this->load->model('account_model');
+		$this->load->model('booking_model');
 		$this->load->model('clientsidedata_model');
-		$this->load->model('CoordinateSecurity_model');
-		$this->load->model('Event_model');
+		$this->load->model('coordinatesecurity_model');
+		$this->load->model('event_model');
 		$this->load->model('Guest_model');
-		$this->load->model('MakeXML_model');
-		$this->load->model('Payment_model');
-		$this->load->model('Permission_model');
-		$this->load->model('Seat_model');		
-		$this->load->model('Slot_model');		
-		$this->load->model('TicketClass_model');
-		$this->load->model('TransactionList_model');
-		$this->load->model('UsefulFunctions_model');
+		$this->load->model('makexml_model');
+		$this->load->model('payment_model');
+		$this->load->model('permission_model');
+		$this->load->model('seat_model');		
+		$this->load->model('slot_model');		
+		$this->load->model('ticketclass_model');
+		$this->load->model('transactionlist_model');
+		$this->load->model('usefulfunctions_model');
 		$this->load->library('bookingmaintenance');		
 		$this->load->library('seatmaintenance');		
 		$this->load->library('encrypt');		
 		
 		if( !$this->login_model->isUser_LoggedIn() )
 		{	
-			redirect('SessionCtrl/authenticationNeeded');
+			redirect('sessionctrl/authenticationNeeded');
 		}
 	} //construct
 	
 	function index()
 	{		
-		redirect( 'EventCtrl/book' );		
+		redirect( 'eventctrl/book' );		
 	}//index
 	
 	function checkAndActOnEventMgr()
 	{
-		if( !$this->Permission_model->isEventManager() )
+		if( !$this->permission_model->isEventManager() )
 		{
 			$data['error'] = "NO_PERMISSION";					
 			$this->load->view( 'errorNotice', $data );			
@@ -68,11 +68,11 @@ class EventCtrl2 extends CI_Controller {
 	
 	function manageEvent()
 	{
-		$eventObj = $this->Event_model->getAllEventsRestricted();
+		$eventObj = $this->event_model->getAllEventsRestricted();
 		$showingTimes = Array();
 		foreach( $eventObj as $singleEvent )
 		{
-			$showingTimes[ $singleEvent->EventID ] = $this->Event_model->getAllShowingTimes(  $singleEvent->EventID );		
+			$showingTimes[ $singleEvent->EventID ] = $this->event_model->getAllShowingTimes(  $singleEvent->EventID );		
 		}
 		$data['myEvents'] = $eventObj;
 		$data['showingTimes'] = $showingTimes;
@@ -83,7 +83,7 @@ class EventCtrl2 extends CI_Controller {
 	function reschedule( $eventID = NULL, $showtimeID = NULL )
 	{
 		$this->common_pre_check( $eventID, $showtimeID );
-		$data['eventObj'] = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );		
+		$data['eventObj'] = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );		
 		$this->load->view( 'manageEvent/manageEvent02_reschedule.php', $data);
 	}//reschedule
 	
@@ -98,11 +98,11 @@ class EventCtrl2 extends CI_Controller {
 		
 		// !!!! skip form validation first. 27MAR2012
 		
-		if( $this->Event_model-> updateShowingTimeSchedule( $eventID, $showtimeID, $startDate, $startTime, $endDate, $endTime ) )
+		if( $this->event_model-> updateShowingTimeSchedule( $eventID, $showtimeID, $startDate, $startTime, $endDate, $endTime ) )
 		{
 			$data[ 'theMessage' ] = "Successfully changed the showing date and times.";
 			$data[ 'redirect' ] = FALSE;
-			$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+			$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 			$data[ 'defaultAction' ] = 'Manage Event';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -118,8 +118,8 @@ class EventCtrl2 extends CI_Controller {
 		$data['theMessage'] = "Are you sure you want to seal this showing time?";
 		$data['theMessage'] .= "<br/><br/>Doing so will forfeit all yet unconfirmed bookings <br/>(those who are transferring to this.";
 		$data['theMessage'] .= "showing time will be defaulted to their old showing time).";
-		$data['yesURI'] = base_url().'EventCtrl2/seal_process';
-		$data['noURI'] = base_url().'EventCtrl2/manageEvent';
+		$data['yesURI'] = base_url().'eventctrl2/seal_process';
+		$data['noURI'] = base_url().'eventctrl2/manageEvent';
 		$data['formInputs'] = Array( 
 			 'promptedIndicator' => '1',
 			 'eventID' => $eventID,
@@ -141,11 +141,11 @@ class EventCtrl2 extends CI_Controller {
 		
 		$this->bookingmaintenance->cleanDefaultedBookings( $eventID , $showtimeID );
 		$this->bookingmaintenance->cleanDefaultedSlots( $eventID , $showtimeID, NULL );
-		if( $this->Event_model->setForCheckIn(  $eventID, $showtimeID ) )
+		if( $this->event_model->setForCheckIn(  $eventID, $showtimeID ) )
 		{
 			$data[ 'theMessage' ] = "Successfully sealed the showing time. Guests can now check-in.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+			$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 			$data[ 'defaultAction' ] = 'Manage Event';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -160,8 +160,8 @@ class EventCtrl2 extends CI_Controller {
 		$data['title'] = 'Be careful on what you wish for ...';
 		$data['theMessage'] = "Are you sure you want to start straggling for this showing time?";
 		$data['theMessage'] .= "<br/><br/>Doing so will forfeit all the slots of guests who are not appearing yet.";
-		$data['yesURI'] = base_url().'EventCtrl2/straggle_process';
-		$data['noURI'] = base_url().'EventCtrl2/manageEvent';
+		$data['yesURI'] = base_url().'eventctrl2/straggle_process';
+		$data['noURI'] = base_url().'eventctrl2/manageEvent';
 		$data['formInputs'] = Array( 
 			 'promptedIndicator' => '1',
 			 'eventID' => $eventID,
@@ -183,11 +183,11 @@ class EventCtrl2 extends CI_Controller {
 		$this->bookingmaintenance->cleanDefaultedBookings( $eventID , $showtimeID );
 		$this->bookingmaintenance->cleanDefaultedSlots( $eventID , $showtimeID, NULL );
 		$this->bookingmaintenance->forfeitSlotsOfNoShowGuests( $eventID, $showtimeID );
-		if( $this->Event_model->setForStraggle(  $eventID, $showtimeID ) )
+		if( $this->event_model->setForStraggle(  $eventID, $showtimeID ) )
 		{
 			$data[ 'theMessage' ] = "Successfully set straggling the showing time. Chance customers can now take slots.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+			$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 			$data[ 'defaultAction' ] = 'Manage Event';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -203,8 +203,8 @@ class EventCtrl2 extends CI_Controller {
 		$data['theMessage'] = "Are you sure you want to cancel this showing time?";
 		$data['theMessage'] .= "<br/><br/>Doing so will forfeit all yet unconfirmed bookings <br/>(those who are transferring to this.";
 		$data['theMessage'] .= "showing time will be defaulted to their old showing time).";
-		$data['yesURI'] = base_url().'EventCtrl2/cancel_process';
-		$data['noURI'] = base_url().'EventCtrl2/manageEvent';
+		$data['yesURI'] = base_url().'eventctrl2/cancel_process';
+		$data['noURI'] = base_url().'eventctrl2/manageEvent';
 		$data['formInputs'] = Array( 
 			 'promptedIndicator' => '1',
 			 'eventID' => $eventID,
@@ -226,11 +226,11 @@ class EventCtrl2 extends CI_Controller {
 		
 		$this->bookingmaintenance->cleanDefaultedBookings( $eventID , $showtimeID );
 		$this->bookingmaintenance->cleanDefaultedSlots( $eventID , $showtimeID, NULL );
-		if( $this->Event_model->setAsCancelled(  $eventID, $showtimeID ) )
+		if( $this->event_model->setAsCancelled(  $eventID, $showtimeID ) )
 		{
 			$data[ 'theMessage' ] = "Successfully cancelled the showing time.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+			$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 			$data[ 'defaultAction' ] = 'Manage Event';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -245,8 +245,8 @@ class EventCtrl2 extends CI_Controller {
 		$data['title'] = 'Be careful on what you wish for ...';
 		$data['theMessage'] = "Are you sure you want to finalize this showing time?";
 		$data['theMessage'] .= "<br/><br/>Doing so will forfeit all the slots of guests who are not appearing yet and prevent any more changes to this event.";
-		$data['yesURI'] = base_url().'EventCtrl2/finalize_process';
-		$data['noURI'] = base_url().'EventCtrl2/manageEvent';
+		$data['yesURI'] = base_url().'eventctrl2/finalize_process';
+		$data['noURI'] = base_url().'eventctrl2/manageEvent';
 		$data['formInputs'] = Array( 
 			 'promptedIndicator' => '1',
 			 'eventID' => $eventID,
@@ -265,11 +265,11 @@ class EventCtrl2 extends CI_Controller {
 		$showtimeID 	= $this->input->post( 'showtimeID' );
 		$this->common_pre_check( $eventID, $showtimeID );
 				
-		if( $this->Event_model->setAsFinalized(  $eventID, $showtimeID ) )
+		if( $this->event_model->setAsFinalized(  $eventID, $showtimeID ) )
 		{
 			$data[ 'theMessage' ] = "Successfully finalized the showing time. No more changes allowed to this one.";
 			$data[ 'redirect' ] = TRUE;
-			$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+			$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 			$data[ 'defaultAction' ] = 'Manage Event';	
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -287,11 +287,11 @@ class EventCtrl2 extends CI_Controller {
 		
 		$this->checkAndActOnEventMgr();
 		$accountNum = $this->clientsidedata_model->getAccountNum();
-		if( !$this->Event_model->doesEventBelongToUser( NULL, $eventID, $accountNum ) ){
+		if( !$this->event_model->doesEventBelongToUser( NULL, $eventID, $accountNum ) ){
 			die('Event does not belong to you.');
 		}
 		
-		$singleShowtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
+		$singleShowtimeObj = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );
 		if( $singleShowtimeObj === false )
 		{
 			die('Showing time not found.');
@@ -301,7 +301,7 @@ class EventCtrl2 extends CI_Controller {
 		$this->clientsidedata_model->setShowtimeID( $showtimeID  );
 		$this->clientsidedata_model->setTicketClassGroupID( $singleShowtimeObj->Ticket_Class_GroupID  );
 		$this->clientsidedata_model->setSlotsBeingBooked( $singleShowtimeObj->Slots );
-		redirect('EventCtrl2/manage_tc_forward');
+		redirect('eventctrl2/manage_tc_forward');
 	}
 	
 	function manage_tc_forward()
@@ -314,17 +314,17 @@ class EventCtrl2 extends CI_Controller {
 		if( ( $sessionActivity[0] === "MANAGE_TICKETCLASS" and $sessionActivity[1] === 2 )
 			 === FALSE			 
 		){
-			redirect('EventCtrl2/manageEvent');
+			redirect('eventctrl2/manageEvent');
 		}
 		
 		$eventID    = $this->clientsidedata_model->getEventID();
 		$showtimeID = $this->clientsidedata_model->getShowtimeID();
-		$eventObj	= $this->Event_model->getEventInfo( $eventID );		
-		$singleShowtimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
+		$eventObj	= $this->event_model->getEventInfo( $eventID );		
+		$singleShowtimeObj = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );
 		
-		$seatMapObj = $this->Seat_model->getSingleMasterSeatMapData( $singleShowtimeObj->Seat_map_UniqueID );
-		$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $singleShowtimeObj->Ticket_Class_GroupID );
-		$ticketClassNotShared = $this->TicketClass_model->isTicketClassGroupOnlyForThisShowtime( $eventID, $showtimeID, $singleShowtimeObj->Ticket_Class_GroupID );
+		$seatMapObj = $this->seat_model->getSingleMasterSeatMapData( $singleShowtimeObj->Seat_map_UniqueID );
+		$ticketClasses = $this->ticketclass_model->getTicketClasses( $eventID, $singleShowtimeObj->Ticket_Class_GroupID );
+		$ticketClassNotShared = $this->ticketclass_model->isTicketClassGroupOnlyForThisShowtime( $eventID, $showtimeID, $singleShowtimeObj->Ticket_Class_GroupID );
 		
 		$data['eventObj'] 	   = $eventObj;
 		$data['seatMapObj']    = $seatMapObj;
@@ -366,23 +366,23 @@ class EventCtrl2 extends CI_Controller {
 		unset( $_POST['share_separate'] );
 		
 		if( true )
-		{	// all statements within this if-statement was taken from EventCtrl/create_step6
+		{	// all statements within this if-statement was taken from eventctrl/create_step6
 			$x = 0;
 			$classesCount = 0;
 			foreach( $_POST as $key_x => $val) // isn't this somewhat a security risk because we don't escape?
 			{
 					$key = mysql_real_escape_string( $key_x );
-					if( $this->UsefulFunctions_model->startsWith( $key, "price" ) )
+					if( $this->usefulfunctions_model->startsWith( $key, "price" ) )
 					{
 						$temp = explode("_",$key);
 						$prices[ $temp[1] ] = $val;					
 					}else
-					if( $this->UsefulFunctions_model->startsWith( $key, "slot" ) )
+					if( $this->usefulfunctions_model->startsWith( $key, "slot" ) )
 					{					
 						$temp = explode("_",$key);
 						$slots[ $temp[1] ] = $val;
 					}else
-					if( $this->UsefulFunctions_model->startsWith( $key, "holdingTime" ) )
+					if( $this->usefulfunctions_model->startsWith( $key, "holdingTime" ) )
 					{					
 						$temp = explode("_",$key);
 						$holdingTime[ $temp[1] ] = $val;
@@ -395,12 +395,12 @@ class EventCtrl2 extends CI_Controller {
 		if( $share_separate !== false and intval($share_separate) === 1 )
 		{										
 			$databaseSuccess = TRUE;
-			$lastTicketClassGroupID = $this->TicketClass_model->getLastTicketClassGroupID( $eventID );
+			$lastTicketClassGroupID = $this->ticketclass_model->getLastTicketClassGroupID( $eventID );
 			$lastTicketClassGroupID++;
 			// CODE MISSING: database checkpoint			
 			for( $x = 0; $x < $classesCount; $x++ )
 			{			
-				$databaseSuccess = $this->TicketClass_model->createTicketClass(
+				$databaseSuccess = $this->ticketclass_model->createTicketClass(
 					$lastTicketClassGroupID,
 					$x+1,
 					$eventID,
@@ -421,15 +421,15 @@ class EventCtrl2 extends CI_Controller {
 			}//for			
 			// CODE MISSING: database commit			
 			// now set ticket class's group id for the said showing time
-			$this->Event_model->setSingleShowingTimeTicketClass( $eventID, $showtimeID , $lastTicketClassGroupID );
+			$this->event_model->setSingleShowingTimeTicketClass( $eventID, $showtimeID , $lastTicketClassGroupID );
 			$outputTCGID = $lastTicketClassGroupID."_NEW";
 		}else{
-			$ticketClasses = $this->TicketClass_model->getTicketClasses( $eventID, $currentTicketClassGroupID, true );
+			$ticketClasses = $this->ticketclass_model->getTicketClasses( $eventID, $currentTicketClassGroupID, true );
 			$outputTCGID =  $currentTicketClassGroupID."_SAME";;
 					
 			foreach( $slots as $key => $val )
 			{
-				$databaseSuccess = $this->TicketClass_model->updateTicketClass(
+				$databaseSuccess = $this->ticketclass_model->updateTicketClass(
 					$eventID,
 					$currentTicketClassGroupID,
 					$ticketClasses[ $key ]->UniqueID,					
@@ -476,7 +476,7 @@ class EventCtrl2 extends CI_Controller {
 	{
 		$data[ 'theMessage' ] = "Successfully updated the ticket classes.";
 		$data[ 'redirect' ] = TRUE;
-		$data[ 'redirectURI' ] = base_url().'EventCtrl2/manageEvent';
+		$data[ 'redirectURI' ] = base_url().'eventctrl2/manageEvent';
 		$data[ 'defaultAction' ] = 'Manage Event';	
 		$this->load->view( 'successNotice', $data );
 		return true;

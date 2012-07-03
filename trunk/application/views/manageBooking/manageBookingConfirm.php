@@ -1,6 +1,6 @@
 <?php
 /*
-	Copied from manageBooking02_selectShowingTime.php
+	Copied from managebooking02_selectShowingTime.php
 */
 
 $this->load->view('html-generic/doctype.inc');
@@ -28,7 +28,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	
 	<!--For modal v1-->	
@@ -40,7 +40,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking02.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/managebooking02.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookPaymentChannelSelection.js'; ?>" ></script>
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');	
@@ -85,7 +85,7 @@ $this->load->view('html-generic/metadata.inc');
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" style="clear:both;" >
 				<input type="hidden" id="doNotProcessTime" value="1" />
-				<form method="post"  action="<?php echo base_url().'EventCtrl/managebooking_finalize' ?>" name="formLogin" id="formMain">					
+				<form method="post"  action="<?php echo base_url().'eventctrl/managebooking_finalize' ?>" name="formLogin" id="formMain">					
 					<div class="accordionImitation cEvent04_container aci1_Book3Special">				
 						<div id="title">Details</div>
 						<div id="content">																															

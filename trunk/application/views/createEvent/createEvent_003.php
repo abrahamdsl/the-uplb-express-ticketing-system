@@ -63,7 +63,7 @@ $this->load->view('html-generic/metadata.inc');
 			</div>			
 			<!-- accordion start -->			
 			<div class="center_purest homePage_accordion_container" >
-				<form method="post"  action="<?php echo base_url().'EventCtrl/create_step4' ?>" name="formLogin" id="formMain">					
+				<form method="post"  action="<?php echo base_url().'eventctrl/create_step4' ?>" name="formLogin" id="formMain">					
 					<div id="tabs">
 					<ul>						
 						<?php

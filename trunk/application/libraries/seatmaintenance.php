@@ -17,12 +17,12 @@ class SeatMaintenance{
     {			
 		$this->CI = & get_instance();
 		$this->CI->load->model('clientsidedata_model');
-		$this->CI->load->model('Event_model');				
+		$this->CI->load->model('event_model');				
 		$this->CI->load->model('Guest_model');				
-		$this->CI->load->model('MakeXML_model');				
-		$this->CI->load->model('Seat_model');				
-		$this->CI->load->model('Slot_model');				
-		$this->CI->load->model('TicketClass_model');				
+		$this->CI->load->model('makexml_model');				
+		$this->CI->load->model('seat_model');				
+		$this->CI->load->model('slot_model');				
+		$this->CI->load->model('ticketclass_model');				
     }
 	
 	function areSeatsOccupied( $seat_assignments, $eventID, $showtimeID )
@@ -41,7 +41,7 @@ class SeatMaintenance{
 								- x : old seat matrix X coordinate
 								- y : old seat matrix Y coordinate
 						)
-		*	@history This is formerly SeatCtrl/areSeatsOccupied
+		*	@history This is formerly seatctrl/areSeatsOccupied
 		*	@returns Array with indices
 					 0 : BOOLEAN, if FALSE - no seats are occupied. Else, there is or an error
 					 1 : For use only if index 0 is TRUE: specifies what occurred
@@ -66,7 +66,7 @@ class SeatMaintenance{
 					continue;
 				}
 			}
-			$isSeatAvailableResult = $this->CI->Seat_model->isSeatAvailable( 
+			$isSeatAvailableResult = $this->CI->seat_model->isSeatAvailable( 
 				$seat_assignments[ $x ][ 'x' ],
 				$seat_assignments[ $x ][ 'y' ],
 				$eventID,
@@ -96,9 +96,9 @@ class SeatMaintenance{
 		**/
 		$xmlfile = $this->CI->clientsidedata_model->getGuestNoSeatXMLFile();
 		if( $xmlfile === FALSE ) return Array( FALSE, 'FILEPTR404' );
-		$xml_contents = $this->CI->MakeXML_model->readXML( $xmlfile );
+		$xml_contents = $this->CI->makexml_model->readXML( $xmlfile );
 		if( $xml_contents === FALSE ) return Array( FALSE, 'FILE404' );
-		return Array( TRUE, $this->CI->MakeXML_model->toArray_prep( new SimpleXMLElement($xml_contents) ) );
+		return Array( TRUE, $this->CI->makexml_model->toArray_prep( new SimpleXMLElement($xml_contents) ) );
 	}//arrayizeGuestNoSeatInfo()
 	
 	function cleanDefaultedSeats( $eventID, $showtimeID )
@@ -108,11 +108,11 @@ class SeatMaintenance{
 			that lapsed the payment period for it to be 'confirmed' (`Status` = 1 ).
 			If there are, make it available.
 		*/
-		$lapsedSeatsArray = $this->CI->Seat_model->getLapsedHoldingTimeSeats( $eventID, $showtimeID );		
+		$lapsedSeatsArray = $this->CI->seat_model->getLapsedHoldingTimeSeats( $eventID, $showtimeID );		
 		if( $lapsedSeatsArray == false ) return false;	
 		foreach( $lapsedSeatsArray as $singleSeatObj )
 		{				
-			 $this->CI->Seat_model->markSeatAsAvailable( 
+			 $this->CI->seat_model->markSeatAsAvailable( 
 				$eventID, 
 				$showtimeID, 
 				$singleSeatObj->Matrix_x, 
@@ -129,19 +129,19 @@ class SeatMaintenance{
 	*	@description Gets guests' seat data depending on the slots assigned to them.
 	*	@remarks The parameter $seat_assignments is directly manipulated back in the
 			function since it is passed to here by reference!
-	*	@history moved from EventCtrl/book_step5::area#bookstep5_pr_seat_finally_assign_db
-	*	@calledby EventCtrl/book_step5; EventCtrl/cancelBookingProcess
+	*	@history moved from eventctrl/book_step5::area#bookstep5_pr_seat_finally_assign_db
+	*	@calledby eventctrl/book_step5; eventctrl/cancelBookingProcess
 	**/
 		for( $x = 0; $x < $slots; $x++ )
 		{
-			$slot_old_st = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter( 
+			$slot_old_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter( 
 				$currentBookingInfo->EVENT_ID,
 				$currentBookingInfo->SHOWTIME_ID,
 				$currentBookingInfo->TICKET_CLASS_GROUP_ID,
 				$currentBookingInfo->TICKET_CLASS_UNIQUE_ID,
 				$seat_assignments[ $x ][ "uuid" ]
 			);
-			$slot_new_st = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter(
+			$slot_new_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter(
 				$bookingInfo->EVENT_ID,
 				$bookingInfo->SHOWTIME_ID,
 				$bookingInfo->TICKET_CLASS_GROUP_ID,
@@ -173,7 +173,7 @@ class SeatMaintenance{
 		*	@created 03MAR2012-1147
 		*	@description Gets seat representations of guests.
 		*	@history 11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID		
-		*	@history 28JUN2012-1438 Moved from EventCtrl
+		*	@history 28JUN2012-1438 Moved from eventctrl
 		**/
 		$seatDetailsOfGuest = Array();
 		foreach( $guest_arr as $singleGuest )
@@ -183,7 +183,7 @@ class SeatMaintenance{
 
 			if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
 			{
-				 $slotObj = $this->CI->Slot_model->getSlotAssignedToUser_MoreFilter(
+				 $slotObj = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter(
 					 $eventID, 
 					 $showtimeID,
 					 $ticketClassGroupID, 
@@ -195,14 +195,14 @@ class SeatMaintenance{
 					'Matrix_y' => (is_null ($slotObj->Seat_y) ) ? "" : $slotObj->Seat_y
 				);
 			}else{
-				$seatMatrixRepObj = $this->CI->Slot_model->getSeatAssignedToUser( $singleGuest->UUID );
+				$seatMatrixRepObj = $this->CI->slot_model->getSeatAssignedToUser( $singleGuest->UUID );
 			}
 			if( $seatMatrixRepObj !== false ){	// there is seat assigned for this user
 				if( is_null($slotObj->Seat_x) or is_null($slotObj->Seat_y) )
 				{
 					 $seatVisualRepStr = "NONE";
 				}else{
-					$seatVisualRepStr = $this->CI->Seat_model->getVisualRepresentation(
+					$seatVisualRepStr = $this->CI->seat_model->getVisualRepresentation(
 						$seatMatrixRepObj['Matrix_x'],
 						$seatMatrixRepObj['Matrix_y'],
 						$eventID,
@@ -223,19 +223,19 @@ class SeatMaintenance{
 	{
 		$ticketClasses = NULL;
 		// get the ticket classes of the events being configured
-		$ticketClasses_obj = $this->CI->TicketClass_model->getTicketClasses( $eventID,  $tcgID );
+		$ticketClasses_obj = $this->CI->ticketclass_model->getTicketClasses( $eventID,  $tcgID );
 		if( $createEvent ){
 			//update the seat map of the showing time
-			$this->CI->Event_model->setShowingTimeSeatMap( $seatmapUID, $eventID, $showtimeID );
+			$this->CI->event_model->setShowingTimeSeatMap( $seatmapUID, $eventID, $showtimeID );
 			// duplicate seat pattern to the table containing actual seats
-			$this->CI->Seat_model->copyDefaultSeatsToActual( $seatmapUID );
+			$this->CI->seat_model->copyDefaultSeatsToActual( $seatmapUID );
 			// update the eventID and UniqueID of the newly duplicated seats
-			$this->CI->Seat_model->updateNewlyCopiedSeats( $eventID,  $showtimeID );
+			$this->CI->seat_model->updateNewlyCopiedSeats( $eventID,  $showtimeID );
 			// turn the previously retrieved ticket classes into an array accessible by the class name			
 		}
-		$ticketClasses = $this->CI->TicketClass_model->makeArray_NameAsKey( $ticketClasses_obj );
+		$ticketClasses = $this->CI->ticketclass_model->makeArray_NameAsKey( $ticketClasses_obj );
 		// get seat map object to access its rows and cols, for use in the loop later
-		$seatmap_obj = $this->CI->Seat_model->getSingleMasterSeatMapData( $seatmapUID );
+		$seatmap_obj = $this->CI->seat_model->getSingleMasterSeatMapData( $seatmapUID );
 		/*
 			Now, update data for each seat.
 		*/

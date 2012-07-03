@@ -12,7 +12,7 @@
 **/
 
 
-class UsefulFunctions_model extends CI_Model {
+class usefulfunctions_model extends CI_Model {
 	
 	function __construct()
 	{

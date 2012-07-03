@@ -43,7 +43,7 @@ $this->load->view('html-generic/doctype.inc');
 				Would you like to connect your social networking accounts? If so, click the corresponding image for that
 				account. <br/> You can also click next immediately if you want to skip this.
 			</div>
-			<form name="socialNetworkForm" action="<?php echo base_url()."userAccountCtrl/newUserWelcome"; ?>" method="post" >
+			<form name="socialNetworkForm" action="<?php echo base_url()."useracctctrl/newUserWelcome"; ?>" method="post" >
 				<input type="hidden" name="formValidityIndicator" value="*888" /> <!-- *888 some arbitrary value -->
 				<div class="comingSoon" >
 					<h1>This feature is coming soon.</h1>

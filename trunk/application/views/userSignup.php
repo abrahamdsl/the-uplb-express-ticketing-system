@@ -56,7 +56,7 @@ $this->load->view('html-generic/doctype.inc');
 				it is required.
 			</div>				
 			<!-- start of form -->			
-			<form method="post"  action="<?php echo base_url().'userAccountCtrl/userSignup_step2' ?>" name="formSignup" id="formMain">
+			<form method="post"  action="<?php echo base_url().'useracctctrl/userSignup_step2' ?>" name="formSignup" id="formMain">
 
 				<div class="center_pure">
 					<fieldset class="fieldsCollection">						

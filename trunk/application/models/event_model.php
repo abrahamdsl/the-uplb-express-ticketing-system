@@ -12,7 +12,7 @@ created 07DEC2011 1156
 */
 
 
-class Event_model extends CI_Model {
+class event_model extends CI_Model {
 	
 	function __construct()
 	{
@@ -33,7 +33,7 @@ class Event_model extends CI_Model {
 			Doesn't matter if the separators are '/' (forward slash), 
 			they would be replaced with dashes.		
 
-			19JAN2012-1105 : REFACTOR: Might consider moving this to 'UsefulFunctions_model.php'
+			19JAN2012-1105 : REFACTOR: Might consider moving this to 'usefulfunctions_model.php'
 		*/
 		if ( $thisDate == ""  ) return "2000-01-01";	// sent an empty string
 			
@@ -404,7 +404,7 @@ class Event_model extends CI_Model {
 			date_default_timezone_set('Asia/Manila');
 			$currentDate = date( 'Y-m-d' );
 			$currentTime = date( 'H:i:s' );
-			log_message( 'debug', 'Event_model::getShowingTimePaymentDeadline: '.$currentDate." - ".$currentTime );
+			log_message( 'debug', 'event_model::getShowingTimePaymentDeadline: '.$currentDate." - ".$currentTime );
 			$showtime = $this->getSingleShowingTime( $eventID, $uniqueID );			
 			if( $showtime === false ) return false;
 			switch( $showtime->Book_Completion_Option )
@@ -446,7 +446,7 @@ class Event_model extends CI_Model {
 				$deadline["date"] = $showtime->StartDate;
 				$deadline["time"] = date( 'H:i', strtotime( '-45 min', $showtime->StartTime ) );
 			}
-			log_message( 'debug', 'Event_model::getShowingTimePaymentDeadline computed:'.$deadline["date"]." ".$deadline["time"] );
+			log_message( 'debug', 'event_model::getShowingTimePaymentDeadline computed:'.$deadline["date"]." ".$deadline["time"] );
 			return $deadline;
 	}//getShowingTimePaymentDeadline(..)
 	
@@ -554,8 +554,8 @@ class Event_model extends CI_Model {
 		*/
 		$showtimeObj = $this->getSingleShowingTime( $eventID, $showtimeID );
 		if( $showtimeObj === false ) return false;
-			log_message('DEBUG','Event_model::isSeatSelectionRequired | intval ' . intval( $showtimeObj->SeatRequiredOnConfirmation ) );
-			log_message('DEBUG','Event_model::isSeatSelectionRequired | bool ' . intval( ( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 ) ) );
+			log_message('DEBUG','event_model::isSeatSelectionRequired | intval ' . intval( $showtimeObj->SeatRequiredOnConfirmation ) );
+			log_message('DEBUG','event_model::isSeatSelectionRequired | bool ' . intval( ( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 ) ) );
 		return( intval( $showtimeObj->SeatRequiredOnConfirmation ) === 1 );	
 	}
 	

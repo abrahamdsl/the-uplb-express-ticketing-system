@@ -56,7 +56,7 @@ $this->load->view('html-generic/doctype.inc');
 				Feeling not secure anymore? Then change it here now.
 			</div>				
 			<!-- start of form -->			
-			<form method="post"  action="<?php echo base_url().'userAccountCtrl/changePassword_step2' ?>" name="formSignup" id="formMain">
+			<form method="post"  action="<?php echo base_url().'useracctctrl/changePassword_step2' ?>" name="formSignup" id="formMain">
 				<div class="center_pure">
 					<fieldset class="fieldsCollection">												
 						<div class="row" id="oldPasswordFld">							

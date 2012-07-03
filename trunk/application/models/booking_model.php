@@ -13,7 +13,7 @@
 **/
 
 
-class Booking_model extends CI_Model {
+class booking_model extends CI_Model {
 
 	function __construct()
 	{

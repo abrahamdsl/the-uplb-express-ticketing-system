@@ -18,7 +18,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_basic.css'; ?>"/>		
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
@@ -41,7 +41,7 @@ $this->load->view('html-generic/metadata.inc');
 			});
 			
 			$('a#buttonOK').click( function(e){
-				window.location = CI.base_url + 'userAccountCtrl/manageuser';
+				window.location = CI.base_url + 'useracctctrl/manageuser';
 			});
 		});
 	</script>
@@ -124,25 +124,25 @@ $this->load->view('html-generic/metadata.inc');
 					<div class="containingClassTable">								
 						<div class="metrotile notyet" name="viewdetails" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>
-							<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_viewdetails'; ?>" class="notyet" >
+							<form method="post" action="<?php echo base_url().'useracctctrl/manageuser_viewdetails'; ?>" class="notyet" >
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>"   />
 							</form>
 						</div>
 						<div class="metrotile" name="resetpasword" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-resetpassword.png" alt="Reset password" /></a>
-							<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_resetpassword'; ?>" >
+							<form method="post" action="<?php echo base_url().'useracctctrl/manageuser_resetpassword'; ?>" >
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>" class="notyet" />
 							</form>
 						</div>
 						<div class="metrotile" name="editroles" >
 							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-editroles.png" alt="Edit Roles" /></a>
-							<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_editroles'; ?>" >
+							<form method="post" action="<?php echo base_url().'useracctctrl/manageuser_editroles'; ?>" >
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>" />
 							</form>
 						</div>
 						<div class="metrotile notyet" name="discipline" >
 							<a  href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-disciplineuser.png" alt="Discipline user" /></a>
-							<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_disciplineuser'; ?>" >
+							<form method="post" action="<?php echo base_url().'useracctctrl/manageuser_disciplineuser'; ?>" >
 								<input type="hidden" name="accountNum" value="<?php echo $userMainInfo->AccountNum; ?>" class="notyet"  />
 							</form>
 						</div>						

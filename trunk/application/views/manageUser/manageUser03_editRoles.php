@@ -18,7 +18,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
 	<style type="text/css" >
 		div.inactive{
 			background-color: rgb(145,145,145);
@@ -76,7 +76,7 @@ $this->load->view('html-generic/metadata.inc');
 			});
 			
 			$('a#buttonReset').click( function(){
-				window.location = CI.base_url + 'userAccountCtrl/manageUser_step2';
+				window.location = CI.base_url + 'useracctctrl/manageUser_step2';
 			});
 			
 			$('a#buttonOK').click( function(){
@@ -169,7 +169,7 @@ $this->load->view('html-generic/metadata.inc');
 							</div>
 					</div>
 					<div class="containingClassTable">
-						<form method="post" action="<?php echo base_url().'userAccountCtrl/manageuser_editrole_save'; ?>" id="formMain" >
+						<form method="post" action="<?php echo base_url().'useracctctrl/manageuser_editrole_save'; ?>" id="formMain" >
 							<div class="metrotile" id="customer" >
 								<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-user_customer.png" alt="Customer" /></a>
 								<input type="hidden" name="customer" value="<?php echo $permissionObj->CUSTOMER; ?>" />

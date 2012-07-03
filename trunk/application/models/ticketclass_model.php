@@ -4,7 +4,7 @@ created 12DEC2011 1753
 */
 
 
-class TicketClass_model extends CI_Model {
+class ticketclass_model extends CI_Model {
 	
 	function __construct()
 	{
@@ -128,7 +128,7 @@ class TicketClass_model extends CI_Model {
 		/*
 			Created 06FEB2012-1850
 			
-			Created for EventCtrl/manageBooking.
+			Created for eventctrl/managebooking.
 			This is used instead of SQL joins or straight call from there 
 			to $this->getTicketClass - kinda more expensive in terms of processing power
 			and storage.			
@@ -236,7 +236,7 @@ class TicketClass_model extends CI_Model {
 			Created 04FEB2012-1921
 			
 			Accepts one parameter, actually, the one being returned by $this->getTicketClasses(..),
-			This is being called from EventCtrl controller.
+			This is being called from eventctrl controller.
 		*/
 		$theArray = Array();
 		

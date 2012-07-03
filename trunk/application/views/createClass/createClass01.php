@@ -21,7 +21,7 @@ $this->load->view('html-generic/metadata.inc');
 	
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep1.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent06.css'; ?>"/>
 	<!--For modal v1-->	
@@ -86,7 +86,7 @@ $this->load->view('html-generic/metadata.inc');
 						<?php
 							$function = (isset($classObj)) ? 'updateClass' : 'createClass_step2';
 						?>
-						<form method="post"  action="<?php echo base_url().'AcademicCtrl/'.$function; ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'academicctrl/'.$function; ?>" name="formLogin" id="formMain">
 							<?php if(isset($classObj)){ ?>
 								<input type="hidden" name="classID" value="<?php echo $classObj->UUID; ?>" />
 							<?php } ?>

@@ -25,12 +25,12 @@ function formSubmit()
 			$('span#ajaxind').hide();
 			if( $( data ).find('resultstring').text() == 'BOOKING_CONFIRM_CLEARED' )
 			{
-				window.location = CI.base_url + 'EventCtrl/confirm_step2_forward';
+				window.location = CI.base_url + 'eventctrl/confirm_step2_forward';
 			}else{
 				$.fn.makeOverlayForResponse( data );
 			}
 			/*
-			if( data === "true" ) window.location = CI.base_url + 'EventCtrl/confirm_step2_forward';
+			if( data === "true" ) window.location = CI.base_url + 'eventctrl/confirm_step2_forward';
 			else				
 				$.fn.nextGenModal({
 				   msgType: 'error',

@@ -143,10 +143,10 @@ $this->load->view('html-generic/metadata.inc');
 					<?php
 						$slots = $bookingInfo->SLOT_QUANTITY;
 					?>
-					<input type="hidden" id="manageBookingChooseSeat" value="<?php echo intval($isActivityManageBooking); ?>"/>
+					<input type="hidden" id="managebookingChooseSeat" value="<?php echo intval($isActivityManageBooking); ?>"/>
 					<input type="hidden" id="_js_use_slots" value="<?php echo $slots ?>" />
 					<input type="hidden" id="_js_use_ticketClassUniqueID" value="<?php echo $bookingInfo->TICKET_CLASS_UNIQUE_ID ?>" />
-					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step5'; ?>" id="formMain">					
+					<form name="formMain" method="post" action="<?php echo base_url().'eventctrl/book_step5'; ?>" id="formMain">					
 					
 					<div id="tabs">					
 						<ul>

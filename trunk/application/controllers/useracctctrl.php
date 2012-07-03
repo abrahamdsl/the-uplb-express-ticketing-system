@@ -1,6 +1,6 @@
 <?php
 
-class userAccountCtrl extends CI_Controller {
+class useracctctrl extends CI_Controller {
 
 	function __construct()
 	{
@@ -8,29 +8,29 @@ class userAccountCtrl extends CI_Controller {
 		include_once( APPPATH.'constants/_constants.inc');		
 		$this->load->library('session');
 		$this->load->model('login_model');
-		$this->load->model('Academic_model');
-		$this->load->model('Account_model');
+		$this->load->model('academic_model');
+		$this->load->model('account_model');
 		$this->load->model('clientsidedata_model');
-		$this->load->model('MakeXML_model');
-		$this->load->model('Payment_model');
-		$this->load->model('Permission_model');
-		$this->load->model('UsefulFunctions_model');
+		$this->load->model('makexml_model');
+		$this->load->model('payment_model');
+		$this->load->model('permission_model');
+		$this->load->model('usefulfunctions_model');
 		
 		if( !$this->login_model->isUser_LoggedIn() )
 		{	// error code 4999
 			$allowed_without_auth = Array(
-				'/userAccountCtrl/userSignup'				
+				'/useracctctrl/userSignup'				
 			);
 			if( !in_array( $_SERVER[ 'REDIRECT_QUERY_STRING' ], $allowed_without_auth ) ) {
 				$this->clientsidedata_model->setRedirectionURLAfterAuth( $_SERVER[ 'REDIRECT_QUERY_STRING' ] );
-				redirect('SessionCtrl/authenticationNeeded');
+				redirect('sessionctrl/authenticationNeeded');
 			}
 		}	
 	}
 	
 	function index()
 	{
-		redirect('SessionCtrl');
+		redirect('sessionctrl');
 	}//index
 	
 	function addpaymentmode()
@@ -55,39 +55,39 @@ class userAccountCtrl extends CI_Controller {
 		$internal_data 		= $this->input->post( 'internal_data' ); 
 		if( $name === false ){
 			$data['error'] = "NO_DATA";			
-			$data['redirectURI'] = base_url().'userAccountCtrl/managepaymentmode';
+			$data['redirectURI'] = base_url().'useracctctrl/managepaymentmode';
 			$data['defaultAction'] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
 		if( strlen($name) < 1 or
-			!$this->UsefulFunctions_model->isPaymentModeTypeValid( $ptype ) or
-			!$this->UsefulFunctions_model->isInternalDataTypeValid( $internal_data_type ) )
+			!$this->usefulfunctions_model->isPaymentModeTypeValid( $ptype ) or
+			!$this->usefulfunctions_model->isInternalDataTypeValid( $internal_data_type ) )
 		{			
 			echo( 'Invalid entries specified!<br/><br/>' ); // EC 4998
 			echo('<a href="javascript: window.history.back();" >Go back</a>' );
 			return false;
 		}
-		if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+		if( $this->payment_model->getPaymentModeByName( $name) !== FALSE )
 		{
 			echo( 'Payment mode exists already!<br/><br/>' ); // EC 1500
 			echo('<a href="javascript: window.history.back();" >Go back</a>' );
 			return false;
 		}
-		$result = $this->Payment_model->createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
+		$result = $this->payment_model->createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
 			$email, $comments, $internal_data_type, $internal_data
 		);
 		if( $result )
 		{
 			$data[ 'theMessage' ] = "The payment mode has been successfully added."; //error code 2500
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'successNotice', $data );
 			return true;
 		}else{
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "Something went wrong while adding the payment mode. It may have been not saved."; // 5500
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
@@ -112,7 +112,7 @@ class userAccountCtrl extends CI_Controller {
 		$newPass;
 		$isAdminResettingPassword;
 		$whereNext;
-		$whereNextURI = 'userAccountCtrl/myAccount';
+		$whereNextURI = 'useracctctrl/myAccount';
 		$responseDescriptor;
 		$responseCaption;
 		
@@ -123,11 +123,11 @@ class userAccountCtrl extends CI_Controller {
 		if( !$isAdminResettingPassword ){
 			$accountNum = $this->clientsidedata_model->getAccountNum();
 			$oldPass    = $this->input->post( "oldPassword" );
-			$userObj 	= $this->Account_model->getUserInfoByAccountNum( $accountNum );		
+			$userObj 	= $this->account_model->getUserInfoByAccountNum( $accountNum );		
 					
-			if( !$this->Account_model->authenticateUser( $userObj->username, $oldPass ) )
+			if( !$this->account_model->authenticateUser( $userObj->username, $oldPass ) )
 			{			
-				echo $this->MakeXML_model->XMLize_AJAX_Response( 
+				echo $this->makexml_model->XMLize_AJAX_Response( 
 					// ec 4003
 					"error", "authentication failure", "AUTH_FAIL", 0, "Invalid current password. Please try again.", "" 
 				);
@@ -135,7 +135,7 @@ class userAccountCtrl extends CI_Controller {
 			}
 		}
 				
-		$result = $this->Account_model->setPassword( $newPass, $accountNum );
+		$result = $this->account_model->setPassword( $newPass, $accountNum );
 		
 		if( $isAdminResettingPassword ){
 			// EC 1002
@@ -150,7 +150,7 @@ class userAccountCtrl extends CI_Controller {
 			$responseCaption = "My Account";
 		}		
 		$whereNext = '<br/><br/><a href="'.base_url().$whereNextURI.'" >Back to '.$responseCaption.'</a>';		
-		echo $this->MakeXML_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, $responseDescriptor.$whereNext );
+		echo $this->makexml_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, $responseDescriptor.$whereNext );
 		return true;
 	}//changePassword_step2
 			
@@ -180,22 +180,22 @@ class userAccountCtrl extends CI_Controller {
 			echo "ERROR_0_Info needed";
 			return false;
 		}
-		if( $this->Account_model->getUserInfoByUsername( $username ) !== false )
+		if( $this->account_model->getUserInfoByUsername( $username ) !== false )
 		{   // EC 4202
 			echo "ERROR_1_Username is already in use.";
 			return false;
 		}
-		if( $this->Account_model->isThisNameExistent( $fName, $mName, $lName ) !== false )
+		if( $this->account_model->isThisNameExistent( $fName, $mName, $lName ) !== false )
 		{   // EC 4200
 			echo "ERROR_2_The name '".$lName.", ".$fName." ".$mName."' is already being used.";
 			return false;
 		}
-		if(  $studentNum != "disabled" and  $this->Account_model->isStudentNumberExisting( $studentNum ) !== false )
+		if(  $studentNum != "disabled" and  $this->account_model->isStudentNumberExisting( $studentNum ) !== false )
 		{   // EC 4203
 			echo "ERROR_3_The student number ".$studentNum." is already being used by someone. ".$identityTheftMsg;
 			return false;
 		}
-		if( $empNum != "disabled" and $this->Account_model->isEmployeeNumberExisting( $empNum ) !== false )
+		if( $empNum != "disabled" and $this->account_model->isEmployeeNumberExisting( $empNum ) !== false )
 		{   // ec 4204
 			echo "ERROR_4_The employee number ".$studentNum." is already being used by someone. ".$identityTheftMsg;
 			return false;
@@ -218,7 +218,7 @@ class userAccountCtrl extends CI_Controller {
 		
 		$identifier_val = $this->input->post( 'useridentifier' );				
 		if( $identifier_val === false or strlen($identifier_val) < 1 ){ 
-			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+			echo $this->makexml_model->XMLize_AJAX_Response( 
 			    // EC 4000
 				"error", "information needed", "INFO_NEEDED", 0, "i need your info please! field: useridentifier", "" 
 			);
@@ -229,17 +229,17 @@ class userAccountCtrl extends CI_Controller {
 			
 		switch( $identifier_type )
 		{
-			case ACCOUNTNUM_I:  $userExists = ( $this->Account_model->getUserInfoByAccountNum( $identifier_val ) !== FALSE );
+			case ACCOUNTNUM_I:  $userExists = ( $this->account_model->getUserInfoByAccountNum( $identifier_val ) !== FALSE );
 								$accountNum = $identifier_val;
 								break;									
-			case USERNAME_I	: 	$userObj =  $this->Account_model->getUserInfoByUsername( $identifier_val );
+			case USERNAME_I	: 	$userObj =  $this->account_model->getUserInfoByUsername( $identifier_val );
 								$userExists = ( $userObj !== FALSE );
 								if( $userExists ) $accountNum = $userObj->AccountNum;
 								break;								
 		}//switch
 		if( $userExists )
 		{
-			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+			echo $this->makexml_model->XMLize_AJAX_Response( 
 			   // EC 4202
 				"okay", "user exists", "USERNAME_EXISTS", 0, "user is existing.", "" 
 			);
@@ -247,7 +247,7 @@ class userAccountCtrl extends CI_Controller {
 			return true;
 		}else{
 			// EC 4001
-			echo $this->MakeXML_model->XMLize_AJAX_Response( 
+			echo $this->makexml_model->XMLize_AJAX_Response( 
 				"error", "not found", "USERNAME_DOES-NOT-EXIST", 0, "username is not existing.", "" 
 			);
 			return false;
@@ -269,9 +269,9 @@ class userAccountCtrl extends CI_Controller {
 		if( $username === "DEFAULT" )
 		{
 			$accountNum = $this->session->userdata( 'accountNum' );
-			$mainInfo = $this->Account_model->getUserInfoByAccountNum( $accountNum );
+			$mainInfo = $this->account_model->getUserInfoByAccountNum( $accountNum );
 		}else{		
-			$mainInfo = $this->Account_model->getUserInfoByUsername( $username );	
+			$mainInfo = $this->account_model->getUserInfoByUsername( $username );	
 			if( $mainInfo !== false ) $accountNum = intval($mainInfo->AccountNum);
 		}
 		if( $mainInfo === FALSE )
@@ -284,8 +284,8 @@ class userAccountCtrl extends CI_Controller {
 			echo "ERROR_NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF";
 			return false;
 		}
-		$uplbConstituencyInfo = $this->Account_model->getUserUPLBConstituencyData($accountNum );				
-		echo $this->MakeXML_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );		
+		$uplbConstituencyInfo = $this->account_model->getUserUPLBConstituencyData($accountNum );				
+		echo $this->makexml_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );		
 		return true;	
 	}//getUserInfoForBooking
 	
@@ -299,7 +299,7 @@ class userAccountCtrl extends CI_Controller {
 	function managepaymentmode()
 	{
 		$this->manageuser_common( true );
-		$data['paymentChannels'] = $this->Payment_model->getPaymentChannels( true );
+		$data['paymentChannels'] = $this->payment_model->getPaymentChannels( true );
 		$this->load->view( 'managePaymentModes/managePaymentModes01', $data );	
 	}
 	
@@ -310,8 +310,8 @@ class userAccountCtrl extends CI_Controller {
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
 		$data['title'] =  "Be careful on what you wish for";
 		$data['theMessage'] =  "Are you sure you want to delete this payment mode?";
-		$data['yesURI'] = base_url().'userAccountCtrl/managepaymentmode_delete_process';
-		$data['noURI'] = base_url().'userAccountCtrl/managepaymentmode';
+		$data['yesURI'] = base_url().'useracctctrl/managepaymentmode_delete_process';
+		$data['noURI'] = base_url().'useracctctrl/managepaymentmode';
 		$data['formInputs'] = Array( 
 			'pChannel' => $uniqueID
 		);		
@@ -330,16 +330,16 @@ class userAccountCtrl extends CI_Controller {
 			*/
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "By this system's design, this payment mode is not designed to be removable. Edit my code if you want to. <br/><br/>:D";			
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
-		$result = $this->Payment_model->deletePaymentMode( $uniqueID );
+		$result = $this->payment_model->deletePaymentMode( $uniqueID );
 		if( $result )
 		{   // ec 1501
 			$data[ 'theMessage' ] = "The payment mode has been successfully deleted.";			
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -347,7 +347,7 @@ class userAccountCtrl extends CI_Controller {
 			//ec 5505
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.";
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
@@ -359,7 +359,7 @@ class userAccountCtrl extends CI_Controller {
 		$this->manageuser_common( true );
 		$uniqueID = $this->input->post( 'pChannel' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' ); //EC 4000
-		$data['singleChannel'] = $this->Payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );		
+		$data['singleChannel'] = $this->payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );		
 		$data['mode'] = 1;
 		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
@@ -386,14 +386,14 @@ class userAccountCtrl extends CI_Controller {
 		$internal_data 		= $this->input->post( 'internal_data' ); 
 		if( $uniqueID === false or $name === false ){
 			$data['error'] = "NO_DATA";			
-			$data['redirectURI'] = base_url().'userAccountCtrl/managepaymentmode';
+			$data['redirectURI'] = base_url().'useracctctrl/managepaymentmode';
 			$data['defaultAction'] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
 		if( strlen($uniqueID) < 1 or strlen($name) < 1 or
-			!$this->UsefulFunctions_model->isPaymentModeTypeValid( $ptype ) or
-			!$this->UsefulFunctions_model->isInternalDataTypeValid( $internal_data_type ) )
+			!$this->usefulfunctions_model->isPaymentModeTypeValid( $ptype ) or
+			!$this->usefulfunctions_model->isInternalDataTypeValid( $internal_data_type ) )
 		{			
 			echo( 'Invalid entries specified!<br/><br/>' ); //ec 4998
 			echo('<a href="javascript: window.history.back();" >Go back</a>' );
@@ -401,21 +401,21 @@ class userAccountCtrl extends CI_Controller {
 		}
 		if( $mode == 0 )
 		{
-			if( $this->Payment_model->getPaymentModeByName( $name) !== FALSE )
+			if( $this->payment_model->getPaymentModeByName( $name) !== FALSE )
 			{
 				echo( 'Payment mode exists already!<br/><br/>' ); //ec 1500
 				echo('<a href="javascript: window.history.back();" >Go back</a>' );
 				return false;
 			}
 		}
-		$result = $this->Payment_model->updatePaymentMode(
+		$result = $this->payment_model->updatePaymentMode(
 			$uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
 			$email, $comments, $internal_data_type, $internal_data
 		);
 		if( $result )
 		{  // ec 1502
 			$data[ 'theMessage' ] = "The payment mode has been successfully edited.";			
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -423,7 +423,7 @@ class userAccountCtrl extends CI_Controller {
 		  // EC 5510
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "Something went wrong while processing the modification of the payment mode. Your changes may have been not saved.";
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/managepaymentmode';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
 			$data[ 'defaultAction' ] = 'Payment modes';
 			$this->load->view( 'errorNotice', $data );
 			return false;
@@ -435,7 +435,7 @@ class userAccountCtrl extends CI_Controller {
 		/*
 			Gets main info and uplb constituency info.
 		*/
-		if( !$this->Permission_model->isAdministrator() )
+		if( !$this->permission_model->isAdministrator() )
 		{   // ec 4101
 			$data['error'] = "NO_PERMISSION";					
 			$this->load->view( 'errorNotice', $data );			
@@ -444,8 +444,8 @@ class userAccountCtrl extends CI_Controller {
 		if( $checkPermissionOnly ) return true;
 		$concernedUserAccountNum = $this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' );		
 		$data['accountNum']   = $concernedUserAccountNum;
-		$data['userMainInfo'] = $this->Account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
-		$data['userUPLBInfo'] = $this->Account_model->getUserUPLBConstituencyData( $concernedUserAccountNum );
+		$data['userMainInfo'] = $this->account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
+		$data['userUPLBInfo'] = $this->account_model->getUserUPLBConstituencyData( $concernedUserAccountNum );
 		
 		return $data;
 	}// manageuser_common(..)
@@ -473,7 +473,7 @@ class userAccountCtrl extends CI_Controller {
 	{
 		$this->manageuser_precheck( 3 );		
 		$data = $this->manageuser_common();
-		$data['permissionObj'] = $this->Permission_model->getPermissionStraight( $data['accountNum']  );
+		$data['permissionObj'] = $this->permission_model->getPermissionStraight( $data['accountNum']  );
 		$this->load->view( 'manageUser/manageUser03_editRoles.php', $data);
 	}//manageuser_editroles(..)
 	
@@ -496,13 +496,13 @@ class userAccountCtrl extends CI_Controller {
 			{	//ec 4006
 				$data['error'] = "CUSTOM"; 
 				$data['theMessage'] = "The submitted data to the server is in the incorrect format.";
-				$data['redirectURI'] = base_url()."userAccountCtrl/manageuser_editroles";
+				$data['redirectURI'] = base_url()."useracctctrl/manageuser_editroles";
 				$data['defaultAction'] = "Edit Roles";
 				$this->load->view( 'errorNotice', $data );			
 				return false;
 			}
 		}
-		$transResult =  $this->Account_model->setPermissions( 
+		$transResult =  $this->account_model->setPermissions( 
 			$data['accountNum'],
 			1,
 			$permissionsSent[ 'eventmanager' ],
@@ -514,7 +514,7 @@ class userAccountCtrl extends CI_Controller {
 			// ec 1600
 			$data[ 'theMessage' ] = "The roles have been edited.";
 			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/manageUser_step2';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/manageUser_step2';
 			$data[ 'defaultAction' ] = 'Manage User';			
 			$this->load->view( 'successNotice', $data );				
 		}else{
@@ -522,7 +522,7 @@ class userAccountCtrl extends CI_Controller {
 			$data['error'] = "CUSTOM";
 			$data['theMessage'] = "Something went wrong while updating permissions. Your changes might not be saved.";
 			$data[ 'redirect' ] = true;
-			$data['redirectURI'] = base_url()."userAccountCtrl/manageuser_editroles";
+			$data['redirectURI'] = base_url()."useracctctrl/manageuser_editroles";
 			$data['defaultAction'] = "Edit Roles";
 			$this->load->view( 'errorNotice', $data );						
 		}
@@ -551,7 +551,7 @@ class userAccountCtrl extends CI_Controller {
 			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
 			$this->load->view('newUserWelcome', $data);
 		}else{
-			redirect("userAccountCtrl"); // redirect to homepage
+			redirect("useracctctrl"); // redirect to homepage
 		}
 		
 	}// newUserWelcome
@@ -586,23 +586,23 @@ class userAccountCtrl extends CI_Controller {
 			$data['userSignup_step'] = 2;			// now, new step
 			$this->session->set_userdata($data);
 			
-			$this->Account_model->createAccount();	// perform insertion to database			
+			$this->account_model->createAccount();	// perform insertion to database			
 			
 			//create default permission
-			$this->Permission_model->createDefault( $this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ) );	
+			$this->permission_model->createDefault( $this->account_model->getAccountNumber(  $this->input->post( 'username' ) ) );	
 		
 		// set these data for use while navigating the site (i.e., the nav bar)			
 			
 			$this->login_model->setUserSession(
-				$this->Account_model->getAccountNumber(  $this->input->post( 'username' ) ),
-				$this->Account_model->getUser_Names( $this->input->post('username') )
+				$this->account_model->getAccountNumber(  $this->input->post( 'username' ) ),
+				$this->account_model->getUser_Names( $this->input->post('username') )
 			);
 			
 			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
 			$this->load->view('userSignup_part2', $data);
 		}else{
 			// user is trying to access part 2 without acccomplishing step1, so redirect to step1 first
-			redirect("userAccountCtrl/userSignup");
+			redirect("useracctctrl/userSignup");
 		}
 	} // userSignup_step2()
 		
@@ -612,41 +612,41 @@ class userAccountCtrl extends CI_Controller {
 		$employeeNumber = $this->input->post( 'employeeNumber' );		
 		$_UPLB_Unique_violated = " you have chosen is already being used. No changes have been done to your account.";
 		
-		if( $this->Account_model->isStudentNumberExisting( $studentNumber, FALSE ) )
+		if( $this->account_model->isStudentNumberExisting( $studentNumber, FALSE ) )
 		{	// EC 4203
 			$data['error'] = "CUSTOM";
 			$data[ 'theMessage' ] = "The new student number".$_UPLB_Unique_violated;
 			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
 			$data[ 'defaultAction' ] = 'Manage Account';
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
-		if( $this->Account_model->isEmployeeNumberExisting( $employeeNumber, FALSE ) )
+		if( $this->account_model->isEmployeeNumberExisting( $employeeNumber, FALSE ) )
 		{	// EC 4204
 			$data['error'] = "CUSTOM";
 			$data[ 'theMessage' ] = "The new employee number".$_UPLB_Unique_violated;
 			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
 			$data[ 'defaultAction' ] = 'Manage Account';
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
 		
-		$transResult =  $this->Account_model->updateMainAccountDetails();	
-		$transResult2 =  $this->Account_model->updateUPLBConstituencyDetails();		
+		$transResult =  $this->account_model->updateMainAccountDetails();	
+		$transResult2 =  $this->account_model->updateUPLBConstituencyDetails();		
 		if( $transResult and $transResult2 ){
 			//EC 2700
 			$data[ 'theMessage' ] = "The changes in your account have been saved..";
 			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'userAccountCtrl/myAccount';
+			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
 			$data[ 'defaultAction' ] = 'Manage Account';
 			$this->load->view( 'successNotice', $data );				
 		}else{
 			$data['error'] = "CUSTOM";
 			$data['theMessage'] = "Something went wrong while saving changes to your account. Your changes might not be saved.";
 			$data[ 'redirect' ] = true;
-			$data['redirectURI'] = base_url()."userAccountCtrl/myAccount";
+			$data['redirectURI'] = base_url()."useracctctrl/myAccount";
 			$data['defaultAction'] = 'Manage Account';
 			$this->load->view( 'errorNotice', $data );						
 		}
@@ -655,9 +655,9 @@ class userAccountCtrl extends CI_Controller {
 	function myAccount()
 	{
 		$accountNum =  $this->session->userdata( 'accountNum' );
-		$userObj = $this->Account_model->getUserInfoByAccountNum( $accountNum );
-		$uplbConstituencyObj =  $this->Account_model->getUserUPLBConstituencyData( $accountNum );
-		$permissionsObj = $this->Permission_model-> getPermissionStraight( $accountNum );
+		$userObj = $this->account_model->getUserInfoByAccountNum( $accountNum );
+		$uplbConstituencyObj =  $this->account_model->getUserUPLBConstituencyData( $accountNum );
+		$permissionsObj = $this->permission_model-> getPermissionStraight( $accountNum );
 		
 		$data['userObj'] 			 = $userObj;
 		$data['uplbConstituencyObj'] = $uplbConstituencyObj;		

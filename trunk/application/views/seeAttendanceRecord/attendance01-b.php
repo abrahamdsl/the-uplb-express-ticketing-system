@@ -16,7 +16,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
@@ -25,7 +25,7 @@ $this->load->view('html-generic/metadata.inc');
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/manageBooking01.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/managebooking01.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
@@ -100,9 +100,9 @@ $this->load->view('html-generic/metadata.inc');
 					</a>
 				</h3>				
 				<div>
-					<span class="choice" ><a href="<?php echo base_url();?>AcademicCtrl/modifyClass/<?php echo $singleClass->UUID; ?>" >Modify</a></span>
-					<span class="choice" ><a href="<?php echo base_url();?>AcademicCtrl/deleteClass/<?php echo $singleClass->UUID; ?>" >Delete</a></span>
-					<span class="choice"><a href="<?php echo base_url();?>AcademicCtrl/createClass" >Create another</a></span>
+					<span class="choice" ><a href="<?php echo base_url();?>academicctrl/modifyClass/<?php echo $singleClass->UUID; ?>" >Modify</a></span>
+					<span class="choice" ><a href="<?php echo base_url();?>academicctrl/deleteClass/<?php echo $singleClass->UUID; ?>" >Delete</a></span>
+					<span class="choice"><a href="<?php echo base_url();?>academicctrl/createClass" >Create another</a></span>
 					<br/>
 					<p class="comment">
 						<?php echo $singleClass->Comments; ?>
@@ -112,7 +112,7 @@ $this->load->view('html-generic/metadata.inc');
 						{
 					?>
 						<p>You did not associate any event for this.</p>						
-						<a href="<?php echo base_url();?>AcademicCtrl/addEventToClass/<?php echo $singleClass->UUID; ?>" >Add one now</a>
+						<a href="<?php echo base_url();?>academicctrl/addEventToClass/<?php echo $singleClass->UUID; ?>" >Add one now</a>
 					<?php
 						}else{
 					?>
@@ -136,7 +136,7 @@ $this->load->view('html-generic/metadata.inc');
 									<?php echo $showingTime->Name;?>
 								</td>								
 								<td>															
-									<?php echo $this->UsefulFunctions_model->outputShowingTime_SimpleOneLine( 
+									<?php echo $this->usefulfunctions_model->outputShowingTime_SimpleOneLine( 
 												$showingTime->StartDate, 
 												$showingTime->StartTime, 
 												$showingTime->EndDate, 
@@ -146,13 +146,13 @@ $this->load->view('html-generic/metadata.inc');
 								</td>
 								<td>
 									<input type="button" value="Delete" name="deleteBtn" />
-									<form method="post" action="<?php echo base_url();?>AcademicCtrl/deleteClassEventAssociation">
+									<form method="post" action="<?php echo base_url();?>academicctrl/deleteClassEventAssociation">
 										<input type="hidden" name="ec_uniqueid" value="<?php echo $showingTime->EC_UniqueID; ?>" />
 									</form>
 								</td>
 								<td>
 									<input type="button" value="View Attending Students" name="viewStudentsBtn" />
-									<form method="post" action="<?php echo base_url();?>AcademicCtrl/seeAttendingStudents">
+									<form method="post" action="<?php echo base_url();?>academicctrl/seeAttendingStudents">
 										<input type="hidden" name="ec_uniqueid" value="<?php echo $showingTime->EC_UniqueID; ?>" />
 									</form>
 								</td>								

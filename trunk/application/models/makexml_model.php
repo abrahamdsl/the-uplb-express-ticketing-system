@@ -19,7 +19,7 @@
 **/
 
 
-class MakeXML_model extends CI_Model {
+class makexml_model extends CI_Model {
 	
 	function __construct()
 	{

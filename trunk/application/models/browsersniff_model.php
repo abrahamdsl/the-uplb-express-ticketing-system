@@ -211,7 +211,7 @@ by resetting that data with the true UA value.
 // main script, uses two other functions, get_os_data() and get_item_version() as needed
 // Optional $test_excludes is either null or one of the above values
 
-class BrowserSniff_model extends CI_Model {	
+class browsersniff_model extends CI_Model {	
 	
 	function __construct()
 	{

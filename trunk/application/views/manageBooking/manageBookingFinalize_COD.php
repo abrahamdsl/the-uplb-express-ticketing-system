@@ -25,8 +25,8 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep3.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep5.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBookingFinalize_COD.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking02.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebookingFinalize_COD.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking02.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookProgressIndicator.css'; ?>"/>
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
@@ -53,7 +53,7 @@ $this->load->view('html-generic/metadata.inc');
 	 $(document).ready( function(){
 		$('div.pChannelDetails').show();
 		$('button#change_p').click( function(){
-			// this prevents calling of EventCtrl/postManageBookingCleanup when change payment
+			// this prevents calling of eventctrl/postManageBookingCleanup when change payment
 			// mode is clicked
 			_dev_test_proceed = false;
 		});
@@ -79,7 +79,7 @@ $this->load->view('html-generic/metadata.inc');
     <div id="main_content" > 
 		<?php 
 			$bookingNumber = $bookingInfo->BOOKING_NUMBER;
-			$isUpChange = $this->Booking_model->isBookingUpForChange( $bookingNumber );
+			$isUpChange = $this->booking_model->isBookingUpForChange( $bookingNumber );
 		?>
     	<div id="centralContainer">	
 			<div id="page_title" class="page_title_custom" >
@@ -164,7 +164,7 @@ $this->load->view('html-generic/metadata.inc');
 										</span>
 									</div>
 									<?php
-										$isUpChange = $this->Booking_model->isBookingUpForChange( $this->clientsidedata_model->getBookingNumber() );
+										$isUpChange = $this->booking_model->isBookingUpForChange( $this->clientsidedata_model->getBookingNumber() );
 										if( $isUpChange )
 										{
 									?>
@@ -453,7 +453,7 @@ $this->load->view('html-generic/metadata.inc');
 									</div>
 									<?php } ?>
 									<div class="row">
-										<a href="<?php echo base_url()."EventCtrl/managebooking_changepaymentmode/".$bookingNumber; ?>" >
+										<a href="<?php echo base_url()."eventctrl/managebooking_changepaymentmode/".$bookingNumber; ?>" >
 											<input type="button" id="change_p" value="Change Payment Mode" />
 										</a>
 									</div>
@@ -464,7 +464,7 @@ $this->load->view('html-generic/metadata.inc');
 				</div>
 			<!-- accordion end -->
 			<div id="essentialButtonsArea">
-				<a class="button" id="buttonMB" href="<?php echo base_url();?>EventCtrl/manageBooking" ><span class="icon">Manage Booking</span></a>
+				<a class="button" id="buttonMB" href="<?php echo base_url();?>eventctrl/managebooking" ><span class="icon">Manage Booking</span></a>
 				<a class="button" id="buttonOK" href="<?php echo base_url();?>" ><span class="icon">Home</span></a>
 			</div>	
 			<div class="buttonfooterSeparator" ></div>

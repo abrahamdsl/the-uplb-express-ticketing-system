@@ -74,7 +74,7 @@ $this->load->view('html-generic/metadata.inc');
 					<div id="content">												
 						<input type="hidden" id="lastFocus" value="" />						
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/modify_view' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'eventctrl/modify_view' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >

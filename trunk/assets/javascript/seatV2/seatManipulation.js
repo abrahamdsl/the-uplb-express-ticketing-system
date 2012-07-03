@@ -190,7 +190,7 @@ $(document).ready( function(){
 					
 					Also found in bookStep4.js
 				*/
-				isModeManageBookingChooseSeat = ( $( 'input#manageBookingChooseSeat' ).size() == 1 && $( 'input#manageBookingChooseSeat' ).val() == "1" );								
+				isModeManageBookingChooseSeat = ( $( 'input#managebookingChooseSeat' ).size() == 1 && $( 'input#managebookingChooseSeat' ).val() == "1" );								
 				if( isModeManageBookingChooseSeat ) assembleExistingGuestSeatData();
 								
 				$("#seatSelectionTable").children().remove();	// remove all content first

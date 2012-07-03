@@ -102,7 +102,7 @@ $this->load->view('html-generic/metadata.inc');
 				<div class="accordionImitation aci2_Book3Special" >
 					<div class="part2 title" >Guest Details</div>
 					<input type="hidden" id="_js_use_slots" value="<?php echo $bookingInfo->SLOT_QUANTITY ?>" />
-					<form name="formMain" method="post" action="<?php echo base_url().'EventCtrl/book_step4' ?>" id="formMain">
+					<form name="formMain" method="post" action="<?php echo base_url().'eventctrl/book_step4' ?>" id="formMain">
 					<div id="tabs">
 						<ul>
 							<?php for( $x=0; $x< $bookingInfo->SLOT_QUANTITY; $x++ ) {?>

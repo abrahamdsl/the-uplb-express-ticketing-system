@@ -17,7 +17,7 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/bookStep2.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageBooking01.css'; ?>"/>		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>	
@@ -116,7 +116,7 @@ $this->load->view('html-generic/metadata.inc');
 								<tr <?php if( $x++ % 2 == 0 ) {?>class="even"<?php }else{ ?>class="odd" <?php }; ?>>
 									<td><?php echo $showingTime->Status; ?></td>
 									<td>
-										<?php echo $this->UsefulFunctions_model->outputShowingTime_SimpleOneLine( 
+										<?php echo $this->usefulfunctions_model->outputShowingTime_SimpleOneLine( 
 												$showingTime->StartDate, 
 												$showingTime->StartTime, 
 												$showingTime->EndDate, 
@@ -127,52 +127,52 @@ $this->load->view('html-generic/metadata.inc');
 									</td>
 									<td>
 										<div class="metrotile" name="viewdetails" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/view/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/view/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>" ><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-viewdetails.png" alt="View details" /></a>
 										</div>
 										<?php
 											if( $showingTime->Status == "CONFIGURED" ){
 										?>
 										<div class="metrotile" name="reschedule" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/reschedule/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_reschedule.png" alt="Reschedule" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/reschedule/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_reschedule.png" alt="Reschedule" /></a>
 										</div>
 										<div class="metrotile" name="manageticketclass" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/manage_tc/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_manageticketclass.png" alt="Manage Ticket Class" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/manage_tc/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_manageticketclass.png" alt="Manage Ticket Class" /></a>
 										</div>			
 										<div class="metrotile" name="manageother" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/manage_other/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_manageotherdetails.png" alt="Manage Other Details" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/manage_other/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_manageotherdetails.png" alt="Manage Other Details" /></a>
 										</div>
 										<div class="metrotile" name="seal" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/seal/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_seal.png" alt="Seal showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/seal/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_seal.png" alt="Seal showing time" /></a>
 										</div>
 										<div class="metrotile" name="cancel" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/cancel/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_cancel.png" alt="Cancel showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/cancel/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_cancel.png" alt="Cancel showing time" /></a>
 										</div>
 										<?php
 											}else
 											if( $showingTime->Status == "CHECK-IN"  ){
 										?>
 										<div class="metrotile" name="straggle" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/straggle/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-straggle.png" alt="Set straggle" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/straggle/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-straggle.png" alt="Set straggle" /></a>
 										</div>
 										<div class="metrotile" name="finalize" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
 										</div>
 										<?php
 											}else
 											if( $showingTime->Status == "STRAGGLE" ){
 										?>
 										<div class="metrotile" name="seal" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/seal/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_seal.png" alt="Seal showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/seal/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_seal.png" alt="Seal showing time" /></a>
 										</div>
 										<div class="metrotile" name="finalize" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/finalize/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_finalize.png" alt="Finalize showing time" /></a>
 										</div>
 										<?php 
 											}else
 											if( $showingTime->Status == "FINALIZED" ){
 										?>
 											<div class="metrotile" name="archive" >
-												<a href="<?php echo base_url(); ?>EventCtrl2/archive/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_archive.png" alt="Archive showing time" /></a>
+												<a href="<?php echo base_url(); ?>eventctrl2/archive/<?php echo $showingTime->EventID.'/'.$showingTime->UniqueID; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-showingtime_archive.png" alt="Archive showing time" /></a>
 											</div>
 										<?php
 											}

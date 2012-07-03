@@ -45,7 +45,7 @@ $this->load->view('html-generic/metadata.inc');
 		{
 			var x = $.ajax({	
 					type: 'POST',
-					url: CI.base_url + 'userAccountCtrl/isUserExisting2',
+					url: CI.base_url + 'useracctctrl/isUserExisting2',
 					timeout: 10000,
 					data: $('form').first().serialize(),
 					beforeSend: function(){
@@ -126,7 +126,7 @@ $this->load->view('html-generic/metadata.inc');
 					<h3><a href="#" >Key it in</a></h3>					
 					<div>
 					<form method="post" action="#" name="formLogin" id="formMain" >						
-						<input type="hidden" id="ok_proceed" value="<?php echo base_url().'userAccountCtrl/manageUser_step2' ?>" />
+						<input type="hidden" id="ok_proceed" value="<?php echo base_url().'useracctctrl/manageUser_step2' ?>" />
 						<div class="mainWizardMainSections" >
 							<span class="MWMS1" >
 								Username or account number

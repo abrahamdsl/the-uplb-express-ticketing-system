@@ -7,7 +7,7 @@ function deleteBookingX( args )
 {	
 	var x = $.ajax({
 		type: 'POST',
-		url: CI.base_url + 'EventCtrl/cancelBooking',
+		url: CI.base_url + 'eventctrl/cancelBooking',
 		timeout: 30000,	
 		data: { 'bookingNumber' : args[0] },
 		beforeSend: function(){	

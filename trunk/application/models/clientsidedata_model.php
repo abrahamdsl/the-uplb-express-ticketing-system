@@ -450,7 +450,7 @@ class clientsidedata_model extends CI_Model {
 	function getBookingCookieNames()
 	{		
 		/*
-			08MAR2012-0049 | Moved from Event_model
+			08MAR2012-0049 | Moved from event_model
 		
 			09FEB2012-0059 | These cookies are for use in the booking steps.			
 			10FEB2012-2255 |  Added "ticketClassGroupID"
@@ -854,9 +854,9 @@ class clientsidedata_model extends CI_Model {
 	function setBookingCookies( $cookie_values )
 	{
 		/*
-			Created 09FEB2012-0052. Moved from EventCtrl for refactoring purposes.
+			Created 09FEB2012-0052. Moved from eventctrl for refactoring purposes.
 			
-			Sets cookies needed in booking process. First called in EventCtrl/book_step2
+			Sets cookies needed in booking process. First called in eventctrl/book_step2
 		*/		
 		$cookie_names = $this->getBookingCookieNames();
 		$y = count($cookie_names);

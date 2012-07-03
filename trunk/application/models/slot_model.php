@@ -4,7 +4,7 @@ created 14DEC2011 13343
 */
 
 
-class Slot_model extends CI_Model {
+class slot_model extends CI_Model {
 	
 	function __construct()
 	{

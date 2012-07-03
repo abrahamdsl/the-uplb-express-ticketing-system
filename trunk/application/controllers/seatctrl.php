@@ -3,23 +3,23 @@
 CREATED 16JAN2012-1235
 */
 
-class SeatCtrl extends CI_Controller {
+class seatctrl extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();	
 		$this->load->helper('cookie');
 		$this->load->model('clientsidedata_model');		
-		$this->load->model('Event_model');		
+		$this->load->model('event_model');		
 		$this->load->model('login_model');		
-		$this->load->model('MakeXML_model');				
+		$this->load->model('makexml_model');				
 		$this->load->model('ndx_model');				
-		$this->load->model('Permission_model');				
-		$this->load->model('Seat_model');				
+		$this->load->model('permission_model');				
+		$this->load->model('seat_model');				
 		
 		if( !$this->login_model->isUser_LoggedIn() )
 		{	//ec 4999
-			redirect('SessionCtrl/authenticationNeeded');
+			redirect('sessionctrl/authenticationNeeded');
 		}
 	} //construct
 	
@@ -30,7 +30,7 @@ class SeatCtrl extends CI_Controller {
 	
 	private function checkAndActOnAdmin()
 	{
-		if( !$this->Permission_model->isAdministrator() )
+		if( !$this->permission_model->isAdministrator() )
 		{   //4101
 			$data['error'] = "NO_PERMISSION";					
 			$this->load->view( 'errorNotice', $data );			
@@ -46,8 +46,8 @@ class SeatCtrl extends CI_Controller {
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
 		$data['title'] =  "Be careful on what you wish for";
 		$data['theMessage'] =  "Are you sure you want to delete this seat map?"; // EC 2850
-		$data['yesURI'] = base_url().'SeatCtrl/deleteseatmap_process';
-		$data['noURI'] = base_url().'SeatCtrl/manageseatmap';
+		$data['yesURI'] = base_url().'seatctrl/deleteseatmap_process';
+		$data['noURI'] = base_url().'seatctrl/manageseatmap';
 		$data['formInputs'] = Array( 
 			'uniqueID' => $uniqueID
 		);		
@@ -59,12 +59,12 @@ class SeatCtrl extends CI_Controller {
 		$this->checkAndActOnAdmin();
 		$uniqueID = $this->input->post( 'uniqueID' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );		
-		$result = $this->Seat_model->deleteSeatMap( $uniqueID );
+		$result = $this->seat_model->deleteSeatMap( $uniqueID );
 		if( $result )
 		{
 			// EC 1850
 			$data[ 'theMessage' ] = "The seat map has been successfully deleted."; 
-			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';
+			$data[ 'redirectURI' ] = base_url().'seatctrl/manageseatmap';
 			$data[ 'defaultAction' ] = 'Seat Maps';
 			$this->load->view( 'successNotice', $data );
 			return true;
@@ -72,7 +72,7 @@ class SeatCtrl extends CI_Controller {
 			// EC 5850
 			$data[ 'error' ] = 'CUSTOM';
 			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.";
-			$data[ 'redirectURI' ] = base_url().'SeatCtrl/manageseatmap';
+			$data[ 'redirectURI' ] = base_url().'seatctrl/manageseatmap';
 			$data[ 'defaultAction' ] = 'Seat Maps';
 			$this->load->view( 'errorNotice', $data );
 			return false;
@@ -82,7 +82,7 @@ class SeatCtrl extends CI_Controller {
 	function manageseatmap()
 	{
 		$this->checkAndActOnAdmin();
-		$data['seatmaps'] = $this->Seat_model->getAllSeatMaps();
+		$data['seatmaps'] = $this->seat_model->getAllSeatMaps();
 		$this->load->view( 'manageSeat/manageSeat01', $data );	
 	}
 	
@@ -99,11 +99,11 @@ class SeatCtrl extends CI_Controller {
 			$this->input->post('cols') === false 
 		)
 		{
-			redirect( 'SeatCtrl/create' );
+			redirect( 'seatctrl/create' );
 		}
 		// start: temp
 		// process the data submitted by the form - and storing in the DB too, seat_map details
-		$this->Seat_model->createSeatMap();				
+		$this->seat_model->createSeatMap();				
 		
 		$cookie = array( 'name' => 'seatMapName', 
 						 'value' => $this->input->post('name'), 
@@ -134,7 +134,7 @@ class SeatCtrl extends CI_Controller {
 		$j;
 
 		// CODE MISSING: database checkpoint
-		if( $this->Seat_model->createDefaultSeats() === false )					// send the data for processing here
+		if( $this->seat_model->createDefaultSeats() === false )					// send the data for processing here
 		{
 			// CODE MISSING:  database rollback			
 			die('Create Seat Error: Something went wrong in actual seat data insertion to DB ');			
@@ -142,7 +142,7 @@ class SeatCtrl extends CI_Controller {
 		// CODE MISSING:  database commit
 
 		// set them as configured
-		$this->Seat_model->setSeatMapStatus( $this->input->cookie( 'seatMapUniqueID' ), 'CONFIGURED' );
+		$this->seat_model->setSeatMapStatus( $this->input->cookie( 'seatMapUniqueID' ), 'CONFIGURED' );
 	
 		// delete the cookies concerned
 		delete_cookie( 'seatMapName' );
@@ -175,7 +175,7 @@ class SeatCtrl extends CI_Controller {
 		}
 		$eventID = $bookingInfo->EVENT_ID;
 		$showtimeID = $bookingInfo->SHOWTIME_ID;
-		$showingTimeObj = $this->Event_model->getSingleShowingTime( $eventID, $showtimeID );
+		$showingTimeObj = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );
 		// user is accessing via browser address bar, so not allowed
 		//if( $this->input->is_ajax_request() === false ) redirect('/');
 		
@@ -187,10 +187,10 @@ class SeatCtrl extends CI_Controller {
 		}
 		
 		//get DB entries		
-		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );
-		$seatMapProperData = $this->Seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
+		$masterSeatMapDetails = $this->seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );
+		$seatMapProperData = $this->seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
 						
-		echo $this->MakeXML_model->XMLize_SeatMap_Actual( $masterSeatMapDetails, $seatMapProperData );
+		echo $this->makexml_model->XMLize_SeatMap_Actual( $masterSeatMapDetails, $seatMapProperData );
 		return true;
 	}//getActualSeatsData(..)
 	
@@ -217,10 +217,10 @@ class SeatCtrl extends CI_Controller {
 		}
 		
 		//get DB entries
-		$masterSeatMapDetails = $this->Seat_model->getSingleMasterSeatMapData( $uniqueID );
-		$masterSeatMapProperData = $this->Seat_model->getMasterSeatMapActualSeats( $uniqueID );
+		$masterSeatMapDetails = $this->seat_model->getSingleMasterSeatMapData( $uniqueID );
+		$masterSeatMapProperData = $this->seat_model->getMasterSeatMapActualSeats( $uniqueID );
 						
-		echo $this->MakeXML_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
+		echo $this->makexml_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
 		return true;
 	}// getMasterSeatmapData
 	
@@ -264,7 +264,7 @@ class SeatCtrl extends CI_Controller {
 		{
 			$matrixInfo = explode( "_", $singleData );
 			
-			$isSeatAvailableResult = $this->Seat_model->isSeatAvailable( 
+			$isSeatAvailableResult = $this->seat_model->isSeatAvailable( 
 				$matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID 
 			);
 			if( !$isSeatAvailableResult['boolean'] ){			
@@ -278,7 +278,7 @@ class SeatCtrl extends CI_Controller {
 				}
 			}
 		}		
-		if( $this->Event_model->isSeatSelectionRequired( $eventID, $showtimeID ) and $slots !== count($matrices_tokenized) )
+		if( $this->event_model->isSeatSelectionRequired( $eventID, $showtimeID ) and $slots !== count($matrices_tokenized) )
 		{
 			echo "OK|SEATREQUIRED|0";
 			return false;

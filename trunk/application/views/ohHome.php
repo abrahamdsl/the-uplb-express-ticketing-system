@@ -13,7 +13,7 @@ $this->load->view('html-generic/doctype.inc');
 	$this->load->view('html-generic/menu-bar.inc');
 ?>
 
-<a href="<?php echo site_url().'userAccountCtrl/userSignup' ?>" > Sign me up </a>
+<a href="<?php echo site_url().'useracctctrl/userSignup' ?>" > Sign me up </a>
 
 <?php
 	$this->load->view('html-generic/footer.inc');

@@ -22,7 +22,7 @@ class FunctionAccess{
     {
 		$this->CI = & get_instance();
 		$this->CI->load->model('clientsidedata_model');
-		$this->CI->load->model('MakeXML_model');
+		$this->CI->load->model('makexml_model');
 		$this->CI->load->model('ndx_model');
 		
         $this->__reinit();
@@ -190,7 +190,7 @@ class FunctionAccess{
 				}
 			}
 		}else{
-			 redirect('EventCtrl/book');
+			 redirect('eventctrl/book');
 			 return false;
 		}
 	}//preBookCheckUnified
@@ -241,7 +241,7 @@ class FunctionAccess{
 				$redirect = $pre_check_tokenized[2]; 
 				$redirectAfter = 4000;
 			}
-			echo $this->CI->MakeXML_model->XMLize_AJAX_Response(					
+			echo $this->CI->makexml_model->XMLize_AJAX_Response(					
 					$type, 
 					$title,
 					$pre_check_tokenized[0],
@@ -359,7 +359,7 @@ class FunctionAccess{
 	{
 		/*
 			You have to change redirection address if you change function names
-			in EventCtrl, and EventCtrl's filename itself.
+			in eventctrl, and eventctrl's filename itself.
 		*/
 		$stage = ( $stage_sent === FALSE ) ? $this->sessionActivity_x[1] : $stage_sent;
 		redirect( $this->getRedirectionURL( $stage ) );
@@ -370,25 +370,25 @@ class FunctionAccess{
 		log_message('DEBUG', 'getredirectionurl ' . $stage );
 		switch( $stage )
 		{
-			case STAGE_BOOK_1_PROCESS: return 'EventCtrl/book';  break;
-			case STAGE_BOOK_1_FORWARD: return 'EventCtrl/book_forward';  break;
-			case STAGE_BOOK_2_PROCESS: return 'EventCtrl/book_step2';  break;
-			case STAGE_BOOK_2_FORWARD: return 'EventCtrl/book_step2_forward';  break;
-			case STAGE_BOOK_3_PROCESS: return 'EventCtrl/book_step3';  break;
-			case STAGE_BOOK_3_FORWARD: return 'EventCtrl/book_step3_forward';  break;			
-			case STAGE_BOOK_4_PROCESS: return 'EventCtrl/book_step4';  break;
-			case STAGE_BOOK_4_CLASS_1_FORWARD: return 'EventCtrl/meow';  break;
-			case STAGE_BOOK_4_CLASS_2_FORWARD: return 'EventCtrl/meow2';  break;
-			case STAGE_BOOK_4_FORWARD: return 'EventCtrl/book_step4_forward';  break;
-			case STAGE_BOOK_5_PROCESS: return 'EventCtrl/book_step5';  break;
-			case STAGE_BOOK_5_FORWARD: return 'EventCtrl/book_step5_forward';  break;
-			case STAGE_BOOK_6_PROCESS: return 'EventCtrl/book_step6';  break;
+			case STAGE_BOOK_1_PROCESS: return 'eventctrl/book';  break;
+			case STAGE_BOOK_1_FORWARD: return 'eventctrl/book_forward';  break;
+			case STAGE_BOOK_2_PROCESS: return 'eventctrl/book_step2';  break;
+			case STAGE_BOOK_2_FORWARD: return 'eventctrl/book_step2_forward';  break;
+			case STAGE_BOOK_3_PROCESS: return 'eventctrl/book_step3';  break;
+			case STAGE_BOOK_3_FORWARD: return 'eventctrl/book_step3_forward';  break;			
+			case STAGE_BOOK_4_PROCESS: return 'eventctrl/book_step4';  break;
+			case STAGE_BOOK_4_CLASS_1_FORWARD: return 'eventctrl/meow';  break;
+			case STAGE_BOOK_4_CLASS_2_FORWARD: return 'eventctrl/meow2';  break;
+			case STAGE_BOOK_4_FORWARD: return 'eventctrl/book_step4_forward';  break;
+			case STAGE_BOOK_5_PROCESS: return 'eventctrl/book_step5';  break;
+			case STAGE_BOOK_5_FORWARD: return 'eventctrl/book_step5_forward';  break;
+			case STAGE_BOOK_6_PROCESS: return 'eventctrl/book_step6';  break;
 			case STAGE_BOOK_6_PAYMENTPROCESSING: return 'paypal/process';  break;
-			case STAGE_BOOK_6_FORWARD: return 'EventCtrl/book_step6_forward';  break;
+			case STAGE_BOOK_6_FORWARD: return 'eventctrl/book_step6_forward';  break;
 			case STAGE_MB4_CONFIRM_PR: 
-			case STAGE_MB4_CONFIRM_FW: return 'EventCtrl/managebooking_confirm'; break;
-			case STAGE_MB0_HOME: return 'EventCtrl/manageBooking'; break;
-			default: return "SessionCtrl/redirect_unknown/".$stage; //3999
+			case STAGE_MB4_CONFIRM_FW: return 'eventctrl/managebooking_confirm'; break;
+			case STAGE_MB0_HOME: return 'eventctrl/managebooking'; break;
+			default: return "sessionctrl/redirect_unknown/".$stage; //3999
 		}
 	}
 	

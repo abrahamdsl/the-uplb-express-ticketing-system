@@ -3,7 +3,7 @@
 	Created 28 NOV 2011 1552
 */
 
-class Permission_model extends CI_Model {
+class permission_model extends CI_Model {
 	
 	function __construct()
 	{

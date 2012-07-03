@@ -246,7 +246,7 @@ $(document).ready(function()
 					*/
 					var x = $.ajax({
 						type: 'POST',
-						url: CI.base_url + '/userAccountCtrl/isUserExisting',
+						url: CI.base_url + '/useracctctrl/isUserExisting',
 						timeout: 30000,
 						beforeSend: function(){
 							$.fn.nextGenModal({

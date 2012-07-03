@@ -40,7 +40,7 @@ function createSeatmapOnPage( args )
 	// ajax-time!	
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + '/SeatCtrl/getActualSeatsData',
+		url: CI.base_url + '/seatctrl/getActualSeatsData',
 		timeout: 50000,
 		data: { 'uniqueID': args["seatMapUniqueID"] },				
 		success: function(data){
@@ -140,7 +140,7 @@ function formSubmit( )
 				success: function(data){
 					if( data == "OKAY" )
 					{
-						window.location = CI.base_url + 'EventCtrl2/managetc_success';
+						window.location = CI.base_url + 'eventctrl2/managetc_success';
 					}else{
 						alert('Response from server: ' + data);
 					}
@@ -596,7 +596,7 @@ $(document).ready( function() {
 	}); //$('input[name^="holdingTime"]').blur(..)
 	
 	$("#buttonReset").click( function() {				
-		window.location = CI.base_url + 'EventCtrl2/manageEvent';
+		window.location = CI.base_url + 'eventctrl2/manageEvent';
 	});
 	
 	$("#buttonOKspecial").click( function() {

@@ -7,7 +7,7 @@
 	
 	<?php
 		//Hahaha. Anyway, let's add this thing here.
-		if( $this->UsefulFunctions_model->VisitorIP() != "127.0.0.1" ){
+		if( $this->usefulfunctions_model->VisitorIP() != "127.0.0.1" ){
 	?>
 	<script type="text/javascript">
 	

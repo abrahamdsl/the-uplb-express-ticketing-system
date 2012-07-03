@@ -78,7 +78,7 @@ $this->load->view('html-generic/metadata.inc');
 						<input type="hidden" id="adjustEnabledClass" value="adjustButtons ayokongDefaultAngItsuraNgButton enabled" />
 						<input type="hidden" id="adjustDisabledClass" value="adjustButtons ayokongDefaultAngItsuraNgButton disabled" />
 						
-						<form method="post"  action="<?php echo base_url().'EventCtrl/confirm_step' ?>" name="formLogin" id="formMain">							
+						<form method="post"  action="<?php echo base_url().'eventctrl/confirm_step' ?>" name="formLogin" id="formMain">							
 							<div>
 								<div class="KoreanPeninsula" >
 									<span class="left" >

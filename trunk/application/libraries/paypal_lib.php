@@ -82,7 +82,7 @@ class Paypal_Lib {
 		$this->CI->load->helper('form');
 		$this->CI->load->config('paypallib_config');
 		$this->CI->load->model('payment_model');
-		$this->CI->load->model('UsefulFunctions_model');
+		$this->CI->load->model('usefulfunctions_model');
 				
 		define( 'PAYPAL_URL_TEST', 'https://www.sandbox.paypal.com/cgi-bin/webscr' );
 		
@@ -211,11 +211,11 @@ class Paypal_Lib {
 		}else{
 			$internalData = $paymentModeObj->internal_data;
 		}
-		$data[ 'merchant_email' ] = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data('merchant_email', $internalData );		
+		$data[ 'merchant_email' ] = $this->CI->usefulfunctions_model->getValueOfWIN5_Data('merchant_email', $internalData );		
 		if( $data[ 'merchant_email' ] === false ){
 			return false;
 		}
-		$testMode_check = $this->CI->UsefulFunctions_model->getValueOfWIN5_Data('testmode', $internalData );			
+		$testMode_check = $this->CI->usefulfunctions_model->getValueOfWIN5_Data('testmode', $internalData );			
 		log_message( 'DEBUG', 'pplib 1 '. strval( $testMode_check) );
 		log_message( 'DEBUG', 'pplib 2 is bool ' . intval( is_bool( $testMode_check) ) );
 		if( $testMode_check === false ) 

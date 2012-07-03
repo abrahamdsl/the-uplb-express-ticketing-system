@@ -67,7 +67,7 @@ $this->load->view('html-generic/doctype.inc');
 					<div id="content">						
 						<input type="hidden" id="lastFocus" value="" />
 						<input type="hidden" id="lastFocus_class" value="" />												
-						<form method="post"  action="<?php echo base_url().'EventCtrl/create_step4' ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'eventctrl/create_step4' ?>" name="formLogin" id="formMain">
 							<input type="hidden" id="repeat" name="repeat" value="true" />
 							<div class="center_purest" id="mini-warning_text-proper" >
 								There are still unconfigured showings. Do you want to configure them too?

@@ -12,7 +12,7 @@
 *
 **/
 
-class Payment_model extends CI_Model {
+class payment_model extends CI_Model {
 	
 	function __construct()
 	{		

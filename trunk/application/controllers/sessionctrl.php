@@ -1,18 +1,18 @@
 <?php
 
-class SessionCtrl extends CI_Controller {
+class sessionctrl extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->library('user_agent');		
-		$this->load->model('Account_model');
-		$this->load->model('BrowserSniff_model');
+		$this->load->model('account_model');
+		$this->load->model('browsersniff_model');
 		$this->load->model('login_model');
-		$this->load->model('Permission_model');
+		$this->load->model('permission_model');
 		$this->load->model('telemetry_model');					
-		$this->load->model('UsefulFunctions_model');					
+		$this->load->model('usefulfunctions_model');					
 	}
 	
 	private function determineUserAgent()
@@ -76,22 +76,22 @@ class SessionCtrl extends CI_Controller {
 			$_client_iPv4;
 			$_client_user_agent;
 			$client_browserShort_and_OS;			
-			$uuid = $this->UsefulFunctions_model->guid();
+			$uuid = $this->usefulfunctions_model->guid();
 			if( $this->session->userdata('JUST_LOGGED_OUT') != TRUE )
 			{	
-				$_client_iPv4 = $this->UsefulFunctions_model->VisitorIP();
+				$_client_iPv4 = $this->usefulfunctions_model->VisitorIP();
 				$_client_user_agent = $this->input->user_agent();
 				$client_browserShort_and_OS = $this->determineUserAgent();
-				$bsniff_mod_data = $this->BrowserSniff_model->browser_detection( 'full', '', '' ) ;
-				$uuid = $this->UsefulFunctions_model->guid();
+				$bsniff_mod_data = $this->browsersniff_model->browser_detection( 'full', '', '' ) ;
+				$uuid = $this->usefulfunctions_model->guid();
 			
 				log_message('DEBUG', 'NEW USER Logging in from ' . $_client_iPv4 );
 				log_message('DEBUG', 'NEW USER Agent Raw : ' . $_client_user_agent );
 				log_message('DEBUG', 'NEW USER Agent + Platform: ' . $client_browserShort_and_OS  );		
 				log_message('DEBUG', 'NEW USER Session UUID ' . $uuid);
 				// check client's browser if permitted
-				$data['UA_CHECK'] = $this->BrowserSniff_model->decideActionOnUserAgent();				
-				$data['uuid_new_ident'] = $this->UsefulFunctions_model->guid();
+				$data['UA_CHECK'] = $this->browsersniff_model->decideActionOnUserAgent();				
+				$data['uuid_new_ident'] = $this->usefulfunctions_model->guid();
 				$data['uuid'] = $uuid;
 				$data['_client_user_agent'] = $_client_user_agent;
 				$data['client_browserShort_and_OS'] = $client_browserShort_and_OS;
@@ -133,7 +133,7 @@ class SessionCtrl extends CI_Controller {
 	function userHome()
 	{
 		$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
-		$data['permissions'] = $this->Permission_model->getPermissionStraight( $this->session->userdata( 'accountNum' ) );
+		$data['permissions'] = $this->permission_model->getPermissionStraight( $this->session->userdata( 'accountNum' ) );
 		$this->load->view('homepage', $data);		
 	}//userHome
 	
@@ -155,17 +155,17 @@ class SessionCtrl extends CI_Controller {
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 	
-		if( $this->Account_model->isUserExistent( $username, $password ) ) 
+		if( $this->account_model->isUserExistent( $username, $password ) ) 
 		{   //if something was submitted, this will return true
 			$this->login_model->setUserSession(
-				$this->Account_model->getAccountNumber(  $username ),
-				$this->Account_model->getUser_Names( $username )
+				$this->account_model->getAccountNumber(  $username ),
+				$this->account_model->getUser_Names( $username )
 			);
 			/*
-				Redirect to EventCtrl's function that delete's this current user's expired bookings.
+				Redirect to eventctrl's function that delete's this current user's expired bookings.
 			*/
 			log_message('DEBUG', "user '" .$username."' logged in" );
-			redirect('EventCtrl/preclean');
+			redirect('eventctrl/preclean');
 		}else{	
 			// ec 4003
 			log_message('DEBUG', "user '" .$username."' ATTEMPTED logged in - invalid credentials" );
@@ -187,7 +187,7 @@ class SessionCtrl extends CI_Controller {
 		$this->login_model->deleteUserCookies();
 		$data['JUST_LOGGED_OUT'] = TRUE;
 		$this->session->set_userdata($data);
-		$this->telemetry_model->add(4,$this->UsefulFunctions_model->guid(),$this->UsefulFunctions_model->VisitorIP(),'REF_'.$this->session->userdata('telemetry_uuid'),'' );
+		$this->telemetry_model->add(4,$this->usefulfunctions_model->guid(),$this->usefulfunctions_model->VisitorIP(),'REF_'.$this->session->userdata('telemetry_uuid'),'' );
 		$this->session->unset_userdata('telemetry_uuid');
 		redirect('/');
 	} //logout

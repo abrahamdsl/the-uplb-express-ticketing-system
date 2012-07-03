@@ -15,7 +15,7 @@ function createSeatmapOnPage( args )
 	// ajax-time!
 	var x = $.ajax({	
 		type: 'POST',
-		url: CI.base_url + '/SeatCtrl/getActualSeatsData',
+		url: CI.base_url + '/seatctrl/getActualSeatsData',
 		timeout: 120000,
 		success: function(data){
 			alreadyConfiguredSeat = false;			
@@ -218,7 +218,7 @@ $(document).ready( function(){
 		
 		Also found in seatManipulation.js
 	*/
-	isModeManageBookingChooseSeat = ( $( 'input#manageBookingChooseSeat' ).size() == 1 && $( 'input#manageBookingChooseSeat' ).val() == "1" );				
+	isModeManageBookingChooseSeat = ( $( 'input#managebookingChooseSeat' ).size() == 1 && $( 'input#managebookingChooseSeat' ).val() == "1" );				
 	createSeatmapOnPage( args );
 	
 	$('input[type="button"][class="seatChooser"]').click( function(){

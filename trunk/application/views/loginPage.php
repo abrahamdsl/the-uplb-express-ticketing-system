@@ -90,7 +90,7 @@ $this->load->view('html-generic/metadata.inc');
 			
 			<div id="left_content">	
 				<div class="text_box">
-					<form method="post"  action="<?php echo base_url().'SessionCtrl/login' ?>" name="formLogin" id="formMain">
+					<form method="post"  action="<?php echo base_url().'sessionctrl/login' ?>" name="formLogin" id="formMain">
 						<div class="login_form_row">
 							<label class="login_label">Username:</label>
 							<input type="text" name="username" class="login_input" value="" /><br/>
@@ -134,7 +134,7 @@ $this->load->view('html-generic/metadata.inc');
 				</div>
 				<div class="signup_div">
 					<h3 style="float:left;">No account yet?</h3>
-					<a href="<?php echo base_url().'/userAccountCtrl/userSignup'; ?>" class="button" id="buttonOK2" ><span class="icon">Sign up</span></a>
+					<a href="<?php echo base_url().'/useracctctrl/userSignup'; ?>" class="button" id="buttonOK2" ><span class="icon">Sign up</span></a>
 				</div>
 				
 			</div><!-- left content -->

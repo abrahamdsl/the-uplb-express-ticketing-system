@@ -104,7 +104,7 @@ $this->load->view('html-generic/doctype.inc');
 						<?php
 							}
 						?>
-						<form method="post"  action="<?php echo base_url().'EventCtrl2/managetc_update' ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url().'eventctrl2/managetc_update' ?>" name="formLogin" id="formMain">
 						<?php if( !$tcg_not_shared ) { ?>
 							<input type="hidden" name="share_separate" value="0" />
 						<?php } ?>
@@ -186,7 +186,7 @@ $this->load->view('html-generic/doctype.inc');
 				</div>												
 			</div>
 			<!-- to load a new page -->
-			<form id="id_forwarder" name="forwarder" method="post"  action="<?php echo base_url().'EventCtrl2/manageEvent'; ?>" >
+			<form id="id_forwarder" name="forwarder" method="post"  action="<?php echo base_url().'eventctrl2/manageEvent'; ?>" >
 				<input type="hidden" name="uuid" id="eligibility" value="0" <?php echo '/'; ?>>
 			</form>
 			<!-- accordion end -->
