@@ -3,3 +3,36 @@
   Ran Aroussi <ran@aroussi.com>
   Copyright (c) 2006, http://aroussi.com/ci/
   Lesser GPL (LGPL)
+* Library "xml_writer"
+  application\libraries\xml_writer.php
+  Joost van Veen
+  10 mrt 2009, Accent Webdesign
+  Downloaded 30DEC2011 from https://github.com/accent-interactive/xml_writer
+* toArray function
+  application\models\makexml_model::toArray
+  thedoc8786 at gmail dot com 23-Mar-2012 07:42
+  http://php.net/manual/en/book.simplexml.php#comments
+* Full Featured PHP Browser/OS detection
+  application\models\browsersniff_model.php
+  Version 5.4.5
+  Harald Hope
+  Copyright (C) May 17 2012 Website: http://techpatterns.com/downloads/php_browser_detection.php
+* CSS AND JQUERY TUTORIAL: OVERLAY WITH SLIDE OUT BOX
+  assets\javascript\nextGenModal.js
+  Lou, Mary
+  (C) 03 Dec 2009 http://tympanus.net/codrops/2009/12/03/css-and-jquery-tutorial-overlay-with-slide-out-box/
+* JQuery Drag, Jquery Drop plugins
+  assets/jquery/jquery.event.drag-2.0.min.js
+  assets/jquery/jquery.event.drop-2.0.min.js
+  Three Dub Media
+  2010 (c)  - http://threedubmedia.com
+  Open-source MIT license
+* Excanvas
+  assets/javascript/google/excanvas.min.js
+  Google Incorporated
+  2006 (c)
+  Apache License v2.0
+* Closing AJAX Call in the PHP Script but still continuing the latter's execution
+  application\libraries\airtraffic::clearance
+  arr1 at hotmail dot co dot uk 14-Nov-2006 11:51
+  http://php.net/manual/en/features.connection-handling.php#71172

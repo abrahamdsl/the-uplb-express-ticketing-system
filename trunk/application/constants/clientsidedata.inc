@@ -2,9 +2,13 @@
 		define( 'ACCOUNT_NUM'   , 'accountNum' );
 		define( 'ACTIVITY_NAME' , 'activity_name' );
 		define( 'ACTIVITY_STAGE', 'activity_stage' );
+		define( 'ACTIVITY_GUID', 'act_guid' );
 		define( 'ACTIVITY_DATA' , 'activity_data' );
+		define( 'AUTH_GUID' , 'authguid' );
+		define( 'ATC_GUID' , 'atcguid' );
 		define("BOOKING_PROGRESS_INDICATOR", 'book_step');
 		define("BOOK_INSTANCE_ENCRYPTION_KEY", 'bookInstanceEncryptionKey');
+		define("CLASS_UUIDs",  "class_uuids");
 		define("EVENT_NAME", 'eventName');
 		define("EVENT_LOCATION", 'location');
 		define("EVENT_ID", 'eventID');
@@ -25,7 +29,7 @@
 		define("VISUALSEAT_DATA",  "visualseat_data");
 		define("MANAGE_BOOKING_NEW_SEAT_UUIDS",  "mbooknsu");
 		define("MANAGE_BOOKING_NEW_SEAT_MATRIX",  "mbooknsm");
-		define("CLASS_UUIDs",  "class_uuids");
+		define("MB_VD_NEW_PENDING_TAG", "mbvdnpentag" );
 		define("UPLB_CLASS_UUID",  "uplbClassUUID");
 		define("RECEPTIONIST_ACTIVITY",  "checkIn_or_Out");
 		define("UPLB_CONS_STUDENT_PAIR",  "uplbConstituentStudentNumPair");
@@ -34,6 +38,7 @@
 		define("PAYPAL_CRUCIALDATA_ERR_INDICATOR", "ppcrucdata404" );
 		define("PAYPAL_DATA", "paypalData" );
 		define("PAYPAL_IPN", "paypalIPN" );
+		define("SEAT_MAP_UID", "smapuid" );
 		define("SLOT_UUID_JOINER", "_slot_UUIDs" );
 		define("PAYMENT_DEADLINE_DATE", "paymentDeadline_Date" );
 		define("PAYMENT_DEADLINE_TIME", "paymentDeadline_Time" );

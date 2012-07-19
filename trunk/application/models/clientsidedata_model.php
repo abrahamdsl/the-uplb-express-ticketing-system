@@ -20,6 +20,8 @@ class clientsidedata_model extends CI_Model {
 		parent::__construct();
 		$this->load->helper('cookie');
 		$this->load->library('session');
+		$this->load->model('sat_model');
+		$this->load->model('usefulfunctions_model');
 		include_once( APPPATH.'constants/_constants.inc');
 		include_once( APPPATH.'constants/clientsidedata.inc');
 	}
@@ -28,6 +30,21 @@ class clientsidedata_model extends CI_Model {
 	{
 		// USES SESSION DATA
 		return $this->session->unset_userdata( RESETPASS_BY_ADMIN_PRESENCE );
+	}
+	
+	function deleteActivityGUID()
+	{
+		return $this->session->unset_userdata( ACTIVITY_GUID );
+	}
+	
+	function deleteAuthGUID()
+	{
+		return $this->session->unset_userdata( AUTH_GUID );
+	}
+	
+	function delete_ATC_Guid()
+	{
+		return $this->session->unset_userdata( ATC_GUID );
 	}
 	
 	function deleteAvailabilityOfSlotInSameTicketClass()
@@ -116,6 +133,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( MANAGE_BOOKING_NEW_SEAT_UUIDS );
 	}
 	
+	function deleteMBViewDetailsNewBookingTag()
+	{
+		return $this->session->unset_userdata( MB_VD_NEW_PENDING_TAG );
+	}
+	
 	function deletePaymentDeadlineDate()
 	{
 		return $this->deleteCookieUnified( PAYMENT_DEADLINE_DATE );
@@ -180,6 +202,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( AUTH_THEN_REDIRECT );
 	}
 	
+	function deleteSeatMapUniqueID()
+	{
+		return $this->session->unset_userdata( SEAT_MAP_UID );
+	}
+	
 	function deleteShowtimeID()
 	{
 		return $this->deleteCookieUnified( SHOWTIME_ID );
@@ -239,6 +266,21 @@ class clientsidedata_model extends CI_Model {
 	{
 		// USES SESSION DATA
 		return $this->session->userdata( RESETPASS_BY_ADMIN_PRESENCE );
+	}
+	
+	function getActivityGUID()
+	{
+		return $this->session->userdata( ACTIVITY_GUID );
+	}
+	
+	function getAuthGUID()
+	{
+		return $this->session->userdata( AUTH_GUID );
+	}
+	
+	function get_ATC_Guid()
+	{
+		return $this->session->userdata( ATC_GUID );
 	}
 	
 	function getAvailabilityOfSlotInSameTicketClass( )
@@ -391,7 +433,12 @@ class clientsidedata_model extends CI_Model {
 	{
 		return $this->getCookieUnified( AUTH_THEN_REDIRECT );
 	}
-		
+	
+	function getSeatMapUniqueID()
+	{
+		return $this->session->userdata( SEAT_MAP_UID );
+	}
+	
 	function getShowtimeID()
 	{
 		return $this->getCookieUnified( SHOWTIME_ID );
@@ -473,6 +520,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->session->set_userdata( RESETPASS_BY_ADMIN_PRESENCE, $concernedUserAccountNum );
 	}
 	
+	function setAuthGUID( $value )
+	{
+		return $this->session->set_userdata( AUTH_GUID, $value );
+	}
+	
 	function setAvailabilityOfSlotInSameTicketClass( $value, $expiry = 3600)
 	{
 		return $this->setCookieUnified(SLOT_SAME_TICKETCLASS, $value, $expiry );
@@ -516,6 +568,11 @@ class clientsidedata_model extends CI_Model {
 	function setGuestNoSeatXMLFile( $value )
 	{
 		return $this->session->set_userdata( GUEST_NOSEAT_XML_FILE , $value );
+	}
+	
+	function setMBViewDetailsNewBookingTag()
+	{
+		return $this->session->set_userdata( MB_VD_NEW_PENDING_TAG , rand(100000, 999999) );
 	}
 	
 	function setDataForPaypal( $value = NULL, $expiry = 3600 )
@@ -684,82 +741,11 @@ class clientsidedata_model extends CI_Model {
 	*	Those above are about setting session data and cookies.
 	**/
 	
-	function appendSessionActivityDataEntry( $field, $value )
-	{
-		// CREATED 05MAR2012-1902		
-		$activityData1 = $this->input->cookie( 'activity_data' );
-		
-		$activityData = explode('|', $activityData1 );	// the zeroth index is just the 'book_instance_num'
-		
-		if( is_array( $activityData ) and count( $activityData ) === 2 ) 
-		{
-			if( $activityData[1] !== false ) $activityData[1] .= ($field.'='.$value.';');
-		}else{
-			die('you need to create session activity first' );
-		}		
-		$this->updateSessionActivityData( $activityData[1] );
-	}//appendSessionActivityDataEntry
-	
-	function appendSessionActivityDataEntryLong( $data_x )
-	{
-		/* CREATED 05MAR2012-1902		
-		
-			Form of parameter should be { XXXX=YYY | {XXXX=YYY;}* }
-		*/
-		$activityData1 = $this->input->cookie( 'activity_data' );		
-		$activityData = explode('|', $activityData1 );	// the zeroth index is just the 'book_instance_num'		
-		if( is_array( $activityData ) and count( $activityData ) === 2 ) 
-		{
-			if( $activityData[1] !== false ) $activityData[1] .= $data_x;
-		}else{
-			die('you need to create session activity first' );
-		}		
-		$this->updateSessionActivityData( $activityData[1] );
-	}//appendSessionActivityDataEntryLong
-	
-	function changeSessionActivityDataEntry( $field, $newValue )
-	{
-		// CREATED 05MAR2012-1902		
-		$activityData = $this->input->cookie( 'activity_data' );
-		$activityData_tokenized;
-		if( $activityData !== false )
-		{			
-			//separates the data part and the 'book_instance_number' value
-			$activityData_tokenized1 = explode('|', $activityData );
-			//separates the entries now 
-			$activityData_tokenized2 = explode(';', $activityData_tokenized1[1] );			
-			$activityData_tokenized3 = Array();
-			// "array-ize" the data
-			//echo var_dump( $activityData_tokenized1 );
-			for( $x = 0, $y = count( $activityData_tokenized2 ), --$y; $x < $y; $x++ )
-			{					
-					$dataProper = explode('=', $activityData_tokenized2[$x] );
-					$activityData_tokenized3[ $dataProper[0] ] = $dataProper[1];
-			}
-			//now search for the key, if found then yes.
-			foreach( $activityData_tokenized3 as $key => $value )
-			{
-				if( $field == $key ) {
-					$activityData_tokenized3[ $key ] = $newValue;
-					$serializedData = "";
-					foreach( $activityData_tokenized3 as $key2 => $value2 )
-					{
-						$serializedData .= ( $key2."=".$value2.";" );						
-					}
-					$this->updateSessionActivityData( $serializedData );
-					return true;
-				}
-			}
-			return false;
-		}else{
-			return false;
-		}		
-	}//getSessionActivityDataEntry
-	
 	function deleteBookingCookies()
 	{
 		/*
-			Created 06FEB2012-1734
+			@created 06FEB2012-1734
+			@DEPRECATED <LATE JUN 2012>
 		*/
 		$cookie_names = $this->getBookingCookieNames();
 		// delete first the cookie for slot UUIDs		
@@ -780,7 +766,12 @@ class clientsidedata_model extends CI_Model {
 		return $this->session->userdata( ACCOUNT_NUM );
 	}
 	
-	function getSessionActivity( )
+	function getMBViewDetailsNewBookingTag()
+	{
+		return $this->session->userdata( MB_VD_NEW_PENDING_TAG );
+	}
+	
+	function getSessionActivity()
 	{
 		/*
 			Created 04MAR2012-1241
@@ -801,97 +792,24 @@ class clientsidedata_model extends CI_Model {
 		return intval( $sessionObj[1] );
 	}
 	
-	function getSessionActivityDataEntry( $field )
-	{
-		// CREATED 05MAR2012-1902		
-		$activityData = $this->input->cookie( ACTIVITY_DATA );
-		$activityData_tokenized;
-		if( $activityData !== false )
-		{			
-			//separates the data part and the 'book_instance_number' value
-			$activityData_tokenized1 = explode('|', $activityData );
-			//separates the entries now 
-			$activityData_tokenized2 = explode(';', $activityData_tokenized1[1] );			
-			$activityData_tokenized3 = Array();
-			// "array-ize" the data		
-			for( $x = 0, $y = count( $activityData_tokenized2 )-1; $x < $y; $x++ )
-			{
-					$dataProper = explode('=', $activityData_tokenized2[$x] );
-					$activityData_tokenized3[ $dataProper[0] ] = (isset($dataProper[1])) ? $dataProper[1] : 0;
-			}
-			//now search for the key, if found then yes.		
-			foreach( $activityData_tokenized3 as $key => $value ) if( $field == $key )return $value;
-			return false;
-		}else{
-			return false;
-		}		
-	}//getSessionActivityDataEntry
-	
+
 	function isPaypalAccessible()
 	{
 		// Uses SESSION data
 		$thatSessData = $this->session->userdata( PAYPAL_ACCESS_INDICATOR );
 		return ( $thatSessData !== FALSE or  intval($thatSessData) === 1 );
 	}//isPaypalAccessible()
-	
-	function isSessionActivityDataEntryEqualTo( $field, $intendedValue, $type = "STRING" )
+
+	function setActivityGUID( $guid )
 	{
-		/*
-			Created 08MAR2012-0259
-		*/
-		$valueInCookie = $this->getSessionActivityDataEntry( $field );
-		if( $valueInCookie === false ) return false;
-		$type = strtoupper( $type );
-		switch( $type )
-		{
-			case "INT": return ( intval( $intendedValue) === intval( $valueInCookie) );
-			case "FLOAT": return ( floatval( $intendedValue) === floatval( $valueInCookie) );
-			case "STRING": return ( strval( $intendedValue) === strval( $valueInCookie) );		
-		}	
-	}//isSessionActivityDataEntryEqualTo
+		return $this->session->set_userdata( ACTIVITY_GUID, $guid );
+	}
 	
-	
-	function setBookingCookies( $cookie_values )
+	function set_ATC_Guid( $value )
 	{
-		/*
-			Created 09FEB2012-0052. Moved from eventctrl for refactoring purposes.
-			
-			Sets cookies needed in booking process. First called in eventctrl/book_step2
-		*/		
-		$cookie_names = $this->getBookingCookieNames();
-		$y = count($cookie_names);
-		//<area type="debug">
-		$cookie = Array(
-				'name' =>  'debug-PRE',
-				'value' => 'tang',
-				'expire' => 3600				// change later to how long ticketclass hold time
-			);
-		$this->input->set_cookie($cookie);
-		//</area>
-		for( $x=0; $x<$y; $x++ )
-		{
-			$cookie = Array(
-				'name' =>  $cookie_names[ $x ],
-				'value' => $cookie_values[ $x ],
-				'expire' => 3600				// change later to how long ticketclass hold time				 				
-			);
-			$this->input->set_cookie($cookie);			
-		}
-		//<area type="debug">
-		$cookie = Array(
-				'name' =>  'debug-POST',
-				'value' => 'eight-o-clock',
-				'expire' => 3600				// change later to how long ticketclass hold time
-			);
-		$this->input->set_cookie($cookie);		
-		//</area>
-		$y = count($cookie_names);
-		for( $x=0; $x<$y; $x++ )
-		{
-			log_message('DEBUG', 'Cookie try| ' .$cookie_names[ $x ]."|".$cookie_values[ $x ] );
-		}
-	}// setBookingCookies
-	
+		return $this->session->set_userdata( ATC_GUID, $value );
+	}
+
 	function setBookingCookiesOnServerUUIDRef( $UUID )
 	{
 		return $this->session->set_userdata( BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
@@ -902,35 +820,47 @@ class clientsidedata_model extends CI_Model {
 		return $this->session->set_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
 	}
 
-	function setSessionActivity( $name, $stage, $data = NULL )
+	function setSeatMapUniqueID( $value )
 	{
-		/*
-			Created 02MAR2012-2055
-		*/		
-		$this->session->set_userdata( ACTIVITY_NAME, $name );
-		$this->updateSessionActivityStage( $stage );
-		$this->updateSessionActivityData( $data );
-	}//setSessionActivity()
-		
-	function updateSessionActivityData( $data )
-	{
-		// CREATED 04MAR2012-1238
-	
-		$dataLen = strlen( $data );
-		if( $data[ $dataLen-1 ] != ';' ) $data .= ";";
-		$cookie = array(
-			'name'   => ACTIVITY_DATA,
-			'value'  => 'TEMP|'.$data,
-			'expire' => 3600
-		);
-		$this->input->set_cookie($cookie);
+		return $this->session->set_userdata( SEAT_MAP_UID, $value );
 	}
 	
-	function updateSessionActivityStage( $stage )
+	function setSessionActivity( $name, $stage, $data = NULL )
+	{
+		/**
+		*		@created 02MAR2012-2055
+		*		@meant to be called only when a procedure is being started or ended. If updating stages
+					use $this->updateSessionActivityStage(..) instead
+		*		@revised 14JUL2012-1445 consider moving this to a library and revert to pre-revision 38 version.
+		**/						
+		$sat_guid_exist = $this->getActivityGUID();
+		log_message('DEBUG','clientsidedata_model::setSessionActivity '. $name . ' ' . $stage . ' ' . strval($sat_guid_exist) );
+		if( $name == IDLE ){
+			if( $sat_guid_exist !== FALSE ){
+				$this->deleteActivityGUID();
+				$this->sat_model->delete( $sat_guid_exist );
+			}
+		}else{
+			if( $sat_guid_exist === FALSE ){
+				$sat_guid = $this->usefulfunctions_model->guid();
+				if( $this->sat_model->create( $sat_guid, $name, $stage ) ) $this->setActivityGUID( $sat_guid );
+			}else{
+				$this->deleteActivityGUID();
+				$this->sat_model->delete( $sat_guid_exist );
+				// terminate with a recursive call to itself so the action in the other part of this if statement is done
+				return $this->setSessionActivity( $name, $stage );
+			}
+		}
+		$this->session->set_userdata( ACTIVITY_NAME, $name );
+		$this->updateSessionActivityStage( $stage, !( $name == IDLE ) );
+	}//setSessionActivity()
+
+	function updateSessionActivityStage( $stage, $updateSat = true )
 	{
 		// CREATED 04MAR2012-1238
-		//@$this->session->unset_userdata( ACTIVITY_STAGE );
-		$this->session->set_userdata( ACTIVITY_STAGE, $stage );
+		log_message( 'debug', 'clientsidedata_model::updateSessionActivityStage accessed : ' . $stage .' | update sat? '. intval( $updateSat ) );
+		if( $updateSat ) $this->sat_model->update( $this->getActivityGUID(), $stage );
+		$this->session->set_userdata( ACTIVITY_STAGE, $stage );	
 	}
 	
 }

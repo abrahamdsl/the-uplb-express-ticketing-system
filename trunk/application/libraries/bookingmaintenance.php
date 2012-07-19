@@ -18,12 +18,14 @@ class BookingMaintenance{
 	var $CI;
 	
 	function __construct( $params = NULL )
-    {		
+    {
 		include_once( APPPATH.'constants/_constants.inc');
 		$this->CI = & get_instance();
+		$this->CI->load->library('email');
 		$this->CI->load->model('account_model');
 		$this->CI->load->model('booking_model');
 		$this->CI->load->model('clientsidedata_model');
+		$this->CI->load->model('email_model');
 		$this->CI->load->model('event_model');
 		$this->CI->load->model('Guest_model');
 		$this->CI->load->model('payment_model');
@@ -34,6 +36,72 @@ class BookingMaintenance{
 		$this->CI->load->model('usefulfunctions_model');
         $bookingNumberGlobal = (is_array($params) ) ?  $params[0] : FALSE;
     }
+	
+	private function emailMain( $mode = 1, $transtype = 1, $bookingNumber = "NULL", $destination, $misc = NULL )
+	{
+		/**
+		*	@created <late May 2012>
+		*	@description The ulimate function for sending emails.
+		*	@param $transtype INT values:
+				1 - NEW BOOKING, payment pending
+				2 - NEW BOOKING, payment ok
+				3 - MANAGE BOOKING, payment pending 
+				4 - MANAGE BOOKING, payment ok
+		**/
+		$subject_basic = 'Booking Receipt - ' . $bookingNumber;
+		$message_plain = "";
+		$admission_msg =  " You just need to remember your booking number and bring a valid ID to the event.";
+		
+		$this->CI->email->to( $destination );
+			log_message('DEBUG','bookingmaintenance::emailMain accessed');
+			log_message('DEBUG','params: mode ' .  $mode.' | transtype ' . $transtype . ' bookingnumber ' .$bookingNumber. ' destination ' . $destination  );
+		// differentiate among the main contact of the booking and the other guests
+		if( $mode === 1 )
+		{
+			switch( $transtype )
+			{
+				case 2:
+				case 4:
+						$subject_basic .= ' - CONFIRMATION';
+						$message_plain .= 'Thank you for your payment.' . $admission_msg;
+						break;
+				case 1:
+				case 3:
+						$subject_basic .= ' - PAYMENT PENDING';
+						$message_plain .= 'Please pay your booking later.';
+						break;
+				case 7: $subject_basic = "Booking CANCELLATION - " . $bookingNumber;
+						$message_plain = "Your booking has been successfully cancelled. Sad to see you go.\r\n";
+			}
+			$this->CI->email->subject( $subject_basic );
+		}else{
+			$message_plain .= "This is just to inform you that the booking in which you are included ";
+			switch( $transtype )
+			{
+				case 2:
+				case 4:
+						$subject_basic .= ' - CONFIRMATION';
+						$message_plain .= "is now confirmed." . $admission_msg;
+						break;
+				case 1:
+				case 3:
+						$subject_basic .= ' - PAYMENT PENDING';
+						$message_plain .= "is pending payment.";
+						break;
+				case 7: $subject_basic = "Booking CANCELLATION - " . $bookingNumber;
+						$message_plain .= "has been cancelled.\r\n";
+			}
+			$message_plain .= ".\r\nFor more information, contact this person who made the booking: \r\n". $misc[0] . "\r\n";
+			$this->CI->email->subject( $subject_basic );
+		}
+		$message_plain .= "\r\nWe are in the process of starting our email module so no more info provided on this mail. HAHAHA.";
+		$this->CI->email->message( $message_plain );
+		
+		$this->CI->email->send();
+			log_message('DEBUG', 'email bug 1 ' . $this->CI->email_model->senderEmailAddr . " ". $this->CI->email_model->getDefaultSenderName() );
+			log_message('DEBUG', print_r( $this->CI->email->print_debugger(), true ) );
+			log_message('DEBUG', 'email bug 2');
+	}//emailMain(..)
 	
 	private function properDetermineOnlinePaymentCode( $paymentModeObj )
 	{	
@@ -92,7 +160,7 @@ class BookingMaintenance{
 			'redirectURI' => base_url().'eventctrl/managebooking',
 			'theMessage' => "Something went wrong while cancelling changes to this booking.<br/><br/>".$customData
 		);
-	}//assembleCancelChangesOK()
+	}//assembleCancelChangesFail()
 	
 	function assembleCancelChangesOK()
 	{
@@ -141,10 +209,10 @@ class BookingMaintenance{
 	function assembleManageBookingParamAbsent()
 	{
 		$data = Array();
-		$data['defaultAction'] = 'Manage Booking';		
-		$data['redirect'] = 2;		
-		$data['error'] = 'NO_DATA';		
-		$data['redirectURI'] = base_url().'eventctrl/managebooking';					
+		$data['defaultAction'] = 'Manage Booking';
+		$data['redirect'] = 2;
+		$data['error'] = 'NO_DATA';
+		$data['redirectURI'] = base_url().'eventctrl/managebooking';
 		return $data;
 	}
 	
@@ -195,7 +263,7 @@ class BookingMaintenance{
 		$data['noURI'] = base_url().'eventctrl/mb_prep/404/'.$bookingNumber;
 		$data['formInputs'] = Array( 
 			PIND_SLOT_SAME_TC_NO_MORE_USER_NOTIFIED => '1',
-			'events' => $eventID,							
+			'events' => $eventID,
 			'showingTimes' => $showtimeID,
 			'slot' => $slots,
 			'bookingNumber' => $bookingNumber
@@ -370,7 +438,7 @@ class BookingMaintenance{
 				 (2) The user decided to cancel the changes and restore the booking to the original state.
 			
 			@param  $bookingNumberOrObj Can be either the booking number in string/int or
-											the MYSQL Object of that booking number.			
+											the MYSQL Object of that booking number.
 			@param	$reason	Indicates the reason why it was rolled back. See @purpose
 						
 		*/
@@ -431,13 +499,13 @@ class BookingMaintenance{
 		$bookingGuest = $this->CI->Guest_model->getGuestDetails( $eachBooking->bookingNumber );
 		foreach( $bookingGuest as $eachGuest )
 		{
-			// Get the new slot assigned to user.				
+			// Get the new slot assigned to user.
 			$supposedlyNewSlot = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter( 
 				$eachBooking->EventID,
 				$eachBooking->ShowingTimeUniqueID,
 				$eachBooking->TicketClassGroupID,
 				$eachBooking->TicketClassUniqueID,
-				$eachGuest->UUID					
+				$eachGuest->UUID
 			);
 			// Free the seat assigned to the supposedly new slot of the user
 			if( !is_null($supposedlyNewSlot->Seat_x) and !is_null($supposedlyNewSlot->Seat_y) )
@@ -453,7 +521,7 @@ class BookingMaintenance{
 			$this->CI->slot_model->setSlotAsAvailable( $supposedlyNewSlot->UUID );		// obviously
 		}
 		foreach( $billingInfoArray[ AKEY_UNPAID_PURCHASES_ARRAY ] as $unpaidPurchase )
-		{																							
+		{
 			// Delete this purchase entry
 			$this->CI->payment_model->deleteSinglePurchase( $eachBooking->bookingNumber, $unpaidPurchase->UniqueID );
 		}//foreach unpaidPurchase
@@ -499,13 +567,13 @@ class BookingMaintenance{
 		 if( $defaultedBookings !== false )
 		 {
 			foreach( $defaultedBookings as $eachBooking )
-			{				
+			{
 				/*
 					This will free the slots and seats being tied to this booking, so can be used later.
 				*/
 				if( $eachBooking->Status2 == "NEW" )
 				{
-					// This means this is an entirely new booking that is not paid on-time.				
+					// This means this is an entirely new booking that is not paid on-time.
 					if( $eachBooking->Status != "EXPIRED" ) $this->CI->booking_model->markAsExpired_New( $eachBooking->bookingNumber );
 					$this->deleteBookingTotally_andCleanup( 
 						$eachBooking->bookingNumber,
@@ -570,7 +638,7 @@ class BookingMaintenance{
 					if( $assignedToUserAlready  )
 					{
 						$guestObj = $this->CI->Guest_model->getSingleGuest( $eachSlot->Assigned_To_User );
-						// see comment near $defaultedBookingNumbers declaration for explanation						
+						// see comment near $defaultedBookingNumbers declaration for explanation
 						if( in_array( $guestObj->bookingNumber, $defaultedBookingNumbers ) ) continue;
 						$this->deleteBookingTotally_andCleanup(
 							$guestObj->bookingNumber,
@@ -611,7 +679,7 @@ class BookingMaintenance{
 				back in managebooking_changesomething process function. :D
 			*/
 			log_message('DEBUG', 'bookingmaintenance\confirmSlotsOfThisBooking() IS MANAGE BOOKING');
-			$rollbackInfo 		  = $this->getSlotRollbackDataOfPurchase( $transactionID );			
+			$rollbackInfo 		  = $this->getSlotRollbackDataOfPurchase( $transactionID );
 			foreach( $guest_arr as $eachGuest )
 			{
 				// Get the old slot assigned to user..
@@ -620,7 +688,7 @@ class BookingMaintenance{
 					$rollbackInfo['oldShowtimeID'],
 					$rollbackInfo['oldTicketClassGroupID'],
 					$rollbackInfo['oldTicketClassUniqueID'],
-					$eachGuest->UUID					
+					$eachGuest->UUID
 				);
 				// .. and mark the old seat as available ..
 				if( !(is_null($supposedlyOldSlot->Seat_x) or is_null($supposedlyOldSlot->Seat_y)) ){
@@ -640,7 +708,7 @@ class BookingMaintenance{
 					$bookingObj->ShowingTimeUniqueID,
 					$bookingObj->TicketClassGroupID,
 					$bookingObj->TicketClassUniqueID,
-					$eachGuest->UUID					
+					$eachGuest->UUID
 				);
 				// .. mark the new slot as booked ..
 				$this->CI->slot_model->setSlotAsBooked( $newSlot->UUID );
@@ -666,12 +734,12 @@ class BookingMaintenance{
 				$bookingNumber,
 				'',
 				'',
-				NULL		
+				NULL
 			);
 			return true;
 		}else{
 			log_message('DEBUG', 'bookingmaintenance\confirmSlotsOfThisBooking() IS *NEW* BOOKING');
-			// This is an entirely new booking.			
+			// This is an entirely new booking.
 			foreach( $guest_arr as $eachGuest )
 			{
 				$eSlotObject = $this->CI->slot_model->getSlotAssignedToUser( $eachGuest->UUID );
@@ -692,7 +760,7 @@ class BookingMaintenance{
 			
 			Formerly contained within 'cancelBookingProcess()' but moved here to accomodate
 			deletion of booking data because of expired payment period
-		*/			
+		*/
 		$guestObjArray = NULL;
 		$bookingStage  = 0; 
 		
@@ -703,15 +771,15 @@ class BookingMaintenance{
 		// CODE MISSING: DATABASE Checkpoint
 		foreach( $guestObjArray as $eachGuest )
 		{
-			$eventSlot = $this->CI->slot_model->getSlotAssignedToUser( $eachGuest->UUID );			
-			if( $eventSlot === false ) continue;					
+			$eventSlot = $this->CI->slot_model->getSlotAssignedToUser( $eachGuest->UUID );
+			if( $eventSlot === false ) continue;
 			if( ($expiryCleanup != NULL and $expiryCleanup['bool'])or 
 				$bookingStage > STAGE_BOOK_3_FORWARD )
-			{											
-				$this->CI->seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );				
+			{
+				$this->CI->seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );
 			}//end if
-			$this->CI->slot_model->setSlotAsAvailable( $eventSlot->UUID );			
-		}		
+			$this->CI->slot_model->setSlotAsAvailable( $eventSlot->UUID );
+		}
 		/*
 			Though this first seems to be refactorable, but we have to 
 			delete purchases first because it references `booking_info`.
@@ -719,13 +787,13 @@ class BookingMaintenance{
 		if( ( $expiryCleanup['bool'] and $expiryCleanup['Status2'] === "FOR-DELETION" ) 
 			or $bookingStage > STAGE_BOOK_4_FORWARD )
 		{
-			$this->CI->payment_model->deleteAllBookingPurchases( $bookingNumber );	
+			$this->CI->payment_model->deleteAllBookingPurchases( $bookingNumber );
 		}
 		if( ( $expiryCleanup['bool'] and $expiryCleanup['Status2'] === "FOR-DELETION" ) 
 			or $bookingStage >  STAGE_BOOK_3_FORWARD )
 		{
 			$this->CI->booking_model->deleteAllBookingInfo( $bookingNumber );
-		}				
+		}
 		// CODE MISSING: DB Commit
 		return true;
 	}//deleteBookingTotally_andCleanup
@@ -742,13 +810,13 @@ class BookingMaintenance{
 			if( $paymentModeObj === false ) return false;
 		}else{
 			$paymentModeObj = $passedData;
-			if( !isset( $paymentModeObj->internal_data) ) return false;						
+			if( !isset( $paymentModeObj->internal_data) ) return false;
 		}
 		return $this->properDetermineOnlinePaymentCode( $paymentModeObj );
 	}//determineOnlinePaymentModeCode(..)
 	
 	function forfeitSlotsOfNoShowGuests( $eventID, $showtimeID )
-	 {
+	{
 		/*
 			A lot of non-harmful bugs in the functions in booking_model where this is called.
 		*/
@@ -762,7 +830,7 @@ class BookingMaintenance{
 		{
 			log_message( 'DEBUG', 'Guest no-show: '.$guestUUID ); // error code 2203
 			$eventSlot = $this->CI->slot_model->getSlotAssignedToUser( $guestUUID );
-			@$this->CI->seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );	
+			@$this->CI->seat_model->markSeatAsAvailable( $eventSlot->EventID, $eventSlot->Showtime_ID, $eventSlot->Seat_x, $eventSlot->Seat_y );
 			@$this->CI->slot_model->setSlotAsAvailable($eventSlot->UUID );
 			if( isset($bookingsProcessed[ $guestObj->bookingNumber ] ) ){
 				$bookingsProcessed[ $guestObj->bookingNumber ]++;
@@ -776,6 +844,45 @@ class BookingMaintenance{
 		
 	 }// forfeitSlotsOfNoShowGuests(..)
 	
+	function freeSlotsBelongingToClasses_NDX( $selectedTicketClass = FALSE, $slot_uuid_db_entry )
+	{
+		/**
+		*	@created 09JUN2012-1607
+		*	@description Supersedes slot_model->freeSlotsBelongingToClasses(.)
+		*	@param $selectedTicketClass - INT - The ticket class selected. 
+										- BOOLEAN FALSE - If we just want to make the slot UUIDs available for booking.
+		**/
+		log_message('DEBUG','library bookingmaintenance::freeSlotsBelongingToClasses_NDX triggerred');
+		$unlock_slot_UUIDs = "";
+		if( $selectedTicketClass === FALSE )
+		{
+			/* The current cookie-on-server's SLOTS_UUID value is the slot UUIDs
+				separated by underscores. We just need to explode it.
+			*/
+			$free_these_UUIDs = explode('_' ,$slot_uuid_db_entry);
+		}else{
+			/* The current cookie-on-server's SLOTS_UUID value is of type WIN5, with keys as 
+				the  respective Ticket Class Unique IDs. We get it and remove the entry for
+				the ticket class the user selects.
+			*/
+			$unlock_slot_UUIDs = $this->CI->usefulfunctions_model->removeWIN5_Data( $selectedTicketClass, $slot_uuid_db_entry );
+			/*
+				We then make an associative array out of it, so that we can easily access the UUID
+				values in the foreach() later.
+			*/
+			$free_these_UUIDs = $this->CI->usefulfunctions_model->makeAssociativeArrayThisWIN5_DATA( $unlock_slot_UUIDs );
+		}
+				
+		foreach( $free_these_UUIDs as $value )
+		{
+			$explodedUUIDs = explode( '_', $value );		// explode via delimiter underscore
+			foreach( $explodedUUIDs as $uuid ) 
+			{
+				$this->CI->slot_model->setSlotAsAvailable( $uuid );	// free slots
+			}
+		}
+	}//freeSlotsBelongingToClasses_NDX
+
 	function getBillingRelevantData( $bookingNumber )
 	{
 			/**
@@ -803,12 +910,17 @@ class BookingMaintenance{
 			);
 	}//getBillingRelevantData
 	
+	function getMBReasonOnSeatPage( $isShowtimeChanged, $isTicketClassChanged )
+	{
+		// 07JUL2012-1244: What is this??
+	}
+	
 	function getSendSeatInfoToViewData( $bookingNumber )
 	{
 		/**
 		*	@created 07JUN2012-1807
 		*	@description Assembles data related to seating for display in the forward pages.
-		*	@returns Array,						
+		*	@returns Array
 				<key: Guest UUID>
 					-> <MATRIX_X>_<MATRIX_Y>
 		**/
@@ -826,7 +938,7 @@ class BookingMaintenance{
 					$bookingObj->TicketClassGroupID, 
 					$bookingObj->TicketClassUniqueID,
 					$singleGuest->UUID
-				);			
+				);
 				$sendSeatInfoToView[ $singleGuest->UUID ] = $this->CI->seat_model->getVisualRepresentation( 
 					$guestSlotObj->Seat_x, 
 					$guestSlotObj->Seat_y,
@@ -876,6 +988,41 @@ class BookingMaintenance{
 		return $returnThis;
 	}//getSlotRollbackDataOfPurchase(..)
 	
+	function isComingFromTicketClass( $m_bookingInfo )
+	{
+		/**
+		*	@created 16JUN2012-1351
+		*	@description For Manage Booking. Determines whether we
+				came from ticket class.
+		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.
+		**/
+		if( !isset( $m_bookingInfo->GO_TICKETCLASS ) ) return FALSE;
+		return ( @$m_bookingInfo->GO_TICKETCLASS >= MB_STAGESTAT_PASSED );
+	}
+	
+	function isShowtimeChanged( $m_bookingInfo )
+	{
+		/**
+		*	@created 16JUN2012-1351
+		*	@description For Manage Booking. Determines whether the showtime is changed as 
+				a result of making changes to the booking.
+		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.
+		**/
+		if( !isset( $m_bookingInfo->GO_SHOWTIME ) ) return FALSE;
+		return ( intval(@$m_bookingInfo->GO_SHOWTIME) === MB_STAGESTAT_CHANGED );
+	}
+	
+	function isTicketClassChanged( $m_bookingInfo )
+	{
+		/**
+		*	@created 16JUN2012-1351
+		*	@description For Manage Booking. Determines whether the ticket class
+				 is changed as  a result of making changes to the booking.
+		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.
+		**/
+		return ( intval(@$m_bookingInfo->GO_TICKETCLASS) == MB_STAGESTAT_CHANGED );
+	}
+
 	function pay_and_confirm( $bookingNumber = FALSE, $from, $paymentChannel = NULL, $totalCharges = FALSE, $paymentProcessingStage, $info, $agent = NULL )
 	{
 		/**
@@ -933,7 +1080,7 @@ class BookingMaintenance{
 		
 		/* <area id="pandc_param_check" > */ {
 			for(;;){
-				log_message('DEBUG', 'Loop');
+				log_message('DEBUG', 'parameter check entered');
 				
 				if( $bookingNumber === FALSE )
 				{
@@ -1025,7 +1172,7 @@ class BookingMaintenance{
 					$this->CI->slot_model->setSlotAsPendingPayment( $slotAssignedObj->UUID );
 					if( !is_null( $slotAssignedObj->Seat_x ) and !is_null( $slotAssignedObj->Seat_y ) )
 					{
-						$this->CI->seat_model->updateSingleeatComment( 
+						$this->CI->seat_model->updateSingleSeatComment( 
 							$unpaidPurchases[0]->Deadline_Date." ".$unpaidPurchases[0]->Deadline_Time, 
 							$info[ "eventID" ], 
 							$info[ "showtimeID" ], 
@@ -1103,7 +1250,7 @@ class BookingMaintenance{
 		$userPermitted;
 		$paymentModeObj;
 		$bookingDetails  = $this->CI->booking_model->getBookingDetails( $bNumber );
-		$billingData	 = $this->getBillingRelevantData( $bNumber );				
+		$billingData	 = $this->getBillingRelevantData( $bNumber );
 				
 		log_message('DEBUG', 'bookingmaintenance\processpayment() accessed');
 		if( $billingData[ AKEY_UNPAID_PURCHASES_ARRAY ] === false )
@@ -1124,7 +1271,7 @@ class BookingMaintenance{
 			log_message('DEBUG', 'PAYMENT MODE '. $paymentChannel .' NOT ALLOWED FOR EVENT ' . $bookingDetails->EventID . " " . $bookingDetails->ShowingTimeUniqueID );
 			$result['status'] = "ERROR";
 			$result['code'] = 4008;
-			$result['message'] = "This payment mode is not allowed to be used for this event."; //4008			
+			$result['message'] = "This payment mode is not allowed to be used for this event."; //4008
 			return $result;
 		}
 		/*
@@ -1144,7 +1291,7 @@ class BookingMaintenance{
 				$result['code'] = 4007;
 				$result['message'] = "You do not have permission to confirm a reservation for this event.<br/><br/>*"; //4007
 				$result['message'] .= $userPermitted['comment'];
-				return $result;			
+				return $result;
 			}
 		}else{
 			log_message('DEBUG', 'Online payment mode detected ' . $paymentModeObj->Name );
@@ -1181,7 +1328,7 @@ class BookingMaintenance{
 			$result['boolean'] = TRUE;
 			$result['code'] = 1003;
 			$result['status'] = "OKAY";
-			$result['message'] = "Succesfully proccessed payment."; //1003			
+			$result['message'] = "Succesfully proccessed payment."; //1003
 		}else{
 			log_message('DEBUG', 'Unable to create payment entry.' );
 			$result['boolean'] = FALSE;
@@ -1244,85 +1391,49 @@ class BookingMaintenance{
 		}
 	}//react_on_pay_and_confirm(..)
 	
-	function freeSlotsBelongingToClasses_NDX( $selectedTicketClass = FALSE, $slot_uuid_db_entry )
+	
+	function sendEmailOnBookSuccess( $bookingNumber, $guests, $transtype )
 	{
 		/**
-		*	@created 09JUN2012-1607
-		*	@description Supersedes slot_model->freeSlotsBelongingToClasses(.)	
-						
-		*	@param $selectedTicketClass - INT - The ticket class selected. 
-										- BOOLEAN FALSE - If we just want to make the slot UUIDs available for booking.
+		*	@created 05JUL2012-1248
+		*	@description Unified function for the gateway to sending emails upon the conclusion of a booking process
+				as well as cancellation.
+		*	@param $transtype INT values:
+				1 - NEW BOOKING, payment pending
+				2 - NEW BOOKING, payment ok
+				3 - MANAGE BOOKING, payment pending 
+				4 - MANAGE BOOKING, payment ok
+				7 - BOOKING CANCELLATION
+		*	@assumption All guests have valid email addresses.
 		**/
-		log_message('DEBUG','library bookingmaintenance::freeSlotsBelongingToClasses_NDX triggerred');
-		$unlock_slot_UUIDs = "";		
-		if( $selectedTicketClass === FALSE )
-		{
-			/* The current cookie-on-server's SLOTS_UUID value is the slot UUIDs
-				separated by underscores. We just need to explode it.
-			*/
-			$free_these_UUIDs = explode('_' ,$slot_uuid_db_entry);
-		}else{
-			/* The current cookie-on-server's SLOTS_UUID value is of type WIN5, with keys as 
-				the  respective Ticket Class Unique IDs. We get it and remove the entry for
-				the ticket class the user selects.
-			*/
-			$unlock_slot_UUIDs = $this->CI->usefulfunctions_model->removeWIN5_Data( $selectedTicketClass, $slot_uuid_db_entry );
-			/*
-				We then make an associative array out of it, so that we can easily access the UUID
-				values in the foreach() later.
-			*/
-			$free_these_UUIDs = $this->CI->usefulfunctions_model->makeAssociativeArrayThisWIN5_DATA( $unlock_slot_UUIDs );
-		}
-				
-		foreach( $free_these_UUIDs as $value )
-		{								
-			$explodedUUIDs = explode( '_', $value );		// explode via delimiter underscore
-			foreach( $explodedUUIDs as $uuid ) 
-			{				
-				$this->CI->slot_model->setSlotAsAvailable( $uuid );	// free slots
-			}
-		}
-	}//freeSlotsBelongingToClasses_NDX
+		$guestCount = count( $guests );
+		$x = 0;
 
-	function isComingFromTicketClass( $m_bookingInfo )
-	{
-		/**
-		*	@created 16JUN2012-1351
-		*	@description For Manage Booking. Determines whether we
-				came from ticket class.
-		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.		
-		**/
-		if( !isset( $m_bookingInfo->GO_TICKETCLASS ) ) return FALSE;
-		return ( @$m_bookingInfo->GO_TICKETCLASS >= MB_STAGESTAT_PASSED );
-	}
-	
-	function isShowtimeChanged( $m_bookingInfo )
-	{
-		/**
-		*	@created 16JUN2012-1351
-		*	@description For Manage Booking. Determines whether the showtime is changed as 
-				a result of making changes to the booking.
-		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.		
-		**/
-		if( !isset( $m_bookingInfo->GO_SHOWTIME ) ) return FALSE;
-		return ( intval(@$m_bookingInfo->GO_SHOWTIME) === MB_STAGESTAT_CHANGED );
-	}
-	
-	function isTicketClassChanged( $m_bookingInfo )
-	{
-		/**
-		*	@created 16JUN2012-1351
-		*	@description For Manage Booking. Determines whether the ticket class
-				 is changed as  a result of making changes to the booking.
-		*	@param $m_bookingInfo MYSQL_OBJ An entry in `_manage_booking_cookies`.		
-		**/
-		return ( intval(@$m_bookingInfo->GO_TICKETCLASS) == MB_STAGESTAT_CHANGED );
-	}
-	
-	function getMBReasonOnSeatPage( $isShowtimeChanged, $isTicketClassChanged )
-	{
-		
-	}
-	
+		/*   Initialize CI's email functionality with settings from DB
+			 The sales email will be used as the source/sender.
+			 The parameter BOOLEAN TRUE is to signify to replace the global variable
+			 in the model that holds the sender's email address.
+		*/
+		if( !$this->CI->email_model->isEmailOn() )
+		{
+			log_message('DEBUG','bookingmaintenance::sendEmailOnBookSuccess exiting - email service is turned off.');
+			return FALSE;
+		}
+		$this->CI->email_model->initializeFromSales( TRUE );
+		$this->CI->email->from(
+			$this->CI->email_model->senderEmailAddr,
+			$this->CI->email_model->getDefaultSenderName()
+		);
+		//fire up sending emails!
+		$this->emailMain( 1, $transtype, $bookingNumber, $guests[0]->Email );	// first guest/ultimate contact
+		// other guests, if any
+		for( $x = 1; $x < $guestCount; $x++ ) $this->emailMain( 
+			2, 
+			$transtype, 
+			$bookingNumber, 
+			$guests[$x]->Email,
+				// this last param is about the first guest/ultimate contact
+			Array( $guests[0]->Lname.", ".$guests[0]->Fname." ".$guests[0]->Mname." ( ".$guests[0]->Email." ) " )
+		);
+	}//sendEmailOnBookSuccess(..)
 }//class
-	

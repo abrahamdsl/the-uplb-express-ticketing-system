@@ -85,9 +85,15 @@ if( !isset( $isActivityManageBooking  ) ) $isActivityManageBooking  = false;
 			<table class="center_purest" >
 			<?php if( $is_tc_displayable ){ ?>
 				<tr>
-					<td>Ticket class of your current booking:</td>
+					<td>Ticket class of your <?php if( isset($isShowtimeChanged) and $isShowtimeChanged ) { ?>new<?php }else{ ?> current <?php } ?> booking:</td>
 					<td> <?php echo $existingTCName; ?></td>
 				</tr>
+				<?php if( isset( $newTCName ) ) { ?>
+				<tr>
+					<td>Your new ticket class:</td>
+					<td> <?php echo $newTCName; ?></td>
+				</tr>
+				<?php } ?>
 			<?php } ?>
 				<tr>
 					<td style="width: 85%;" >Total payments for your current booking:</td>

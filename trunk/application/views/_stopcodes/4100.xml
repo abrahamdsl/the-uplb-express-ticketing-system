@@ -1,0 +1,8 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>error</type>
+    <resultstring>ACCESS_DENIED_GEN</resultstring>
+    <resultcode>4100</resultcode>
+    <title>access denied</title>
+    <message>You are not allowed to access this functionality/page. Maybe you have finished what you are doing but accidentally clicked the back button?</message>
+</ajaxresponse>

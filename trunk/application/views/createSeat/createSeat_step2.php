@@ -9,7 +9,7 @@ $this->load->view('html-generic/metadata.inc');
 **** WARNING 18JAN2012-2037
 *
 *	Element names, IDs and classes are frequently used in the JavaScript/DOM manipulation. Consult the JavaScript files
-*     when doing changes to such.
+*	  as well as server-side files when doing changes to such.
 *
 **** WARNING
 -->
@@ -34,42 +34,58 @@ $this->load->view('html-generic/metadata.inc');
 	<?php
 		$this->load->view('html-generic/seatEssentials.inc');
 	?>
-	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript2.js'; ?>" ></script>			
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');	
+	?>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript2.js'; ?>" ></script>
 	<!--For modal v1-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic.js'; ?>" ></script>	
+	
 </head>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
 ?>	
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
+		?>
     </div>
-        
-    
     <div id="main_content">    	
-    	<div id="centralContainer">           		   
+    	<div id="centralContainer">
 			<div id="page_title">
-				Create Seat Map ' <?php echo $this->input->post( 'name' );?> '
+				Create Seat Map ' <?php echo $name;?> '
 			</div>
-			<div style="padding-left:10px; clear: both">
-				Please fill out the following fields.
-			</div>				
+			<div style="padding-left:20px; clear: both">
+				<div style="clear: both; width: 100%;">
+					Instructions
+				</div>
+				<div style="width: 50%;float: left;">
+					<ul>
+						<li>To make a vertical aisle, click the column indicator.</li>
+						<li>Making of horizontal aisle is not yet supported.</li>
+					</ul>
+				</div>
+				<div style="width: 49%; float: right;">
+					<ul style="">
+						<li>Undoing the making of an aisle is not yet supported.</li>
+						<li>To reset the seat map, refresh the page.</li>
+					</ul>
+				</div>
+			</div>
 			<!-- accordion start -->
-			<!--  -->
-			<form method="post"  action="<?php echo base_url().'seatctrl/create_step3' ?>" name="formLogin" id="formMain">						
+			<form method="post"  action="<?php echo base_url().'seatctrl/create_step3' ?>" name="formLogin" id="formMain" >
 						<input type="hidden" id="rows" value="<?php echo $rows; ?>" />
 						<input type="hidden" id="cols" value="<?php echo $cols; ?>" />
 						<input type="hidden" id="rows_touchable" value="<?php echo $rows; ?>" />
@@ -83,9 +99,8 @@ $this->load->view('html-generic/metadata.inc');
 											for( $x = 0; $x < $cols; $x++ )
 											{
 										?>
-												<td class="legend">													
+												<td class="legend">
 													<input type="text" name="label_up_number" disabled="disabled" value="<?php echo $x+1; ?>" />
-													<?php //echo $x+1; ?>
 												</td>
 										<?php
 											}
@@ -98,25 +113,23 @@ $this->load->view('html-generic/metadata.inc');
 									<?php for( $x = 0; $x < $rows; $x++, $indicator++){ ?>
 									<tr>
 										<td class="legend" >
-											<!--<input type="hidden" name="label_real_left_letter" value="<?php echo chr($indicator); ?>" />
-												<input type="type" name="label_pesentation_left_y" disabled="disabled" value="<?php echo chr($indicator); ?>" />-->
-												<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />											
+												<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />
 										</td>
 										<?php for( $y = 0; $y < $cols; $y++ ){ ?>
 											<td>
 												<div class="drop" >
 													<span><?php echo chr($indicator); ?>-<?php  echo $y+1; ?></span>
-													<input type="hidden" class="seatInfo" name="seatLocatedAt_<?php  echo $x; ?>_<?php  echo $y; ?>_presentation" value="<?php echo chr($indicator); ?>_<?php  echo $y+1; ?>" />																																																															
-													<input type="hidden" class="seatInfo" name="seatLocatedAt_<?php  echo $x; ?>_<?php  echo $y; ?>_status" value="0" />																																																															
-												</div>								
+													<input type="hidden" class="seatInfo" name="seatLocatedAt_<?php  echo $x; ?>_<?php  echo $y; ?>_presentation" value="<?php echo chr($indicator); ?>_<?php  echo $y+1; ?>" />
+													<input type="hidden" class="seatInfo" name="seatLocatedAt_<?php  echo $x; ?>_<?php  echo $y; ?>_status" value="0" />
+												</div>
 											</td>
 										<?php } ?>
 										<td class="legend" >
 											<!--<input type="hidden" name="real_label_right" value="<?php echo chr($indicator); ?>" /> -->
-											<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />											
+											<input type="text" name="label_letter" disabled="disabled" value="<?php echo chr($indicator); ?>" />
 										</td>
 									</tr>
-									<?php } ?>	
+									<?php } ?>
 									<tr>
 										<td></td>
 										<?php
@@ -135,21 +148,20 @@ $this->load->view('html-generic/metadata.inc');
 									</tr>
 								</tbody>
 							</table>
-						</div>					
-					</form>										
-			<div class="accordionContainer center_purest">				
-				<div id="seatIndicatorLegend">
-					<span class="dropped" style="padding: 10px;" >Won't be available for use</span>
+						</div>
+					</form>
+			<div class="accordionContainer center_purest">
+				<div id="seatIndicatorLegend" style="padding: 10px;" >
+					<span class="dropped" style="padding: 10px;" >Non-existent seat</span>
 				</div>
-				<div id="essentialButtonsArea">
-							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>							
-				</div>	
 			</div>
-			
+			<div id="essentialButtonsArea" >
+							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>	
+							<a class="button" id="buttonReset" ><span class="icon">Cancel</span></a>
+			</div>
 			<div style=" clear:both;"></div>
 		</div>
     </div><!--end of main content-->
-	
 <?php
 	$this->load->view('html-generic/footer.inc');
 ?>

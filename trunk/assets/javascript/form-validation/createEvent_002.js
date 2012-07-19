@@ -35,13 +35,13 @@ function deleteSelectedShowingTimeInfo( data )
 	*/
 	
 	removeFromHidden( data[0], $("option:selected").val() );
-	$("option:selected").remove();	
+	$("option:selected").remove();
 }//deleteSelectedShowingTimeInfo
 
 function formSubmit()
 {
 	// created 7JAN2012-1547
-	document.forms[0].submit();			
+	document.forms[0].submit();
 	
 	return [ this ];
 }
@@ -179,7 +179,7 @@ $(document).ready(function()
 				
 				//check first if they are not blank
 				if( $('#timepicker_start').val() == "" )
-				{														
+				{
 					$.fn.nextGenModal({
 					   msgType: 'error',
 					   title: 'info required',
@@ -197,18 +197,18 @@ $(document).ready(function()
 					});
 					return false;
 				}
-				
+
 				//now try determining difference
 				tpStart.setHours(tpStart_time[0]);
 				tpStart.setMinutes(tpStart_time[1]);
 				tpEnd.setHours(tpEnd_time[0]);
 				tpEnd.setMinutes(tpEnd_time[1]);
-				
+
 				difference_in_Millisecs = tpEnd - tpStart;
 				
 				// if invalid time string is submitted, difference_in_Millisecs would be NaN
 				if( isNaN(difference_in_Millisecs) )
-				{					
+				{
 					$.fn.nextGenModal({
 					   msgType: 'error',
 					   title: 'misunderstanding',
@@ -216,26 +216,24 @@ $(document).ready(function()
 					});
 					return;
 				}
-																
 				if( !isShow_RedEye )
 				{
 					if( difference_in_Millisecs < 0 )
-					{												
+					{
 						$.fn.nextGenModal({
 						   msgType: 'error',
 						   title: 'bad expectation',
 						   message:   "Not a Red Eye show but end time is earlier than showing time!"
-						});						
+						});
 						return;
-					}					
-				}				
+					}
+				}
 				timeFrames = $('#timeSelect').children(); 				//get all children nodes - the time frames		
 				timeFrames_obj = timeFrames.toArray();					//just to convert them to array for comparison later on								
 				addThisTimeframe = $('#timepicker_start').val() + " - " + $('#timepicker_end').val(); // the time to be added
-				
 				// now check the existing timeframe to see if something exists already
-				for( x=0, y=timeFrames_obj.length ; x < y ; x++ )			
-				{					
+				for( x=0, y=timeFrames_obj.length ; x < y ; x++ )
+				{
 					if( timeFrames_obj[x].innerHTML == addThisTimeframe )
 					{					
 						$.fn.nextGenModal({
@@ -244,29 +242,28 @@ $(document).ready(function()
 						   message:  "Time exists already!"
 						});	
 						return;
-					}															
+					}
 				}
 				
 				if( timeFrames.first().val() == "NONE" )
-				{										
+				{
 					document.getElementById('timeSelect').innerHTML = "";   //remove the "Add time" text
-					$('#timeSelect').attr( 'disabled', false );					//enable the selection
+					$('#timeSelect').attr( 'disabled', false );				//enable the selection
 					timeFrames = $('#timeSelect').children();				//reinitialize
 				}
 				
 				add_me = '<option class="timeFrames_proper" id="' + addThisTimeframe + '" >' + addThisTimeframe  +"</option>";
-				timeFrames.add(add_me).appendTo($('#timeSelect'));					
+				timeFrames.add(add_me).appendTo($('#timeSelect'));
 				appendToHidden( 'TIME', addThisTimeframe );
 				
 				//remove values for timeframe and unset red-eye checkbox
 				$( '#timepicker_start' ).val( "" );
 				$( '#timepicker_end' ).val( "" );
-				$( '#id_redEyeIndicator' ).attr( "checked", false );							
-				
-			}			
+				$( '#id_redEyeIndicator' ).attr( "checked", false );
+			}
 		);//addTimeBtn
 	
-		$('#addDateBtn').click(function(){			
+		$('#addDateBtn').click(function(){
 			var dateChosen = $('#datepicker').val();			// get the value
 			var dateChosen_splitted = dateChosen.split('/');	// split via the default separator
 			var x;
@@ -277,7 +274,7 @@ $(document).ready(function()
 			var add_me;
 			
 			if( dateChosen == "" )	// blank, alert!
-			{				
+			{
 				$.fn.nextGenModal({
 				   msgType: 'error',
 				   title: 'info required',
@@ -287,7 +284,7 @@ $(document).ready(function()
 			}
 			
 			if( dateChosen_splitted.length != 3 )
-			{				
+			{
 				$.fn.nextGenModal({
 				   msgType: 'error',
 				   title: 'info required',
@@ -299,7 +296,7 @@ $(document).ready(function()
 			for( x=0; x < 3; x++ )	// array length should be fixed at 3: mm/dd/yyyy
 			{
 				if( !isInt(dateChosen_splitted[x]) )	// found at javascript/form-validation/generalChecks.js
-				{											
+				{
 					$.fn.nextGenModal({
 					   msgType: 'error',
 					   title: 'bad expectation',
@@ -309,35 +306,34 @@ $(document).ready(function()
 				}
 			}
 			
-			dateFrames = $('#dateSelect').children(); 				//get all children nodes - the dates	
-			dateFrames_obj = dateFrames.toArray();					//just to convert them to array for comparison later on								
+			dateFrames = $('#dateSelect').children(); 				//get all children nodes - the dates
+			dateFrames_obj = dateFrames.toArray();					//just to convert them to array for comparison later on
 			
 			//check if date already exists
 			for( x=0, y=dateFrames_obj.length ; x < y ; x++ )			// now check the existing timeframe to see if something exists already
-			{															
+			{
 					if( $(dateFrames_obj[x]).val() == dateChosen )
-					{											
+					{
 						$.fn.nextGenModal({
 						   msgType: 'error',
 						   title: 'Date exists already',
 						   message: "Please specify another date."
 						});
 						return;
-					}					
+					}
 			}
 			
 			if( dateFrames.first().val() == "NONE" )
-			{					
+			{
 					document.getElementById('dateSelect').innerHTML = "";   //remove the "Add Date" text
 					$('#dateSelect').attr( 'disabled', false );				//enable the selection
 					dateFrames = $('#dateSelect').children();				//reinitialize
 			}
-				
-			// now add						
+
+			// now add
 			add_me = '<option class="dateFrames_proper" value="' + dateChosen + '" >' + convertDateMonth_toText( dateChosen ) +"</option>";
-			dateFrames.add( add_me ).appendTo($('#dateSelect'));	
-			appendToHidden( 'DATE', dateChosen );			
-			
+			dateFrames.add( add_me ).appendTo($('#dateSelect'));
+			appendToHidden( 'DATE', dateChosen );
 			//clear value of date input
 			$( '#datepicker' ).val( "" );
 		}); //addDateBtn
@@ -346,9 +342,9 @@ $(document).ready(function()
 			Function for deleting an entry
 		*/
 		$('select').dblclick( function(){
-			var thisVal = $(this).val();			
+			var thisVal = $(this).val();
 			var whatClass = $("option:selected").attr('class');
-			var optionFor = ( whatClass == "timeFrames_proper" ) ? "TIME" : "DATE";						
+			var optionFor = ( whatClass == "timeFrames_proper" ) ? "TIME" : "DATE";
 			var userFriendlyValue;
 										
 			if ( thisVal == null ) return false;

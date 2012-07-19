@@ -10,21 +10,132 @@
 *
 *	Sari-saring seat methods.
 */
-class SeatMaintenance{	
+class seatmaintenance{
 	var $CI;
-	
-	public function __construct( $params = NULL )
-    {			
+
+	function __construct( $params = NULL )
+    {
 		$this->CI = & get_instance();
 		$this->CI->load->model('clientsidedata_model');
-		$this->CI->load->model('event_model');				
-		$this->CI->load->model('Guest_model');				
-		$this->CI->load->model('makexml_model');				
-		$this->CI->load->model('seat_model');				
-		$this->CI->load->model('slot_model');				
-		$this->CI->load->model('ticketclass_model');				
+		$this->CI->load->model('event_model');
+		$this->CI->load->model('Guest_model');
+		$this->CI->load->model('makexml_model');
+		$this->CI->load->model('seat_model');
+		$this->CI->load->model('slot_model');
+		$this->CI->load->model('ticketclass_model');
     }
+
+	private function getRedirectionCommon_SeatCR( $customMsg )
+	{
+		/**
+		*	@created 07JUL2012-1643	
+		*	@description Serves the array needed for loading a view page.
+		**/
+		return Array(
+			'error' => "CUSTOM",
+			'defaultAction' => 'Create Seat',
+			'redirect' => 2,
+			'redirectURI' => base_url().'seatctrl/create',
+			'theMessage' => $customMsg
+		);
+	}
+
+	private function getRedirectionCommon_SeatMapMgmt( $customMsg )
+	{
+		/**
+		*	@created 07JUL2012-1643	
+		*	@description Serves the array needed for loading a view page.
+		**/
+		return Array(
+			'error' => "CUSTOM",
+			'defaultAction' => 'Seat Maps',
+			'redirect' => 2,
+			'redirectURI' => base_url().'seatctrl/manageseatmap',
+			'theMessage' => $customMsg
+		);
+	}
+
+	function assembleCreateDefaultSeatFail()
+	{
+		/**
+		*	@created 07JUL2012-1648
+		**/
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(						
+				"error", 
+				"error", 
+				"CPROPER_DB_ERR",
+				0, 
+				"Failed to create default seats. Please try resubmitting.",
+				""
+		);
+		return FALSE;
+	}//assembleCreateDefaultSeatFail()
+
+	function assembleGenericDBFail()
+	{
+		/**
+		*	@created 07JUL2012-1630	
+		**/
+		return $this->getRedirectionCommon_SeatCR( "Seat Map Creation Fail - Database Error." );
+	}//assembleGenericDBFail
+
+	function assembleGenericFormValidationFail()
+	{
+		/**
+		*	@created 07JUL2012-1630	
+		**/
+		return $this->getRedirectionCommon_SeatCR( "Invalid input values, are you trying to hack the app by circumventing the JS check?" );
+	}//assembleGenericFormValidationFail
 	
+	function assembleSeatMapDeletionFail()
+	{
+		/**
+		*	@created 07JUL2012-1630
+		**/
+		$msg = "Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.";
+		return $this->getRedirectionCommon_SeatMapMgmt( $msg );
+	}//assembleSeatMapDeletionFail()
+
+	function assembleSeatMapDeletionOK( $is_inner_use = FALSE )
+	{
+		/**
+		*	@created 07JUL2012-1630
+		**/
+		$msg = $is_inner_use ? "Seat map creation successfully cancelled." : "The seat map has been successfully deleted."; 
+		return $this->getRedirectionCommon_SeatMapMgmt( $msg );
+	}//assembleSeatMapDeletionOK()
+
+	function assembleSeatMapNameExists()
+	{
+		/**
+		*	@created 07JUL2012-1630	
+		**/
+		return $this->getRedirectionCommon_SeatCR( "Seat Map Name exists. Please choose another one." );
+	}//assembleSeatMapNameExists
+
+	function assembleSeatUID404()
+	{
+		/**
+		*	@created 07JUL2012-1630	
+		**/		
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(
+							"error", 
+							"error", 
+							"SMAPUID404",
+							0, 
+							"",
+							""
+					);
+	}//assembleSeatUID404
+
+	function assembleSeatToDelete404()
+	{
+		/**
+		*	@created 07JUL2012-1648
+		**/
+		return $this->getRedirectionCommon_SeatMapMgmt( "Nothing to delete!");
+	}
+
 	function areSeatsOccupied( $seat_assignments, $eventID, $showtimeID )
 	{
 		/**
@@ -83,7 +194,7 @@ class SeatMaintenance{
 		}
 		return Array( FALSE, NULL, NULL );
 	}//areSeatsOccupied(..)
-	
+
 	function arrayizeGuestNoSeatInfo()
 	{
 		/**
@@ -98,9 +209,9 @@ class SeatMaintenance{
 		if( $xmlfile === FALSE ) return Array( FALSE, 'FILEPTR404' );
 		$xml_contents = $this->CI->makexml_model->readXML( $xmlfile );
 		if( $xml_contents === FALSE ) return Array( FALSE, 'FILE404' );
-		return Array( TRUE, $this->CI->makexml_model->toArray_prep( new SimpleXMLElement($xml_contents) ) );
+		return Array( TRUE, $this->CI->makexml_model->toArray_prep( $xml_contents) );
 	}//arrayizeGuestNoSeatInfo()
-	
+
 	function cleanDefaultedSeats( $eventID, $showtimeID )
 	{
 		/*
@@ -108,25 +219,26 @@ class SeatMaintenance{
 			that lapsed the payment period for it to be 'confirmed' (`Status` = 1 ).
 			If there are, make it available.
 		*/
-		$lapsedSeatsArray = $this->CI->seat_model->getLapsedHoldingTimeSeats( $eventID, $showtimeID );		
-		if( $lapsedSeatsArray == false ) return false;	
+		$lapsedSeatsArray = $this->CI->seat_model->getLapsedHoldingTimeSeats( $eventID, $showtimeID );
+		if( $lapsedSeatsArray == false ) return false;
 		foreach( $lapsedSeatsArray as $singleSeatObj )
-		{				
+		{
 			 $this->CI->seat_model->markSeatAsAvailable( 
 				$eventID, 
 				$showtimeID, 
 				$singleSeatObj->Matrix_x, 
-				$singleSeatObj->Matrix_y, 					
+				$singleSeatObj->Matrix_y,
 				"HOLDING_PERIOD_LAPSED" 
 			);
-		}	
+		}
 	}//cleanDefaultedSeats(..)
-	
+
 	function getAllGuestSeatData( $slots, $currentBookingInfo, $bookingInfo, &$seat_assignments )
 	{
 	/**
 	*	@created 22JUN2012-1451
 	*	@description Gets guests' seat data depending on the slots assigned to them.
+			For Manage Booking uses only.
 	*	@remarks The parameter $seat_assignments is directly manipulated back in the
 			function since it is passed to here by reference!
 	*	@history moved from eventctrl/book_step5::area#bookstep5_pr_seat_finally_assign_db
@@ -134,28 +246,34 @@ class SeatMaintenance{
 	**/
 		for( $x = 0; $x < $slots; $x++ )
 		{
-			$slot_old_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter( 
-				$currentBookingInfo->EVENT_ID,
-				$currentBookingInfo->SHOWTIME_ID,
-				$currentBookingInfo->TICKET_CLASS_GROUP_ID,
-				$currentBookingInfo->TICKET_CLASS_UNIQUE_ID,
-				$seat_assignments[ $x ][ "uuid" ]
-			);
-			$slot_new_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter(
-				$bookingInfo->EVENT_ID,
-				$bookingInfo->SHOWTIME_ID,
-				$bookingInfo->TICKET_CLASS_GROUP_ID,
-				$bookingInfo->TICKET_CLASS_UNIQUE_ID,
-				$seat_assignments[ $x ][ "uuid" ]
-			);
-			if( is_null($slot_old_st->Seat_x) or is_null($slot_old_st->Seat_y) )
+			$slot_old_st;
+			$slot_new_st;
+			if( isset( $currentBookingInfo ) or !is_null( $currentBookingInfo) ){
+				$slot_old_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter( 
+					$currentBookingInfo->EVENT_ID,
+					$currentBookingInfo->SHOWTIME_ID,
+					$currentBookingInfo->TICKET_CLASS_GROUP_ID,
+					$currentBookingInfo->TICKET_CLASS_UNIQUE_ID,
+					$seat_assignments[ $x ][ "uuid" ]
+				);
+			}
+			if( isset( $bookingInfo ) or !is_null( $bookingInfo) ){
+				$slot_new_st = $this->CI->slot_model->getSlotAssignedToUser_MoreFilter(
+					$bookingInfo->EVENT_ID,
+					$bookingInfo->SHOWTIME_ID,
+					$bookingInfo->TICKET_CLASS_GROUP_ID,
+					$bookingInfo->TICKET_CLASS_UNIQUE_ID,
+					$seat_assignments[ $x ][ "uuid" ]
+				);
+			}
+			if( !isset( $slot_old_st ) or is_null($slot_old_st->Seat_x) or is_null($slot_old_st->Seat_y) )
 			{
 				$seat_assignments[ $x ][ "old_st" ]= FALSE;
 			}else{
 				$seat_assignments[ $x ][ "old_st" ][ "x" ] = $slot_old_st->Seat_x;
 				$seat_assignments[ $x ][ "old_st" ][ "y" ] = $slot_old_st->Seat_y;
 			}
-			if( is_null($slot_new_st->Seat_x) or is_null($slot_new_st->Seat_y) )
+			if( !isset( $slot_new_st ) or is_null($slot_new_st->Seat_x) or is_null($slot_new_st->Seat_y) )
 			{
 				$seat_assignments[ $x ][ "new_st" ]= FALSE;
 			}else{
@@ -172,13 +290,21 @@ class SeatMaintenance{
 		/**
 		*	@created 03MAR2012-1147
 		*	@description Gets seat representations of guests.
-		*	@history 11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID		
+		*	@history 11MAR2012-1441 Added params $ticketClassGroupID, $ticketClassUniqueID
 		*	@history 28JUN2012-1438 Moved from eventctrl
+		*	@returns Array, structure:
+				{ "uuid" -> Array2ndDim, "uuid" -> Array2ndDim }
+			 Structure of Array2ndDim:
+				Array(
+					'matrix_x' => <INT> or "",
+					'matrix_y' => <INT> or "",
+					'visual_rep' =>  "X-Y" or "NONE" or (boolean) FALSE
+				)
 		**/
 		$seatDetailsOfGuest = Array();
 		foreach( $guest_arr as $singleGuest )
 		{
-			$seatVisualRepStr = false;
+			$seatVisualRepStr = "NONE";
 			$seatMatrixRepObj = false;
 
 			if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
@@ -190,35 +316,38 @@ class SeatMaintenance{
 					 $ticketClassUniqueID,
 					 $singleGuest->UUID 
 				);
-				$seatMatrixRepObj = Array(
-					'Matrix_x' => (is_null ($slotObj->Seat_x) ) ? "" : $slotObj->Seat_x,
-					'Matrix_y' => (is_null ($slotObj->Seat_y) ) ? "" : $slotObj->Seat_y
-				);
+				log_message('debug', "seatmaintenance::getSeatRepresentationsOfGuests slotObj . " . print_r( $slotObj , TRUE ) );
+				if( $slotObj === FALSE ){
+					$seatMatrixRepObj = FALSE;
+				}else{
+					$seatMatrixRepObj = Array(
+						'matrix_x' => (is_null ($slotObj->Seat_x) ) ? "" : $slotObj->Seat_x,
+						'matrix_y' => (is_null ($slotObj->Seat_y) ) ? "" : $slotObj->Seat_y
+					);
+				}
 			}else{
 				$seatMatrixRepObj = $this->CI->slot_model->getSeatAssignedToUser( $singleGuest->UUID );
 			}
 			if( $seatMatrixRepObj !== false ){	// there is seat assigned for this user
-				if( is_null($slotObj->Seat_x) or is_null($slotObj->Seat_y) )
+				if( !(is_null($slotObj->Seat_x) or is_null($slotObj->Seat_y) ) )
 				{
-					 $seatVisualRepStr = "NONE";
-				}else{
 					$seatVisualRepStr = $this->CI->seat_model->getVisualRepresentation(
-						$seatMatrixRepObj['Matrix_x'],
-						$seatMatrixRepObj['Matrix_y'],
+						$seatMatrixRepObj['matrix_x'],
+						$seatMatrixRepObj['matrix_y'],
 						$eventID,
 						$showtimeID
 					);
 				}
 			}
 			$seatDetailsOfGuest[ $singleGuest->UUID ] = Array(
-				'matrix_x' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_x'] : ""  ),
-				'matrix_y' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['Matrix_y'] : ""  ),
+				'matrix_x' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['matrix_x'] : ""  ),
+				'matrix_y' => ( ($seatMatrixRepObj !== false) ? $seatMatrixRepObj['matrix_y'] : ""  ),
 				'visual_rep' =>  $seatVisualRepStr
 			);
 		}
 		return $seatDetailsOfGuest;
 	}//getSeatRepresentationsOfGuests(..)
-	
+
 	function insertSeatsOnEventManipulate( $eventID, $showtimeID, $tcgID, $seatmapUID, $createEvent = true, $tcgChanged = true )
 	{
 		$ticketClasses = NULL;
@@ -231,7 +360,7 @@ class SeatMaintenance{
 			$this->CI->seat_model->copyDefaultSeatsToActual( $seatmapUID );
 			// update the eventID and UniqueID of the newly duplicated seats
 			$this->CI->seat_model->updateNewlyCopiedSeats( $eventID,  $showtimeID );
-			// turn the previously retrieved ticket classes into an array accessible by the class name			
+			// turn the previously retrieved ticket classes into an array accessible by the class name
 		}
 		$ticketClasses = $this->CI->ticketclass_model->makeArray_NameAsKey( $ticketClasses_obj );
 		// get seat map object to access its rows and cols, for use in the loop later
@@ -246,7 +375,7 @@ class SeatMaintenance{
 				$seatValue = $this->CI->input->post( 'seat_'.$x.'-'.$y );
 				$status;
 				$ticketClassUniqueID;
-											
+
 				$sql_command = "UPDATE `seats_actual` SET `Status` = ? ";
 				$sql_command_End = "WHERE `EventID` = ? AND `Showing_Time_ID` = ? AND `Matrix_x` = ? AND `Matrix_y` = ?";
 				if( $seatValue === "0" or $seatValue === false )
@@ -254,7 +383,7 @@ class SeatMaintenance{
 					// aisle
 					$status = -2;
 					$this->CI->db->query( 	$sql_command.$sql_command_End, array(
-											$status,																								
+											$status,
 											$eventID,
 											$showtimeID,
 											$x,
@@ -266,7 +395,7 @@ class SeatMaintenance{
 					// no class assigned
 					$status = -1;
 					$this->CI->db->query( 	$sql_command.$sql_command_End, array(
-											$status,																								
+											$status,
 											$eventID,
 											$showtimeID,
 											$x,
@@ -280,10 +409,10 @@ class SeatMaintenance{
 					$status = 0;
 					$ticketClassUniqueID = $ticketClasses[ $seatValue ]->UniqueID;
 					$this->CI->db->query( 	$sql_command.", `Ticket_Class_GroupID` = ?, `Ticket_Class_UniqueID` = ? ".$sql_command_End,
-										array(
+										Array(
 											$status,
 											$tcgID,
-											$ticketClassUniqueID,												
+											$ticketClassUniqueID,
 											$eventID,
 											$showtimeID,
 											$x,
@@ -295,6 +424,4 @@ class SeatMaintenance{
 		}//for
 		return true;
 	}// insertSeatsOnEventManipulate()
-	
-
-}
+}//class

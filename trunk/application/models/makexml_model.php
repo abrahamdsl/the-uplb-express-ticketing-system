@@ -27,6 +27,11 @@ class makexml_model extends CI_Model {
 		$this->load->library('xml_writer');
 	}
 	
+	function getAirTrafficRelPath( $uuid = "null" )
+	{
+		return APPPATH."models/airtraffic/".$uuid.".xml";
+	}
+	
 	function toArray($xml) {
 		/**
 		*	@created 27JUN2012-2045
@@ -50,7 +55,7 @@ class makexml_model extends CI_Model {
 		*	@description Gateway to $this->toArray().
 		*	@returns See $this->toArray()
 		**/
-		$arrayized = $this->toArray( $xml );
+		$arrayized = $this->toArray( new SimpleXMLElement( $xml ) );
 		if( $return_root ) return $arrayized;
 		else{
 			// only one element, however, index 0 is named STRING
@@ -65,9 +70,13 @@ class makexml_model extends CI_Model {
 		*	@description Reads the XML file in the server and returns the content as string.
 		*	@parameter $xmlFile STRING Contains the *absolute* path (except TLD ) of the XML file
 		**/
+		log_message('DEBUG','makexml_model::readXML accessed ' . $xmlFile );
+		// 11JUL2012-1426 If two functions are modifying a file at nearly simultaneously, 
+		// slight delay here, filesize got is not yet the updated but upon reading the file, updated na.
+		$fs = filesize( $xmlFile );  
 		$fp = fopen( $xmlFile, "r" );
-		$contents = fread( $fp , filesize( $xmlFile ) );
-		fclose( $fp );
+		$contents = fread( $fp , $fs  );
+		fclose( $fp );	
 		return $contents;
 	}
 	
@@ -90,16 +99,17 @@ class makexml_model extends CI_Model {
 		}
    }// createTempFile(..)
    
-   function XMLize_AJAX_Response( 
-	$type="error", $title, $resultString, $resultCode = 0, $message, $redirectTo = "", $redirectAfter = 1000
-   )
-   {
-		/*
-			Created 26MAR2012-1912
-		*/
+    function XMLize_AJAX_Response( 
+	 $type="error", $title, $resultString, $resultCode = 0, $message, $redirectTo = "", $redirectAfter = 1000
+    )
+	{
+		/**
+		*	@created 26MAR2012-1912
+		*	@description Standard XML response to client during AJAX requests.
+		**/
 		$xml = new xml_writer;
 		$xml->setRootName( 'ajaxresponse' );
-		$xml->initiate();		
+		$xml->initiate();
 		$xml->addNode( 'type' , $type );
 		$xml->addNode( 'resultstring' , $resultString );
 		$xml->addNode( 'resultcode' , $resultCode  );
@@ -109,71 +119,151 @@ class makexml_model extends CI_Model {
 			$xml->addNode( 'redirect', $redirectTo );
 			$xml->addNode( 'redirect_after', $redirectAfter );
 		}
-		
 		return $xml->getXml();		 
-   }//XMLize_AJAX_Response
+    }//XMLize_AJAX_Response
    
-	function XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes )
+	function XMLize_AirTrafficData( $data )
 	{
-		/* created 30DEC2011-1409
+		/**
+		*	@created 09JUL2012-1650
+		*	@description Turns the submitted Array ( which is a list of guests whose seats are not
+				available in the new booking settings ) to XML file.
+		*	@returns Array:
+				index 0 - BOOLEAN
+				index 1 - Message if error
+		**/
 		
-			returns string of the ff format:
-				X_Y
-			
-			X - operation indicator, may take on { INVALID, ERROR, FILE }
-			Y - exlanation of X
-			
-		*/
-		$XMLfile = $this->createTempFile();
+		$XMLfile = $this->getAirTrafficRelPath( isset($data[0]) ? $data[0] : $data['uuid'] );
+		log_message('DEBUG', 'makexml_model:: XMLize_AirTrafficData accessed ' . $XMLfile);
 		$fp;
 		
-		if( !is_array( $allConfiguredShowingTimes ) )
-		{
-			return "INVALID_DATA";
-		}
+		if( !is_array( $data ) ) { return FALSE; }
 		
 		$fp = fopen( $XMLfile, "w" );
 		if( $fp != NULL )
 		{
 			// Initiate class
 			$xml = new xml_writer;
-			$xml->setRootName( 'showingTimes' );
+			$xml->setRootName( 'air_traffic_data' );
 			$xml->initiate();
-			
-			foreach( $allConfiguredShowingTimes as $singleShowTime )
-			{
-				// start branch 1 (schedule)
-				$xml->startBranch( 'schedule', array( 'UniqueID' => $singleShowTime->UniqueID ) );
-				
-				// start branch 1-1 (start)
-				$xml->startBranch( 'start' );				
-				$xml->addNode( 'date' , $singleShowTime->StartDate );
-				$xml->addNode( 'time', $singleShowTime->StartTime );
-				
-				//end branch 1-1
-				 $xml->endBranch();
-				 
-				 // start branch 1-2 (end)
-				$xml->startBranch( 'end' );				
-				$xml->addNode( 'date' , $singleShowTime->EndDate );
-				$xml->addNode( 'time', $singleShowTime->EndTime );
-				
-				//end branch 1-2
-				 $xml->endBranch();
-				 
-				 //end Branch 1
-				 $xml->endBranch();
+					
+			// start branch 1 (guest)
+			$xml->startBranch( 'data' );
+			if( isset( $data[0] ) ){
+				$xml->addNode( 'uuid' , $data[0] );
+				$xml->addNode( 'status' , $data[1] );
+				$xml->addNode( 'auth' , $data[2] );				
+			}else{
+				$xml->addNode( 'uuid' , $data[ 'uuid' ] );				
+				$xml->addNode( 'status' , $data[ 'status' ] );				
+				$xml->addNode( 'auth' , $data[ 'auth' ] );	
 			}
+			//end branch 1
+			 $xml->endBranch();
+			
 			$xmlContent = $xml->getXml();
 			// Print the XML to screen
-			//fwrite( $fp,  $xmlContent );
+			fwrite( $fp,  $xmlContent );
 			fclose( $fp );
-			return  "OK_".$xmlContent;
+			return TRUE;
 		}else{
 			// cannot write to current disk!
-			return "ERROR_CANNOT-WRITE-TO-DISK";
+			return FALSE;
 		}
+	}// XMLize_AirTrafficData
+	
+    function XMLize_AllDetailsForCheckin( $detailsObj, $alreadyEntered, $alreadyExited )
+	{
+		/** 
+		*	@created <i can't remember>
+		*	@description returns string of the ff format:
+				X_Y
+			
+			X - operation indicator, may take on { INVALID, ERROR, FILE }
+			Y - exlanation of X
+		*	@revised 05JUL2012-1930 Removed writing-to-file functionality.	
+		**/
+		if( !is_array( $detailsObj ) )
+		{
+			 echo "ERROR_INVALID_DATA";
+			 return false;
+		}
+		// Initiate class
+		$xml = new xml_writer;
+		$xml->setRootName( 'checkininfo' );
+		$xml->initiate();
 		
+		foreach( $detailsObj as $mainInfo )
+		{
+			$xml->startBranch( 'guest' );	
+				$xml->addNode(  'entered', ( isset( $alreadyEntered[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
+				$xml->addNode(  'exited', ( isset( $alreadyExited[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
+				$xml->addNode(  'uuid', $mainInfo->Assigned_To_User );				
+				$xml->startBranch( 'name' );
+					$xml->addNode(  'first', $mainInfo->Fname );
+					if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
+					$xml->addNode(  'last', $mainInfo->Lname );
+				$xml->endBranch();
+				$xml->startBranch( 'seat' );
+					$xml->addNode(  'row', $mainInfo->Visual_row );
+					$xml->addNode(  'colY', $mainInfo->Visual_col );
+				$xml->endBranch();
+				$xml->addNode(  'gender', $mainInfo->Gender );
+				$xml->addNode(  'cellphone', $mainInfo->Cellphone );
+				//if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
+					$xml->addNode(  'landline', $mainInfo->Landline );	
+				//$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
+				//if( strlen($mainInfo->studentNumber) > 8 )		
+					$xml->addNode(  'studentnum', $mainInfo->studentNumber );
+				//if( strlen($mainInfo->employeeNumber) > 8 )		
+					$xml->addNode(  'empnum', $mainInfo->employeeNumber );
+			$xml->endBranch();				
+		}
+		$xml->endBranch();		
+		return $xml->getXml();
+	}//function
+	
+	function XMLize_ConfiguredShowingTimes( $allConfiguredShowingTimes )
+	{
+		/** 
+		*	@created 30DEC2011-1409
+		*	@description Returns string of the ff format:
+				X_Y
+			
+			X - operation indicator, may take on { INVALID, ERROR, FILE }
+			Y - exlanation of X
+		*	@revised 05JUL2012-1930 Removed writing-to-file functionality.	
+		**/
+		if( !is_array( $allConfiguredShowingTimes ) ) { return "INVALID_DATA"; }
+		// Initiate class
+		$xml = new xml_writer;
+		$xml->setRootName( 'showingTimes' );
+		$xml->initiate();
+		foreach( $allConfiguredShowingTimes as $singleShowTime )
+		{
+			// start branch 1 (schedule)
+			$xml->startBranch( 'schedule', array( 'UniqueID' => $singleShowTime->UniqueID ) );
+			
+			// start branch 1-1 (start)
+			$xml->startBranch( 'start' );				
+			$xml->addNode( 'date' , $singleShowTime->StartDate );
+			$xml->addNode( 'time', $singleShowTime->StartTime );
+			
+			//end branch 1-1
+			 $xml->endBranch();
+			 
+			 // start branch 1-2 (end)
+			$xml->startBranch( 'end' );				
+			$xml->addNode( 'date' , $singleShowTime->EndDate );
+			$xml->addNode( 'time', $singleShowTime->EndTime );
+			
+			//end branch 1-2
+			 $xml->endBranch();
+			 
+			 //end Branch 1
+			 $xml->endBranch();
+		}
+		return  "OK_".$xml->getXml();
 	}// XMLize_ConfiguredShowingTimes(..)
 	
 	function XMLize_GuestSeatNotAvailable( $guest_no_seat )
@@ -189,10 +279,7 @@ class makexml_model extends CI_Model {
 		$XMLfile = $this->createTempFile();
 		$fp;
 		
-		if( !is_array( $guest_no_seat ) )
-		{
-			return Array( FALSE, "INVALID_DATA" );
-		}
+		if( !is_array( $guest_no_seat ) ) { return Array( FALSE, "INVALID_DATA" ); }
 		
 		$fp = fopen( $XMLfile, "w" );
 		if( $fp != NULL )
@@ -225,274 +312,171 @@ class makexml_model extends CI_Model {
 		}else{
 			// cannot write to current disk!
 			return Array( FALSE, "ERROR_CANNOT-WRITE-TO-DISK" );
-		}	
+		}
 	}// XMLize_GuestSeatNotAvailable(..)
 	
 	function XMLize_UserInfoForBooking( $mainInfo = FALSE, $uplbConstituencyInfo = FALSE )
 	{
-		/*
-			Created 26FEB2012-2030
-		*/
-		$XMLfile = $this->createTempFile();
-		$fp;
-			
-		$fp = fopen( $XMLfile, "w" );
-		if( $fp != NULL )
-		{
-			// Initiate class
-			$xml = new xml_writer;
-			$xml->setRootName( 'user' );
-			$xml->initiate();
-			
-			//output main details - name, bla bla
-			// start branch 1 ( main details)			
-			$xml->startBranch( 'main_info' );
-				// start branch 1-1 name
-				$xml->startBranch( 'name' );
-					$xml->addNode(  'first', $mainInfo->Fname );
-					if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
-					$xml->addNode(  'last', $mainInfo->Lname );
-				$xml->endBranch();
-				$xml->addNode(  'gender', $mainInfo->Gender );
-				$xml->addNode(  'cellphone', $mainInfo->Cellphone );
-				if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
-					$xml->addNode(  'landline', $mainInfo->Landline );	
-				$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
-				$xml->endBranch();
-			if( $uplbConstituencyInfo !== FALSE )
-			{
-				//start branch 2
-				$xml->startBranch( 'uplb_info' );
-				if( strlen($uplbConstituencyInfo->studentNumber) > 0 )
-					$xml->addNode(  'student', $uplbConstituencyInfo->studentNumber );
-				if( strlen($uplbConstituencyInfo->employeeNumber) > 0 )
-					$xml->addNode(  'employee', $uplbConstituencyInfo->employeeNumber );					
-				//end branch 2
-				$xml->endBranch();
-			}
-			$xmlContent = $xml->getXml();
-		}else{
-			echo "ERROR_Cannot write to disk on server";
-		}
-		fclose( $fp );
-		echo $xmlContent;
-		return true;
-	}// XMLize_UserInfoForBooking
-	 
-	 
-	 
-	function XMLize_SeatMap_Actual( $masterSeatMapDetails, $actualSeatsData )
-	{
-		/* created 12FEB2012-2256
-			modified form of XMLize_SeatMap_Master(..)
-			returns string of the ff format:
-				X_Y
-			
-			X - operation indicator, may take on { INVALID, ERROR, FILE }
-			Y - exlanation of X			
-		*/
-		$XMLfile = $this->createTempFile();
-		$fp;
+		/** 
+		*	@created 26FEB2012-2030
+		*	@description Returns XML of the user's info
+		*	@revised 05JUL2012-1930 Removed writing-to-file functionality.	
+		**/
+		// Initiate class
+		$xml = new xml_writer;
+		$xml->setRootName( 'user' );
+		$xml->initiate();
 		
-		if( !is_array( $actualSeatsData ) )
-		{
-			return "INVALID_DATA";
-		}
-		
-		$fp = fopen( $XMLfile, "w" );
-		if( $fp != NULL )
-		{
-			// Initiate class
-			$xml = new xml_writer;
-			$xml->setRootName( 'seatmap' );
-			$xml->initiate();
-			
-			//configure details first
-			// start branch 1 ( details)
-			
-			$xml->startBranch( 'details' );			
-			$xml->addNode( 'unique_id', $masterSeatMapDetails->UniqueID );
-			$xml->addNode( 'name', $masterSeatMapDetails->Name );
-			$xml->addNode( 'rows', $masterSeatMapDetails->Rows );
-			$xml->addNode( 'cols', $masterSeatMapDetails->Cols );
-			$xml->addNode( 'location', $masterSeatMapDetails->Location );
-			$xml->addNode( 'status', $masterSeatMapDetails->Status );
-			$xml->addNode( 'usableCapacity', $masterSeatMapDetails->UsableCapacity );
-			$xml->addNode( 'mastermap', '0' );
-			//end branch 1
+		//output main details - name, bla bla
+		// start branch 1 ( main details)		
+		$xml->startBranch( 'main_info' );
+			// start branch 1-1 name
+			$xml->startBranch( 'name' );
+				$xml->addNode(  'first', $mainInfo->Fname );
+				if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
+				$xml->addNode(  'last', $mainInfo->Lname );
 			$xml->endBranch();
-			 
-			 
-			 // start branch 2 ( dataproper )
-			$xml->startBranch( 'dataproper' );
-			foreach( $actualSeatsData as $eachSeat )
-			{				
-				// start branch 2-a
-				$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
-				$xml->addNode( 'row',   $eachSeat->Visual_row );
-				$xml->addNode( 'colX',   $eachSeat->Visual_col );
-				$xml->addNode( 'status',   $eachSeat->Status );
-				$xml->addNode( 'tClass', $eachSeat->Ticket_Class_UniqueID );
-				$xml->addNode( 'comments',   $eachSeat->Comments );				
-				//end branch 2-a
-				$xml->endBranch();
-			}
+			$xml->addNode(  'gender', $mainInfo->Gender );
+			$xml->addNode(  'cellphone', $mainInfo->Cellphone );
+			if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
+				$xml->addNode(  'landline', $mainInfo->Landline );	
+			$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
+			$xml->endBranch();
+		if( $uplbConstituencyInfo !== FALSE )
+		{
+			//start branch 2
+			$xml->startBranch( 'uplb_info' );
+			if( strlen($uplbConstituencyInfo->studentNumber) > 0 )
+				$xml->addNode(  'student', $uplbConstituencyInfo->studentNumber );
+			if( strlen($uplbConstituencyInfo->employeeNumber) > 0 )
+				$xml->addNode(  'employee', $uplbConstituencyInfo->employeeNumber );					
 			//end branch 2
 			$xml->endBranch();
-			
-			$xmlContent = $xml->getXml();
-			// Print the XML to screen
-			//fwrite( $fp,  $xmlContent );
-			fclose( $fp );
-			return  $xmlContent;
-		}else{
-			// cannot write to current disk!
-			return "ERROR_CANNOT-WRITE-TO-DISK";
 		}
+		echo $xml->getXml();
+		return true;
+	}// XMLize_UserInfoForBooking
+
+	function XMLize_SeatMap_Actual( $masterSeatMapDetails, $actualSeatsData )
+	{
+		/** 
+		*	@created 12FEB2012-2256
+		*	@description modified form of XMLize_SeatMap_Master(..)
+				returns string of the ff format:
+					X_Y
+				
+				X - operation indicator, may take on { INVALID, ERROR, FILE }
+				Y - exlanation of X
+		*	@revised 05JUL2012-1930 Removed writing-to-file functionality.	
+		**/
+		if( !is_array( $actualSeatsData ) ) { return "INVALID_DATA"; }
+		// Initiate class
+		$xml = new xml_writer;
+		$xml->setRootName( 'seatmap' );
+		$xml->initiate();
+		
+		//configure details first
+		// start branch 1 ( details)
+		$xml->startBranch( 'details' );
+		$xml->addNode( 'unique_id', $masterSeatMapDetails->UniqueID );
+		$xml->addNode( 'name', $masterSeatMapDetails->Name );
+		$xml->addNode( 'rows', $masterSeatMapDetails->Rows );
+		$xml->addNode( 'cols', $masterSeatMapDetails->Cols );
+		$xml->addNode( 'location', $masterSeatMapDetails->Location );
+		$xml->addNode( 'status', $masterSeatMapDetails->Status );
+		$xml->addNode( 'usableCapacity', $masterSeatMapDetails->UsableCapacity );
+		$xml->addNode( 'mastermap', '0' );
+		//end branch 1
+		$xml->endBranch();
+
+		 // start branch 2 ( dataproper )
+		$xml->startBranch( 'dataproper' );
+		foreach( $actualSeatsData as $eachSeat )
+		{				
+			// start branch 2-a
+			$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
+			$xml->addNode( 'row',   $eachSeat->Visual_row );
+			$xml->addNode( 'colX',   $eachSeat->Visual_col );
+			$xml->addNode( 'status',   $eachSeat->Status );
+			$xml->addNode( 'tClass', $eachSeat->Ticket_Class_UniqueID );
+			$xml->addNode( 'comments',   $eachSeat->Comments );				
+			//end branch 2-a
+			$xml->endBranch();
+		}
+		//end branch 2
+		$xml->endBranch();
+		return $xml->getXml();
 	}//XMLize_SeatMap_Actual(..)
 	
 	function XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData )
 	{
-		/* created 28JAN2012-2156
-		
-			returns string of the ff format:
+		/** 
+		*	@created 28JAN2012-2156
+		*	@description returns string of the ff format:
 				X_Y
 			
 			X - operation indicator, may take on { INVALID, ERROR, FILE }
 			Y - exlanation of X
-			
-		*/
-		$XMLfile = $this->createTempFile();
-		$fp;
+		*	@revised 05JUL2012-1930 Removed writing-to-file functionality.	
+		**/
+		if( !is_array( $masterSeatMapProperData ) ) { return "ERROR_INVALID_DATA"; }
+		// Initiate class
+		$xml = new xml_writer;
+		$xml->setRootName( 'seatmap' );
+		$xml->initiate();
 		
-		if( !is_array( $masterSeatMapProperData ) )
+		//configure details first
+		// start branch 1 ( details)
+		$xml->startBranch( 'details' );
+		$xml->addNode( 'unique_id', $masterSeatMapDetails->UniqueID );
+		$xml->addNode( 'name', $masterSeatMapDetails->Name );
+		$xml->addNode( 'rows', $masterSeatMapDetails->Rows );
+		$xml->addNode( 'cols', $masterSeatMapDetails->Cols );
+		$xml->addNode( 'location', $masterSeatMapDetails->Location );
+		$xml->addNode( 'status', $masterSeatMapDetails->Status );
+		$xml->addNode( 'usableCapacity', $masterSeatMapDetails->UsableCapacity );
+		$xml->addNode( 'mastermap', '1' );
+		//end branch 1
+		$xml->endBranch();
+		 
+		 // start branch 2 ( dataproper )
+		$xml->startBranch( 'dataproper' );
+		foreach( $masterSeatMapProperData as $eachSeat )
 		{
-			 echo "ERROR_INVALID_DATA";
-			 return false;
-		}
-		
-		$fp = fopen( $XMLfile, "w" );
-		if( $fp != NULL )
-		{
-			// Initiate class
-			$xml = new xml_writer;
-			$xml->setRootName( 'seatmap' );
-			$xml->initiate();
+			/*
+					09FEB2012-0214 : In connection with Issue 25 in Google Code / "Why still compute the rows and cols when it's in the XML?".
+					So I configured it to get the rows and cols from the XML. 
+						(We are talking here about Create Event Step 5 - Getting Seat Map - Assigning Rows and Columns )
+					
+					However, if we have the XML structure
+					*************************************
+						<seat x="i" y"j" >
+							<row>a</row>
+							<col>b</col>
+							<status>c</col>
+							<comment></comment>
+						</seat>
+					************************************
+					and therefore in the JavaScript function to get col, we have to have this command
+					****************************************
+							$(this).find( 'col' ).text();
+					****************************************						
+					.. then IT DOES NOT WORK. However, here in the XML, when I change <col> to <colx>, it works!
+					I've tested it twice, in Google Chrome 11, for the meantime. Why is it so, I wonder?
+			*/
+			// start branch 2-a
+			$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
+			$xml->addNode( 'row',   $eachSeat->Visual_row );
+			$xml->addNode( 'colX',   $eachSeat->Visual_col );
+			$xml->addNode( 'status',   $eachSeat->Status );
+			$xml->addNode( 'comments',   $eachSeat->Comments );
 			
-			//configure details first
-			// start branch 1 ( details)
-			$xml->startBranch( 'details' );
-			$xml->addNode( 'unique_id', $masterSeatMapDetails->UniqueID );
-			$xml->addNode( 'name', $masterSeatMapDetails->Name );
-			$xml->addNode( 'rows', $masterSeatMapDetails->Rows );
-			$xml->addNode( 'cols', $masterSeatMapDetails->Cols );
-			$xml->addNode( 'location', $masterSeatMapDetails->Location );
-			$xml->addNode( 'status', $masterSeatMapDetails->Status );
-			$xml->addNode( 'usableCapacity', $masterSeatMapDetails->UsableCapacity );
-			$xml->addNode( 'mastermap', '1' );
-			//end branch 1
+			//end branch 2-a
 			$xml->endBranch();
-			 
-			 // start branch 2 ( dataproper )
-			$xml->startBranch( 'dataproper' );
-			foreach( $masterSeatMapProperData as $eachSeat )
-			{
-				/*
-						09FEB2012-0214 : In connection with Issue 25 in Google Code / "Why still compute the rows and cols when it's in the XML?".
-						So I configured it to get the rows and cols from the XML. 
-							(We are talking here about Create Event Step 5 - Getting Seat Map - Assigning Rows and Columns )
-						
-						However, if we have the XML structure
-						*************************************
-							<seat x="i" y"j" >
-								<row>a</row>
-								<col>b</col>
-								<status>c</col>
-								<comment></comment>
-							</seat>
-						************************************
-						and therefore in the JavaScript function to get col, we have to have this command
-						****************************************
-								$(this).find( 'col' ).text();
-						****************************************						
-						.. then IT DOES NOT WORK. However, here in the XML, when I change <col> to <colx>, it works!
-						I've tested it twice, in Google Chrome 11, for the meantime. Why is it so, I wonder?
-				*/
-				// start branch 2-a
-				$xml->startBranch( 'seat', array( 'x' => $eachSeat->Matrix_x, 'y' => $eachSeat->Matrix_y ) );
-				$xml->addNode( 'row',   $eachSeat->Visual_row );
-				$xml->addNode( 'colX',   $eachSeat->Visual_col );
-				$xml->addNode( 'status',   $eachSeat->Status );
-				$xml->addNode( 'comments',   $eachSeat->Comments );
-				
-				//end branch 2-a
-				$xml->endBranch();
-			}
-			//end branch 2
-			$xml->endBranch();
-			
-			$xmlContent = $xml->getXml();
-			// Print the XML to screen
-			//fwrite( $fp,  $xmlContent );
-			fclose( $fp );
-			return  $xmlContent;
-		}else{
-			// cannot write to current disk!
-			return "ERROR_CANNOT-WRITE-TO-DISK";
 		}
+		//end branch 2
+		$xml->endBranch();
+		return $xml->getXml();
 	}//function
-	
-	function XMLize_AllDetailsForCheckin( $detailsObj, $alreadyEntered, $alreadyExited )
-	{
-		$XMLfile = $this->createTempFile();
-		$fp;
-		
-		if( !is_array( $detailsObj ) )
-		{
-			 echo "ERROR_INVALID_DATA";
-			 return false;
-		}		
-		$fp = fopen( $XMLfile, "w" );
-		if( $fp != NULL )
-		{
-			// Initiate class
-			$xml = new xml_writer;
-			$xml->setRootName( 'checkininfo' );
-			$xml->initiate();
-			
-			foreach( $detailsObj as $mainInfo )
-			{
-				$xml->startBranch( 'guest' );	
-					$xml->addNode(  'entered', ( isset( $alreadyEntered[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
-					$xml->addNode(  'exited', ( isset( $alreadyExited[$mainInfo->Assigned_To_User] ) ) ? 1 : 0 );				
-					$xml->addNode(  'uuid', $mainInfo->Assigned_To_User );				
-					$xml->startBranch( 'name' );
-						$xml->addNode(  'first', $mainInfo->Fname );
-						if( strlen($mainInfo->Mname) > 0 ) $xml->addNode(  'middle', $mainInfo->Mname );
-						$xml->addNode(  'last', $mainInfo->Lname );
-					$xml->endBranch();
-					$xml->startBranch( 'seat' );
-						$xml->addNode(  'row', $mainInfo->Visual_row );
-						$xml->addNode(  'colY', $mainInfo->Visual_col );
-					$xml->endBranch();
-					$xml->addNode(  'gender', $mainInfo->Gender );
-					$xml->addNode(  'cellphone', $mainInfo->Cellphone );
-					//if( strlen($mainInfo->Landline) > 6 )		// the min number of landline # is 7
-						$xml->addNode(  'landline', $mainInfo->Landline );	
-					//$xml->addNode(  'email', strtolower( $mainInfo->Email ) );
-					//if( strlen($mainInfo->studentNumber) > 8 )		
-						$xml->addNode(  'studentnum', $mainInfo->studentNumber );
-					//if( strlen($mainInfo->employeeNumber) > 8 )		
-						$xml->addNode(  'empnum', $mainInfo->employeeNumber );
-				$xml->endBranch();				
-			}
-			$xml->endBranch( );	
-			$xmlContent = $xml->getXml();			
-			fclose( $fp );			
-			return  $xmlContent;
-		}else{
-			// cannot write to current disk!
-			return "ERROR_CANNOT-WRITE-TO-DISK";
-		}
-	}//function
+
 }

@@ -25,19 +25,17 @@ class eventctrl2 extends CI_Controller {
 		$this->load->model('makexml_model');
 		$this->load->model('payment_model');
 		$this->load->model('permission_model');
-		$this->load->model('seat_model');		
-		$this->load->model('slot_model');		
+		$this->load->model('seat_model');
+		$this->load->model('slot_model');
 		$this->load->model('ticketclass_model');
 		$this->load->model('transactionlist_model');
 		$this->load->model('usefulfunctions_model');
-		$this->load->library('bookingmaintenance');		
-		$this->load->library('seatmaintenance');		
-		$this->load->library('encrypt');		
-		
-		if( !$this->login_model->isUser_LoggedIn() )
-		{	
-			redirect('sessionctrl/authenticationNeeded');
-		}
+		$this->load->library('bookingmaintenance');
+		$this->load->library('seatmaintenance');
+		$this->load->library('sessmaintain');
+		$this->load->library('encrypt');
+
+		if( !$this->sessmaintain->onControllerAccessRitual() ) return FALSE;
 	} //construct
 	
 	function index()

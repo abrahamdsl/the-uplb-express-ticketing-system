@@ -11,6 +11,7 @@ class academicctrl extends CI_Controller {
 		include_once( APPPATH.'constants/_constants.inc');
 		
 		$this->load->library('session');
+		$this->load->library('sessmaintain');
 		$this->load->model('login_model');
 		$this->load->model('academic_model');
 		$this->load->model('account_model');
@@ -22,10 +23,7 @@ class academicctrl extends CI_Controller {
 		$this->load->model('permission_model');
 		$this->load->model('usefulfunctions_model');
 		
-		if( !$this->login_model->isUser_LoggedIn() )
-		{	
-			redirect('sessionctrl/authenticationNeeded');
-		}
+		if( !$this->sessmaintain->onControllerAccessRitual() ) return FALSE;
 	}
 	
 	function index()

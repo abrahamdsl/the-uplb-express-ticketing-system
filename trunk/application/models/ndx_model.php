@@ -89,6 +89,7 @@ class ndx_model extends CI_Model {
 		*	@created 24JUN2012-1916
 		*	@description Deletes any booking cookies-on-server that is expired.
 		**/
+		date_default_timezone_set('Asia/Manila');
 		$sql_command = "DELETE FROM `" . COL_DB_TABLE_NAME . "` WHERE CONCAT(`";
 		$sql_command .= COL_EXPIRE_DATE . "`,' ',`".COL_EXPIRE_TIME . "`) <= ? ";
 		return $this->db->query( $sql_command, Array( date("Y-m-d H:i:s"),  ) );

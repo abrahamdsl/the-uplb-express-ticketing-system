@@ -111,7 +111,7 @@ class usefulfunctions_model extends CI_Model {
 		return $newdata;
 	}
 	
-	function guid( ){
+	function guid(){
 		/*
 		Retrieved 21MAY2012-1515
 		http://php.net/manual/en/function.com-create-guid.php
@@ -131,7 +131,7 @@ class usefulfunctions_model extends CI_Model {
 					.substr($charid,16, 4).$hyphen
 					.substr($charid,20,12)
 					.chr(125);// "}"
-			return $uuid;			
+			return $uuid;
 		}
 	}//guid()
 	
@@ -201,6 +201,11 @@ class usefulfunctions_model extends CI_Model {
 		}		
 	}//isTimeValid
 	
+	function isOnLocalhost()
+	{
+		return ( $this->VisitorIP() == "127.0.0.1" );
+	}
+	
 	function makeIPN_string_to_Array( $_IPN_in_string )
 	{
 		/*
@@ -261,7 +266,7 @@ class usefulfunctions_model extends CI_Model {
 			return $returnThis;			
 	}//outputShowingTime_SimpleOneLine(..)
 	
-	 function VisitorIP()
+	function VisitorIP()
     { 
 		/*
 			From http://wiki.jumba.com.au/wiki/PHP_Get_user_IP_Address
@@ -272,6 +277,7 @@ class usefulfunctions_model extends CI_Model {
 	 
 		return trim($TheIp);
     }
+	
 	
 }//class
 ?>

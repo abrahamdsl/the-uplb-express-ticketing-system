@@ -229,7 +229,7 @@ padding: 0px 5px 0px 5px;
 
 #graynavbar {    
 	CLEAR: both;
-	BORDER-BOTTOM: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; PADDING-BOTTOM: 8px; PADDING-LEFT: 17px; WIDTH: 864px; PADDING-RIGHT: 17px; BACKGROUND: url('../images/user-bg.png') #fefefe repeat-x; HEIGHT: 12px; OVERFLOW: hidden; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; PADDING-TOP: 8px; 
+	BORDER-BOTTOM: #ddd 1px solid; BORDER-LEFT: #ddd 1px solid; PADDING-BOTTOM: 8px; PADDING-LEFT: 17px; WIDTH: 864px; PADDING-RIGHT: 17px; HEIGHT: 12px; OVERFLOW: hidden; BORDER-TOP: #ddd 1px solid; BORDER-RIGHT: #ddd 1px solid; PADDING-TOP: 8px; 
 	/*
 		19FEB2012-1321 - Deemed to not exist by W3C CSS Validator, but still
 		finding where this might be used. Remove later if no silbi.

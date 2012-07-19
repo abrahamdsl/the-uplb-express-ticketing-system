@@ -1,0 +1,8 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>error</type>
+    <resultstring>INFO_CRITICAL_NEEDED</resultstring>
+    <resultcode>4002</resultcode>
+    <title>input needed</title>
+    <message>CRITICAL Information should be supplied by the user but is not found.</message>
+</ajaxresponse>

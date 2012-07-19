@@ -100,7 +100,7 @@ class Paypal extends CI_Controller {
 		$merchantEmail;
 		$testMode = false;
 		$testMode_check;
-						
+
 		if( !$this->clientsidedata_model->isPaypalAccessible() )
 		{   
 			if( !$this->functionaccess->preBookStep6PR_OnlinePayment_Check( STAGE_BOOK_6_PAYMENTPROCESSING ) ) return false;			
@@ -274,20 +274,15 @@ class Paypal extends CI_Controller {
 						if( $response_pandc[ "boolean" ] )
 						{
 							// payment creation and slot confirmation successful
-							//EMAIL EXPERIMENTAL
 							$guestDetails = $this->guest_model->getGuestDetails( $bookingNumber );
 							if( $guestDetails !== false )
 							{
-								$this->emailMain( 1, $bookingNumber , $guestDetails[0]->Email );
-								$guestCount = count(  $guestDetails );
-								if( $guestCount  > 1 ) {
-									for( $xy = 1; $xy < $guestCount; $xy++ )
-									{
-										 $this->emailMain( 2, $bookingNumber , $guestDetails[$xy]->Email );
-									}
-								}
+								$this->bookingmaintenance->sendEmailOnBookSuccess(
+									$bookingNumber,
+									$guestDetails,
+									$isThisForManageBooking ? 4 : 2
+								);
 							}
-							//END EMAIL
 						}else{
 							// HOW ABOUT HERE????
 							$sendback = "ERROR|". $response_pandc[ "code" ]."|". $response_pandc[ "message" ];
@@ -308,31 +303,5 @@ class Paypal extends CI_Controller {
 			echo "INVALID_IPN";
 		}
 	}//ipn()
-	
-	private function emailMain( $mode = 1, $bookingNumber = "NULL", $destination )
-	{		
-		$this->email_model->initializeFromSales( TRUE );
-		
-		$this->email->from(
-			$this->email_model->senderEmailAddr,
-			$this->email_model->getDefaultSenderName()
-		);
-		$this->email->to( $destination );
-
-		if( $mode === 1 )
-		{
-			$this->email->subject('Booking Receipt ' . $bookingNumber );
-			$this->email->message('Thank you for your payment.');			
-		}else{
-			$this->email->subject('Meow meow Booking Receipt ' . $bookingNumber );
-			$this->email->message('You have been booked by your friend. HAHAHA. Contact him/her.');			
-		}
-		$this->email->message('We are in the process of starting our email module so no more info provided ont this mail. HAHAHA.');	
-		
-		$this->email->send();
-		log_message('DEBUG', 'email bug 1 ' . $this->email_model->senderEmailAddr . " ". $this->email_model->getDefaultSenderName() );
-		log_message('DEBUG', print_r( $this->email->print_debugger() ) );
-		log_message('DEBUG', 'email bug 2');
-	}
 }
 ?>

@@ -81,25 +81,27 @@ NUM    STRING  								Message
 2515   DEFAULT_PAYMENT_DELETE_DENIED        By this system&aposs design, this payment mode is not designed to be removable. Edit my code if you want to.
 2850   CONFIRM_SEATMAP_DELETION             Are you sure you want to delete this seat map?
 //redirection
-3100   REDIRECT_STAGE                       Redirect to stage <supply it>
+3100 x REDIRECT_STAGE                       Redirect to stage <supply it>
 3999   REDIRECT_CONFUSED					The server knows that you should be redirected but with your supplied information, it cannot determine which location you are to be redirected
 //client error
 4000   INFO_NEEDED							Information should be supplied by the user but is not found. <supply whenever possible>
 4001   USERNAME_DOES-NOT-EXIST
-4002   INFO_CRITICAL_NEEDED                 CRITICAL Information should be supplied by the user but is not found.
+4002 x INFO_CRITICAL_NEEDED                 CRITICAL Information should be supplied by the user but is not found.
 4003   AUTH_FAIL							Invalid credentials. Please try again. (The username and password combination is incorrect.)
 4004   NOT_FOUND
 4005   NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF The user specified that he is not bookable by other friends. Reserved for future use.
 4006   INVALID_VALUE						The submitted data to the server is in the incorrect format
 4007   CONFIRM_UNAUTHORIZED					You do not have permission to confirm a reservation for this event
 4008   PAYMENT_MODE_UNAUTHORIZED			This payment mode is not allowed to be used for this event.
+4009   IDENTITY_SPOOF_DETECTED				Before accessing this functionality, some other part of the application has set some security identifier to ensure that the
+												one who contacted the earlier is the same as the latter. Now, the SID submitted did not match.
 4030   EVENT_404							Event not found.
 4031   SHOWING_TIME_404						Showing time not found
 4032   BOOKING_404							The specified booking is not found in the system.
-4100   ACCESS_DENIED_GEN                    You are not allowed to access this functionality/page.
+4100 x ACCESS_DENIED_GEN                    You are not allowed to access this functionality/page.
 4101   ACCESS_DENIED_NO_PERMIT              You need a specific permission to access this. Contact the system admin for details.
 4102   BOOKING_NOT_OWNER					This booking is not under you and you do not have rights to make changes to it.
-4102   STAGE_NOT_YET                        You are not allowed in this stage yet. Please accomplish an earlier form maybe.
+4103 x STAGE_NOT_YET                        You are not allowed in this stage yet. Please accomplish an earlier form maybe.
 4150   PAYMENT_MODE_DATA_404                Data for payment mode not found. <supply payment mode info>
 4200   USER_ALREADY_EXISTS                  When signing up, user is already existing.
 4201   RESERVED_WORD_USED                   A reserved word by the system is used, and not allowed (i.e., during signup and chosing a username).
@@ -107,7 +109,10 @@ NUM    STRING  								Message
 4203   STUDENTNUM_ALREADY_TAKEN             obviously.
 4204   EMPNUM_ALREADY_TAKEN                 obviously.
 4103   ACCESS_DENIED_INVALID                Happens when a URI is accessed via address bar but only meant to be accessed via AJAX.
-4800   COOKIE_ON_SERVER404					Cookie on server not found.
+4404   IVA_ACCESS_DENIED					You are already cleared and should not be calling the control tower err, function. Another function should handle you before attempting to call this.
+4405   ATC_DATA_MISSING						At least one required input field is not found.
+4406   ATC_REQUEST_UNKNOWN					The client has requested an ATC service that tower does not know.
+4800 x COOKIE_ON_SERVER404					Cookie on server not found.
 4998   INVALID_ENTRIES_SPECIFIED            Invalid entries specified.
 4999   LOGIN_NEEDED                         You have to log-in first before you can access the feature requested
 //server error
@@ -130,7 +135,7 @@ NUM    STRING  								Message
 5310   EMAIL_INFO_404						One or more necessary email info assumed to be in the database is not found. <specify whenever possible>
 //.. ..5310-5320 EMAIL-SALES
 5400   INTERNAL_FUNC_PARAM_GEN_ERR			Generic error due to an unexpected/invalid value of a parameter needed in an internal function, or no parameter is passed at all.
-
+5600
 
 5500   PAYMENT_MODE_ADD_ERR					Something went wrong while adding the payment mode. It may have been not saved.
 5505   PAYMENT_MODE_DELETE_ERR              Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.
@@ -139,6 +144,11 @@ NUM    STRING  								Message
 5700   GEN_ACCOUNT_CHANGE_ERR				Something went wrong while saving changes to your account. Your changes might not be saved.
 5850   SEATMAP_DELETE_ERR                   Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.
 5855   SEATMAP_DATACREATE_ERR				Something went wrong in actual seat data insertion to DB
+
+5900   ATC_IO_ERR							A required file for air traffic control cannot be read/written to.
+5901   ATC_SCRIPT_NOT_CLEARED				The function did not complete its tasks in the allotted time. All changes are rolled back.
+5902   ATC_SCRIPT_NOT_DONE				    Client contacted tower immediately even though the script/functionality is still not finished processing pre-rollback/commit.
+5903   ATC_PREMATURELY_EXITED				The original script terminated immediately before tower was contacted. Please resubmit again. The transaction should have been rolled back.
 }
 
 -----------------
