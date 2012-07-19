@@ -1,0 +1,8 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>error</type>
+    <resultstring>COOKIE_ON_SERVER404</resultstring>
+    <resultcode>4800</resultcode>
+    <title>COOKIE_ON_SERVER404</title>
+    <message>Cookie on server not found. Maybe you have finished this task already and wasn't shown the succes page earlier. Either way, go to the homepage and select the appropriate page to see if the task has been successfully done.</message>
+</ajaxresponse>

@@ -25,7 +25,8 @@ class email_model extends CI_Model {
 		define( 'DB_IDENT_EMAIL_SALES_PASSWORD', 'EMAIL_SALES_PASSWORD' );
 		define( 'DB_IDENT_EMAIL_SALES_SERVER_PATH', 'EMAIL_SALES_SERVER_PATH' );
 		define( 'DB_IDENT_EMAIL_SMTP_HOST_ADDRESS', 'EMAIL_SMTP_HOST_ADDRESS' );
-		
+		define( 'DB_IDENT_EMAIL_SERVICE_STATUS', 'EMAIL_SERVICE_STATUS' );
+		define( 'EM_USER_AGENT', 'CodeIgniter/2.1.0 SalesDepartment/http://uplbtickets.com' );
 		$this->load->library('email');
 	}
 	
@@ -45,7 +46,7 @@ class email_model extends CI_Model {
 		$sql_command           	= "SELECT * FROM `system_settings` WHERE `Name` = '".$identifier."'";
 		
 		$arr_result  		   = $this->db->query( $sql_command )->result();
-		return( (count ($arr_result) === 1 ) ? $arr_result[0]->Value : false );
+		return( (count ($arr_result) === 1 ) ? $arr_result[0]->Value : FALSE );
 	}//getDefaultEmailUnified(..)
 	
 	private function getDefaultEmailProtocol()
@@ -95,35 +96,55 @@ class email_model extends CI_Model {
 	
 	function initializeFromSales( $overwriteGlobalEmail = false )
 	{
+		/**
+		*	@created <i forgot, maybe late May 2012>
+		*	@description Gets essential email details from database.
+		*	@returns Array, structure:
+				'boolean' => BOOLEAN Indicates whether transaction is successful or not in general.
+				'code'	  => INT code if any for the error
+				'message' => STRING message explaining the error.
+		*	@remarks Indented than usual lines are for debugging purposes only.
+		*	@revised 05JUL2012-1307
+		**/
 		$config    = Array();
-		$returnThis = Array( 'boolean' => false, 'message' => NULL );
 		$emailCombiInfo = $this->getSalesEmailInfoFromDB( TRUE );
-		
+
+		$config['useragent'] = EM_USER_AGENT;
 		$config['protocol']  = $this->getDefaultEmailProtocol();
 		$config['mailpath']  = $this->getSalesEmailServerPath();
 		$config['smtp_host'] = $this->getSMTPHost();
 		$config['smtp_user'] = $emailCombiInfo['EMAIL'];
 		$config['smtp_pass'] = $emailCombiInfo['PASSWORD'];
-		
 		/*
 			If all necessary entries are found in the DB, there shouldn't be 
 			any BOOLEAN FALSE values in the $config array.
 		*/
 		if( in_array( FALSE, $config, TRUE ) )
 		{
-			// EC 4310
 			$errorMsg = 'One or more necessary email info assumed to be in the database is not found.';
-			log_message( 'ERROR', 'email_model->initializeFromSales(): ERROR , '.$errorMsg );
-			foreach( $config as $key => $eachEntry ) log_message('DEBUG', 'Info ' . $key . ' => '. $eachEntry);			
-			$returnThis[ 'message' ] = $errorMsg;
-			return $returnThis;
+				log_message( 'ERROR', 'email_model->initializeFromSales(): ERROR , '.$errorMsg );
+				foreach( $config as $key => $eachEntry ) log_message('DEBUG', 'Info ' . $key . ' => '. $eachEntry);			
+			return Array( 'boolean' => FALSE, 'code' => 4310, 'message' => $errorMsg ); // EC 4310
 		}
-		$returnThis[ 'boolean' ] = true;
+		// initialize the email functionality of CodeIgniter given the settings
 		$this->email->initialize($config);
 		// if sender email address is the same as smtp_user
 		if( $overwriteGlobalEmail ) $this->senderEmailAddr = $emailCombiInfo['EMAIL'];
-		return $returnThis;
+		return Array( 'boolean' => TRUE, 'code' => 0, 'message' => NULL );
 	}//initializeFromSales(..)
+	
+	function isEmailOn(){
+		/**
+		*	@created 16JUL2012-1228
+		*	@description Checks if the email service of the app is turned on or off.
+		*	@returns BOOLEAN
+				FALSE if the system setting in the DB is not found or email service is set to zero (off)
+				TRUE , obviously.
+		**/
+		$val  = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SERVICE_STATUS );
+		if( $val === FALSE ) return FALSE;
+		return( intval($val) === 1 );
+	}
 	
 	function from( $emailAdd, $senderName )
 	{

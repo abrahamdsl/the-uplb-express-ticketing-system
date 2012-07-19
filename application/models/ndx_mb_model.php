@@ -70,6 +70,7 @@ class ndx_mb_model extends CI_Model {
 		*	@description Well, obviously, deletes.
 		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
 		*	@history Patterned after ndx_model::delete
+		*	@remarks 15JUL2012-1452 Use SQL joins later.
 		**/
 		$obj = $this->get( $uuid );
 		if( $obj !== FALSE )
@@ -88,6 +89,7 @@ class ndx_mb_model extends CI_Model {
 		*	@description Deletes any MANAGE booking cookies-on-server that is expired,
 				and the booking cookies-on-server that is currently on-record by those
 				MB c-o-s.
+		*	@remarks 15JUL2012-1452 Use SQL joins later.
 		**/
 		$result = TRUE;
 		$sql_command = "SELECT * FROM `" . COL_DB_MB_TABLE_NAME . "` WHERE CONCAT(`";

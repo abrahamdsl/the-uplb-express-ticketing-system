@@ -17,6 +17,7 @@ function addNewAisleToList( colNum )
 	if( isColAlreadyListed( colNum, 0, aisles.length-1 ) !== false){		
 		return false;	
 	}
+	//console.log( 'added col ' + colNum + ' to aisle ' );
 	aisles[ aisleCount++ ] = colNum;		// add now	
 	aisles.sort( sortNumber ); 				//sort by descending
 }
@@ -47,7 +48,7 @@ function adjustColumnIndicators( rows, cols )
 				/* so if not aisle already, get current value, parse it to integer, decrement by one
 					and replace the top indicators concerned with this new value
 				*/
-				adjustThis = parseInt( adjustThis );
+				adjustThis = parseInt( adjustThis, 10 );
 				adjustThis--;
 				concernedDiv_top.html( adjustThis );				
 				concernedDiv_bottom.html( adjustThis );
@@ -65,7 +66,7 @@ function assembleExistingGuestSeatData(){
 		the globally accessible Array 'existingGuestSeatData'
 	* 	@dependencies Needs JQuery.
 	**/	
-	var guestCount = parseInt( $('input#_js_use_slots').val() ); 
+	var guestCount = parseInt( $('input#_js_use_slots').val(), 10  ); 
 	var x;
 	var y;
 	
@@ -201,17 +202,17 @@ $(document).ready( function(){
 				masterMap = ( detailBranch.find('mastermap').text() == "1" ) ? true : false;								
 				// or we are managing ticket classes
 				managetc  = (typeof tcg_not_shared === "undefined" ) ? false : true;
-				rows = parseInt( detailBranch.find('rows').text() );
-				cols = parseInt( detailBranch.find('cols').text() );
+				rows = parseInt( detailBranch.find('rows').text(), 10  );
+				cols = parseInt( detailBranch.find('cols').text(), 10  );
 				if( masterMap || managetc ){
 					// these details are limited to create event step 5.
-					usableCapacity = parseInt( detailBranch.find('usableCapacity').text() );				
+					usableCapacity = parseInt( detailBranch.find('usableCapacity').text(), 10  );				
 					hallName = detailBranch.find('name').text();
 					$("span#hallSeatingCapacity").html( usableCapacity );
 					$("span#place").html( hallName );
 				}else{
 					// means, we are in booking - picking  a seat					
-					ticketClassBeingBooked = parseInt( $('input#_js_use_ticketClassUniqueID').val() );  
+					ticketClassBeingBooked = parseInt( $('input#_js_use_ticketClassUniqueID').val(), 10  );  
 				}
 				
 				/* insert the inner div on which we will attach the drag_drop_multi_select() function, and then the table
@@ -232,8 +233,8 @@ $(document).ready( function(){
 				// -- the actual guides
 				for(y=1;y<=cols;y++){
 						//console.log( 'guide ' + y );
-						$(allTRs[0]).append('<td><div class="guide top" id="top_' + parseInt(y-1) + '" >' + y +'</div></td>');
-						$(allTRs[rows+1]).append('<td><div class="guide bottom" id="bottom_' + parseInt(y-1) + '" >' + y +'</div></td>');
+						$(allTRs[0]).append('<td><div class="guide top" id="top_' + parseInt(y-1, 10 ) + '" >' + y +'</div></td>');
+						$(allTRs[rows+1]).append('<td><div class="guide bottom" id="bottom_' + parseInt(y-1, 10 ) + '" >' + y +'</div></td>');
 				}
 				// then, the left indicators
 				for(y=1, letter=65;y<=rows;y++, letter++){
@@ -243,7 +244,7 @@ $(document).ready( function(){
 				for(x=1, letter=65; x<rows+1; x++, letter++ )
 				{
 					for(y=0;y<cols;y++){
-						$(allTRs[x]).append('<td><div id="' + parseInt(x-1) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + '</span><span class="col" >'+  ' </span><input type="hidden" name="seat_' + parseInt(x-1) + '-' + y+ '" class="seatClass" value="0"  /></div></td>');
+						$(allTRs[x]).append('<td><div id="' + parseInt(x-1, 10 ) + '_' + y+ '"  class="drop dropAvailable textUnselectable ui-selectable"><span class="row" >' + '</span><span class="col" >'+  ' </span><input type="hidden" name="seat_' + parseInt(x-1, 10 ) + '-' + y+ '" class="seatClass" value="0"  /></div></td>');
 					}
 				}
 				// then, the right indicators
@@ -268,39 +269,39 @@ $(document).ready( function(){
 						and therefore in this function to get col, we have to have this command
 						****************************************
 								$(this).find( 'col' ).text();
-						****************************************						
+						****************************************
 						.. then IT DOES NOT WORK. However, in the XML, when I change <col> to <colx>, it works!
 						I've tested it twice, in Google Chrome 11, for the meantime. Why is it so?
-					*/					
+					*/
 					var x = $(this).attr('x');
-					var y = $(this).attr('y');					
+					var y = $(this).attr('y');
 					var row = $(this).find('row').text();
 					var colx = $(this).find( 'colX' ).text();
-					var status = parseInt( $(this).find( 'status' ).text() );
-					var seatClass = parseInt( $(this).find( 'tClass' ).text() );
-					var concernedDiv = $('div#' + x + '_' + y);					
+					var status = parseInt( $(this).find( 'status' ).text(), 10  );
+					var seatClass = parseInt( $(this).find( 'tClass' ).text(), 10  );
+					var concernedDiv = $('div#' + x + '_' + y);
 					concernedDiv.children('span.row').html( row );
-					concernedDiv.children('span.col').html( colx );					
-					if( masterMap === false  ){						
+					concernedDiv.children('span.col').html( colx );
+					if( masterMap === false  ){
 						if( ticketClassBeingBooked != seatClass  )
-						{								
+						{
 							if( !managetc ){
 								concernedDiv.addClass( 'otherClass' );
 								concernedDiv.addClass( 'classRestricted' );
 								concernedDiv.removeClass( 'dropAvailable' );
 							}else
 							{	
-								var parseIntResult = parseInt( seatClass );
+								var parseIntResult = parseInt( seatClass, 10  );
 								if( parseIntResult !== false && parseIntResult > 0  ) {
 									var className = $('input#classname_' + seatClass ).val();
-									concernedDiv.addClass( 'drop_' + className );							
-									if( status == 1 || status == -4 ){										
-										concernedDiv.addClass( 'alreadyreserved' );									
+									concernedDiv.addClass( 'drop_' + className );
+									if( status == 1 || status == -4 ){
+										concernedDiv.addClass( 'alreadyreserved' );
 										concernedDiv.removeClass( 'ui-selectable' );
 										concernedDiv.removeClass( 'dropAvailable' );
 										concernedDiv.removeClass( 'ddms_selected' );
-										concernedDiv.removeClass( 'ui-selected' );										
-									}else{										
+										concernedDiv.removeClass( 'ui-selected' );
+									}else{
 										concernedDiv.find('input.seatClass').val( className );
 									}
 									concernedDiv.addClass( 'otherClass' );
@@ -314,29 +315,29 @@ $(document).ready( function(){
 								during manage booking (pending confirmation).
 							*/
 							if( status == 1 || status == -4 ){
-								concernedDiv.addClass( 'occupiedSameClass' );								
+								concernedDiv.addClass( 'occupiedSameClass' );
 							}
 							
 						}
 					}	
-					if( status == -1 ){
-						addNewAisleToList( y );
+					if( status == -1 || status == -5 ){
+						if( status == -1 ) addNewAisleToList( y );
 						concernedDiv.removeClass( 'ui-selectable' );
 						concernedDiv.removeClass( 'ui-selectee' );
 						concernedDiv.removeClass( 'ui-selected' );
 						concernedDiv.removeClass( 'dropAvailable' );
 						concernedDiv.addClass( 'dropUnavailable' );
 						concernedDiv.children("input.seatClass").val( "-1" );
-					}										
+					}
 				});
 				/*
-					Remove the occupied mark from the seats that belongs to this booking.					
+					Remove the occupied mark from the seats that belongs to this booking
 				*/
 				if( isModeManageBookingChooseSeat ) makeSeatUsedByThisBookingAvailable();
 				/*  
 					Now call the function that makes the seat operations possible.
 				*/
-				$('div#innerSeatDiv').drag_drop_multi_select({					
+				$('div#innerSeatDiv').drag_drop_multi_select({
 					element_to_drag_drop_select:'div.dropAvailable',
 					elements_to_drop:'.list',
 					elements_to_cancel_select:'div.otherClass, .title, div.dropUnavailable, div.otherGuest',
@@ -347,20 +348,19 @@ $(document).ready( function(){
 					otherClassIndicator: 'otherClass',
 					maxSeatsForClass: '#maxSeatsForClass',
 					lassoAvailable: masterMap,
-					lasso_indicator: '#lassoWillDo',					
-					retainPreviouslySelected: true					
+					lasso_indicator: '#lassoWillDo',
+					retainPreviouslySelected: true
 				});
 				//
 				$('input[type="hidden"][id^="classname_"]').each( function(){
 					var sub_thisclass = $(this).val();
-					var count = $('#basic-modal-content-freeform').find('div.drop_'+sub_thisclass).size();					
+					var count = $('#basic-modal-content-freeform').find('div.drop_'+sub_thisclass).size();
 					$( 'input#seatAssigned_' + sub_thisclass).val( count );
 				});
 				// adjust column indicators to make way for aisles
 				adjustColumnIndicators( rows, cols );
 				nullifyAisleCount();
 				$.fn.nextGenModal.hideModal();
-				alreadyConfiguredSeat = true;				
+				alreadyConfiguredSeat = true;
 			}
-						
 		});

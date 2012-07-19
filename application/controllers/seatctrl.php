@@ -1,46 +1,76 @@
 <?php
-/*
-CREATED 16JAN2012-1235
-*/
-
+/**
+*	Seat Controller
+* 	CREATED 16JAN2012-1235
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	Contains most functionalities regarding the access of seating features.
+*	At current, user needs to be logged in to be able to use the features of this controller.
+**/
 class seatctrl extends CI_Controller {
 
 	function __construct()
-	{
-		parent::__construct();	
+	{	
+		parent::__construct();
+		ignore_user_abort(true);
+		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->helper('cookie');
-		$this->load->model('clientsidedata_model');		
-		$this->load->model('event_model');		
-		$this->load->model('login_model');		
-		$this->load->model('makexml_model');				
-		$this->load->model('ndx_model');				
-		$this->load->model('permission_model');				
-		$this->load->model('seat_model');				
+		$this->load->library('airtraffic');
+		$this->load->library('form_validation');
+		$this->load->library('functionaccess');
+		$this->load->library('seatmaintenance');
+		$this->load->library('sessmaintain');
+		$this->load->model('atc_model');
+		$this->load->model('clientsidedata_model');
+		$this->load->model('event_model');
+		$this->load->model('login_model');
+		$this->load->model('makexml_model');
+		$this->load->model('ndx_model');
+		$this->load->model('permission_model');
+		$this->load->model('seat_model');
+		$this->load->model('usefulfunctions_model');
 		
-		if( !$this->login_model->isUser_LoggedIn() )
-		{	//ec 4999
-			redirect('sessionctrl/authenticationNeeded');
-		}
+		if( !$this->sessmaintain->onControllerAccessRitual() ) return FALSE;
 	} //construct
 	
 	function index()
 	{		
-		$this->create();		
+		$this->create();
 	}//index
 	
 	private function checkAndActOnAdmin()
-	{
+	{	
+		/**
+		*	@created <I forgot>
+		*	@description Self-explanatory. Needed since most functionality here are for Admin only.
+		**/
 		if( !$this->permission_model->isAdministrator() )
 		{   //4101
-			$data['error'] = "NO_PERMISSION";					
-			$this->load->view( 'errorNotice', $data );			
+			$this->load->view( 'errorNotice', Array( 'error' => "NO_PERMISSION" ) );
 			return false;
 		}
 		return true;
 	}
 	
+	private function postSeatCreateCleanup()
+	{
+		/**
+		*	@created 06JUL2012-1901
+		**/
+		$this->clientsidedata_model->deleteSeatMapUniqueID();
+		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
+	}
+	
 	function deleteseatmap()
 	{
+		/**
+		*	@created <i forgot>
+		*	@description Confirmation page before deleting a seat map.
+		**/
 		$this->checkAndActOnAdmin();
 		$uniqueID = $this->input->post( 'uniqueID' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
@@ -54,119 +84,232 @@ class seatctrl extends CI_Controller {
 		$this->load->view( 'confirmationNotice', $data );
 	}
 	
-	function deleteseatmap_process()
+	function deleteseatmap_process( $inner_util = FALSE )
 	{
+		/**
+		*	@revised 07JUL2012-1504
+		*	@description Where the deletion from DB of a seat map really happens.
+		**/
 		$this->checkAndActOnAdmin();
-		$uniqueID = $this->input->post( 'uniqueID' );
+		
+		// this is to check whether this is utilized by another function here, or accessed thru web
+		$is_inner_use = is_array( $inner_util );
+		$uniqueID = $is_inner_use ? @$inner_util[0] : @$this->input->post( 'uniqueID' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );		
 		$result = $this->seat_model->deleteSeatMap( $uniqueID );
 		if( $result )
 		{
 			// EC 1850
-			$data[ 'theMessage' ] = "The seat map has been successfully deleted."; 
-			$data[ 'redirectURI' ] = base_url().'seatctrl/manageseatmap';
-			$data[ 'defaultAction' ] = 'Seat Maps';
-			$this->load->view( 'successNotice', $data );
+			$this->clientsidedata_model->deleteSeatMapUniqueID();
+			if( $is_inner_use ) $this->clientsidedata_model->setSessionActivity( IDLE, -1 );
+			$this->load->view( 'successNotice', $this->seatmaintenance->assembleSeatMapDeletionOK( $is_inner_use ) );
 			return true;
 		}else{
 			// EC 5850
-			$data[ 'error' ] = 'CUSTOM';
-			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the seat map. It may have been not deleted. <br/><br/>Please try again.";
-			$data[ 'redirectURI' ] = base_url().'seatctrl/manageseatmap';
-			$data[ 'defaultAction' ] = 'Seat Maps';
-			$this->load->view( 'errorNotice', $data );
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleSeatMapDeletionFail() );
 			return false;
 		}
 	}
 	
-	function manageseatmap()
-	{
-		$this->checkAndActOnAdmin();
-		$data['seatmaps'] = $this->seat_model->getAllSeatMaps();
-		$this->load->view( 'manageSeat/manageSeat01', $data );	
+	function cancel_create_init(){
+		if( !$this->functionaccess->preCreateSeatStep1FWCheck() ) return FALSE;
+		$this->postSeatCreateCleanup();
+		$this->load->view( 'successNotice', $this->seatmaintenance->assembleSeatMapDeletionOK( TRUE ) );
 	}
 	
-	function create()
+	function cancel_create_process()
 	{
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();				
-		$this->load->view( 'createSeat/createSeat_step1' , $data);
+		/**
+		*	@created 07JUL2012-1501
+		*	@description Handles cancellation of the seat map creation process.
+		**/
+		//access validity check
+		if( !$this->functionaccess->preCreateSeatStep2FWCheck( STAGE_CR_SEAT2_FW ) ) return FALSE;
+		
+		$uniqueID = $this->clientsidedata_model->getSeatMapUniqueID();
+		if( $uniqueID === FALSE ){
+			$this->postSeatCreateCleanup();
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleSeatToDelete404() );
+			return FALSE;
+		}
+		return $this->deleteseatmap_process( Array( $uniqueID ) );
+	}
+	
+	function create(){
+		/**
+		*	@created <November 2011>
+		*	@revised 18JUL2012-1344
+		**/
+		if( !$this->functionaccess->preCreateSeatStep1PRCheck() ) return FALSE;
+		$this->clientsidedata_model->setSessionActivity( SEAT_CREATE, STAGE_CR_SEAT1 );	
+		redirect( 'seatctrl/create_forward');
+	}
+	
+	function create_forward()
+	{
+		/**
+		*	@created 18JUL2012-1344
+		*	@description Initial page for seat creation. Name and dimensions keyed in here.
+		**/
+		if( !$this->functionaccess->preCreateSeatStep1FWCheck() ) return FALSE;
+		$this->load->view( 'createSeat/createSeat_step1');
 	}
 	
 	function create_step2()
 	{
-		// Wrong HTML is submitting some malicious form, so take control here.
-		if( $this->input->post('name') === false or $this->input->post( 'rows' ) === false or
-			$this->input->post('cols') === false 
-		)
-		{
-			redirect( 'seatctrl/create' );
+		/**
+		*	@created <November 2011>
+		*	@description Submit page for $this->create_forward
+		*	@revised 06JUL2012-1737
+		**/
+		// access validity check
+		if( !$this->functionaccess->preCreateSeatStep2PRCheck( STAGE_CR_SEAT1 ) ) return FALSE;
+
+		// form-validation, though back in the client the form is checked via JS
+		// we still put this as the JS check can be circumvented.
+		$this->form_validation->set_rules('name', 'Name', 'required|min_length[1]');
+		$this->form_validation->set_rules('rows', 'Rows', 'required|integer|greater_than[0]|less_than[27]');
+		$this->form_validation->set_rules('cols', 'Cols', 'required|integer|greater_than[0]');
+		if($this->form_validation->run() == FALSE)
+	    {
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleGenericFormValidationFail() );
+			return FALSE;
 		}
-		// start: temp
-		// process the data submitted by the form - and storing in the DB too, seat_map details
-		$this->seat_model->createSeatMap();				
+		if( $this->seat_model->isSeatMapNameExistent( $this->input->post('name') ) )
+		{
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleSeatMapNameExists() );
+			return FALSE;
+		}
 		
-		$cookie = array( 'name' => 'seatMapName', 
-						 'value' => $this->input->post('name'), 
-						 'expire' => '7200'  );	
-		$this->input->set_cookie( $cookie );				
-		$cookie = array( 'name' => 'rows', 
-						 'value' => $this->input->post( 'rows' ),
-						 'expire' => '7200'  );	
-		$this->input->set_cookie( $cookie );		
-		$cookie = array( 'name' => 'cols', 
-						 'value' => $this->input->post('cols'), 
-						 'expire' => '7200'  );							 
-		$this->input->set_cookie( $cookie );	
-		
-		$data['rows'] = $this->input->post( 'rows' );
-		$data['cols'] = $this->input->post( 'cols' );
-		// end: temp
-		
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
+		/* 
+			Process the data submitted by the form - and storing in the DB too.
+			The posted data are directly accessed thru $this->input->post() there.
+		*/
+		$csm_result = $this->seat_model->createSeatMap();
+		if( $csm_result  === FALSE )
+		{
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleGenericDBFail() );
+			return FALSE;
+		}else{
+			// set the seat map id in the CI sess data to be used further down the road.
+			$this->clientsidedata_model->setSeatMapUniqueID( $csm_result );
+		}
+		$this->clientsidedata_model->updateSessionActivityStage( STAGE_CR_SEAT2_FW );
+		redirect( 'seatctrl/create_step2_forward');
+	}//create_step2()
+	
+	function create_step2_forward()
+	{
+		/**
+		*	@created 06JUL2012-1900
+		*	@description The main page for seat map creation.
+		**/
+		if( !$this->functionaccess->preCreateSeatStep2FWCheck( STAGE_CR_SEAT2_FW ) ) return FALSE;
+		$uniqueID = $this->clientsidedata_model->getSeatMapUniqueID();
+		$seatmap  = $this->seat_model->getSingleMasterSeatMapData( $uniqueID );
+		if( $seatmap === FALSE )
+		{
+			$this->postSeatCreateCleanup();
+			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleSeatUID404() );
+			return FALSE;
+		}
+		$data['name'] = $seatmap->Name;
+		$data['rows'] = $seatmap->Rows;
+		$data['cols'] = $seatmap->Cols;
 		$this->load->view( 'createSeat/createSeat_step2' , $data);
 	}
-	
+
 	function create_step3()
 	{
+		/**
+		*	@created <i forgot>
+		*	@description Processing page of the seat map creation.
+		**/	
 		$x;
 		$y;
 		$i;
 		$j;
-
-		// CODE MISSING: database checkpoint
-		if( $this->seat_model->createDefaultSeats() === false )					// send the data for processing here
+		$attempts = 30;
+		$guid;
+		$looptime = 1;
+		$uniqueID;
+		$seatmap;
+		$sessionActivity;
+		
+		if( !$this->functionaccess->preCreateSeatStep3PRCheck() ) return FALSE;
+		$uniqueID = $this->clientsidedata_model->getSeatMapUniqueID();
+		$seatmap  = $this->seat_model->getSingleMasterSeatMapData( $uniqueID );
+		if( $seatmap === FALSE )
 		{
-			// CODE MISSING:  database rollback			
-			die('Create Seat Error: Something went wrong in actual seat data insertion to DB ');			
+			$this->postSeatCreateCleanup();
+			$this->seatmaintenance->assembleSeatUID404();
+			return FALSE;
 		}
-		// CODE MISSING:  database commit
 
-		// set them as configured
-		$this->seat_model->setSeatMapStatus( $this->input->cookie( 'seatMapUniqueID' ), 'CONFIGURED' );
+		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
+		$guid = $this->usefulfunctions_model->guid();
+		$sessionActivity = $this->clientsidedata_model->getSessionActivity();
+		if( !$this->airtraffic->initialize(
+				$guid, $sessionActivity, $sessionActivity[0], STAGE_CR_SEAT3_FW, 
+				'seatctrl/create_step3_forward', NULL, $attempts, $looptime )
+		){
+			$this->airtraffic->terminateService( $guid, TRUE );
+			return FALSE;
+		}
+		
+		$this->db->trans_begin();	// database checkpoint
+		// NOW DO OUR ACTIVITIES!
+		// send the data for processing here and set the seat map as configured
+		if( !$this->seat_model->createDefaultSeats( $uniqueID, $seatmap->Rows, $seatmap->Cols)
+			or !$this->seat_model->setSeatMapStatus( $uniqueID, 'CONFIGURED', NULL )
+		){	
+			log_message('DEBUG','create_step3|'.$guid.'|rolledback|proper');
+			$this->db->trans_rollback();							//database rollback
+			$this->airtraffic->terminateService( $guid, TRUE );
+			return $this->seatmaintenance->assembleCreateDefaultSeatFail();	
+		}
+		// now, seek clearance and decide whether or not to commit or rollback
+		if( $this->airtraffic->clearance( $guid, $attempts, $looptime ) and
+			$this->airtraffic->terminateService( $guid )
+		){
+			$this->db->trans_commit();
+			log_message('DEBUG','create_step3 cleared for take off ' . $guid);			
+		}else{
+			$this->db->trans_rollback();
+			log_message('DEBUG','create_step3_final clearance error '. $guid);		
+		}
+		$this->airtraffic->deleteXML( $guid );
+	} //create_step3()
 	
-		// delete the cookies concerned
-		delete_cookie( 'seatMapName' );
-		delete_cookie( 'rows' );
-		delete_cookie( 'cols' );
-		delete_cookie( 'seatMapUniqueID' );
-		$data['userData'] = $this->login_model->getUserInfo_for_Panel();						
-		$this->load->view( 'createSeat/allConfiguredNotice' , $data);			
+	function create_step3_forward()
+	{
+		/**
+		*	@created 07JUL2012-1618
+		*	@description Landing page for seat map creation success;
+		**/
+		if( !$this->functionaccess->preCreateSeatStep2FWCheck( STAGE_CR_SEAT3_FW ) ) return FALSE;
+		$this->postSeatCreateCleanup();
+		$this->load->view( 'createSeat/allConfiguredNotice');
 	}
-	
+
 	function getActualSeatsData()
 	{
-		/*
-			Created 12FEB2012-2258
-		*/
+		/**
+		*	@created 12FEB2012-2258
+		*	@description Gets the seating details of a showing time - used in booking a ticket.
+		**/
 		$masterSeatMapDetails;
-		$masterSeatMapProperData;						
+		$masterSeatMapProperData;
 		$eventID;
 		$showtimeID;
 		$showingTimeObj;
 		$seatMapUniqueID;
 		$guid;
 		$bookingInfo;
-				
+		
+		// user is accessing via browser address bar, so not allowed
+		if( $this->input->is_ajax_request() === false ) redirect('/');
+		
 		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
 		$bookingInfo = $this->ndx_model->get( $guid );
 		if( $bookingInfo === false ){
@@ -176,9 +319,7 @@ class seatctrl extends CI_Controller {
 		$eventID = $bookingInfo->EVENT_ID;
 		$showtimeID = $bookingInfo->SHOWTIME_ID;
 		$showingTimeObj = $this->event_model->getSingleShowingTime( $eventID, $showtimeID );
-		// user is accessing via browser address bar, so not allowed
-		//if( $this->input->is_ajax_request() === false ) redirect('/');
-		
+
 		// no post data, so fail
 		if( $eventID === false or $showtimeID === false )
 		{
@@ -186,26 +327,36 @@ class seatctrl extends CI_Controller {
 			return false;
 		}
 		
-		//get DB entries		
+		//get DB entries
 		$masterSeatMapDetails = $this->seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );
 		$seatMapProperData = $this->seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
-						
 		echo $this->makexml_model->XMLize_SeatMap_Actual( $masterSeatMapDetails, $seatMapProperData );
 		return true;
 	}//getActualSeatsData(..)
 	
+	function manageseatmap()
+	{
+		/**
+		*	@created <I forgot>
+		*	@description Landing page for managing seat maps.
+		**/
+		$this->checkAndActOnAdmin();
+		$data['seatmaps'] = $this->seat_model->getAllSeatMaps();
+		$this->clientsidedata_model->setSessionActivity( MANAGE_SEATMAP, STAGE_MS0_HOME );
+		$this->load->view( 'manageSeat/manageSeat01', $data );	
+	}
+	
 	function getMasterSeatmapData()
 	{
-		/*
-			Created 28JAN2012-2215
-			
-			Only for AJAX requests.
-		*/
+		/**
+		*	@created 28JAN2012-2215
+		*	@description Used when creating a show and assigning seats.
+		*	@remarks Only for AJAX requests.
+		**/
 		$masterSeatMapDetails;
 		$masterSeatMapProperData;
 		$uniqueID = $this->input->post( 'uniqueID' );
-		//$uniqueID = 9610832;
-	
+
 		// user is accessing via browser address bar, so not allowed
 		if( $this->input->is_ajax_request() === false ) redirect('/');
 		
@@ -223,84 +374,5 @@ class seatctrl extends CI_Controller {
 		echo $this->makexml_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
 		return true;
 	}// getMasterSeatmapData
-	
-	function areSeatsOccupied( )
-	{
-		/* @DEPRECATED 11JUN2012-1252 In favor of library seatmaintenance/areSeatsOccupied(..)
-			Created 13FEB2012-2000
-			
-			also checks if seat selection is mandatory.
-		*/
-		$guid;
-		$bookingInfo;
-		$matrices;
-		$eventID;
-		$showtimeID;
-		$seatObj;
-		$matrices_tokenized;
-		$slots;
-		
-		// user is accessing via browser address bar, so not allowed
-		if( $this->input->is_ajax_request() === false ) redirect('/');
-				
-		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
-		$bookingInfo = $this->ndx_model->get( $guid );
-		if( $bookingInfo === false ){
-			echo 'ERROR|Cannot find server-on-cookie';
-			return false;
-		}
-		$matrices = $this->input->post( 'matrices' );
-		log_message( 'DEBUG', 'seat matrix: ' . $matrices );
-		$slots = $bookingInfo->SLOT_QUANTITY;
-		$eventID = $bookingInfo->EVENT_ID;
-		$showtimeID = $bookingInfo->SHOWTIME_ID;
-		if( $matrices === false or $eventID === false or $showtimeID === false )
-		{
-			echo "INVALID|DATA-NEEDED";
-			return false;
-		}
-		$matrices_tokenized = explode( "-", $matrices );
-		foreach( $matrices_tokenized as $singleData )
-		{
-			$matrixInfo = explode( "_", $singleData );
-			
-			$isSeatAvailableResult = $this->seat_model->isSeatAvailable( 
-				$matrixInfo[0], $matrixInfo[1], $eventID, $showtimeID 
-			);
-			if( !$isSeatAvailableResult['boolean'] ){			
-				if( $isSeatAvailableResult['throwException'] === NULL ){
-					echo "OK|FALSE|".$singleData;
-					return false;
-				}else{
-					// error in operation, so far, only no such seat found.
-					echo $isSeatAvailableResult['throwException'];
-					return false;
-				}
-			}
-		}		
-		if( $this->event_model->isSeatSelectionRequired( $eventID, $showtimeID ) and $slots !== count($matrices_tokenized) )
-		{
-			echo "OK|SEATREQUIRED|0";
-			return false;
-		}
-		echo "OK|TRUE";
-		return true;
-	}//areSeatsOccupied(..)
-/*
-	function isSeatSelectionRequred( $eventID = NULL, $showtimeID = NULL, $slots = NULL, $seatcount = NULL ){
-		$_eventID    = ( $eventID === NULL ) ? $this->input->post( 'eventID' ) : $eventID;
-		$_showtimeID = ( $showtimeID === NULL ) ? $this->input->post( 'showtimeID' ) : $showtimeID;
-		$_slots = ( $slots === NULL ) ? $this->clientsidedata_model->getSlotsBeingBooked() : $slots ;
-		$_seatcount;
-		$matrices;
-		
-		if( $seatcount === NULL )
-		{
-			$matrices = $this->input->post( 'matrices' );
-			foreach()
-		}
-		
-	}
-	*/
 }//class
 ?>

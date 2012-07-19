@@ -11,9 +11,9 @@
 *	Used primarily by ndx_model.php
 **/
 		define( 'COL_DB_TABLE_NAME', '_booking_cookies_on_server' );
-		define( 'COL_EXPIRE_DATE' , 'EXPIRE_DATE' );
-		define( 'COL_EXPIRE_TIME' , 'EXPIRE_TIME' );
-		define( 'COL_UUID' , 'UUID' );
+		if( !defined( 'COL_EXPIRE_DATE' ) ) define( 'COL_EXPIRE_DATE' , 'EXPIRE_DATE' );
+		if( !defined( 'COL_EXPIRE_TIME' ) ) define( 'COL_EXPIRE_TIME' , 'EXPIRE_TIME' );
+		if( !defined( 'COL_UUID') )  define( 'COL_UUID' , 'UUID' );
 		define( 'COL_BOOKING_NUMBER' , 'BOOKING_NUMBER' );
 		define( 'COL_EVENT_ID' , 'EVENT_ID' );
 		define( 'COL_SHOWTIME_ID' , 'SHOWTIME_ID' );

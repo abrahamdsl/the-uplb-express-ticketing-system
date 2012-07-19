@@ -1,0 +1,8 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>error</type>
+    <resultstring>STAGE_NOT_YET</resultstring>
+    <resultcode>4103</resultcode>
+    <title>access denied</title>
+    <message>You are not allowed in this stage yet. Please accomplish an earlier form maybe.</message>
+</ajaxresponse>

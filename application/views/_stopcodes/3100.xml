@@ -1,0 +1,10 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>ajax</type>
+    <resultstring>REDIRECT</resultstring>
+    <resultcode>3100</resultcode>
+    <title>redirection</title>
+    <message>You are being redirected to the page where you should be now. Maybe you already underwent this part and wasn't redirected earlier.</message>
+	<redirect>#</redirect>
+	<redirect_after>1000</redirect_after>
+</ajaxresponse>

@@ -4,9 +4,10 @@ class useracctctrl extends CI_Controller {
 
 	function __construct()
 	{
-		parent::__construct();		
-		include_once( APPPATH.'constants/_constants.inc');		
+		parent::__construct();
+		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->library('session');
+		$this->load->library('sessmaintain');
 		$this->load->model('login_model');
 		$this->load->model('academic_model');
 		$this->load->model('account_model');
@@ -16,16 +17,12 @@ class useracctctrl extends CI_Controller {
 		$this->load->model('permission_model');
 		$this->load->model('usefulfunctions_model');
 		
-		if( !$this->login_model->isUser_LoggedIn() )
-		{	// error code 4999
-			$allowed_without_auth = Array(
-				'/useracctctrl/userSignup'				
-			);
-			if( !in_array( $_SERVER[ 'REDIRECT_QUERY_STRING' ], $allowed_without_auth ) ) {
-				$this->clientsidedata_model->setRedirectionURLAfterAuth( $_SERVER[ 'REDIRECT_QUERY_STRING' ] );
-				redirect('sessionctrl/authenticationNeeded');
-			}
-		}	
+		if( !$this->sessmaintain->onControllerAccessRitual(  
+				Array(
+				'/useracctctrl/userSignup'
+				)
+			)
+		) return FALSE;
 	}
 	
 	function index()
@@ -291,7 +288,8 @@ class useracctctrl extends CI_Controller {
 	
 	function manageuser()
 	{
-		//for admin only		
+		die('17JUL2012-1214: Disabled for further maintenance because of internal fault: <code>useracctrctrl/manageuser_common</code>');
+		//for admin only
 		$this->manageuser_common( true );
 		$this->load->view( 'manageUser/manageUser01' );
 	}// manageUser(..)
@@ -435,14 +433,15 @@ class useracctctrl extends CI_Controller {
 		/*
 			Gets main info and uplb constituency info.
 		*/
+		die("17JUL2012-1211: This is up for revision, deprecate use of <code>$this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' )</code> ");
 		if( !$this->permission_model->isAdministrator() )
 		{   // ec 4101
-			$data['error'] = "NO_PERMISSION";					
-			$this->load->view( 'errorNotice', $data );			
+			$data['error'] = "NO_PERMISSION";
+			$this->load->view( 'errorNotice', $data );
 			return false;
 		}
 		if( $checkPermissionOnly ) return true;
-		$concernedUserAccountNum = $this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' );		
+		//$concernedUserAccountNum = $this->clientsidedata_model->g e t S e s s i o n A c t i v i t y D a t a E n t r y( 'accountNum' );		
 		$data['accountNum']   = $concernedUserAccountNum;
 		$data['userMainInfo'] = $this->account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
 		$data['userUPLBInfo'] = $this->account_model->getUserUPLBConstituencyData( $concernedUserAccountNum );

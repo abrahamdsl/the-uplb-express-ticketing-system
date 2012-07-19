@@ -26,11 +26,7 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>			
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.datepicker.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.ui.timepicker.js'; ?>"/></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/datepickerBoot.js'; ?>"/></script>		
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/timepickerBoot.js'; ?>"/></script>		
+	
 	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/stillUnconfiguredNotice.js'; ?>"/></script>				
 	
@@ -67,14 +63,14 @@ $this->load->view('html-generic/doctype.inc');
 					<div id="content">						
 						<input type="hidden" id="lastFocus" value="" />
 						<input type="hidden" id="lastFocus_class" value="" />												
-						<form method="post"  action="<?php echo base_url(); ?>" name="formLogin" id="formMain">
+						<form method="post"  action="<?php echo base_url(); ?>seatctrl/manageseatmap" name="formLogin" id="formMain">
 							<input type="hidden" id="repeat" name="repeat" value="true" />
 							<div class="center_purest" id="mini-warning_text-proper" >
 								This seat map can now be used in creating an event.<br/>
 								We hope you enjoy using this app.
 							</div>
-							<div id="essentialButtonsArea">							
-								<a class="button" id="buttonOK" ><span class="icon">Back to Home</span></a>																						
+							<div id="essentialButtonsArea">								
+								<a class="button" id="buttonOK" ><span class="icon">Back to Seat Maps</span></a>																						
 							</div>	
 						</form>						
 					</div>

@@ -48,6 +48,7 @@ class telemetry_model extends CI_Model {
 	{
 		log_message("DEBUG" , "telemetry add ". $uuid . " server time native : " . date("Y-m-d H:i:s") );
 		date_default_timezone_set('Asia/Manila');
+		log_message("DEBUG" , "telemetry add ". $uuid . " server time after setting to Manila: " . date("Y-m-d H:i:s") );
 		$date_x = ($date_sent === false ) ? date("Y-m-d") : $date_sent;
 		$time_x = ($time_sent === false ) ? date("H:i") : $time_sent;
 		$data = Array(		

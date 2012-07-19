@@ -24,11 +24,39 @@ class FunctionAccess{
 		$this->CI->load->model('clientsidedata_model');
 		$this->CI->load->model('makexml_model');
 		$this->CI->load->model('ndx_model');
+		$this->CI->load->model('sat_model');
 		
         $this->__reinit();
 		include_once( APPPATH.'constants/_constants.inc');
     }
 	
+	private function reactOnShouldBeAdvanced( $outputError, $redirectXML, $stage, $updateCISession = FALSE, $delATCData = FALSE )
+	{
+		/**
+		*	@created 14JUL2012-1504
+		*	@description Outputs an XML string or SimpleXMLElement object of our AJAX response
+				if a user is deemed to be moved to another page.
+		*	@remarks Formerly part of preBookCheckAJAXUnified(), now called from within it.
+		**/
+		log_message('DEBUG', 'functionaccess::reactOnShouldBeAdvanced accessed');
+		$sx_element = new SimpleXMLElement($redirectXML);
+		$sx_element->redirect = $this->getRedirectionURL( $stage );
+		if( $updateCISession ) $this->CI->clientsidedata_model->updateSessionActivityStage( $stage  );
+		if( $delATCData ){
+			// we also delete these GUIDs because the previous AJAX might have failed when
+			//  server is returning the response headers that are already cleared of this
+			$this->CI->clientsidedata_model->deleteAuthGUID();
+			$this->CI->clientsidedata_model->delete_ATC_Guid();;
+		}
+		if( $outputError )
+		{
+			echo $sx_element->asXML();
+			return false;
+		 }else{
+			return ( new SimpleXMLElement($redirect ) );
+		 }
+	}
+
 	public function __reinit(){
 		$this->sessionActivity_x =  $this->CI->clientsidedata_model->getSessionActivity();
 	}
@@ -40,12 +68,22 @@ class FunctionAccess{
 	
 	public function isActivityConfirmBooking()
 	{		
-		return ( $this->sessionActivity_x[0] == CONFIRM_RESERVATION );		
+		return ( $this->sessionActivity_x[0] == CONFIRM_RESERVATION );
 	}
 	
 	public function isActivityManageBooking()
 	{
-		return ( $this->sessionActivity_x[0] == MANAGE_BOOKING );		
+		return ( $this->sessionActivity_x[0] == MANAGE_BOOKING );
+	}
+	
+	public function isActivityManageSeatMap()
+	{
+		return ( $this->sessionActivity_x[0] == MANAGE_SEATMAP );
+	}
+	
+	public function isActivityCreatingSeatMap()
+	{
+		return ( $this->sessionActivity_x[0] == SEAT_CREATE );
 	}
 	
 	public function isActivityManageBookingAndChooseSeat()
@@ -61,17 +99,20 @@ class FunctionAccess{
 		return ($this->CI->clientsidedata_model->getPaymentModeExclusion() !== FALSE );
 	}
 	
-	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj )
+	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj)
 	{
 		/**
 		*	With the introduction of $this->getRedirectionURL(.), we should remove underscore as our
 		*   delimiter since there can be underscores in a URL.
+		*	@returns if param $outputError
+				- TRUE : outputs XML string to stdoutput first and then BOOLEAN
+				- FALSE : simpleXMLElement object
 		*/
-		$notAllowed    = "ERROR|You are not allowed to access this functionality/page."; // 4100
-		$notAllowedYet = "ERROR|You are not allowed in this stage yet."; //4102
-		$redirect	   = "REDIRECT|You already underwent this part! Any changes you make here will not be saved. You will now be redirected to an advanced stage.|".( $this->getRedirectionURL( $this->sessionActivity_x[1] ) ); //3100
-		$crucialData   = "ERROR|Crucial data missing."; //4002
-		$cns_404	   = "ERROR|COOKIE-ON-SERVER-NOT-FOUND"; //4800
+		$notAllowed    = $this->CI->load->view("_stopcodes/4100.xml", '', TRUE);
+		$notAllowedYet = $this->CI->load->view("_stopcodes/4103.xml", '', TRUE);
+		$redirect	   = $this->CI->load->view("_stopcodes/3100.xml", '', TRUE);
+		$crucialData   = $this->CI->load->view("_stopcodes/4002.xml", '', TRUE);
+		$cns_404	   = $this->CI->load->view("_stopcodes/4800.xml", '', TRUE);
 		if( $bookingInfoObj === FALSE )
 		{			
 			 if( $outputError )
@@ -79,11 +120,12 @@ class FunctionAccess{
 				 echo $cns_404;
 				 return false;
 			 }else{
-				return $cns_404;
+				return ( new SimpleXMLElement($cns_404) );
 			 }
 		}
-		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() )
-		{			
+		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking()
+  		    or $this->isActivityCreatingSeatMap()
+		){			
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool ) )
 			{
 				if( $this->sessionActivity_x[1] < $stage )
@@ -93,28 +135,33 @@ class FunctionAccess{
 						 echo $notAllowedYet;
 						 return false;
 					 }else{
-						return $notAllowedYet;
+						return ( new SimpleXMLElement($notAllowedYet) );
 					 }
 				}else
 				if( $this->sessionActivity_x[1] > $stage )
-				{					
-					if( $outputError )
-					{
-						echo $redirect;
-						return false;
-					 }else{
-						return $redirect;
-					 }
+				{	
+					 return $this->reactOnShouldBeAdvanced( $outputError, $redirect, $this->sessionActivity_x[1] );
 				}else{
+					$adv_check = $this->CI->sat_model->isOnDB_RecordAdvanced( 
+						$this->CI->clientsidedata_model->getActivityGUID(),
+						$this->sessionActivity_x[1] 
+					);
+					if( $adv_check[1] == 0 )
+					{
+						if( $adv_check[0] )
+						{	
+							return $this->reactOnShouldBeAdvanced( $outputError, $redirect, $adv_check[4], TRUE, TRUE );
+						}
+					}
 					return true;
 				}
-			}else{				 
+			}else{
 				 if( $outputError )
 				 {
 					 echo $crucialData;
 					 return false;
 				 }else{
-					return $crucialData;
+					return ( new SimpleXMLElement($crucialData) );
 				 }
 			}
 		}else{
@@ -123,7 +170,7 @@ class FunctionAccess{
 				 echo $notAllowed;
 				 return false;
 			 }else{
-				return $notAllowed;
+				return ( new SimpleXMLElement($notAllowed) );
 			 }
 		}
 	}//preBookCheckAJAXUnified
@@ -155,20 +202,19 @@ class FunctionAccess{
 			 $this->CI->load->view( 'errorNotice', $data );
 			 return false;
 		}
-		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() )
+		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() 
+			or $this->isActivityCreatingSeatMap()
+		)
 		{				
-			//echo var_dump($checkArraysBool);
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool, true ) )
 			{
-				//echo var_dump($this->sessionActivity_x);
-				//echo var_dump($stage);
 				if( $this->sessionActivity_x[1] < $stage )
 				{
 					 $data['error'] = "CUSTOM";
 					 $data['theMessage'] = "You are not allowed in this stage yet."; //4102
 					 $data['redirect'] = 2;
 					 $data['redirectURI'] = base_url().$this->getRedirectionURL( $this->sessionActivity_x[1] );
-					 $data[ 'defaultAction' ] = "Earlier Stage";					 
+					 $data[ 'defaultAction' ] = "Earlier Stage";
 					 $this->CI->load->view( 'errorNotice', $data );
 					 return false;
 				}else
@@ -185,7 +231,7 @@ class FunctionAccess{
 				}else{
 					$data['error'] = "CUSTOM";
 					 $data['theMessage'] = "Crucial data missing in accessing this page or you are not allowed yet to be here."; //4102
-					 $this->CI->load->view( 'errorNotice', $data );				 
+					 $this->CI->load->view( 'errorNotice', $data );
 					 return false;
 				}
 			}
@@ -227,31 +273,7 @@ class FunctionAccess{
 	
 	public function preBookStep5PRCheck( $bookingInfo, $stage )
 	{
-		$pre_check = $this->preBookCheckAJAXUnified( Array(), FALSE, $stage, $bookingInfo );
-		if( $pre_check !== TRUE )
-		{
-			$pre_check_tokenized = explode( '|', $pre_check );
-			$is_error = ($pre_check_tokenized[0] == "ERROR" );
-			$type = ( $is_error ) ? "error" : "okay";
-			$title = ( $is_error ) ? "error" : "already passed";
-			$message = $pre_check_tokenized[1];
-			$redirect = "";
-			$redirectAfter = 0;
-			if($pre_check_tokenized[0] == "REDIRECT" ){
-				$redirect = $pre_check_tokenized[2]; 
-				$redirectAfter = 4000;
-			}
-			echo $this->CI->makexml_model->XMLize_AJAX_Response(					
-					$type, 
-					$title,
-					$pre_check_tokenized[0],
-					0, 
-					$message,
-					base_url().$redirect,
-					$redirectAfter
-			);
-		}
-		return $pre_check;
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, $stage, $bookingInfo );
 	}
 		
 	public function preBookStep5FWCheck( $bookingInfo, $stage )
@@ -279,6 +301,10 @@ class FunctionAccess{
 		return $this->preBookCheckUnified( Array( $eventID, $tcGID ), $stage );
 	}
 	
+	function preConfirmStep2PRCheck( $bookingNum ){
+		return $this->preBookCheckAJAXUnified( Array( $bookingNum ), TRUE, STAGE_CONFIRM_1_FORWARD, true );
+	}
+	
 	public function preConfirmStep2FWCheck( $bookingInfo, $stage )
 	{
 		return $this->preBookCheckUnified( Array(), $stage, $bookingInfo );
@@ -287,6 +313,48 @@ class FunctionAccess{
 	public function preConfirmStep3PRCheck( $accountNum, $bookingInfo, $stage )
 	{
 		return $this->preBookCheckAJAXUnified( Array( $accountNum ), true, $stage, $bookingInfo );
+	}
+	public function preCreateSeatStep1PRCheck(){
+		if( !( ($this->isActivityManageSeatMap() AND $this->sessionActivity_x[1] === STAGE_MS0_HOME) 
+			  or $this->sessionActivity_x[1] === -1 ) 
+		){
+			$this->redirectBookForward( $this->sessionActivity_x[1] );
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
+	public function preCreateSeatStep1FWCheck()
+	{
+		/*if( $this->isActivityCreatingSeatMap() )
+		{  // forward to the appropriate page
+			if( $this->sessionActivity_x[1] > STAGE_CR_SEAT1 ){
+				$this->redirectBookForward( $this->sessionActivity_x[1] );
+				return FALSE;
+			}
+			return TRUE;
+		}
+		return FALSE;*/
+		if( !($this->isActivityCreatingSeatMap() AND $this->sessionActivity_x[1] === STAGE_CR_SEAT1 ) ){
+			$this->redirectBookForward( $this->sessionActivity_x[1] );
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
+	public function preCreateSeatStep2PRCheck( $stage )
+	{
+		return $this->preBookCheckUnified( Array(), $stage, TRUE );
+	}
+
+	public function preCreateSeatStep2FWCheck( $stage )
+	{
+		return $this->preBookCheckUnified( Array(), $stage, TRUE );
+	}
+	
+	public function preCreateSeatStep3PRCheck()
+	{		
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_CR_SEAT2_FW, TRUE );
 	}
 	
 	function preManageBookingChangeSeatCheck( $bNum, $mbookingInfo , $allowedStages ){
@@ -347,11 +415,11 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( $bookingNumber ), $stage, $mbookingInfo );
 	}
 	
-	function preManageBookingNoSeatAllCheck( $stage ){		
+	function preManageBookingNoSeatAllCheck( $stage ){
 		return $this->preBookCheckUnified( Array(), $stage, TRUE );
 	}
 	
-	function preManageBookingUpgTC_Check( $mbookingInfo , $stage ){		
+	function preManageBookingUpgTC_Check( $mbookingInfo , $stage ){
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
@@ -385,9 +453,13 @@ class FunctionAccess{
 			case STAGE_BOOK_6_PROCESS: return 'eventctrl/book_step6';  break;
 			case STAGE_BOOK_6_PAYMENTPROCESSING: return 'paypal/process';  break;
 			case STAGE_BOOK_6_FORWARD: return 'eventctrl/book_step6_forward';  break;
-			case STAGE_MB4_CONFIRM_PR: 
+			case STAGE_MB3_SELECT_SEAT_PR: return 'eventctrl/managebooking_changeseat_complete';
+			//case STAGE_MB4_CONFIRM_PR: 
 			case STAGE_MB4_CONFIRM_FW: return 'eventctrl/managebooking_confirm'; break;
 			case STAGE_MB0_HOME: return 'eventctrl/managebooking'; break;
+			case STAGE_CR_SEAT1: return 'seatctrl/create_forward'; break;
+			case STAGE_CR_SEAT2_FW: return 'seatctrl/create_step2_forward'; break;
+			case STAGE_CR_SEAT3_FW: return 'seatctrl/create_step3_forward'; break;
 			default: return "sessionctrl/redirect_unknown/".$stage; //3999
 		}
 	}

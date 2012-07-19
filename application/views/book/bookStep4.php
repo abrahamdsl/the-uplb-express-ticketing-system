@@ -57,14 +57,13 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>"></script>
-	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic.js'; ?>" ></script>	
 </head>
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
 		$this->load->view('html-generic/seatModal-client.inc');
-		
-?>		
+?>
 <div id="main_container">
 	<div id="header">
 		<?php
@@ -76,7 +75,7 @@ $this->load->view('html-generic/metadata.inc');
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>
-    </div>            
+    </div>
     <div id="main_content" >
     	<div id="centralContainer">
 <?php 
@@ -146,85 +145,82 @@ $this->load->view('html-generic/metadata.inc');
 					<input type="hidden" id="managebookingChooseSeat" value="<?php echo intval($isActivityManageBooking); ?>"/>
 					<input type="hidden" id="_js_use_slots" value="<?php echo $slots ?>" />
 					<input type="hidden" id="_js_use_ticketClassUniqueID" value="<?php echo $bookingInfo->TICKET_CLASS_UNIQUE_ID ?>" />
-					<form name="formMain" method="post" action="<?php echo base_url().'eventctrl/book_step5'; ?>" id="formMain">					
-					
-					<div id="tabs">					
-						<ul>
-							<?php 								
-								 for( $x=0, $y = count( $guests); $x< $y; $x++ ){
-							?>
-							<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>							
-							<?php } ?>
-						</ul>
-						<?php 							
-							$x=0;
-							foreach( $guests as $singleGuest) {
-						?>
-						<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
-							<div class="left" >
+					<form name="formMain" method="post" action="eventctrl/book_step5" id="formMain">
+						<div id="tabs">
+							<ul>
 								<?php
-									$this->load->view( "html-generic/customer_proper_info.inc", Array(
-											'guestnum' =>  $x,
-											'singleGuest' => $singleGuest			
-										)
-									);
+									 for( $x=0, $y = count( $guests); $x< $y; $x++ ){
 								?>
-							</div>
-							<div class="right" >
-								<fieldset>								
-									<legend class="field_grouping_bar specialOnBook3">seat</legend>	
-									<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
-									<?php 
-										$seatMatrixVal = "0";
-										if( $isActivityManageBooking )
-										{
-											 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];
-											 $seatMatrixVal = ($guestSeatObj['visual_rep'] == "NONE" ) ? "0" : $guestSeatObj['matrix_x'].'_'.$guestSeatObj['matrix_y'];
-											 $seatMatrixValOld = $seatMatrixVal;
-									?>									
-									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix_old" value="<?php echo $seatMatrixValOld;?>" />
+								<li><a id="g<?php echo $x+1; ?>_anchor" href="#g<?php echo $x+1; ?>">Guest <?php echo $x+1; ?></a></li>
+								<?php } ?>
+							</ul>
+							<?php
+								$x=0;
+								foreach( $guests as $singleGuest) {
+							?>
+							<div id="g<?php echo $x+1; ?>" class="ui-tabs-panel-Book3Special">
+								<div class="left" >
 									<?php
-										}
+										$this->load->view( "html-generic/customer_proper_info.inc", Array(
+												'guestnum' =>  $x,
+												'singleGuest' => $singleGuest
+											)
+										);
 									?>
-									<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="<?php echo $seatMatrixVal;?>" />
-									<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
-									<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >																			
-											<?php
-												if( ( $x+1 ) != 1 )
-												{
-											?>
-												<div class="leftInr" >
-													<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
-												</div>
-											<?php
-												}													
-												if( ( $slots-1 ) != $x ) 
-												{
-											?>
-												<div class="rightInr">
-													<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
-												</div>
-											<?php
-												}
-											?>										
-									</div>	
-								</fieldset>
+								</div>
+								<div class="right" >
+									<fieldset>
+										<legend class="field_grouping_bar specialOnBook3">seat</legend>	
+										<input type="text" class="seatText" name="g<?php echo $x+1; ?>_seatVisual" value="0" disabled="disabled" />
+										<?php 
+											$seatMatrixVal = "0";
+											if( $isActivityManageBooking )
+											{
+												 $guestSeatObj = $guestSeatDetails[$singleGuest->UUID];
+												 $seatMatrixVal = ($guestSeatObj['visual_rep'] == "NONE" ) ? "0" : $guestSeatObj['matrix_x'].'_'.$guestSeatObj['matrix_y'];
+												 $seatMatrixValOld = $seatMatrixVal;
+										?>
+										<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix_old" value="<?php echo $seatMatrixValOld;?>" />
+										<?php
+											}
+										?>
+										<input type="hidden" name="g<?php echo $x+1; ?>_seatMatrix" value="<?php echo $seatMatrixVal;?>" />
+										<input type="button" id="g<?php echo $x+1; ?>_chooseSeat" class="seatChooser" value="Choose seat" />
+										<div class="row anchorBelow" id="g<?php echo $x+1; ?>-navigation" >
+												<?php
+													if( ( $x+1 ) != 1 )
+													{
+												?>
+													<div class="leftInr" >
+														<input type="button" class="anchor_below" id="g<?php echo $x; ?>_anchor-below" value="&lt; Guest <?php echo $x ?>" />
+													</div>
+												<?php
+													}
+													if( ( $slots-1 ) != $x ) 
+													{
+												?>
+													<div class="rightInr">
+														<input type="button" class="anchor_below" id="g<?php echo $x+2; ?>_anchor-below" value="Guest <?php echo $x+2 ?> &gt;" />
+													</div>
+												<?php
+													}
+												?>
+										</div>	
+									</fieldset>
+								</div>
 							</div>
-						</div>		
-						<?php $x++; } ?>
-					</div>
-					</form>				
-				</div>
+							<?php $x++; } ?>
+						</div>
+					</form>
 			</div>
 			<!-- accordion end -->
-			<div id="essentialButtonsArea">							
-							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>														
+			<div id="essentialButtonsArea">
+							<a class="button" id="buttonOK" ><span class="icon">Next</span></a>
 							<a class="button" id="buttonReset<?php if($isActivityManageBooking) echo "2"; ?>" ><span class="icon">Cancel</span></a>
-			</div>	
+			</div>
 			<div class="buttonfooterSeparator" ></div>
-		</div>		
+		</div>
     </div><!--end of main content-->
-	
 <?php
 	$this->load->view('html-generic/footer.inc');
 ?>

@@ -11,6 +11,14 @@ function getUserInfo( username, guestID )
 		url: CI.base_url + 'useracctctrl/getUserInfoForBooking',
 		timeout: 15000,
 	    data: { 'username': username },
+		beforeSend: function(e){
+			$.fn.nextGenModal({
+			   msgType: 'ajax',
+			   title: 'processing',
+			   message: 'Please wait while we retrieve the records from server...'
+			});
+			setTimeout( 'function(){}', 500 );
+		},
 		success: function(data){		
 			var mainInfo = $(data).find('main_info');
 			var uplbInfo = $(data).find('uplb_info');
@@ -42,6 +50,8 @@ function getUserInfo( username, guestID )
 			// call the change actionListener to perform form validation (is it redundant );
 			$('input[type="text"][id^="id_g' + guestID + '"]').change();
 			$('input[type="radio"][name^="g' + guestID + '"]').change();
+			setTimeout( 'var walalungs=1;', 600 );
+			$.fn.nextGenModal.hideModal();
 			return true;
 		}//success
 	});
@@ -63,7 +73,8 @@ $(document).ready( function(){
 		{
 			getUserInfo( "DEFAULT", guestID );
 		}else{
-			var username = prompt( "Please enter your friend's username." );			
+			var username = prompt( "Please enter your friend's username." );
+			if( username == null ) return false;
 			if( username.length > 1 ) getUserInfo( username, guestID );
 			else{
 				$.fn.nextGenModal({

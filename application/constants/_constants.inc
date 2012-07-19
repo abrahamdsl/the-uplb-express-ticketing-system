@@ -29,6 +29,7 @@
 		define( 'BOOK', 'BOOK' );
 		define( 'CONFIRM_RESERVATION', 'CONFIRM_BOOKING' );
 		define( 'MANAGE_BOOKING', 'MANAGE_BOOKING' );
+		define( 'MANAGE_SEATMAP', 'MANAGE_SEATMAP' );
 		define( 'CHECK_IN', 'CHECKIN_IN' );
 		define( 'CHECK_OUT', 'CHECKIN_OUT' );
 		define( 'SEAT_CREATE', 'SEAT_CREATE' );
@@ -121,6 +122,14 @@
 		
 		define( 'STAGE_MBX_CANCEL_PR', 250 );
 		define( 'STAGE_MBX_CANCEL_FW', 251 );
+		
+		define( 'STAGE_MS0_HOME', 400 );
+		
+		define( 'STAGE_CR_SEAT1', 5250 );
+		define( 'STAGE_CR_SEAT2_PR', 5251 );
+		define( 'STAGE_CR_SEAT2_FW', 5252 );
+		define( 'STAGE_CR_SEAT3_PR', 5253 );
+		define( 'STAGE_CR_SEAT3_FW', 5254 );
 		/*
 			In Manage Booking, these are used to signify
 			stages passed.

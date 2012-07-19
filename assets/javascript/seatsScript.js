@@ -7,10 +7,9 @@
  });*/
 
 
-jQuery(function($){	
-
+jQuery(function($){
 	$( 'div#holder' )
-		.drag("start",function( ev, dd ){				
+		.drag("start",function( ev, dd ){
 			var holder = new Array();
 			holder["start"] = new Array();
 			holder["end"] = new Array();
@@ -20,8 +19,8 @@ jQuery(function($){
 			holder["end"]["y"] = ($('#holder').offset().left + $('#holder').width()) - 20;
 			var selection = new Array();
 			selection["x"] = Math.min( ev.pageY, dd.startY );
-			selection["y"] = Math.min( ev.pageX, dd.startX );													
-			
+			selection["y"] = Math.min( ev.pageX, dd.startX );
+
 			if( 
 				(
 					(selection["x"] >= holder["start"]["x"] &&
@@ -30,9 +29,9 @@ jQuery(function($){
 					selection["y"] <= holder["end"]["y"])
 				)
 			=== false
-			){				
-				return false;							
-			}	
+			){
+				return false;
+			}
 			return $('<div class="selection" />')
 				.css('opacity', .65 )
 				.appendTo( document.body );
@@ -44,7 +43,6 @@ jQuery(function($){
 				height: Math.abs( ev.pageY - dd.startY ),
 				width: Math.abs( ev.pageX - dd.startX )
 			});
-			//$('#msg').append( $(this).html() + " " );
 		})
 		.drag("end",function( ev, dd ){
 			$( dd.proxy ).remove();
@@ -58,8 +56,7 @@ jQuery(function($){
 				*/
 				//$('#msg').append( $(this).html() + " " );
 				$( this ).addClass("active");
-				$(this).find('input[type="hidden"][name^="status"]').val('-1');
-				
+				$(this).find('input[type="hidden"][name^="status"]').val('-5'); // seat is non-existent physically.
 			})
 			.drop(function( ev, dd ){
 				/*
@@ -67,17 +64,15 @@ jQuery(function($){
 				*/
 				$( this ).toggleClass("dropped");
 				$currentVal = $(this).find('input[type="hidden"][name$="status"]').val();
-				$newVal = ($currentVal == '0' ) ? '-1' : '0';
+				$newVal = ($currentVal == '0' ) ? '-5' : '0';
 				$(this).find('input[type="hidden"][name$="status"]').val( $newVal );
 			})
 			.drop("end",function(){
 				/*
-					really after the deed - removes the CSS indicating that it is
-					in the process of being selected
+					Really after the deed - removes the CSS indicating that it is
+					in the process of being selected.
 				*/
 				$( this ).removeClass("active");
-				
 			});
-		$.drop({ multi: true });	
-});	//jQuery(function($){									
-			
+		$.drop({ multi: true });
+});	//jQuery

@@ -1303,7 +1303,7 @@ class browsersniff_model extends CI_Model {
  {
 	/**
 	*	@created 25MAY2012-1204
-		@assumptions _constants.inc should have been declared earlier in the controller
+	*	@assumptions _constants.inc should have been declared earlier in the controller
 	*/
 	// This contains version info of the browser. Index 0 is the major, 1 is minor, dunno about 2.
 	$ver_split = Array();	
@@ -1323,7 +1323,7 @@ class browsersniff_model extends CI_Model {
 					*/
 					$ver_split =  explode( '.', $sniffedData[1] );
 					if( intval( $ver_split[0] ) < 9 )
-						return BR_STRICTLY_NOT_ALLOWED;						
+						return BR_STRICTLY_NOT_ALLOWED;
 					else
 						return BR_ALLOWED;
 					break;

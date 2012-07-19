@@ -10,7 +10,6 @@
 *
 *	This deals with all of tables `seat_map`, `seats_actual`, `seats_default`
 **/
-
 class seat_model extends CI_Model {
 	
 	function __construct()
@@ -18,95 +17,8 @@ class seat_model extends CI_Model {
 		parent::__construct();
 		$this->load->library('session');
 	}
-			
-	function createDefaultSeats()
-	{
-		/*
-			Created 19JAN2012-1206
-			
-			Based on the rows and cols of the seat map, loops through the submitted POST data to
-			insert to the database the seat's coordinates, status and comments.
-		*/
-		$usableSeats;
-		//die(var_dump($_POST ));
-		for( $x = 0, $y = $this->input->cookie('rows'), $usableSeats = 0; $x < $y; $x++ )
-		{
-			$present;			
-			for( $i = 0, $j = $this->input->cookie('cols'); $i < $j; $i++ )			
-			{
-				$status =  intval($this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_status' ));
-				$Visual_row = NULL;
-				$Visual_col = NULL;	
-				$transactionResult;
-				if( $status > - 1 ) // for values <= -1, seats are to be not displayed, thus don't bother caring about the presentation
-				{
-					$usableSeats++; 	// indicator of usable seats in the DB
-					$presentationCompounded = $this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_presentation' );
-					$presentationSeparated = explode( '_', $presentationCompounded );
-					$Visual_row = $presentationSeparated[0];
-					$Visual_col = $presentationSeparated[1];
-				}
-				$transactionResult = $this->insertDefaultSingleSeatData( $this->input->cookie( 'seatMapUniqueID' ), $x, $i, $Visual_row, $Visual_col, $status, 'COMMENT' );
-				if( $transactionResult === FALSE )
-				{
-					return FALSE;
-				}				
-			}			
-		}	
-		$this->updateSeatMapUsableCapacity( $this->input->cookie( 'seatMapUniqueID' ), $usableSeats );
-		return true;
-	}//createDefaultSeats
 	
-	function copyDefaultSeatsToActual( $seatMapUniqueID )
-	{
-		/*
-			Created 04FEB2012-1415
-			
-			Called during Create Event Step 6 - Saving the seat configuration of the events being configured.
-			This is the first step, copy the entries of the seat map in the table `seats_default` to 
-			`seats_actual` then we just update the copied entries in the latter table when processing sent 
-			information to the server.
-			
-			Changed 13FEB2012-1235 -  Removed `Seat_map_UniqueID` as one of the selected columns
-		*/
-		$fields = "`Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Comments`";
-		$sql_command = "INSERT `seats_actual` ( ".$fields." ) SELECT ".$fields." FROM `seats_default`	WHERE `Seat_map_UniqueID` = ? ";
-				
-		return $this->db->query( $sql_command, array( $seatMapUniqueID ) );	
-	}//copyDefaultSeatsToActual(..)
-	
-	function createSeatMap()
-	{
-		$uniqueID;
-		
-		if( $this->isSeatMapNameExistent( $this->input->post('name') )  )
-		{
-			die( 'Seat Map Name exists. Please choose another one.' );
-		}
-		$uniqueID = $this->generateSeatMapUniqueID();
-		// CODE MISSING: database checkpoint
-		if( $this->insertSeatMapBaseInfo( $uniqueID ) == false)
-		{
-			// CODE MISSING:  database rollback			
-			die('Seat Map Creation Fail - Database Error');
-		}
-		// CODE MISSING:  database commit
-		
-		// now, set some cookie for use in Create Seat Step3
-		$cookie = array( 'name' => 'seatMapUniqueID', 
-						 'value' => $uniqueID,
-						 'expire' => '7200'  );	
-		$this->input->set_cookie( $cookie );
-		
-	}// createSeatMap
-	
-	function deleteSeatMap( $uniqueID )
-	{
-		$sql_command = "DELETE FROM `seat_map` WHERE `UniqueID` = ? ";
-		return $this->db->query( $sql_command, Array( $uniqueID ) );
-	}
-	
-	function generateSeatMapUniqueID()
+	private function generateSeatMapUniqueID()
 	{
 		/*
 			Created 19JAN2012-1118
@@ -121,8 +33,184 @@ class seat_model extends CI_Model {
 		}while( $this->isSeatMapUniqueIDExistent( $uniqueID ) );
 		
 		return $uniqueID;
-	}//generateAccountNumber
+	}//generateSeatMapUniqueID()
+	
+	private function insertSeatMapBaseInfo( $uniqueID = NULL )
+	{
+		/**
+		*	@created 19JAN2012-1131
+		*	@description Just inserts to the table `seat_map`.
+		*	@remarks The posted data from the caller are directly accessed thru $this->input->post() here.
+		*	@revised 07JUL2012-1358
+		**/
+		$data;
 
+		$data = array(
+			'UniqueID' => $uniqueID,
+			'Name' => $this->input->post('name'),
+			'Rows' => $this->input->post('rows' ),
+			'Cols' => $this->input->post('cols'),
+			'Status' => 'BEING_CREATED',
+			// expiration of creation activity is one hour from now.
+			'Status2' => date( 'Y-m-d H:i:s', strtotime( '+1 hour', strtotime(date( 'Y-m-d H:i:s' )) ) )
+		);
+		
+		return ( $this->db->insert( 'seat_map', $data ) );
+	}// insertSeatMapBaseInfo
+	
+	private function isSeatMapUniqueIDExistent( $uniqueID = NULL )
+	{
+		/**
+		*	@created 19JAN2012-1118
+		*	@description Checks if a number submitted is the UniqueID of some `seat_map` entry.
+		*	@returns BOOLEAN.
+		**/
+		if( $uniqueID == NULL ) return false;
+
+		$this->db->where('UniqueID', $uniqueID );
+		$query = $this->db->get('seat_map');
+
+		// if there was one cell retrieved, then such seat map with the UniqueID exists
+		return ( $query->num_rows == 1 );
+	}//isSeatMapUniqueIDExistent
+	
+	private function createDefaultSeats_CheckIndividual( $x, $i, &$visual_row, &$visual_col, &$status, &$usableSeats )
+	{
+		/**
+		*	@created 18JUL2012-1505
+		*	@description Ceremonies regarding a submitted default seat data.
+		*	@remarks Some parameters are referenced to their original locations.
+		*	@history Formerly contained within $this->createDefaultSeats
+		**/
+		$submitted_val = $this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_status' );
+		// if input field is non-existent CI will return false, and thus let's assign -5 to signify non-existence.
+		$status = ( $submitted_val === FALSE ) ? -5 :  intval($submitted_val);
+		
+		if( $status > - 1 ) // for values <= -1, seats are to be not displayed, thus don't bother caring about the presentation
+		{
+			$presentationCompounded = $this->input->post( 'seatLocatedAt_'.$x.'_'.$i.'_presentation' );
+			$input_is_false = ( $presentationCompounded === FALSE );
+			if( !$input_is_false ){
+				$presentationSeparated = explode( '_', $presentationCompounded );
+				if( count( $presentationSeparated ) == 2 ){
+					$usableSeats++; 	// indicator of usable seats in the DB
+					$visual_row = $presentationSeparated[0];
+					$visual_col = $presentationSeparated[1];
+				}
+			}
+		}
+	}//createDefaultSeats_CheckIndividual(..)
+
+	function createDefaultSeats( $uniqueID, $rows, $cols )
+	{
+		/**
+		*	@created 19JAN2012-1206
+		*	@description Based on the rows and cols of the seat map, loops through the submitted POST data
+				to insert to the database the seat's coordinates, status and comments.
+		*	@revised 07JUL2012-1612 Just for fool-proofing.
+		*	@revised 18JUL2012-1506 Instead of multiple "INSERT" SQL statements for each seat - there is now only one
+				with values appended - this is said to save nearly O(n) of space as well as savings due to one
+				single communication with the SQL server.
+		**/
+		$usableSeats = 0;
+		$row_less = $rows - 1;
+		$col_less = $cols - 1;
+		$sql_command = "INSERT INTO `seats_default` VALUES ";
+		$x = 0;
+		$i;
+		// all, minus last row
+		for(; $x < $row_less; $x++ )
+		{
+			for( $i=0; $i < $cols; $i++ )
+			{
+				$visual_row = NULL;
+				$visual_col = NULL;
+				$status;
+				$this->createDefaultSeats_CheckIndividual( $x, $i, $visual_row, $visual_col, $status, $usableSeats );
+				$sql_command .= "( ".$uniqueID.",".$x.",".$i.",'".$visual_row."','".$visual_col."',".$status.",NULL), ";
+			}
+		}
+		// last row less its last column
+		for( $i = 0; $i < $col_less; $i++ ){
+			$visual_row = NULL;
+			$visual_col = NULL;
+			$status;
+			$this->createDefaultSeats_CheckIndividual( $x, $i, $visual_row, $visual_col, $status, $usableSeats );
+			$sql_command .= "( ".$uniqueID.",".$x.",".$i.",'".$visual_row."','".$visual_col."',".$status.",NULL), ";
+		}
+		// and lastly: last row, last column
+		$visual_row = NULL;
+		$visual_col = NULL;
+		$status;
+		$this->createDefaultSeats_CheckIndividual( $x, $i, $visual_row, $visual_col, $status, $usableSeats );
+		$sql_command .= "( ".$uniqueID.",".$x.",".$i.",'".$visual_row."','".$visual_col."',".$status.",NULL); ";
+		// finally, query it
+		$this->db->query( $sql_command );
+		$this->updateSeatMapUsableCapacity( $uniqueID, $usableSeats );
+		return $this->db->trans_status();
+	}//createDefaultSeats
+	
+	function createSeatMap()
+	{
+		/**
+		*	@created <i forgot>
+		*	@description Creates seat map entry in DB.
+		*	@remarks The posted data from the caller are directly accessed thru $this->input->post() here.
+		*	@revised 07JUL2012-1357
+		**/
+		$uniqueID = $this->generateSeatMapUniqueID();
+		// CODE MISSING: database checkpoint
+		if( $this->insertSeatMapBaseInfo( $uniqueID ) === FALSE )
+		{
+			// CODE MISSING:  database rollback				
+			return FALSE;
+		}
+		// CODE MISSING:  database commit
+		
+		return $uniqueID;
+	}// createSeatMap
+	
+	function copyDefaultSeatsToActual( $seatMapUniqueID )
+	{
+		/**
+		*	@created 04FEB2012-1415
+		*	@description Called during Create Event Step 6 - Saving the seat configuration of the events being configured.
+				This is the first step, copy the entries of the seat map in the table `seats_default` to 
+				`seats_actual` then we just update the copied entries in the latter table when processing sent 
+				information to the server.
+		*	@revised 13FEB2012-1235 -  Removed `Seat_map_UniqueID` as one of the selected columns
+		*/
+		$fields = "`Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Comments`";
+		$sql_command = "INSERT `seats_actual` ( ".$fields." ) SELECT ".$fields." FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
+				
+		return $this->db->query( $sql_command, Array( $seatMapUniqueID ) );	
+	}//copyDefaultSeatsToActual(..)
+
+	function deleteSeatMap( $uniqueID )
+	{
+		/**
+		*	@created <i forgot>
+		*	@description Deletes a seat map from the table containing its info as well as its individual seats.
+		*	@revised 07JUL2012-1742
+		**/
+		$sql_command  = "DELETE FROM `seat_map` WHERE `UniqueID` = ? ";
+		$sql_command2 = "DELETE FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
+		$seatmap_data = $this->db->query( $sql_command, Array( $uniqueID ) );
+		$seat_piece   = $this->db->query( $sql_command2, Array( $uniqueID ) );
+		return ( $seatmap_data and $seat_piece );
+	}
+
+	function getAllSeatMaps()
+	{
+		$sql_command = "SELECT * FROM `seat_map` WHERE 1 ORDER BY `Name` ASC";
+		$arr_result = $this->db->query( $sql_command )->result();
+		
+		if( count( $arr_result ) < 1 )
+			return false;
+		else
+			return $arr_result;
+	}
+	
 	function getEventSeatMapActualSeats( $eventID, $showtimeID )
 	{
 		/*
@@ -134,17 +222,6 @@ class seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getEventSeatMapActualSeats(..)
-	
-	function getAllSeatMaps()
-	{
-		$sql_command = "SELECT * FROM `seat_map` WHERE 1 ORDER BY `Name` ASC";
-		$arr_result = $this->db->query( $sql_command )->result();
-		
-		if( count( $arr_result ) < 1 )
-			return false;
-		else
-			return $arr_result;
-	}
 	
 	function getLapsedHoldingTimeSeats( $eventID, $showtimeID )
 	{
@@ -167,15 +244,13 @@ class seat_model extends CI_Model {
 	
 	function getMasterSeatMapActualSeats( $uniqueID )
 	{
-		/*
-			Created 28JAN2012-2226
-			
-			Gets all seat info of the seat map whose uniqueID was supplied, from `seats_default`
-			
-			Returns a MySQL result object since we only need one.
+		/**
+		*	@created 28JAN2012-2226
+		*	@description Gets all seat info of the seat map whose uniqueID was supplied, from `seats_default`
+		*	@returns Array of MySQL result object.
 		*/
-		
-		/* we opted to not use '*' because by doing so, `UniqueID` would be included in the results that are quite large, 
+		/* 
+			We opted to not use '*' because by doing so, `UniqueID` would be included in the results,
 			which we are avoiding since it will just consume memory space and involve processing time which are not necessary.
 		*/
 		$sql_command = "SELECT `Matrix_x`,`Matrix_y`,`Visual_row`,`Visual_col`,`Status`,`Comments` FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
@@ -183,15 +258,27 @@ class seat_model extends CI_Model {
 		
 		return $arrayResult;
 	}// getMasterSeatMapActualSeats
-		
+
+	function getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID )
+	{
+		/**
+		*	@created 13FEB2012-2009
+		*	@description Gets a record from the table containing the actual seats used in an event.
+		**/
+		$sql_command = "SELECT * FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? ";
+		$arr_result = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID ) )->result();	
+		if( count( $arr_result ) > 0 )
+			return $arr_result[0];
+		else
+			return false;
+	}//getSingleActualSeatData
+
 	function getSingleMasterSeatMapData( $uniqueID )
 	{
-		/*
-			Created 28JAN2012-2222
-			
-			Simply gets a master seat map's info from table `seat_map`
-			
-			Returns a MySQL result object since we only need one.
+		/**
+		*	@created 28JAN2012-2222
+		*	@description Simply gets a master seat map's info from table `seat_map`
+		*	@returns MySQL result object since we only need one or BOOLEAN FALSE on non-existence.
 		*/
 		$sql_command = "SELECT * FROM `seat_map` WHERE `UniqueID` = ?";
 		$arrayResult = $this->db->query( $sql_command, array( $uniqueID ) )->result();
@@ -201,31 +288,15 @@ class seat_model extends CI_Model {
 		else
 			return false;
 	}// getSingleMasterSeatMap
-	
-	function getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID )
-	{
-		/*
-			Created 13FEB2012-2009
-		*/
-		$sql_command = "SELECT * FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ? AND `EventID` = ? AND `Showing_Time_ID` = ? ";
-		$arr_result = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID ) )->result();	
-		if( count( $arr_result ) > 0 )
-			return $arr_result[0];
-		else
-			return false;
-	}//getSingleActualSeatData
-	
+
 	function getUsableSeatMaps( $requestedCapacity )
 	{
-		/*
-			Created 20JAN2012-1200
-			
-			For the pull-down seat map selection in Create Event Step 5.
-			
-			Argument definition:
-			$requestedCapacity - (int) minimum number of seats that a seat map should have. or if
-								 (boolean) false, then we don't need to check usableCapacity.
-		*/
+		/**
+		*	@created 20JAN2012-1200
+		*	@description For the pull-down seat map selection in Create Event Step 5.
+		*	@param $requestedCapacity - (int) minimum number of seats that a seat map should have. or if
+								  (boolean) false, then we don't need to check usableCapacity.
+		**/
 		$arrayResult;
 		$filters = array();
 		
@@ -240,64 +311,26 @@ class seat_model extends CI_Model {
 		return $arrayResult;
 	}//getUsableSeatMaps
 	
-	/*
-		ON HOLD !!!!!!
-		
-	function getMatrixRepresentation( $matrix_x, $matrix_y, $eventID, $showtimeID )
-	{
-		/*
-			Created 02MAR2012-2105
-			
-			Returns the matrix identifiers of the specifiedseat visualization of the string form 
-			"X-Y" where X is the row and Y is the column
-		*/
-		/*$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
-		return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
-	//getMatrixRepresentation(..)*/
-	
 	function getVisualRepresentation( $matrix_x, $matrix_y, $eventID, $showtimeID )
 	{
-		/*
-			Created 14FEB2012-1822.
-			 
-			Returns the seat visualization of the string form 
-			"X-Y" where X is the row and Y is the column
-		*/
+		/**
+		*	@created 14FEB2012-1822.
+		*	@returns the seat visualization of the string form 
+				"X-Y" where X is the row and Y is the column
+		**/
 		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
 		if( $seatObj === false )
 			return false;
 		else
 			return ( $seatObj->Visual_row."-".$seatObj->Visual_col );
-	
 	}//getVisualRepresentation()
-		
-	
-	function insertSeatMapBaseInfo( $uniqueID = NULL )
-	{
-		/*
-			Created 19JAN2012-1131
-			
-			Just inserts to the table `seat_map`.
-		*/
-		$data;
-
-		$data = array(
-			'UniqueID' => $uniqueID,
-			'Name' => $this->input->post('name'),
-			'Rows' => $this->input->post( 'rows' ),
-			'Cols' => $this->input->post('cols'),
-			'Status' => 'BEING_CONFIGURED'
-		);
-		
-		return ( $this->db->insert( 'seat_map', $data ) );
-	}// insertSeatMapBaseInfo
 	
 	function insertDefaultSingleSeatData( $seatMapUniqueID, $matrix_x, $matrix_y, $Visual_row, $Visual_col, $status, $comment )
 	{
-		/*
-			Created 19JAN2012-1207
-			
-			Should I initialize the parameters to be NULL? Should I still perform value checking for these parameters (for error-checking)?
+		/**
+		*	@DEPRECATED 18JUL2012-1530
+		*	@created 19JAN2012-1207
+		*	@followup Should I initialize the parameters to be NULL? Should I still perform value checking for these parameters (for error-checking)?
 		*/
 		$data = array(
 			'Seat_map_UniqueID' =>  $seatMapUniqueID,
@@ -313,11 +346,12 @@ class seat_model extends CI_Model {
 	
 	function isSeatAssignedToGuest( $matrix_x, $matrix_y, $eventID, $showtimeID, $testThisGuestUUID )
 	{
-		/*
-			Created 08MAR2012-1331
-			
-			Though this should be in the seats.. but Assigned_To_User is in `event_slot`
-		*/
+		/**
+		*	@created 08MAR2012-1331
+		*	@description Checks if the seat is assigned to the guest in question.
+		*	@remarks Though this should be in the seats.. but Assigned_To_User is in `event_slot`
+		*	@returns BOOLEAN
+		**/
 		$sql_command = "SELECT *  FROM `event_slot` JOIN `seats_actual` ON `event_slot`.`EventID` = 
 		`seats_actual`.`EventID` AND `event_slot`.`Showtime_ID` = `seats_actual`.`Showing_Time_ID` AND 
 		`event_slot`.`Seat_x` =   `seats_actual`.`Matrix_x` AND `event_slot`.`Seat_y` =  
@@ -327,97 +361,85 @@ class seat_model extends CI_Model {
 				$eventID, $showtimeID, $matrix_x, $matrix_y, $testThisGuestUUID
 			)
 		)->result();
-		//if( ( count( $arr_result === 0 ) ) return false; 
 		return ( count( $arr_result === 1 ) );
 	}
 	
 	function isSeatAvailable( $matrix_x, $matrix_y, $eventID, $showtimeID )
 	{
-		/*
-			Created 04MAR2012-1737. 
-			
-			Returns an Array with the specified keys and values.
-			If the specified seat does not exist array is:
-			
-			'boolean' => FALSE
-			'throwException' = 'INVALID|NO-SUCH-SEAT-EXISTS'
-			
-			So therefore, to know what if a seat is not available, back in the calling function,
-			the code should be like:
-			
-			$isSeatAvailableResult = $this->seat_model->isSeatAvailable( .. );
-			if( $isSeatAvailableResult['boolean'] )
-				// seat is available
-			else
-				if( $isSeatAvailableResult['throwException'] === NULL )
-					// seat is not available
+		/**
+		*	@created 04MAR2012-1737
+		* 	@returns An Array with the specified keys and values.
+				- If the specified seat does not exist array is:			
+					'boolean' => FALSE
+					'throwException' = 'INVALID|NO-SUCH-SEAT-EXISTS'
+				So therefore, to know what if a seat is not available, back in the calling function,
+				the code should be like:
+				
+				$isSeatAvailableResult = $this->seat_model->isSeatAvailable( .. );
+				if( $isSeatAvailableResult['boolean'] )
+					// seat is available
 				else
-					// error in operation, so far, only no such seat found.
+					if( $isSeatAvailableResult['throwException'] === NULL )
+						// seat is not available
+					else
+						// error in operation, so far, only no such seat found.
 					
-		*/
+		**/
 		$returnThis = Array(
 			'boolean' => TRUE,
 			'throwException' => NULL
 		);
-		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
-		if( $seatObj === FALSE )  
+		$sql_command = "SELECT `Status` FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ?";
+		$sql_command .= " AND `EventID` = ? AND `Showing_Time_ID` = ?";
+		$seatObj = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID) )->result();
+		if( count($seatObj) === 0 )
 		{
 			$returnThis[ 'boolean' ] = FALSE;
 			$returnThis[ 'throwException' ] = 'INVALID|NO-SUCH-SEAT-EXISTS';
 			return $returnThis;
 		}
-		$returnThis[ 'boolean' ] = ( intval( $seatObj->Status) === 0 );
+		$returnThis[ 'boolean' ] = ( intval( $seatObj[0]->Status) === 0 );
 		return $returnThis;
 	}//isSeatAvailable
 	
 	function isSeatInThisTicketClass( 
 		$matrix_x, $matrix_y, $eventID, $showtimeID, $ticketClassGroupID, $ticketClassUniqueID
-	){
-		/*
-			Created 04MAR2012-2153
-		*/
-		$seatObj = $this->getSingleActualSeatData( $matrix_x, $matrix_y, $eventID, $showtimeID );
-		if( $seatObj === FALSE )  return FALSE;
-		return( 
-			intval($seatObj->Ticket_Class_GroupID) === $ticketClassGroupID and
-			intval($seatObj->Ticket_Class_UniqueID) === ticketClassUniqueID
+	)
+	{
+		/**
+		*	@created 04MAR2012-2153
+		**/
+		$sql_command = "SELECT `Ticket_Class_GroupID`,`Ticket_Class_UniqueID` FROM `seats_actual` WHERE `Matrix_x` = ? AND `Matrix_y` = ?";
+		$sql_command .= " AND `EventID` = ? AND `Showing_Time_ID` = ?";
+		$seatObj = $this->db->query( $sql_command, Array( $matrix_x, $matrix_y, $eventID, $showtimeID) )->result();
+		if( count($seatObj) === 0 )  return FALSE;
+		return(
+			intval($seatObj[0]->Ticket_Class_GroupID) === $ticketClassGroupID and
+			intval($seatObj[0]->Ticket_Class_UniqueID) === ticketClassUniqueID
 		);
 	}// isSeatInThisTicketClass( ..)
 	
 	function isSeatMapNameExistent( $name = NULL )
 	{
-		/*
-			Created 19JAN2012-1118
-			
-			Checks if a string submitted is the name of some `seat_map` entry.
-		*/
+		/**
+		*	@created 19JAN2012-1118
+		*	@description Checks if a string submitted is the name of some `seat_map` entry.
+		**/
 		if( $name == NULL ) return false;
-		
-		$this->db->where('Name', $name );		
+
+		$this->db->where('Name', $name );
 		$query = $this->db->get('seat_map');
-		
+
 		// if there was one cell retrieved, then such seat map with the UniqueID exists
 		return ( $query->num_rows == 1 );
 	}//isSeatMapNameExistent
 	
-	function isSeatMapUniqueIDExistent( $uniqueID = NULL )
-	{
-		/*
-			Created 19JAN2012-1118
-			
-			Checks if a number submitted is the UniqueID of some `seat_map` entry.
-		*/
-		if( $uniqueID == NULL ) return false;
-		
-		$this->db->where('UniqueID', $uniqueID );		
-		$query = $this->db->get('seat_map');
-		
-		// if there was one cell retrieved, then such seat map with the UniqueID exists
-		return ( $query->num_rows == 1 );
-	}//isSeatMapUniqueIDExistent
-	
 	function make_array_visualSeatData( $guestObj, $visualSeatData )
 	{
+		/**
+		*	@created <June 2012>
+		*	@description visualizes seat data in a booking C-O-S.
+		**/
 		$vsd_tokenized = explode( '.', $visualSeatData );
 		$returnThis = Array();
 		$x = 0;
@@ -433,101 +455,100 @@ class seat_model extends CI_Model {
 		$ticketClassGroupID = NULL, $ticketClassUniqueID= NULL
 	)
 	{
+		/**
+		*	@created <i forgot, maybe February 2012>
+		*	@description Unified function for updating an actual seat's status.
+		*	@returns BOOLEAN Whether MySQL transaction is successful or not.
+		**/
 		$sql_command = "UPDATE `seats_actual` SET `Status` = ?, `Comments` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ? ";
 		$sql_command .= " AND `Matrix_x` = ? AND `Matrix_y` = ?";
 		$parameters = Array( $status, $comment, $eventID, $showtimeID, $matrix_x, $matrix_y );
-		/*if( $ticketClassGroupID != NULL and $ticketClassUniqueID != NULL )
-		{
-			$parameters[] = $ticketClassGroupID;
-			$parameters[] = $ticketClassUniqueID;
-			$sql_command .= " AND "
-		}*/
-		
+
 		return $this->db->query( $sql_command, $parameters );
-	}	
+	}
 	
 	function markSeatAsAssigned( $eventID, $showtimeID, $matrix_x, $matrix_y, 
 		$ticketClassGroupID = NULL, $ticketClassUniqueID= NULL
 	)
 	{	
-		/*
-			Created 14JAN2012-0909
-			12MAR2012-1704 - Added last two params
-		*/
-		return $this->markSeat_Unified( 
-			$eventID, $showtimeID, $matrix_x, $matrix_y, '1', $ticketClassGroupID, $ticketClassUniqueID
+		/**
+		*	@created 14JAN2012-0909
+		*	@revised 12MAR2012-1704 - Added last two params
+		*	@returns See $this->markSeat_Unified(..)
+		**/
+		return $this->markSeat_Unified(
+			$eventID, $showtimeID, $matrix_x, $matrix_y, 1, $ticketClassGroupID, $ticketClassUniqueID
 		);
 	}//markSeatAsAssigned
 	
 	function markSeatAsAvailable( $eventID, $showtimeID, $matrix_x, $matrix_y, $comment = "" )
 	{	
-		/*
-			Created 14JAN2012-0909
-		*/
-		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '0', $comment );
+		/**
+		*	@created 14JAN2012-0909
+		*	@returns See $this->markSeat_Unified(..)
+		**/
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, 0, $comment );
 	}//markSeatAsAssigned
 	
 	function markSeatAsPendingPayment( $eventID, $showtimeID, $matrix_x, $matrix_y, $resetOnTimestamp )
 	{
-		/*
-			Created 08MAR2012-1135
-			
-			This effectively makes a seat seen as 'occupied' by others. 
+		/**
+		*	@created 08MAR2012-1135
+		*	@description This effectively makes a seat seen as 'occupied' by others. 
 			In the database, `status` = -4, and the deadline so that the `status` can be changed to 1
 			is written on the `comment` column, on the form of "YYYY-MM-DD HH:MM:SS" where obviously..
-			
 			:D
-		*/
-		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, '-4', $resetOnTimestamp );
+		*	@returns See $this->markSeat_Unified(..)
+		**/
+		return $this->markSeat_Unified( $eventID, $showtimeID, $matrix_x, $matrix_y, -4, $resetOnTimestamp );
 	}//SeatAsPendingPayment
 	
-	function setSeatMapStatus( $seatMapUniqueID, $status )
+	function setSeatMapStatus( $seatMapUniqueID, $status, $status2 = NULL )
 	{
-		/*
-			Created 19JAN2012-2333
-			
-			Made for the end of configuring of a seat map, but can be used on other occassions though.
-			
-			$status may take on: 'CONFIGURED', 'UNCONFIGURED', 'BEING_CONFIGURED'
+		/**
+		*	@created 19JAN2012-2333
+		*	@description Made for the end of configuring of a seat map, but can be used on other occassions though.
+		*	@param $status may take on: 'CONFIGURED', 'UNCONFIGURED', 'BEING_CONFIGURED', 'BEING_CREATED'
+		*	@returns BOOLEAN Whether MySQL transaction is successful or not.
+		*	@revised 07JUL2012-1622
 		*/
-		$sql_command = "UPDATE `seat_map` SET `Status` = ? WHERE `UniqueID` = ? ";
-		$transactionResult = $this->db->query( $sql_command, array(
-									$status,
-									$seatMapUniqueID
-								)
-							);
-							
-		return $transactionResult;	
+		return $this->db->query(
+				"UPDATE `seat_map` SET `Status` = ?,`Status2`=? WHERE `UniqueID` = ? ",
+				Array(
+					$status,
+					$status2,
+					$seatMapUniqueID
+				)
+		);
 	}// setSeatMapStatus
 	
 	function updateNewlyCopiedSeats( $eventID, $showtimeID )
 	{
-		/*
-			Created 04FEB2012-1421
-			
-			Function to be called after $this->copyDefaultSeatsToActual(..). Since the newly copied entries' 
+		/**
+		*	@created 04FEB2012-1421
+		*	@description Function to be called after $this->copyDefaultSeatsToActual(..). Since the newly copied entries' 
 			`EventID` and `Showing_Time_ID` are both set to zero, we update them to reflect the proper values,
 			as submitted to the server.
+		*	@returns BOOLEAN Whether MySQL transaction is successful or not.
 		*/
 		$sql_command = "UPDATE `seats_actual` SET `EventID` = ?, `Showing_Time_ID` = ? WHERE `EventID` = '0' AND `Showing_Time_ID` = '0'";
 		
 		return $this->db->query( $sql_command, array( $eventID, $showtimeID ) );
 	}//updateNewlyCopiedSeats(..)
 	
-	function updateSeatMapUsableCapacity( $uniqueID, $usableSeats ){
-		/*
-			Created 20JAN2012-1130
-		*/
-		$transactionResult;
-		$sql_command;
-		
-		$sql_command = "UPDATE `seat_map` SET `UsableCapacity` = ? WHERE `UniqueID` = ?";
-		$transactionResult = $this->db->query( $sql_command,  array( $usableSeats, $uniqueID ) );
-		
-		return $transactionResult;
+	function updateSeatMapUsableCapacity( $uniqueID, $usableSeats )
+	{
+		/**
+		*	@created 20JAN2012-1130
+		*	@returns BOOLEAN Whether MySQL transaction is successful or not.
+		**/
+		return $this->db->query(
+			"UPDATE `seat_map` SET `UsableCapacity` = ? WHERE `UniqueID` = ?",
+			Array( $usableSeats, $uniqueID ) 
+		);
 	}//updateSeatMapUsableCapacity
 
-	function updateSingleeatComment( $comments, $eventID, $showtimeID, $x, $y )
+	function updateSingleSeatComment( $comments, $eventID, $showtimeID, $x, $y )
 	{
 		/**
 		*	@created 01JUL2012-1554
@@ -535,16 +556,13 @@ class seat_model extends CI_Model {
 						Arose due to the need to set in that field/column the expiration date of the holding
 						time for that seat, notwithstanding the lapse of the payment deadline for the booking
 						that holds the seat.
+		*	@returns BOOLEAN Whether MySQL transaction is successful or not.
 		**/
-		$sql_command = "UPDATE `seats_actual` SET `Comments` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ?";
-		$sql_command .= " AND `Matrix_x` = ? AND `Matrix_y` = ?" ;
-		return $this->db->query( $sql_command, Array(
-				$comments, $eventID, $showtimeID, $x, $y 
+		return $this->db->query(
+			"UPDATE `seats_actual` SET `Comments` = ? WHERE `EventID` = ? AND `Showing_Time_ID` = ? AND `Matrix_x` = ? AND `Matrix_y` = ?",
+			Array(
+				$comments, $eventID, $showtimeID, $x, $y
 			)
 		);
-	}//updateSingleeatComment
-	
+	}//updateSingleSeatComment	
 }//class
-
-
-?>

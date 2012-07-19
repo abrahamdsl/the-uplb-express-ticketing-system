@@ -7,22 +7,39 @@ function banishSeat( seatInputIndicator )
 	
 	// update the seat data indicator
 	$( seatInputIndicator ).val( '' );
-	$( divContainingSeat ).children( '[name$="status"]' ).val( '-1' );	// to be sent to server, -1 indicates invisibility/aisle
+	// to be sent to server, -1 indicates seat is aisle
+	$( divContainingSeat ).children( '[name$="status"]' ).val( '-1' );
+}
+
+function atc_success( returnedxml )
+{
+	$.fn.makeOverlayForResponse( returnedxml );
 }
 
 function formSubmit()
 {
+	go_submit( 
+		'atc_success',
+		'please wait...',
+		'Submitting the seat information, one moment please.',
+		'seatctrl/create_step3',
+		120000,
+		$( 'form' ).first().serialize(),
+		''
+	);
+}
+
+function cancelproc(){
 	$.fn.nextGenModal({
 		msgType: 'ajax',
 		title: 'please wait...',
-		message: 'Submitting seat info..'
+		message: 'Cancelling the process...'
 	});
-	document.forms[0].submit();
+	location.href = CI.base_url + "seatctrl/cancel_create_process";
 }
 
-
 $(document).ready( function(){
-	$( '#buttonOK' ).click( function(){				
+	$( '#buttonOK' ).click( function(){
 		$.fn.nextGenModal({
 		   msgType: 'warning',
 		   title: 'confirm',
@@ -32,11 +49,20 @@ $(document).ready( function(){
 		});
 	});
 
+	$( '#buttonReset' ).click( function(){				
+		$.fn.nextGenModal({
+		   msgType: 'warning',
+		   title: 'confirm',
+		   message: "Are you sure you want to cancel the seat creation process?",
+		   yesFunctionCall: 'cancelproc',
+		   closeOnChoose: false
+		});
+	});
+	
 	$('td.legend input[name^="label_up"]').change( function(){
 		$('td.legend input[name^="label_down"]').val( $(this).val() );
 	});
 
-   //seatLocatedAt_2_19_presentation
 	$('td.legend').click( function(){
 		/*
 			When a TD is clicked, get the child element with name starting with
@@ -56,8 +82,8 @@ $(document).ready( function(){
 		//we are dealing with vertical aisle
 		if( thisIndicator.name.endsWith('number') )		// endsWith() prototyped in generalChecks.js
 		{
-			mode ="number";
-			destroyThis = parseInt( $(thisIndicator).val() );	// get the column number ( index starts at 1 )
+			mode = "number";
+			destroyThis = parseInt( $(thisIndicator).val(), 10 );	// get the column number ( index starts at 1 )
 			y = $('#rows').val();
 			z = $('#cols').val();			
 			z_handle = $('#cols_touchable');
@@ -85,19 +111,22 @@ $(document).ready( function(){
 		if( thisIndicator.name.endsWith('letter') )	
 		{										
 			$.fn.nextGenModal({
-				   msgType: 'okay',
-				   title: 'not yet',
-				   message: 'Making of horizontal aisle feature (might be) coming later.  :-)'
-				});
+			   msgType: 'okay',
+			   title: 'not yet',
+			   message: 'Making of horizontal aisle feature (might be) coming later.  :-)'
+			});
 			return false;
 		}else{
-			alert('error: "up" or "down" only needed');
+			$.fn.nextGenModal({
+			   msgType: 'error',
+			   title: 'error',
+			   message: '"up" or "down" only needed'
+			});
 			return false;
 		}		
 
-							
 		if( mode2 == "AISLE" )
-		{			
+		{
 			if( mode == "number" )
 			{
 				/*
@@ -128,19 +157,17 @@ $(document).ready( function(){
 							$('input[name^="label_up_'+mode+'"][value="'+i+'"]').val( newVal - 1 );
 							$('input[name^="label_down_'+mode+'"][value="'+i+'"]').val( newVal - 1);
 							newVal++;
-						}else{
-							
-						}											
-				}				
-								
+						}
+				}		
+
 				/*
 					Now, removing the seats so there's an open space. Get a handle to the hidden input that actually represents the seat,
 					then pass to the concerned function.
 				*/
-				var inTheLine = $('input[name^="seatLocatedAt_"][name$="presentation"][value$="_'+ (  destroyThis )+'"]');		// get all seats concerned
+				var inTheLine = $('input[name^="seatLocatedAt_"][name$="presentation"][value$="_'+ ( destroyThis )+'"]');		// get all seats concerned
 				for( x=0, y=inTheLine.length ; x < y; x++ )
 				{														
-					banishSeat( $(inTheLine[x]) );									
+					banishSeat( $(inTheLine[x]) );						
 				}
 				
 				/*
@@ -153,15 +180,17 @@ $(document).ready( function(){
 					{
 						var itsParent = $( seatsToModify[a] ).parent();										
 						var spanIndicator = $(itsParent).children("span");
-						var oldValue_arr = $( seatsToModify[a] ).val().split('_'); // a seat is named like 'seatLocatedAt_x_y_presentation' with value="A_B", where x,y are matrix coordinates and A,B are the displayed values on the browser
+						/*
+							A seat is named like 'seatLocatedAt_x_y_presentation' with 
+						    value="A_B", where x,y are matrix coordinates and A,B are the displayed 
+						    values on the browser
+						*/
+						var oldValue_arr = $( seatsToModify[a] ).val().split('_'); 
 						var newValue_y = parseInt( oldValue_arr[1]) - 1;		   // so decrease the number
-						
 						//update hidden input
 						 $( seatsToModify[a] ).val( oldValue_arr[0] + '_' + newValue_y );
-						 
 						 //now, update span - display new column number
-						 $(spanIndicator).html( oldValue_arr[0] + '-' + newValue_y );
-						
+						 $(spanIndicator).html( oldValue_arr[0] + '-' + newValue_y );	
 					}
 				}
 				

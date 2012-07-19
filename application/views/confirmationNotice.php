@@ -46,12 +46,12 @@ $this->load->view('html-generic/doctype.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>"/></script>				
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>"/></script>		
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>"/></script>	
-	<script type="text/javascript" />
+	<script type="text/javascript" >
 			var yesURI = '<?php echo $yesURI; ?>';
 			var noURI = '<?php echo $noURI; ?>';
 			
 			$(document).ready( function(){
-				$('#buttonReset').click( function(){				
+				$('#buttonReset').click( function(){
 					$('form#formMain').attr('action',noURI);
 					document.forms[0].submit();
 				});
