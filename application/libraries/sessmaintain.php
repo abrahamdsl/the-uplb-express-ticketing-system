@@ -133,6 +133,42 @@ class sessmaintain{
 		return FALSE;
 	}
 	
+	function assembleAuthFail(){
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(
+			"error",
+			"authentication fail", 
+			"AUTH_FAIL",
+			4003, 
+			"Invalid credentials: the username and password combination is incorrect.",
+			""
+		);	
+		return FALSE;
+	}
+	
+	function assembleCustomFuncXML404(){
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(
+			"error",
+			"file missing", 
+			"CUSTFUNC_XML_404",
+			5905, 
+			"An internal file in use by the server was missing when it should not be. The transaction should have been rolled back.",
+			""
+		);
+		return FALSE;
+	}
+	
+	function assembleGenericFormValidationFail(){
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(
+			"error",
+			"form validation fail", 
+			"INVALID_VALUE",
+			4006, 
+			"The submitted data to the server is in the incorrect format or the client-side form inputs check has been circumvented.",
+			""
+		);	
+		return FALSE;
+	}
+	
 	function assembleIntentionalISE(){
 		$this->CI->output->set_status_header( 500, 'INTENTIONAL ISE TEST' );
 		header("Connection: close");
@@ -152,17 +188,27 @@ class sessmaintain{
 		return FALSE;
 	}
 	
-	function assembleProceed( $redirURI ){
-		echo $this->CI->makexml_model->XMLize_AJAX_Response(
+	function assembleProceed( $redirURI, $isEcho = TRUE ){
+		/**
+		*	@created <revision 39>
+		*	@revised 20JUL2012-1129
+		**/
+		log_message('DEBUG', 'sessmaintain:assembleProceed accessed');
+		$msg = $this->CI->makexml_model->XMLize_AJAX_Response(
 			"okay", 
 			"success", 
 			"PROCEED",
 			0, 
 			"",
-			base_url().$redirURI
+			urlencode(base_url().$redirURI)
 		);
-		return TRUE;
-	}
+		if( $isEcho ){
+			echo $msg;
+			return TRUE;
+		}else{
+			return $msg;
+		}
+	}//assembleProceed
 	
 	function assembleConfirmStep3Error( $response_pandc ){
 		$sendback = "";

@@ -325,47 +325,7 @@ class eventctrl extends CI_Controller {
 		$this->clientsidedata_model->setSessionActivity( BOOK, STAGE_BOOK_1_FORWARD );
 		$this->load->view( "book/bookStep1", $data );		
 	}//book_forward()
-	
-	function preclean()
-	{
-		/**
-		*	@created 22APR2012-1454
-		*	@purpose The defaulted bookings clean-up tool will be run on each booking got from the DB. If current
-				user is an admin, all bookings (whether belonging to him or not are got), if he is not, then
-				only those belonging to him are got.
-				Also, the expired (manage) booking cookies-on-server, Session Activity Tracking on DB data are also deleted.
-		**/
-		$userAccountNum = $this->clientsidedata_model->getAccountNum();
-		$bookings = false;
-		$redirect_to = $this->clientsidedata_model->getRedirectionURLAfterAuth();
-		if( $this->permission_model->isAdministrator( $userAccountNum ) ){
-			$bookings = $this->booking_model->getAllBookings( false, false );
-		}else{
-			$bookings = $this->booking_model->getAllBookings( $userAccountNum, false );
-		}
-		$this->ndx_mb_model->deleteExpiredManageBookingCookiesOnServer();
-		$this->ndx_model->deleteExpiredBookingCookiesOnServer();
-		$this->atc_model->deleteExpired();
-		$this->sat_model->deleteExpiredSAT();					// delete session activity tracking entries
-		if( $bookings !== false )
-		{
-		  foreach( $bookings as $singleBooking )
-		  {
-			/*
-			  This checks if there are bookings marked as PENDING-PAYMENT' and yet
-			  not able to pay on the deadline - thus forfeited now.
-		    */
-			$this->bookingmaintenance->cleanDefaultedBookings( $singleBooking->EventID, $singleBooking->ShowingTimeUniqueID ); 
-		  }
-		}
-		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
-		if( $redirect_to === FALSE )
-			redirect('/');
-		else
-			$this->clientsidedata_model->deleteRedirectionURLAfterAuth();
-			redirect( $redirect_to );
-	}//preclean
-	
+
    function book_step2( $bookingNumber = false, $ticketClassSelectionEssentials = null )
    {
 	  /*
@@ -853,8 +813,6 @@ class eventctrl extends CI_Controller {
 		$showtimeNotMeant;
 		$ticketClassNotMeant;
 		$actStageAfterThis;
-		$attempts = 40;
-		$looptime = 1;
 		/*
 			Format of $seat_assignments
 			INT => Array(
@@ -1101,14 +1059,8 @@ class eventctrl extends CI_Controller {
 		}
 		$actStageAfterThis = ( $isActivityManageBooking ) ? STAGE_MB4_CONFIRM_PR : STAGE_BOOK_5_FORWARD;
 		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
-		$guid_atc = $this->usefulfunctions_model->guid();
-		$sessionActivity = $this->clientsidedata_model->getSessionActivity();
-		if( !$this->airtraffic->initialize(
-				$guid_atc, $sessionActivity, $sessionActivity[0], 
-				$actStageAfterThis,
-				$redirectURL, NULL, $attempts, $looptime )
+		if( !$this->airtraffic->initialize( NULL, $actStageAfterThis, $redirectURL, NULL, 30, 1 )
 		){
-			$this->airtraffic->terminateService( $guid, TRUE );
 			return FALSE;
 		}
 		$this->db->trans_begin();	// database checkpoint
@@ -1229,16 +1181,14 @@ class eventctrl extends CI_Controller {
 		
 		/* <area id="book-step5-pr-db-decide" made="16JUL2012-1448" > */ {
 			// now, seek clearance and decide whether or not to commit or rollback
-			if( $this->airtraffic->clearance( $guid_atc, $attempts, $looptime ) and
-				$this->airtraffic->terminateService( $guid_atc )
-			){
+			if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
 				$this->db->trans_commit();
-				log_message('DEBUG','book_step5 cleared for take off ' . $guid_atc . ' Going to ' . $redirectURL);
+				log_message('DEBUG','book_step5 cleared for take off ' . $this->airtraffic->getGUID() . ' Going to ' . $redirectURL);
 			}else{
 				$this->db->trans_rollback();
-				log_message('DEBUG','book_step5 clearance error '. $guid_atc );
+				log_message('DEBUG','book_step5 clearance error '. $this->airtraffic->getGUID() );
 			}
-			$this->airtraffic->deleteXML( $guid_atc );
+			$this->airtraffic->deleteXML();
 		}
 		// </area>
 	}//book_step5(..)
@@ -1264,7 +1214,7 @@ class eventctrl extends CI_Controller {
 		/*  checks for any payment mode exclusion. The function returns an integer, for cases
 			like when we are changing payment modes for a yet-unpaid booking.
 		*/
-		$excludePaymentMode = $this->clientsidedata_model->getPaymentModeExclusion();		
+		$excludePaymentMode = $this->clientsidedata_model->getPaymentModeExclusion();
 		
 		$billingInfo  = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
 		/*
@@ -1345,7 +1295,7 @@ class eventctrl extends CI_Controller {
 		}
 		$clientUUIDs = explode( "_" ,$bookingInfo->SLOTS_UUID );	// serialize guest UUIDs
 		$this->clientsidedata_model->setPaymentChannel( $paymentChannel );
-		$this->payment_model->setPaymentModeForPurchase( $bookingNumber, $paymentChannel, NULL );		
+		$this->payment_model->setPaymentModeForPurchase( $bookingNumber, $paymentChannel, NULL );
 		$eventObj                = $this->event_model->getEventInfo( $eventID );
 		$data['guests']          = $this->guest_model->getGuestDetails( $bookingNumber );
 		$data['singleChannel']   = $paymentChannel_obj;
@@ -1387,35 +1337,11 @@ class eventctrl extends CI_Controller {
 			Try to send email.
 		*/
 		log_message( 'DEBUG', 'Trying to send email to guests - payment pending - guest count: ' . count( $data['guests'] ) );
-		/*foreach( $data['guests'] as $singleGuest)
-		{
-			$msgBody = "";
-			$emailResult = false;
-			$this->email_model->initializeFromSales( TRUE );
-			
-			$this->email_model->from( 'DEFAULT', 'DEFAULT');
-			$this->email_model->to( $singleGuest->Email ); 						
-
-			$this->email_model->subject('Show Itinerary Receipt ' . $bookingNumber );
-			$msgBody = 'Your booking is pending.';
-			$msgBody .= 'Kang song dae guk.<br/>';
-			$msgBody .= 'Kim jong il\r\n';
-			$msgBody .= 'Kim jong un\n';
-			$msgBody .= 'We are in the process of starting our email module so no more info provided on this mail. HAHAHA.';	
-			$this->email_model->message( $msgBody );			
-			$emailResult = $this->email_model->send();
-			log_message('DEBUG', 'Email to guest '. $singleGuest->Email . ' : ' .intval( $emailResult ) );
-			
-		}*/
-		/*
-		if( !$this->usefulfunctions_model->isOnLocalhost() ){
-			$this->bookingmaintenance->sendEmailOnBookSuccess(
-				$bookingNumber,
-				$data['guests'],
-				$totalCharges === FREE_AMOUNT ? 2 : 1
-			);
-		}
-		*/
+		$this->bookingmaintenance->sendEmailOnBookSuccess(
+			$bookingNumber,
+			$data['guests'],
+			$totalCharges === FREE_AMOUNT ? 2 : 1
+		);
 		$this->clientsidedata_model->updateSessionActivityStage( STAGE_BOOK_6_FORWARD ); // our activity tracker
 		$this->clientsidedata_model->setBookingProgressIndicator( 6 );
 		}
@@ -1848,16 +1774,10 @@ class eventctrl extends CI_Controller {
 		}
 		
 		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
-		$guid = $this->usefulfunctions_model->guid();
-		$sessionActivity = $this->clientsidedata_model->getSessionActivity();
-		if( !$this->airtraffic->initialize(
-				$guid, $sessionActivity, IDLE, -1, '', 'successPaymentAndConfirmed', 30, 1 
-			)
-		){
-			$this->airtraffic->terminateService( $guid, TRUE );
+		if( !$this->airtraffic->initialize( IDLE, -1, '', 'successPaymentAndConfirmed', 30, 1 ) )
+		{
 			return FALSE;
 		}
-		
 		$this->db->trans_begin();	// database checkpoint
 		$response_pandc = $this->bookingmaintenance->pay_and_confirm(
 			$bookingNumber,
@@ -1873,11 +1793,9 @@ class eventctrl extends CI_Controller {
 		if( $response_pandc[ "boolean" ] )
 		{
 			// now, seek clearance and decide whether or not to commit or rollback
-			if( $this->airtraffic->clearance( $guid, 30, 1 ) and
-				$this->airtraffic->terminateService( $guid )
-			){
+			if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
 				$this->db->trans_commit();
-				log_message('DEBUG','confirm_step3 cleared for take off ' . $guid);
+				log_message('DEBUG','confirm_step3 cleared for take off ' . $this->airtraffic->getGUID() );
 				$this->bookingmaintenance->sendEmailOnBookSuccess(
 					$bookingNumber,
 					$this->guest_model->getGuestDetails( $bookingNumber ),
@@ -1885,9 +1803,9 @@ class eventctrl extends CI_Controller {
 				);
 			}else{
 				$this->db->trans_rollback();
-				log_message('DEBUG','confirm_step3_final clearance error '. $guid);	
+				log_message('DEBUG','confirm_step3_final clearance error '. $this->airtraffic->getGUID() );
 			}
-			$this->airtraffic->deleteXML( $guid );
+			$this->airtraffic->deleteXML();
 		}else{
 			$this->db->trans_rollback();
 			return $this->sessmaintain->assembleConfirmStep3Error( $response_pandc );
@@ -3861,6 +3779,5 @@ class eventctrl extends CI_Controller {
 		**/
 		die('Feature coming later');
 	}
-	
 } //class
 ?>

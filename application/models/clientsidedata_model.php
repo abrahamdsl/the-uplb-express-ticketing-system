@@ -776,9 +776,11 @@ class clientsidedata_model extends CI_Model {
 		/*
 			Created 04MAR2012-1241
 		*/
+		$name =  $this->session->userdata( ACTIVITY_NAME );
+		$stage =  $this->session->userdata( ACTIVITY_STAGE );
 		$returnThis = Array();
-		$returnThis[0] = $this->session->userdata( ACTIVITY_NAME );
-		$returnThis[1] = $this->session->userdata( ACTIVITY_STAGE );
+		$returnThis[0] = ( $name === FALSE ) ? "0" : $name;
+		$returnThis[1] = ( $stage === FALSE ) ? 0 : $stage;
 		return $returnThis;
 	}//
 	

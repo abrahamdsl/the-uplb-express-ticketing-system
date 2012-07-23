@@ -44,8 +44,8 @@
 	};
 	
 	$.fn.updateSeatmapStatistics = function( config ){
-		var alreadySelected =  parseInt( $(config.element_to_show_FinishResult).html() );			// get already selected
-		var maxSeats = parseInt( $(config.maxSeatsForClass).html() );								// get max selectable seats for this class, as determined by slot distribution on the page
+		var alreadySelected =  parseInt( $(config.element_to_show_FinishResult).html(), 10 );			// get already selected
+		var maxSeats = parseInt( $(config.maxSeatsForClass).html(), 10 );								// get max selectable seats for this class, as determined by slot distribution on the page
 		var remainingSelectable = maxSeats - alreadySelected;										// now get the difference of the previous two
 		$(config.element_to_show_remainingSelectableSeatForClass).html( remainingSelectable );		// and update now the HTML
 		
@@ -190,7 +190,7 @@
 						because I have to know if there a converse of $(this).hasClass( class ) in JQuery (i.e. $(this).doesNotHaveClass( class )
 					*/
 					var currentlySelected_objs = $self.find('.ui-selecting');				// select all elements being selected by the lasso
-					var currentlySelected = parseInt( currentlySelected_objs.size() );		
+					var currentlySelected = parseInt( currentlySelected_objs.size(), 10 );		
 					var currentlySelected_OtherClass = 0;		
 					currentlySelected_objs.each( function(){
 						/*	For each currently selected element, if it has a class name that indicates it belongs to another class,
@@ -203,7 +203,7 @@
 						}
 					});					
 					var currentlySelected_ThisClass = currentlySelected - currentlySelected_OtherClass;
-					var remainingSelected = parseInt( $(config.element_to_show_remainingSelectableSeatForClass).html() );					
+					var remainingSelected = parseInt( $(config.element_to_show_remainingSelectableSeatForClass).html(), 10 );					
 					
 					$(config.element_to_show_result).text( currentlySelected_ThisClass );
 					if( $(config.lasso_indicator).val() == 'DESELECT' ) $self.find('.ui-selected').removeClass( 'ui-selected' );					
@@ -233,13 +233,13 @@
                     if( $('#lassoWillDo').val() == 'SELECT' ) 
 					{
 						
-						$.fn.drag_drop_multi_select.select(parseInt( chosen.attr('ddms') ));
+						$.fn.drag_drop_multi_select.select(parseInt( chosen.attr('ddms'), 10 ));
 					}
 					else  												
-						$.fn.drag_drop_multi_select.deselect(parseInt( chosen.attr('ddms')   ));
+						$.fn.drag_drop_multi_select.deselect(parseInt( chosen.attr('ddms'), 10 ));
                 },
                 unselected: function(ev,ui) {					
-                    if( config.retainPreviouslySelected === false ) $.fn.drag_drop_multi_select.deselect(parseInt($(ui.unselected).attr('ddms')));
+                    if( config.retainPreviouslySelected === false ) $.fn.drag_drop_multi_select.deselect(parseInt($(ui.unselected).attr('ddms')), 10);
                 }
             });
 
@@ -379,7 +379,7 @@
     $.fn.drag_drop_multi_select.moveBetweenLists=function(item_id, $item_instance, old_container, new_container, event, helper){		
         var instance_id = $.fn.drag_drop_multi_select.get_instance_id(item_id);
         // DESELECT ITEMS
-        $.fn.drag_drop_multi_select.deselect(parseInt(item_id));
+        $.fn.drag_drop_multi_select.deselect(parseInt(item_id), 10);
         $($.fn.drag_drop_multi_select.settings[instance_id].element_to_show_result).text('');
         // DECLAIRE VARIABLES TO SEND TO AFTER DROP FUNCTION
         var $old_container = $('[ddms='+old_container+']');
@@ -387,9 +387,9 @@
         // CALL THE AFTER DROP ACTION FUNCTION
         $.fn.drag_drop_multi_select.settings[instance_id].after_drop_action($item_instance,$old_container,$new_container,event,helper);
         //REMOVING FROM OLD CONTAINER STACK
-        $.fn.drag_drop_multi_select.stack[old_container].all.splice( $.inArray( parseInt(item_id),$.fn.drag_drop_multi_select.stack[old_container].all ),1);
+        $.fn.drag_drop_multi_select.stack[old_container].all.splice( $.inArray( parseInt(item_id, 10),$.fn.drag_drop_multi_select.stack[old_container].all ),1);
         //ADDING TO THE NEW CONTAINER STACK
-        $.fn.drag_drop_multi_select.stack[new_container].all.push(parseInt(item_id));
+        $.fn.drag_drop_multi_select.stack[new_container].all.push(parseInt(item_id, 10));
     };
     // GET CLONE AND ALL ITEM THAT WILL BE DRAG
     $.fn.drag_drop_multi_select.getSelectedForDragging=function(item_id){				
@@ -478,7 +478,7 @@
 
     // FUNCTION THAT RETURN INSTANCE ID OF THE SELECTED ITEM
     $.fn.drag_drop_multi_select.get_instance_id=function(item_id){
-        return parseInt($.fn.drag_drop_multi_select.settings['item_'+item_id].parent_to_refer.eq(0).attr('ddms'));
+        return parseInt($.fn.drag_drop_multi_select.settings['item_'+item_id].parent_to_refer.eq(0).attr('ddms'), 10);
     };
 
     // FUNCTION THAT SERIALIZE AN ARRAY FROM THE RESULTS

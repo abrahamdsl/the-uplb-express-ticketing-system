@@ -23,8 +23,10 @@ class atc_model extends CI_Model {
 		parent::__construct();
 		$this->load->helper('cookie');
 		$this->load->library('session');
+		$this->load->model('usefulfunctions_model');
 
 		include_once( APPPATH.'constants/atc.inc' );
+		date_default_timezone_set('Asia/Manila');
 	}
 	
 	private function updateUnified( $uuid, $entryArray )
@@ -45,7 +47,7 @@ class atc_model extends CI_Model {
 	
 	function create( 
 		$uuid, $detail1, $detail2 = NULL, $detail3 = NULL, $detail4 = NULL, $detail5 = "", 
-		$onSuccess = NULL, $attempt = 3, $looptime = 10, $expire_plus_x = NULL )
+		$onSuccess = NULL, $attempt = 3, $looptime = 10, $is_there_custom_func = FALSE, $expire_plus_x = NULL )
 	{
 		/**
 		*	@created 09JUl2012-1204
@@ -55,7 +57,6 @@ class atc_model extends CI_Model {
 		$expire_plus = is_null( $expire_plus_x ) ? 5 : $expire_plus_x;
 		$secs_to_expire = ($attempt * $looptime) + $expire_plus;
 		
-		date_default_timezone_set('Asia/Manila');
 		$curr_time = date( 'Y-m-d H:i:s');
 		$expiry = strtotime( '+'.$secs_to_expire.'sec ', strtotime( $curr_time ) );
 		$data = Array(
@@ -69,6 +70,7 @@ class atc_model extends CI_Model {
 			COL_D5    => $detail5,
 			COL_AT    => $attempt,
 			COL_LT    => $looptime,
+			COL_IS_CUSTOM => ($is_there_custom_func) ? 1 : 0,
 			COL_ON_SUCCESS    	  => $onSuccess,
 			COL_EXPIRE_DATE		  => date( 'Y-m-d', $expiry ),
 			COL_EXPIRE_TIME		  => date('H:i:s', $expiry )
@@ -86,16 +88,27 @@ class atc_model extends CI_Model {
 		if( is_null( $uuid ) or $uuid === FALSE ) return TRUE;
 		return $this->db->delete( COL_DB_TABLE_NAME_ATC, Array( COL_UUID => $uuid ) );
 	}//delete(..)
-	
+
 	function deleteExpired(){
 		/**
 		*	@created 09JUL2012-1205
 		*	@description Deletes any entry that is expired.
 		**/
-		$sql_command = "DELETE FROM `" . COL_DB_TABLE_NAME_ATC . "` WHERE CONCAT(`";
-		$sql_command .= COL_EXPIRE_DATE . "`,' ',`".COL_EXPIRE_TIME . "`) <= ? ";
-		return $this->db->query( $sql_command, Array( date("Y-m-d H:i:s"),  ) );
-	}//deleteExpiredBookingCookiesOnServer()
+		return $this->db->query( 
+			"DELETE FROM `" . COL_DB_TABLE_NAME_ATC . "`" . $this->usefulfunctions_model->getGeneralWhereExpiredClause()
+		);
+	}//deleteExpired
+	
+	function getExpired_UUIDs(){
+		/**
+		*	@created 19JUL2012-1855
+		*	@description Gets the UUIDs of the expired ATC entries.
+		**/
+		$sql_command = "SELECT `UUID` FROM `" . COL_DB_TABLE_NAME_ATC . "`" . $this->usefulfunctions_model->getGeneralWhereExpiredClause();
+		$arr_result = $this->db->query( $sql_command )->result();
+		if( count( $arr_result ) < 1 ) return FALSE;
+		return $arr_result;
+	}
 	
 	function get( $uuid )
 	{

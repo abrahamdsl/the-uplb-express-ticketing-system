@@ -18,14 +18,21 @@ class sessionctrl extends CI_Controller {
 		include_once( APPPATH.'constants/_constants.inc');
 		include_once( APPPATH.'constants/atc.inc');
 		$this->load->library('airtraffic');
+		$this->load->library('bookingmaintenance');
+		$this->load->library('form_validation');
+		$this->load->library('inputcheck');
 		$this->load->library('user_agent');
 		$this->load->library('sessmaintain');
 		$this->load->model('account_model');
 		$this->load->model('atc_model');
+		$this->load->model('booking_model');
 		$this->load->model('browsersniff_model');
 		$this->load->model('clientsidedata_model');
 		$this->load->model('login_model');
 		$this->load->model('makexml_model');
+		$this->load->model('ndx_model');
+		$this->load->model('ndx_mb_model');
+		$this->load->model('sat_model');
 		$this->load->model('permission_model');
 		$this->load->model('telemetry_model');
 		$this->load->model('usefulfunctions_model');
@@ -52,6 +59,47 @@ class sessionctrl extends CI_Controller {
 		
 		return $agent."|".$this->agent->platform();
 	}
+	
+	function ix_username_valid( $username )
+	{
+		log_message('debug', 'sessionctrl::is_username_valid accessed');
+		return TRUE;
+		return $this->form_validation->is_username_valid( $username );
+	}
+	
+	private function preclean( $userAccountNum )
+	{
+		/**
+		*	@created 22APR2012-1454
+		*	@purpose The defaulted bookings clean-up tool will be run on each booking got from the DB. If current
+				user is an admin, all bookings (whether belonging to him or not are got), if he is not, then
+				only those belonging to him are got.
+				Also, the expired (manage) booking cookies-on-server, Session Activity Tracking on DB data are also deleted.
+		*	@history 20JUL2012-1121 Moved from eventctrl and was privatized.
+		**/
+		$bookings = false;
+		
+		if( $this->permission_model->isAdministrator( $userAccountNum ) ){
+			$bookings = $this->booking_model->getAllBookings( false, false );
+		}else{
+			$bookings = $this->booking_model->getAllBookings( $userAccountNum, false );
+		}
+		$this->ndx_mb_model->deleteExpiredManageBookingCookiesOnServer();
+		$this->ndx_model->deleteExpiredBookingCookiesOnServer();
+		$this->airtraffic->deleteExpired();
+		$this->sat_model->deleteExpiredSAT();					// delete session activity tracking entries
+		if( $bookings !== false )
+		{
+		  foreach( $bookings as $singleBooking )
+		  {
+			/*
+			  This checks if there are bookings marked as PENDING-PAYMENT' and yet
+			  not able to pay on the deadline - thus forfeited now.
+		    */
+			$this->bookingmaintenance->cleanDefaultedBookings( $singleBooking->EventID, $singleBooking->ShowingTimeUniqueID ); 
+		  }
+		}
+	}//preclean
 	
 	private function sorryNoticeHeader()
 	{
@@ -161,35 +209,67 @@ class sessionctrl extends CI_Controller {
 		$data['LOGIN_WARNING'] = array( " You have to log-in first before you can access the feature requested. " ) ;
 		$this->session->set_userdata($data);
 		$this->index();
-	
 	}
 	
-	function login( )
+	private function getPostLoginRedirection(){
+		/**
+		*	@created 21JUL2012-2002
+		
+		**/
+		$redirect_to = $this->clientsidedata_model->getRedirectionURLAfterAuth();
+		$this->clientsidedata_model->deleteRedirectionURLAfterAuth();
+		return ( ( $redirect_to === FALSE ) ? "sessionctrl/userHome" : $redirect_to );
+	}
+	
+	
+	
+	function login()
 	{
 		/*
-			made | 26NOV2011 2014 at SM City Calamba Global Pinoy Center :-D
-			
+			@created 26NOV2011-2014 at SM City Calamba Global Pinoy Center :-D
+			@revised 21JUL2012-1140
 		*/
+		// preliminary checks
+		if( !$this->input->is_ajax_request() ) redirect( '/' );
+		// form-validation, though back in the client the form is checked via JS
+		if( !$this->inputcheck->sessionctrl__login() )
+	    {
+			return $this->sessmaintain->assembleGenericFormValidationFail();
+		}
+		// var init
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
-	
+		// processing
 		if( $this->account_model->isUserExistent( $username, $password ) ) 
-		{   //if something was submitted, this will return true
-			$this->login_model->setUserSession(
-				$this->account_model->getAccountNumber(  $username ),
-				$this->account_model->getUser_Names( $username )
+		{
+			$accountNum = $this->account_model->getAccountNumber( $username );
+			// custom function call
+			$customFunc = Array(
+				"\$this->login_model->setUserSession( ". $accountNum .
+					" , " . var_export( $this->account_model->getUser_Names( $username ), TRUE ). " ); ",
+				"\$this->session->set_userdata('logged_in', TRUE);"
 			);
-			/*
-				Redirect to eventctrl's function that delete's this current user's expired bookings.
-			*/
-			log_message('DEBUG', "user '" .$username."' logged in" );
-			redirect('eventctrl/preclean');
-		}else{	
-			// ec 4003
-			log_message('DEBUG', "user '" .$username."' ATTEMPTED logged in - invalid credentials" );
-			$data['LOGIN_WARNING'] = array( " Invalid credentials. Please try again. " ) ;
-			$this->session->set_userdata($data);
-			$this->index();
+			// initialize air traffic - i.e., URI and session activity name and stage to be set on success
+			if( !$this->airtraffic->initialize( 
+					IDLE, -1, $this->getPostLoginRedirection(), NULL, 10, 1, $customFunc
+				)
+			){
+				return FALSE;
+			}
+			$this->db->trans_begin();
+			$this->preclean( $accountNum );
+			// now, seek clearance and decide whether or not to commit or rollback
+			if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
+				$this->db->trans_commit();
+				log_message('DEBUG', "user '" .$username."' logged in | cleared for take off GUID : " . $this->airtraffic->getGUID() );
+			}else{
+				$this->db->trans_rollback();
+				$this->airtraffic->deleteCustomFunctionsXML();
+				log_message('DEBUG','logging in clearance error ' . $this->airtraffic->getGUID() );
+			}
+			$this->airtraffic->deleteXML();
+		}else{
+			return $this->sessmaintain->assembleAuthFail();
 		}
 	}//login
 	
@@ -216,7 +296,7 @@ class sessionctrl extends CI_Controller {
 		echo print_r( $_COOKIE[ 'ci_session' ] );
 		echo "The server do not know where to redirect you."; //3999
 	}
-	
+
 	function contact_tower( ){
 		/**
 		*	@created 09JUL2012-1400
@@ -232,6 +312,7 @@ class sessionctrl extends CI_Controller {
 		$request = $this->input->post( 'request' );
 		$guid    = $this->clientsidedata_model->get_ATC_Guid();
 		$x;
+		$custom_calls = NULL;
 		
 		log_message('debug','sessionctrl/contact_tower|accessed|'. $guid . '|' .$request);
 		$obj = $this->atc_model->get( $guid );	// fetch ATC data from DB
@@ -240,12 +321,13 @@ class sessionctrl extends CI_Controller {
 			Check if the session stage should be in here.
 		*/
 		if( $obj === FALSE or count( $sessActivity ) !== 2 or
-			!( $obj->DETAIL1 == $sessActivity[0] and intval( $obj->DETAIL2 ) === $sessActivity[1] )
+			!( $obj->DETAIL1 == $sessActivity[0] and intval( $obj->DETAIL2 ) == $sessActivity[1] )
 		){	// IVA_ACCESS_DENIED
-			log_message('DEBUG', 'fuck -2 ' . print_r( $_POST, TRUE ) );
-			log_message('DEBUG', 'fuck -1 ' . print_r( $_COOKIE[ 'ci_session'], TRUE ) );
-			log_message('DEBUG', 'fuck .. ' . print_r( $obj, TRUE ) );
-			log_message('DEBUG', 'fuck 2.. ' . print_r( $sessActivity, TRUE ) );
+			log_message('DEBUG', 'dump -2 ' . print_r( $_POST, TRUE ) );
+			log_message('DEBUG', 'dump -1 ' . print_r( $_COOKIE[ 'ci_session'], TRUE ) );
+			log_message('DEBUG', 'dump .. ' . print_r( $obj, TRUE ) );
+			log_message('DEBUG', 'dump 2.. ' . print_r( $sessActivity, TRUE ) );
+			//log_message('DEBUG', 'dump 3.. ' . intval( intval( $obj->DETAIL2 ) == $sessActivity[1] ) );
 			return $this->sessmaintain->assemble4404();
 		}
 		if( $request === FALSE)
@@ -254,7 +336,7 @@ class sessionctrl extends CI_Controller {
 			return FALSE;
 		}
 		// read air traffic data from file
-		$at_data = $this->airtraffic->readAirTrafficDataFromXML( $guid );
+		$at_data = $this->airtraffic->readAirTrafficDataFromXML( 10, $guid );
 		if( count( $at_data ) < 1 )
 		{	// ATC_IO_ERR : data not gotten properly.
 			return $this->sessmaintain->assemble5900();
@@ -265,6 +347,15 @@ class sessionctrl extends CI_Controller {
 			$this->airtraffic->writeAirTrafficDataToXML( $at_data );
 			log_message('DEBUG','sessionctrl/contact_tower|'.$guid.'|GUID_AUTH_FAIL|IDENTITY_SPOOF_DETECTED : ' . print_r( $_COOKIE['ci_session'], TRUE ) . '|' . print_r( $at_data, TRUE ) );
 			return $this->sessmaintain->assemble4009();
+		}
+		// retrieve custom function calls, if any
+		if( $obj->IS_THERE_CUSTOM ){
+			log_message('debug', $guid . ' has custom function calls ' );
+			$custom_calls = $this->airtraffic->readCustomCallsFromXML( $guid );
+			if( $custom_calls === FALSE ){
+				log_message('DEBUG', 'XML custom calls for '. $guid .' missing!!! ' );
+				return $this->sessmaintain->assembleCustomFuncXML404();
+			}
 		}
 		// return $this->sessmaintain->assembleIntentionalISE();
 		$current_stat  = intval( $at_data['status'] );
@@ -294,6 +385,14 @@ class sessionctrl extends CI_Controller {
 								$this->clientsidedata_model->deleteAuthGUID();
 								$this->clientsidedata_model->delete_ATC_Guid();
 								$this->clientsidedata_model->updateSessionActivityStage( $obj->DETAIL4, !( $obj->DETAIL3 == IDLE ) );
+								// execute any custom function calls
+								if( $obj->IS_THERE_CUSTOM ){
+									foreach( $custom_calls->call as $singleCall ){
+										log_message('debug', ' executing custom function ' . $singleCall );
+										eval( $singleCall );
+									}
+								}
+								// now, the return XML to be echoed
 								if( is_null( $obj->CALL_ON_SUCCESS) ){
 									return $this->sessmaintain->assembleProceed( $obj->DETAIL5 );
 								}else{
@@ -310,17 +409,7 @@ class sessionctrl extends CI_Controller {
 					}else
 					if(  $current_stat  === STAT_SERVER_WAIT_ON_CLIENT_TIMEOUT )
 					{	// ATC_PREMATURELY_EXITED
-						/*
-							We need to delete the XML left by library
-							airtraffic::clearance when this clause is entered.
-							
-							The unlink statement below is what is contained in library
-							airtraffic::deleteXML. Since when this was added, this is just
-							what that contains, I just copied it straight here instead of importing
-							the airtraffic library here - which is a waste of resource. Adjust
-							this in the future accordingly, if ever.
-						*/
-						unlink( $this->makexml_model->getAirTrafficRelPath( $guid ) );
+						$this->airtraffic->deleteXML( $guid );
 						return $this->sessmaintain->assemble5903();
 					}else{
 						// ATC_SCRIPT_NOT_DONE
@@ -336,11 +425,14 @@ class sessionctrl extends CI_Controller {
 	}//contact_tower()
 	
 	function test_trans(){
-		
-	
+		/**
+		*	@created 18JUL2012-2100
+		*	@description This is just a test for database transaction support.
+		*	@remarks REMOVE ON PRODUCTION! :D
+		**/
 		$this->db->insert( 
 			'event',
-			Array( 'EventID' => rand(262,665), 'Name' => 'nyeta', 'Location' => 'Fuck yah', 'Description' => 'wala lungs', 'FB_RSVP' => NULL, 'Temp' => 100, 'ByUser' => 582327 ) 
+			Array( 'EventID' => rand(262,665), 'Name' => 'nsammple', 'Location' => 'dump yah', 'Description' => 'wala lungs', 'FB_RSVP' => NULL, 'Temp' => 100, 'ByUser' => 582327 ) 
 		);
 		var_dump( $this->db->get( 'event' )->result() );
 		echo 'trans_start<br/>';
@@ -349,7 +441,7 @@ class sessionctrl extends CI_Controller {
 			$this->db->insert( 
 				'event',
 				Array( 'EventID' => rand(667,984), 'Name' => $this->usefulfunctions_model->guid(),
-					 'Location' => 'Fuck yah', 'Description' => 'wala lungs', 'FB_RSVP' => NULL, 'Temp' => 100, 'ByUser' => 582327 ) 
+					 'Location' => 'dump yah', 'Description' => 'wala lungs', 'FB_RSVP' => NULL, 'Temp' => 100, 'ByUser' => 582327 ) 
 			);
 		}
 		echo 'now checking<br/>';

@@ -142,6 +142,7 @@ class email_model extends CI_Model {
 				TRUE , obviously.
 		**/
 		$val  = $this->getDefaultEmailDetailsUnified( DB_IDENT_EMAIL_SERVICE_STATUS );
+		log_message('debug','email_model::isEmailOn value : '. print_r( $val, TRUE ) );
 		if( $val === FALSE ) return FALSE;
 		return( intval($val) === 1 );
 	}

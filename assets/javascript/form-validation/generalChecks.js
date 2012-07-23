@@ -21,9 +21,9 @@ function classifyDate( dateStr )
 	*/
 	var dateStr_split = dateStr.split( dateStr[4] );
 	var returnThis = new Array();
-	returnThis["year"] = parseInt( dateStr_split[0] );
-	returnThis["month"] = parseInt( dateStr_split[1] );
-	returnThis["day"] = parseInt( dateStr_split[2] );
+	returnThis["year"] = parseInt( dateStr_split[0], 10 );
+	returnThis["month"] = parseInt( dateStr_split[1], 10 );
+	returnThis["day"] = parseInt( dateStr_split[2], 10 );
 	
 	return returnThis;
 }
@@ -66,7 +66,7 @@ function convertDateMonth_toText( thisDate )
 	splitter = thisDate[4];
 	
 	splitted = thisDate.split( splitter );	
-	thisMonth = parseInt( splitted[1] );	
+	thisMonth = parseInt( splitted[1], 10 );	
 	switch( thisMonth )
 	{
 		case 1: thisMonth_STR = "Jan" ; break;
@@ -179,7 +179,7 @@ function isDateValid( date )
 	//parse them into ints
 	for( x = 0 ; x < 3; x++ )
 	{
-		splitted[x] = parseInt( splitted[x] ); 		
+		splitted[x] = parseInt( splitted[x], 10 ); 		
 		if( isNaN( splitted[x] ) ) return false;		
 	}
 	
@@ -286,7 +286,7 @@ function isFloat( thisVar )
 	
 function isHourValid_12( hour )
 {
-	var thisHour = parseInt( hour );
+	var thisHour = parseInt( hour, 10 );
 	if( isNaN(thisHour) ) return false;
 	if( thisHour > 12 ) return false;
 	
@@ -295,7 +295,7 @@ function isHourValid_12( hour )
 
 function isHourValid_24( hour )
 {
-	var thisHour = parseInt( hour );
+	var thisHour = parseInt( hour, 10 );
 	if( isNaN(thisHour) ) return false;
 	if( thisHour > 23 ) return false;
 	
@@ -304,7 +304,7 @@ function isHourValid_24( hour )
 
 function isMinuteValid( minute )
 {
-	var thisMinute = parseInt( minute );
+	var thisMinute = parseInt( minute, 10 );
 	if( isNaN(thisMinute) ) return false;
 	if( thisMinute > 59 ) return false;
 	
@@ -313,7 +313,7 @@ function isMinuteValid( minute )
 
 function isSecondValid( seconds )
 {
-	var thisSecond = parseInt( seconds );
+	var thisSecond = parseInt( seconds, 10 );
 	if( isNaN(thisSecond) ) return false;
 	if( thisSecond > 59 ) return false;
 	
@@ -347,12 +347,12 @@ function isTimestampGreater( date1, time1, date2, time2, isShow_RedEye)
 	//now parse to int
 	for( x=0, y=time1_splitted.length; x < y; x++)
 	{
-		time1_splitted[x] = parseInt( time1_splitted[x] );	
+		time1_splitted[x] = parseInt( time1_splitted[x], 10 );	
 		//if( isNaN( time1_splitted[x] ) ) return false;
 	}
 	for( x=0, y=time2_splitted.length; x < y; x++)
 	{
-		time2_splitted[x] = parseInt( time2_splitted[x] );
+		time2_splitted[x] = parseInt( time2_splitted[x], 10 );
 	}
 	timeStamp1.setHours( time1_splitted[0]  );
 	timeStamp1.setMinutes( time1_splitted[1]  );	
