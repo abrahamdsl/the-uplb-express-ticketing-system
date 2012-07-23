@@ -148,7 +148,7 @@ $(document).ready( function(){
 		} );
 		
 		$('#buttonOK').click( function(){
-			var slots = parseInt( $('input#_js_use_slots').val() ); 
+			var slots = parseInt( $('input#_js_use_slots').val(), 10 ); 
 			var x;
 			var y;
 			var allInputs;			
@@ -191,7 +191,7 @@ $(document).ready( function(){
 				// check if there is a duplicate name
 				var appendedNames = [];
 				for( x=0; x<slots; x++){
-					var names = $('input[type="text"][name^="g' + parseInt(x+1) + '"][name$="Name"]');				
+					var names = $('input[type="text"][name^="g' + parseInt(x+1, 10) + '"][name$="Name"]');				
 					var appended = "";
 					names.each( function(){						
 						appended += $(this).val().toLowerCase();	// append the names onto a single string
@@ -203,7 +203,7 @@ $(document).ready( function(){
 						$.fn.nextGenModal({
 						   msgType: "error",
 						   title: 'duplicate names not allowed',
-						   message: "Guest " + appendedNames[appended] + " and Guest " + parseInt(x+1) + " have same names!"
+						   message: "Guest " + appendedNames[appended] + " and Guest " + parseInt(x+1, 10) + " have same names!"
 						});
 						return false;
 					}					

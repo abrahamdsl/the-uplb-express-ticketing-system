@@ -87,7 +87,7 @@ NUM    STRING  								Message
 4000   INFO_NEEDED							Information should be supplied by the user but is not found. <supply whenever possible>
 4001   USERNAME_DOES-NOT-EXIST
 4002 x INFO_CRITICAL_NEEDED                 CRITICAL Information should be supplied by the user but is not found.
-4003   AUTH_FAIL							Invalid credentials. Please try again. (The username and password combination is incorrect.)
+4003   AUTH_FAIL							Invalid credentials: the username and password combination is incorrect.
 4004   NOT_FOUND
 4005   NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF The user specified that he is not bookable by other friends. Reserved for future use.
 4006   INVALID_VALUE						The submitted data to the server is in the incorrect format
@@ -149,6 +149,8 @@ NUM    STRING  								Message
 5901   ATC_SCRIPT_NOT_CLEARED				The function did not complete its tasks in the allotted time. All changes are rolled back.
 5902   ATC_SCRIPT_NOT_DONE				    Client contacted tower immediately even though the script/functionality is still not finished processing pre-rollback/commit.
 5903   ATC_PREMATURELY_EXITED				The original script terminated immediately before tower was contacted. Please resubmit again. The transaction should have been rolled back.
+5904   <unassigned>
+5905   CUSTFUNC_XML_404                     An internal file in use by the server was missing when it should not be. The transaction should have been rolled back.
 }
 
 -----------------

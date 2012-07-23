@@ -22,6 +22,7 @@ class seatctrl extends CI_Controller {
 		$this->load->library('airtraffic');
 		$this->load->library('form_validation');
 		$this->load->library('functionaccess');
+		$this->load->library('inputcheck');
 		$this->load->library('seatmaintenance');
 		$this->load->library('sessmaintain');
 		$this->load->model('atc_model');
@@ -163,14 +164,9 @@ class seatctrl extends CI_Controller {
 		*	@revised 06JUL2012-1737
 		**/
 		// access validity check
-		if( !$this->functionaccess->preCreateSeatStep2PRCheck( STAGE_CR_SEAT1 ) ) return FALSE;
-
-		// form-validation, though back in the client the form is checked via JS
-		// we still put this as the JS check can be circumvented.
-		$this->form_validation->set_rules('name', 'Name', 'required|min_length[1]');
-		$this->form_validation->set_rules('rows', 'Rows', 'required|integer|greater_than[0]|less_than[27]');
-		$this->form_validation->set_rules('cols', 'Cols', 'required|integer|greater_than[0]');
-		if($this->form_validation->run() == FALSE)
+		if( !$this->functionaccess->preCreateSeatStep2PRCheck( STAGE_CR_SEAT1 ) ) return FALSE;	
+		//  We still put this as the JS check can be circumvented.
+		if( !$this->inputcheck->seatctrl__create_step2() )
 	    {
 			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleGenericFormValidationFail() );
 			return FALSE;
@@ -180,7 +176,6 @@ class seatctrl extends CI_Controller {
 			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleSeatMapNameExists() );
 			return FALSE;
 		}
-		
 		/* 
 			Process the data submitted by the form - and storing in the DB too.
 			The posted data are directly accessed thru $this->input->post() there.
@@ -229,9 +224,7 @@ class seatctrl extends CI_Controller {
 		$y;
 		$i;
 		$j;
-		$attempts = 30;
 		$guid;
-		$looptime = 1;
 		$uniqueID;
 		$seatmap;
 		$sessionActivity;
@@ -247,16 +240,13 @@ class seatctrl extends CI_Controller {
 		}
 
 		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
-		$guid = $this->usefulfunctions_model->guid();
-		$sessionActivity = $this->clientsidedata_model->getSessionActivity();
-		if( !$this->airtraffic->initialize(
-				$guid, $sessionActivity, $sessionActivity[0], STAGE_CR_SEAT3_FW, 
-				'seatctrl/create_step3_forward', NULL, $attempts, $looptime )
-		){
-			$this->airtraffic->terminateService( $guid, TRUE );
+		if( !$this->airtraffic->initialize( NULL, STAGE_CR_SEAT3_FW, 'seatctrl/create_step3_forward', 
+			NULL, 30, 1 )
+		)
+		{
 			return FALSE;
 		}
-		
+		$guid = $this->airtraffic->getGUID();
 		$this->db->trans_begin();	// database checkpoint
 		// NOW DO OUR ACTIVITIES!
 		// send the data for processing here and set the seat map as configured
@@ -264,21 +254,20 @@ class seatctrl extends CI_Controller {
 			or !$this->seat_model->setSeatMapStatus( $uniqueID, 'CONFIGURED', NULL )
 		){	
 			log_message('DEBUG','create_step3|'.$guid.'|rolledback|proper');
-			$this->db->trans_rollback();							//database rollback
-			$this->airtraffic->terminateService( $guid, TRUE );
+			//database rollback
+			$this->db->trans_rollback();
+			$this->airtraffic->terminateService( TRUE );
 			return $this->seatmaintenance->assembleCreateDefaultSeatFail();	
 		}
 		// now, seek clearance and decide whether or not to commit or rollback
-		if( $this->airtraffic->clearance( $guid, $attempts, $looptime ) and
-			$this->airtraffic->terminateService( $guid )
-		){
+		if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
 			$this->db->trans_commit();
-			log_message('DEBUG','create_step3 cleared for take off ' . $guid);			
+			log_message('DEBUG','create_step3 cleared for take off ' . $guid);
 		}else{
 			$this->db->trans_rollback();
-			log_message('DEBUG','create_step3_final clearance error '. $guid);		
+			log_message('DEBUG','create_step3_final clearance error '. $guid);
 		}
-		$this->airtraffic->deleteXML( $guid );
+		$this->airtraffic->deleteXML();
 	} //create_step3()
 	
 	function create_step3_forward()

@@ -16,13 +16,24 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
+	<!--For overlay-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
-	?>	
+	?>
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');	
+	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/userLogin.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/submitKeypressHandler.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>" ></script>	
+	<!--For modal v1-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic.js'; ?>" ></script>	
+	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/anti-ie.js'; ?>" ></script>
 	<style type="text/css">
 		div.questionableBrowser{
@@ -43,6 +54,9 @@ $this->load->view('html-generic/metadata.inc');
 	</style>
 </head>
 <body>
+<?php
+		$this->load->view('html-generic/overlay_general.inc');
+?>
 <?php if( isset($UA_CHECK ) and $UA_CHECK != BR_ALLOWED ) { ?> 
 <div class="questionableBrowser" >
 	<div class="center_purest questionableBrowserInner" >
@@ -90,7 +104,7 @@ $this->load->view('html-generic/metadata.inc');
 			
 			<div id="left_content">	
 				<div class="text_box">
-					<form method="post"  action="<?php echo base_url().'sessionctrl/login' ?>" name="formLogin" id="formMain">
+					<form method="post"  action="sessionctrl/login" name="formLogin" id="formMain">
 						<div class="login_form_row">
 							<label class="login_label">Username:</label>
 							<input type="text" name="username" class="login_input" value="" /><br/>
@@ -106,31 +120,13 @@ $this->load->view('html-generic/metadata.inc');
 						</div>
 					</form>
 				</div><!--text_box-->
-				<div class="errorNotice">
+				<div class="errorNotice" id="errdiv" style="display:none;" >
 					<span class="FldMsg" id="usernameFldMsg"></span>
 					<span class="FldMsg" id="passwordFldMsg"></span>
-					<?php
-						if( isset($incorrect_credentials) or
-							$this->session->userdata('LOGIN_WARNING') != FALSE 
-						){
-					?>
-						<ul class="loginWarning">
-						<?php	
-							foreach($this->session->userdata('LOGIN_WARNING') as $error)
-							{
-								echo "<li>";
-								echo $error;
-								echo "</li>";
-							}
-							$data['LOGIN_WARNING'] = FALSE;
-							$this->session->set_userdata($data);
-						?>
-						</ul>
-					<?php
-						}else{
-							echo "&nbsp;";
-						}
-					?>
+					<ul class="loginWarning">
+						<li>
+						</li>
+					</ul>
 				</div>
 				<div class="signup_div">
 					<h3 style="float:left;">No account yet?</h3>

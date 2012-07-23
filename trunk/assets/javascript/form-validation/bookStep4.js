@@ -9,31 +9,31 @@ function createSeatmapOnPage( args )
 	/*
 		Created 13FEB2012-1202
 	*/	
-	//display notice	
+	//display notice
 	$.fn.nextGenModal({
 	   msgType: 'ajax',
 	   title: 'please wait',
 	   message: 'Getting seat map info, this may take up to a minute ...'
 	});
 	// ajax-time!
-	var x = $.ajax({	
+	var x = $.ajax({
 		type: 'POST',
 		url: CI.base_url + '/seatctrl/getActualSeatsData',
 		timeout: 120000,
 		success: function(data){
-			alreadyConfiguredSeat = false;			
-			$(document).manipulateSeatAJAX( data );			// make now the HTML						
+			alreadyConfiguredSeat = false;
+			$(document).manipulateSeatAJAX( data ); // make now the HTML
 		}
 	});	
-	x.fail(	function(jqXHR, textStatus) { 							
-				$.fn.nextGenModal({
-				   msgType: 'error',
-				   title: 'Connection timeout',
-				   message: 'It seems you have lost your internet connection. Please refresh the page.'
-				});
+	x.fail(	function(jqXHR, textStatus) {
+		$.fn.nextGenModal({
+		   msgType: 'error',
+		   title: 'Connection timeout',
+		   message: 'It seems you have lost your internet connection. Please refresh the page.'
+		});
 
-				return false;
-	} ) ;	
+		return false;
+	}) ;
 }
 
 function atc_fail( data ){
@@ -95,11 +95,11 @@ function atc_fail( data ){
 }
 
 function atc_success( data ){
-	$.fn.makeOverlayForResponse( data );	
+	$.fn.makeOverlayForResponse( data );
 }
 
 function formSubmit( ){
-	var slots = parseInt( $('input#_js_use_slots').val() ); 
+	var slots = parseInt( $('input#_js_use_slots').val(), 10 ); 
 	var x;		
 	var y;
 	var ajaxObj;
@@ -112,42 +112,37 @@ function formSubmit( ){
 	   title: '',
 	   message: ''
 	});
-			
 		// get seat matrix data
 		for( x = 0; x< slots; x++ )
-		{				
-			var matrix = $('input[name="g' + parseInt( x + 1 )  + '_seatMatrix"]').val();
+		{
+			var matrix = $('input[name="g' + parseInt( x + 1 , 10)  + '_seatMatrix"]').val();
 			/*
 				These two arrays are used in case of sudden 'you-were-overtaken' error. See line 104.
 			*/
-			matrix_visual[ matrix ] = $('input[name="g' + parseInt( x + 1 )  + '_seatVisual"]').val();
-			matrix_count[ matrix ] = parseInt( x + 1 );
+			matrix_visual[ matrix ] = $('input[name="g' + parseInt( x + 1, 10 )  + '_seatVisual"]').val();
+			matrix_count[ matrix ] = parseInt( x + 1, 10 );
 			if( isModeManageBookingChooseSeat )
 			{
 				/*
 					When user is managing his booking - changing seat(s), then check first
 					if he chose a new seat before appending to the 'matrices' string.
 				*/
-				var matrix_old = $('input[name="g' + parseInt( x + 1 )  + '_seatMatrix_old"]').val();			
+				var matrix_old = $('input[name="g' + parseInt( x + 1, 10 )  + '_seatMatrix_old"]').val();
 				if( matrix != matrix_old && parseInt(matrix, 10) != 0 ) matrices += ( matrix + '-' );
 			}else{
 				if( parseInt(matrix, 10) != 0 ) matrices += ( matrix + '-' );
 			}
-			
 		}
-		go_submit(
-			'atc_success', 
-			'please wait',
-			'Verifying seat availability ...',
-			$('form').first().attr('action'),
-			30000,
-			$('form').first().serialize(),
-			'atc_fail'
-		);
+		$.fn.airtraffic({
+			msgwait: 'Verifying seat availability ...',
+			atc_fail_func: 'atc_fail',
+			atc_ff_mode: 0,
+			atc_sf_mode: 0
+		});
 }
 
 function manipulateGuestSeat( mode, matrixInfo )
-{						
+{
 	/*
 		Created 13FEB2012-1852.
 		
@@ -163,14 +158,14 @@ function manipulateGuestSeat( mode, matrixInfo )
 	
 	if( mode == 'SELECT' )
 	{	
-		divConcerned = $('div#' + matrixInfo );		
+		divConcerned = $('div#' + matrixInfo );
 		if( seatMatrixSelected != "0" )
 		{	//seat assigned now to guest
 			$( 'div#' + seatMatrixSelected ).removeClass( 'ui-selected' );		// remove first the old seat
-			$( 'div#' + seatMatrixSelected ).removeClass( 'ddms_selected' );										
+			$( 'div#' + seatMatrixSelected ).removeClass( 'ddms_selected' );
 		}else{
 			$( 'input#' + seatChooseBtnIdentifier  ).val( "Change seat" );		// change the caption of the seat button
-		}		
+		}
 		$( 'input[name="' + seatMatrixIdentifier + '"]' ).val( matrixInfo );	// assign seat matrix info to the field to be submitted
 		$( 'input[name="' + seatVisualIdentifier + '"]' ).val( divConcerned.children("span.row").html() + "-" + divConcerned.children("span.col").html() ) ;
 		$( 'input[name="' + seatVisualIdentifier + '"]' ).show();
@@ -194,7 +189,7 @@ function postChooseCleanup()
 		chosenSeat.each( function()
 		{
 			$( this).removeClass( 'ddms_selected' );
-			$( this ).addClass( 'otherGuest' );								
+			$( this ).addClass( 'otherGuest' );
 		});
 	}else{
 		manipulateGuestSeat( "DESELECT", "" );
@@ -225,11 +220,11 @@ $(document).ready( function(){
 		var chosenSeat;
 		
 		guestNum = $(this).attr('id').split('_')[0].substring( 1 );
-		guestConcerned = parseInt( guestNum );							// global var, on the top
+		guestConcerned = parseInt( guestNum, 10 );							// global var, on the top
 		seatMatrixIdentifier = "g" +  guestConcerned + "_seatMatrix";	// in bookStep4.js
 		seatVisualIdentifier = "g" +  guestConcerned + "_seatVisual";
 		seatChooseBtnIdentifier = "g" +  guestConcerned + "_chooseSeat";
-		chosenSeatMatrix = $('input[name="' + seatMatrixIdentifier +'"]').val();		
+		chosenSeatMatrix = $('input[name="' + seatMatrixIdentifier +'"]').val();
 		$('#basic-modal-content-freeform').modal( 
 			{ 	// show modal
 				persist: true ,
@@ -238,28 +233,28 @@ $(document).ready( function(){
 				maxHeight: 600,
 				maxWidth: 1000,*/
 				autoResize: false,
-				onShow: function(){					
+				onShow: function(){
 					if( chosenSeatMatrix != "0" ) {
 						$('div#' + chosenSeatMatrix ).removeClass( 'otherGuest' );
 						$('div#' + chosenSeatMatrix ).addClass( 'ddms_selected' );
 					}
 				},
-				onClose: function(){							
-							$('#warningIndicator').hide();														
-							postChooseCleanup();							
-							$.modal.close();						
+				onClose: function(){
+							$('#warningIndicator').hide();
+							postChooseCleanup();
+							$.modal.close();
 				}
 			}
 		);//$
 	});
 	
 	$('#buttonOK').click( function(){
-		var slots = parseInt( $('input#_js_use_slots').val() );
+		var slots = parseInt( $('input#_js_use_slots').val(), 10 );
 		var x;
 		var y;
 		var seatMatrixIdentifier;
 		var guestWithoutSeats = [];
-		var message;		
+		var message;
 		
 		for( x=0, y=0; x < slots; x++ )
 		{
@@ -271,11 +266,11 @@ $(document).ready( function(){
 		}
 		
 		if( y > 0 )
-		{			
+		{
 			message = "Are you sure you don't want to select seat for the following guest(s)? <br/><br/> ";
 			for( x = 0; x < y; x++ ){
 				message += ( guestWithoutSeats[x] + '| ' + $('div#g' + guestWithoutSeats[x] + '-firstNameFld').html() + ' ' + $('div#g' + guestWithoutSeats[x] + '-lastNameFld').html()  + '<br/>' );				
-			}			
+			}
 			$.fn.nextGenModal({
 				   msgType: 'warning',
 				   title: 'confirm',
@@ -283,11 +278,9 @@ $(document).ready( function(){
 				   message: message,
 				   yesFunctionCall: 'formSubmit'
 			});
-		}else{			
+		}else{
 			formSubmit();
 		}
 		guestWithoutSeats = null;
 	});
-	
-	
 });

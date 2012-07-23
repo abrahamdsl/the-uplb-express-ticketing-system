@@ -21,6 +21,7 @@
 		define( 'COL_D5', 'DETAIL5');		
 		define( 'COL_AT', 'ATTEMPTS');
 		define( 'COL_LT', 'LOOP_TIME');
+		define( 'COL_IS_CUSTOM', 'IS_THERE_CUSTOM');
 		define( 'COL_ON_SUCCESS', 'CALL_ON_SUCCESS');
 		if( !defined( 'COL_EXPIRE_DATE' ) ) define( 'COL_EXPIRE_DATE', 'EXPIRE_DATE' );
 		if( !defined( 'COL_EXPIRE_TIME' ) ) define( 'COL_EXPIRE_TIME', 'EXPIRE_TIME' );

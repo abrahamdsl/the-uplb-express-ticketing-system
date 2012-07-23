@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 18, 2012 at 09:19 AM
+-- Generation Time: Jul 23, 2012 at 04:31 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -2516,7 +2516,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 6, 27, NULL, NULL, -1, NULL, NULL, NULL),
 (261, 2, 6, 27, NULL, NULL, -1, NULL, NULL, NULL),
 (261, 3, 6, 27, 'G', '26', 0, 2, 4, NULL),
-(261, 1, 6, 28, 'G', '27', 0, 1, 2, NULL),
+(261, 1, 6, 28, 'G', '27', 0, 1, 2, ''),
 (261, 2, 6, 28, 'G', '27', 0, 1, 2, NULL),
 (261, 3, 6, 28, 'G', '27', -2, NULL, NULL, NULL),
 (261, 1, 6, 29, 'G', '28', 0, 1, 2, NULL),
@@ -2649,7 +2649,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 8, 0, 'I', '1', 0, 1, 4, NULL),
 (261, 2, 8, 0, 'I', '1', 0, 1, 4, ''),
 (261, 3, 8, 0, 'I', '1', -2, NULL, NULL, NULL),
-(261, 1, 8, 1, 'I', '2', 0, 1, 4, NULL),
+(261, 1, 8, 1, 'I', '2', 0, 1, 4, ''),
 (261, 2, 8, 1, 'I', '2', 0, 1, 4, ''),
 (261, 3, 8, 1, 'I', '2', -2, NULL, NULL, NULL),
 (261, 1, 8, 2, 'I', '3', 0, 1, 4, NULL),
@@ -2724,7 +2724,7 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 8, 25, 'I', '25', 0, 1, 2, ''),
 (261, 2, 8, 25, 'I', '25', 0, 1, 2, 'ROLLBACK-USER_DO'),
 (261, 3, 8, 25, 'I', '24', 0, 2, 4, NULL),
-(261, 1, 8, 26, 'I', '26', 0, 1, 2, 'ROLLBACK-USER_DO'),
+(261, 1, 8, 26, 'I', '26', 0, 1, 2, ''),
 (261, 2, 8, 26, 'I', '26', 0, 1, 2, ''),
 (261, 3, 8, 26, 'I', '25', 0, 2, 4, NULL),
 (261, 1, 8, 27, NULL, NULL, -1, NULL, NULL, NULL),
@@ -2947,9 +2947,9 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (261, 1, 10, 28, 'K', '27', 0, 1, 3, NULL),
 (261, 2, 10, 28, 'K', '27', 0, 1, 3, NULL),
 (261, 3, 10, 28, 'K', '27', -2, NULL, NULL, NULL),
-(261, 1, 10, 29, 'K', '28', 0, 1, 3, NULL);
+(261, 1, 10, 29, 'K', '28', 0, 1, 3, NULL),
+(261, 2, 10, 29, 'K', '28', 0, 1, 3, NULL);
 INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
-(261, 2, 10, 29, 'K', '28', 0, 1, 3, NULL),
 (261, 1, 10, 30, 'K', '29', 0, 1, 3, NULL),
 (261, 2, 10, 30, 'K', '29', 0, 1, 3, NULL),
 (261, 1, 10, 31, 'K', '30', 0, 1, 3, NULL),
@@ -4058,9 +4058,9 @@ INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`
 (985, 1, 13, 34, 'N', '33', -2, NULL, NULL, NULL),
 (985, 1, 13, 35, 'N', '34', -2, NULL, NULL, NULL),
 (985, 1, 13, 36, 'N', '35', -2, NULL, NULL, NULL),
-(985, 1, 13, 37, 'N', '36', -2, NULL, NULL, NULL);
+(985, 1, 13, 37, 'N', '36', -2, NULL, NULL, NULL),
+(985, 1, 13, 38, 'N', '37', -2, NULL, NULL, NULL);
 INSERT INTO `seats_actual` (`EventID`, `Showing_Time_ID`, `Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Comments`) VALUES
-(985, 1, 13, 38, 'N', '37', -2, NULL, NULL, NULL),
 (985, 1, 14, 0, 'O', '1', -2, NULL, NULL, NULL),
 (985, 1, 14, 1, 'O', '2', -2, NULL, NULL, NULL),
 (985, 1, 14, 2, 'O', '3', -2, NULL, NULL, NULL),
@@ -5326,10 +5326,10 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 --
 
 INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `Seat_map_UniqueID`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
-(1, 261, '2012-07-22', '19:00:00', '2012-07-22', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-07-22', '10:54:31', 1, 1, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(1, 985, '2012-07-29', '19:00:00', '2012-07-30', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-07-28', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
-(2, 261, '2012-07-25', '19:00:00', '2012-07-25', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-07-24', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(3, 261, '2012-07-26', '19:00:00', '2012-07-26', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-07-25', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
+(1, 261, '2012-08-22', '19:00:00', '2012-08-22', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-22', '10:54:31', 1, 1, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(1, 985, '2012-07-29', '19:00:00', '2012-08-30', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-28', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
+(2, 261, '2012-08-25', '19:00:00', '2012-08-25', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-24', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(3, 261, '2012-08-26', '19:00:00', '2012-08-26', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-08-25', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -5551,6 +5551,7 @@ CREATE TABLE IF NOT EXISTS `_air_traffic` (
   `DETAIL4` varchar(255) DEFAULT NULL,
   `DETAIL5` varchar(255) DEFAULT NULL,
   `CALL_ON_SUCCESS` varchar(255) DEFAULT NULL,
+  `IS_THERE_CUSTOM` tinyint(1) NOT NULL DEFAULT '0',
   `EXPIRE_DATE` date DEFAULT NULL,
   `EXPIRE_TIME` time DEFAULT NULL,
   PRIMARY KEY (`UUID`)
@@ -5668,10 +5669,12 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{0178b83a-6dc4-4e21-9350-df3a71191535}', '2012-05-19', '16:15:41', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{028BBD2E-F15A-9CD7-8EFF-C21C5E59787F}', '2012-07-17', '01:58:00', '69.58.178.57', 'LOGIN_PAGE', 'BlackBerry9000/4.6.0.167 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/102 ips-agent', 'BlackBerry|Unknown Platform', NULL, NULL),
 ('{0314abc0-1278-4662-aa9d-053ad81ff5fc}', '2012-05-19', '16:12:13', '112.207.10.115', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{041141EB-2A76-BDAB-A0D2-BBD502D5560D}', '2012-07-19', '19:06:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{04AD1754-6903-928D-0700-1F48140D028C}', '2012-07-15', '12:48:00', '72.14.199.46', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{04bbf5a0-dbd8-4321-91bb-8f5a8fe06659}', '2012-05-19', '16:14:45', '121.54.92.86', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{05F17A4F-B0A8-40A8-8A6F-A346F782CE7E}', '2012-07-17', '16:59:00', '209.85.238.137', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{065f0c1f-bf83-4409-8f65-1e24677d5422}', '2012-05-20', '06:39:40', '112.198.83.134', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 Safari/536.11', 'Chrome 20.0.1132.11|Unknown Windows OS', NULL, NULL),
+('{075DC85E-4AE5-1712-FCF9-C7AB278A2EF9}', '2012-07-22', '04:53:00', '216.145.14.142', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en; rv:1.9.0.13) Gecko/2009073022 Firefox/3.5.2 (.NET CLR 3.5.30729) SurveyBot/2.3 (DomainTools)', 'Firefox 3.5.2|Windows XP', NULL, NULL),
 ('{087935E2-DB21-9DB1-A828-E7B7431519D0}', '2012-06-22', '13:54:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{0BEA7B01-BB66-76D0-12A5-B690C0B4FC6A}', '2012-06-23', '15:23:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{0CE8804A-4857-86AF-2811-EE347F228C83}', '2012-06-20', '17:16:00', '74.125.126.88', 'BROWSER_BOT_SIMPLE', 'Googlebot-richsnippets', 'Googlebot|Unknown Platform', NULL, NULL),
@@ -5710,6 +5713,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{4501d775-c37f-4465-93ac-2f79fafa7fcb}', '2012-05-19', '16:14:32', '112.207.20.43', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{45AA7F72-7F04-0606-37EE-B8431E39C52E}', '2012-06-16', '14:43:00', '198.186.192.44', 'BROWSER_BOT_SIMPLE', '0', 'Unidentified User Agent|', NULL, NULL),
 ('{4AAA9FDF-25EB-B7A4-0626-4B7F8F0846E2}', '2012-06-29', '19:28:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
+('{4BA0D171-AC66-C057-726B-BE3DD88126C5}', '2012-07-23', '06:38:00', '38.99.82.191', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)', 'Internet Explorer 7.0|Windows Longhorn', NULL, NULL),
 ('{4C79F617-91DD-E020-CFF5-3FEB22B76DF6}', '2012-06-16', '20:07:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{4D5BA3E1-1523-2636-DE4E-36FE9320EFB2}', '2012-06-15', '22:50:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{4F5DF57F-B3A6-96FB-2355-354FDA6ACDDB}', '2012-06-30', '17:51:00', '121.54.100.146', 'LOGGED_OUT_PAGE', 'REF_{26147493-738D-AE0E-2509-B9C0FDB4D7B8}', '', NULL, NULL),
@@ -5720,8 +5724,10 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{4f601354-d464-48ea-ab0e-54755fa438f9}', '2012-05-19', '20:56:22', '122.55.28.66', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{50E64D23-BB8C-1256-3C96-4D1C0C41A56E}', '2012-07-14', '09:47:00', '72.14.199.46', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{53BC774E-A8D2-49CB-5228-74B08C308D5A}', '2012-06-23', '12:01:00', '110.75.175.46', 'BROWSER_BOT_SIMPLE', 'Yahoo! Slurp China', 'Inktomi Slurp|Unknown Platform', NULL, NULL),
+('{58ABD65B-F1F8-53C8-5BAC-26C36A4BED02}', '2012-07-21', '09:03:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{59D8DAF7-FCEC-C881-1310-AAE310440D2E}', '2012-07-16', '19:03:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{5C0EBFF0-96D8-C002-5E84-EB97ABC3B6C4}', '2012-07-10', '07:27:00', '216.145.14.142', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en; rv:1.9.0.13) Gecko/2009073022 Firefox/3.5.2 (.NET CLR 3.5.30729) SurveyBot/2.3 (DomainTools)', 'Firefox 3.5.2|Windows XP', NULL, NULL),
+('{5D532609-8124-0967-88DD-0176C36ABF69}', '2012-07-21', '19:07:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{5D933A62-78DF-46F3-BA6D-723F347DDE7A}', '2012-06-15', '09:10:00', '38.127.197.112', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)', 'Internet Explorer 7.0|Windows XP', NULL, NULL),
 ('{5DF4527F-373F-3D3B-7951-23D0E2E10917}', '2012-06-15', '19:26:00', '66.249.17.105', 'LOGIN_PAGE', 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 GTB7.1', 'Firefox 3.6.13|Mac OS X', NULL, NULL),
 ('{5E81FD8D-15D3-BC0D-08A5-A4C011C7CA3C}', '2012-07-01', '07:23:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
@@ -5730,6 +5736,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{603F012A-AFEC-8CF7-B3DB-B2D276CF78A5}', '2012-06-20', '00:34:00', '50.112.107.16', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)', 'Internet Explorer 5.5|Unknown Windows OS', NULL, NULL),
 ('{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '2012-05-20', '06:59:08', '180.194.28.234', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.46 Safari/536.5', 'Chrome 19.0.1084.46|Unknown Windows OS', NULL, NULL),
 ('{63684e82-a826-4746-90f3-4fd57bd954e9}', '2012-05-20', '00:02:07', '150.70.172.101', 'LOGIN_PAGE', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)', 'Internet Explorer 6.0|Windows XP', NULL, NULL),
+('{63B1D5A9-D3EF-D544-893C-E1964EC91A30}', '2012-07-20', '21:37:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{63E20A2A-8BD3-4787-4AE3-0F7B1EAEDA7A}', '2012-06-28', '13:04:00', '64.246.165.150', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en; rv:1.9.0.13) Gecko/2009073022 Firefox/3.5.2 (.NET CLR 3.5.30729) SurveyBot/2.3 (DomainTools)', 'Firefox 3.5.2|Windows XP', NULL, NULL),
 ('{640785CF-9788-DA3E-3DDE-D6DEC857FD6C}', '2012-07-03', '17:09:00', '112.207.29.103', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11', 'Chrome 20.0.1132.47|Unknown Windows OS', NULL, NULL),
 ('{652b3ab0-951b-4f05-aa98-8a77974625ac}', '2012-05-19', '15:50:55', '121.54.13.52', 'LOGIN_PAGE', '', '', NULL, NULL),
@@ -5745,7 +5752,9 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{78EEF076-8C11-5842-D241-7AE28AA45271}', '2012-07-03', '16:54:00', '202.124.142.148', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11', 'Chrome 20.0.1132.47|Windows XP', NULL, NULL),
 ('{7B613C3B-1F62-39AB-8253-7962C9BF053A}', '2012-06-25', '14:03:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{7C1344F1-3412-01B6-73CB-096A46DD2A44}', '2012-07-13', '04:49:00', '72.14.199.46', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
+('{7D0A2945-806F-CD0A-476C-C401F74B3CF0}', '2012-07-21', '18:59:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{7D920FAB-6328-352E-6190-6D71816FC25A}', '2012-07-02', '23:27:00', '66.249.71.11', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
+('{7E5DF729-F5F6-6FFF-2018-BE9666B7AF87}', '2012-07-22', '18:38:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{7FCF4220-22E2-3484-E8B8-3504603F8467}', '2012-06-15', '09:10:00', '38.127.197.112', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)', 'Internet Explorer 7.0|Windows XP', NULL, NULL),
 ('{7bac3f60-33e1-4bc3-ad37-da41de553499}', '2012-05-19', '16:16:03', '112.202.113.55', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{7d15277d-0303-442d-b1f8-e05cf0e95c11}', '2012-05-20', '07:00:28', '180.194.28.234', 'LOGGED_OUT_PAGE', 'REF_{60bc7bca-7cf5-4f28-aea4-fb63a88a573d}', '', NULL, NULL),
@@ -5761,6 +5770,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{8b3f4f74-2b99-4a20-b0ea-3547209d6485}', '2012-05-19', '16:17:11', '121.54.92.86', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{925768C8-E369-70BA-FB6C-2B7587E3F797}', '2012-06-19', '12:01:00', '110.75.172.105', 'BROWSER_BOT_SIMPLE', 'Yahoo! Slurp China', 'Inktomi Slurp|Unknown Platform', NULL, NULL),
 ('{92884579-12B0-EEC7-E11B-1ACE7F4A15A0}', '2012-06-15', '22:18:00', '69.171.228.247', 'BROWSER_BOT_SIMPLE', 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
+('{928F0C26-4138-B804-19E8-8E501122371D}', '2012-07-18', '12:31:00', '66.249.72.235', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{9414AF8E-443C-EF2C-1118-93CEEF4C8720}', '2012-07-17', '01:59:00', '69.58.178.57', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.3; ips-agent) Gecko/20090824 Fedora/1.0.7-1.1.fc4  Firefox/3.5.3', 'Firefox 3.5.3|Linux', NULL, NULL),
 ('{9536AF48-A9DB-1069-7D94-365397C6A220}', '2012-06-21', '10:00:00', '69.58.178.57', 'BROWSER_STRICTLY_NOT_ALLOWED', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.3; ips-agent) Gecko/20090824 Fedora/1.0.7-1.1.fc4  Firefox/3.5.3', 'Firefox 3.5.3|Linux', NULL, NULL),
 ('{9731ef88-bddd-41dd-9bfc-e24e6cc5a9f9}', '2012-05-19', '16:05:14', '50.17.107.32', 'LOGIN_PAGE', '', '', NULL, NULL),
@@ -5769,6 +5779,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{99C5DAF5-46A6-16A7-E7DE-F8CD044B1CB1}', '2012-06-17', '21:52:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{9F9F8544-559F-53AE-2E8B-DE2E41C8A326}', '2012-07-02', '15:26:00', '121.1.11.67', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5', 'Chrome 19.0.1084.56|Windows XP', NULL, NULL),
 ('{9a5fff93-a86e-4608-94ba-2c47b65974c9}', '2012-05-19', '16:28:11', '112.198.83.33', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{A1A92F10-B436-65B9-F123-E131F6F22A76}', '2012-07-18', '12:56:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{A37A730D-ED72-4AB3-C536-C9CDE58F59F1}', '2012-07-07', '07:32:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{A5011BD3-26A2-F750-4691-0D7155148893}', '2012-07-16', '12:20:00', '209.85.238.137', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{A61CD64D-D7BA-278C-182A-5369911A52A7}', '2012-07-05', '21:16:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
@@ -5778,6 +5789,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{B1DC7475-B29E-B851-0E08-053BC173AAA1}', '2012-06-23', '17:58:00', '66.220.149.246', 'BROWSER_BOT_SIMPLE', 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{B8657412-C34D-BBF5-4208-B9622896B08D}', '2012-07-03', '17:09:00', '112.207.29.103', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:11.0) Gecko/20100101 Firefox/11.0', 'Firefox 11.0|Unknown Windows OS', NULL, NULL),
 ('{BBC89D07-3285-DEE0-E2C0-3A3733CFC712}', '2012-07-10', '05:42:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
+('{BE5CEC15-D72E-009C-3149-1FB00326688C}', '2012-07-23', '12:32:00', '121.1.24.118', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11', 'Chrome 20.0.1132.57|Unknown Windows OS', NULL, NULL),
 ('{BEB9CC16-FD7E-7FCA-956F-D6DD81069853}', '2012-06-23', '09:07:00', '66.249.71.11', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{C432BBBF-F600-5958-F519-432E3916E784}', '2012-07-04', '13:41:00', '202.124.142.148', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11', 'Chrome 20.0.1132.47|Windows XP', NULL, NULL),
 ('{C485E928-BBEF-9F15-1DF5-F92D94A7F277}', '2012-06-16', '23:45:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),

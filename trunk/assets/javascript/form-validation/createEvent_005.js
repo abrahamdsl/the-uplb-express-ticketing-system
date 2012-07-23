@@ -14,7 +14,7 @@ function checkSlotsTotal( theObject)
 	*/
 	var Total = $('#totalSlotsChosen').val() ;
 	
-	if( Total > parseInt( $("#maxSlot").val() ) )
+	if( Total > parseInt( $("#maxSlot").val() , 10) )
 	{				
 		$.fn.nextGenModal({
 		   msgType: 'error',
@@ -66,7 +66,7 @@ function createSeatmapOnPage( args )
 function formSubmitPreCheck()
 {
 	// created 13JAN2012-1130
-	if( parseInt( $('#totalSlotsChosen').val() ) == 0 )
+	if( parseInt( $('#totalSlotsChosen').val(), 10 ) == 0 )
 	{		
 		$.fn.nextGenModal({
 		   msgType: 'error',
@@ -185,7 +185,7 @@ function sumTotalSlots()
 	eachClass_slots = $('input[name^="slot"]').get();			
 	for( Total = 0, x = 0, y = eachClass_slots.length; x < y; x++)	// just adding, cumulatively
 	{				
-		Total += parseInt( $(eachClass_slots[x]).val() );		
+		Total += parseInt( $(eachClass_slots[x]).val(), 10 );		
 	}
 	$('#totalSlotsChosen').val( Total );
 }//sumSlotsTotal(..)
@@ -250,7 +250,7 @@ $(document).ready( function() {
 		var thisClassSlots;
 		var thisClassAssignedSeatQuantity;
 		
-		if( isNaN( parseInt( seatMapUniqueID ) ) )
+		if( isNaN( parseInt( seatMapUniqueID , 10) ) )
 		{			
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -259,8 +259,8 @@ $(document).ready( function() {
 			});
 			return false;
 		}
-		thisClassSlots = parseInt( $( '#id_slot_' + thisClass).val() );
-		thisClassAssignedSeatQuantity = parseInt( $( '#seatAssigned_' + thisClass).val() );
+		thisClassSlots = parseInt( $( '#id_slot_' + thisClass).val(), 10 );
+		thisClassAssignedSeatQuantity = parseInt( $( '#seatAssigned_' + thisClass).val(), 10 );
 		$('#basic-modal-content-freeform').find('.items_selected').html( thisClassAssignedSeatQuantity );		
 		if( isNaN( thisClassSlots ) || thisClassSlots < 1 )
 		{
@@ -346,7 +346,7 @@ $(document).ready( function() {
 		// get all values of input for slots of all classes
 		if( checkSlotsTotal( thisVal ) )
 		{
-			$( selector_ChangeThis ).val( parseInt(thisVal) + 1);			
+			$( selector_ChangeThis ).val( parseInt(thisVal) + 1, 10);			
 		}
 		else{
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value			
@@ -370,7 +370,7 @@ $(document).ready( function() {
 			});
 			return false;
 		}		
-		if( parseInt(thisVal) == 0 ) 
+		if( parseInt(thisVal, 10) == 0 ) 
 		{			
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -388,7 +388,7 @@ $(document).ready( function() {
 			});
 			return false;
 		}
-		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);
+		$( selector_ChangeThis ).val( parseInt(thisVal) - 1, 10);
 		sumTotalSlots();
 		return true;
 	});
@@ -407,7 +407,7 @@ $(document).ready( function() {
 			});
 			return;
 		}				
-		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
+		$( selector_ChangeThis ).val( parseInt(thisVal) + 1, 10);		
 	});
 	
 	$('input[id^="reducePrice_"]').click( function() {
@@ -423,7 +423,7 @@ $(document).ready( function() {
 			});
 			return;
 		}		
-		if( parseInt(thisVal) == 0 ) 
+		if( parseInt(thisVal, 10) == 0 ) 
 		{		
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -432,7 +432,7 @@ $(document).ready( function() {
 			});
 			return;
 		}		
-		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
+		$( selector_ChangeThis ).val( parseInt(thisVal) - 1, 10);	
 	});
 	
 	$('input[id^="addHoldingTime_"]').click( function() {
@@ -458,7 +458,7 @@ $(document).ready( function() {
 			});
 			return false;
 		}
-		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);		
+		$( selector_ChangeThis ).val( parseInt(thisVal) + 1, 10);		
 	});
 	
 	$('input[id^="reduceHoldingTime_"]').click( function() {
@@ -475,7 +475,7 @@ $(document).ready( function() {
 			});
 			return false;
 		}		
-		if( parseInt(thisVal) == 2 ) 
+		if( parseInt(thisVal, 10) == 2 ) 
 		{			
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -484,7 +484,7 @@ $(document).ready( function() {
 			});
 			return false;
 		}
-		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);	
+		$( selector_ChangeThis ).val( parseInt(thisVal, 10) - 1);	
 	});
 	
 	$('input[name^="price"]').blur( function()	{
@@ -528,7 +528,7 @@ $(document).ready( function() {
 			return false;
 		}
 		
-		currentlyAssignedSeats = parseInt( $('input#seatAssigned_' + thisClass ).val() );
+		currentlyAssignedSeats = parseInt( $('input#seatAssigned_' + thisClass ).val(), 10 );
 		if( currentlyAssignedSeats > parseInt(thisVal) )
 		{
 			longMsg = "You have assigned " + currentlyAssignedSeats + " seats for this class, so you cannot easily reduce the slots. Deselect some seats first and try again." ;
@@ -561,7 +561,7 @@ $(document).ready( function() {
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}						
-		if( parseInt(thisVal) < 2 ) 
+		if( parseInt(thisVal, 10) < 2 ) 
 		{
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -571,7 +571,7 @@ $(document).ready( function() {
 			$(this).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
-		if( parseInt(thisVal) >= 59 )
+		if( parseInt(thisVal, 10) >= 59 )
 		{			
 			$.fn.nextGenModal({
 			   msgType: 'error',

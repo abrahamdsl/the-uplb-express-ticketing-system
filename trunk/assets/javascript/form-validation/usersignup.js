@@ -27,6 +27,7 @@
   {
 	/*
 		checks if the username is a valid one
+		must be consistent with library inputcheck::is_username_valid
 	*/
 	var allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890_.";
 	var theUsername = theUsername_sent.toLowerCase();
@@ -279,7 +280,7 @@ function isEmail_valid(theEmail) {
 	if( stopPos == theEmail.length - 1 ) return "Dot misplaced";
 	
 	// checks for invalid characters
-	for(i=0; i<parseInt(theEmail.length); i++) {
+	for(i=0; i<parseInt(theEmail.length, 10); i++) {
 		ch= theEmail.charAt(i)
 		
 		//Check for more than 1 '@' character
@@ -331,7 +332,7 @@ function isEmail_valid(theEmail) {
   function own_trim(strText){
 	  // taken from Philippine Airlines Online Web Booking. Copyright PAL 2011.	  
 	  var i=0;
-	  var j=parseInt(strText.length-1);
+	  var j=parseInt(strText.length-1, 10);
 	  
 	  while(strText.charAt(i)==" ")
 		i++;

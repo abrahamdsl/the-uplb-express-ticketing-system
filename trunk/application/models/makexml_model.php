@@ -32,6 +32,11 @@ class makexml_model extends CI_Model {
 		return APPPATH."models/airtraffic/".$uuid.".xml";
 	}
 	
+	function getAirTrafficCustomFuncRelPath( $uuid = "null" )
+	{
+		return APPPATH."models/airtraffic/".$uuid."_customfunc.xml";
+	}
+	
 	function toArray($xml) {
 		/**
 		*	@created 27JUN2012-2045
@@ -113,15 +118,46 @@ class makexml_model extends CI_Model {
 		$xml->addNode( 'type' , $type );
 		$xml->addNode( 'resultstring' , $resultString );
 		$xml->addNode( 'resultcode' , $resultCode  );
-		$xml->addNode( 'title', $title );
+		$xml->addNode( 'mtitle', $title );
 		$xml->addNode( 'message', $message );
 		if( strlen( $redirectTo ) >  0 ){
 			$xml->addNode( 'redirect', $redirectTo );
 			$xml->addNode( 'redirect_after', $redirectAfter );
 		}
-		return $xml->getXml();		 
+		return $xml->getXml();
     }//XMLize_AJAX_Response
    
+	function XMLize_AirTrafficCustomFuncData( $guid, $data ){
+		/**
+		*	@created 20JUL2012-1400
+		*	@description Writes custom statements to be called by sessctrl/contact_tower during Air Traffic Control transactions.
+		**/
+		$XMLfile = $this->getAirTrafficCustomFuncRelPath( $guid );
+		log_message('DEBUG', 'makexml_model::XMLize_AirTrafficCustomFuncData accessed. Filename : ' . $XMLfile);
+		$fp;
+		
+		if( !is_array( $data ) ) { return FALSE; }
+		$fp = fopen( $XMLfile, "w" );
+		if( $fp != NULL )
+		{
+			$xml = new xml_writer;
+			$xml->setRootName( 'custom_function' );
+			$xml->initiate();
+			
+			$xml->addNode( 'guid' , $guid );
+			foreach( $data as $singleCall ){
+				$xml->addNode( 'call' , $singleCall );
+			}
+			$xmlContent = $xml->getXml();
+			// Print the XML to screen
+			fwrite( $fp,  $xmlContent );
+			fclose( $fp );
+			return file_exists( $XMLfile );
+		}else{
+			return FALSE;
+		}
+	} // XMLize_AirTrafficCustomFuncData(..)
+	
 	function XMLize_AirTrafficData( $data )
 	{
 		/**
@@ -132,7 +168,6 @@ class makexml_model extends CI_Model {
 				index 0 - BOOLEAN
 				index 1 - Message if error
 		**/
-		
 		$XMLfile = $this->getAirTrafficRelPath( isset($data[0]) ? $data[0] : $data['uuid'] );
 		log_message('DEBUG', 'makexml_model:: XMLize_AirTrafficData accessed ' . $XMLfile);
 		$fp;
@@ -152,11 +187,11 @@ class makexml_model extends CI_Model {
 			if( isset( $data[0] ) ){
 				$xml->addNode( 'uuid' , $data[0] );
 				$xml->addNode( 'status' , $data[1] );
-				$xml->addNode( 'auth' , $data[2] );				
+				$xml->addNode( 'auth' , $data[2] );
 			}else{
-				$xml->addNode( 'uuid' , $data[ 'uuid' ] );				
-				$xml->addNode( 'status' , $data[ 'status' ] );				
-				$xml->addNode( 'auth' , $data[ 'auth' ] );	
+				$xml->addNode( 'uuid' , $data[ 'uuid' ] );
+				$xml->addNode( 'status' , $data[ 'status' ] );
+				$xml->addNode( 'auth' , $data[ 'auth' ] );
 			}
 			//end branch 1
 			 $xml->endBranch();

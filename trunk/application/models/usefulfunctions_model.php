@@ -52,6 +52,17 @@ class usefulfunctions_model extends CI_Model {
 		return $ip;
 	}
 	
+	function getGeneralWhereExpiredClause(){
+		/**
+		*	@created 19JUL2012-1832
+		*	@description Returns the appropriate WHERE clause for SQL statements implying
+				deletion.
+		*	@returns STRING
+		**/
+		date_default_timezone_set('Asia/Manila');
+		return " WHERE CONCAT(`EXPIRE_DATE`,' ',`EXPIRE_TIME`) <= '" . date("Y-m-d H:i:s") . "'";
+	}
+	
 	function getValueOfWIN5_Data( $needle, $haystack )
 	{
 		/*
@@ -254,17 +265,33 @@ class usefulfunctions_model extends CI_Model {
 				// if show ends past midnight (red eye), then display the next day's date.
 				if( $newLine ) $returnThis .= '<br/>';
 				$returnThis .= date( 'Y-M-d l', strtotime($endDate));
-				if( $newLine ) $returnThis .= '<br/><br/>';				
+				if( $newLine ) $returnThis .= '<br/><br/>';
 			}
 			/*
 				No need to show seconds if zero
 			*/
 			$splitted = explode(':',  $endTime );
-			$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';											
+			$timeFormat = (intval($splitted[2]) === 0 ) ?  'h:i' : 'h:i:s';
 			$returnThis .= date( $timeFormat." A", strtotime( $endTime ));
-						
-			return $returnThis;			
+
+			return $returnThis;
 	}//outputShowingTime_SimpleOneLine(..)
+	
+	function returnPrematurely( $msg ){
+		/**
+		*	@created 20JUL2012-1112
+		*	@description Sends response headers and output immediately without terminating the script the called this.
+		*	@source http://php.net/manual/en/features.connection-handling.php#71172 | Partially changed
+		**/		
+		//	THIS SHOULD BE ONLY USED WHEN OUTPUT BUFFERING IS ON IN PHP	( default is OFF, but check anyway)	
+		//ob_end_clean();
+		ob_start();
+		header("Connection: close");
+		header("Content-Length: " .strlen($msg));
+		echo $msg;
+		@ob_end_flush(); // Strange behaviour, will not work
+		flush();         // Unless both are called !
+	}//returnPrematurely
 	
 	function VisitorIP()
     { 

@@ -11,49 +11,51 @@
 *   I just realized, it was so messy so I did this.
 */
 (function($){
-	var config;			// the settings of this modal instance
-	
+	// the settings of this modal instance
+	var config;
+
 	/*
 		Our constructor function
 	*/
 	$.fn.nextGenModal = function( settings ){
 		var classH1;
 		var yesNoSection = 'div#overlayEssentialButtonsArea';
-		var okayOnlySection = 'div#overlayEssentialButtonsArea_OkayOnly';		
-		
+		var okayOnlySection = 'div#overlayEssentialButtonsArea_OkayOnly';
+
 		config = null;
 		config = $.fn.nextGenModal.defaults;
 		if (settings) config = $.extend($.fn.nextGenModal.defaults, settings);	// there are settings submitted so
-		
+
 		/*
 			Unbind all events related to the links, because if we don't do that, the previous instances of the events bounded
 			are also called. For example, without this, and you are showing the modal for the nth time with a 'yesFunctionCall',
 			then after clicking 'Yes' in the modal, the 'yesFunctionCall' you specified will be called n times.
 		*/
-		$('div#box').find('a').each( function(){ $(this).unbind(); } );	// Didn't bother to separate lines since this is just one liner.
-		$( document ).unbind( 'keyup' );								// for the 'esc' key to close the modal
-		
-		// From || function assembleMessageForOverlay( title, message )		
-		//created 31DEC2011-1616	
+		$('div#box').find('a').each( function(){ $(this).unbind(); } );	 // Didn't bother to separate lines since this is just one liner.
+		// for the 'esc' key to close the modal
+		$( document ).unbind( 'keyup' );
+
+		// From || function assembleMessageForOverlay( title, message )
+		//created 31DEC2011-1616
 		$( '#overlayBoxH1Title' ).html( ( config.title.length < 1 ) ? config.msgType : config.title);
 		$( '#overlayBoxH1Content' ).html( config.message );
-	
-		//From || function decideOverlayTitleColor( type )		
+
+		//From || function decideOverlayTitleColor( type )
 		//created 31DEC2011-1625
-					
+
 		// hides divs that start with the given, so in effect hides first both of button sections
 		$('div.ovButtons').hide();
-		
+
 		// chose what class (specifically) color the title part of the modal would be
 		switch( config.msgType.toLowerCase() )
 		{
 			case "error":   classH1 = "error"; break;
-			case "notice":  classH1 = "okay"; /*confirmX_noShow = true; */ break;			
+			case "notice":  classH1 = "okay"; break;
 			case "ajax":
-			case "okay":    classH1 = "okay"; break;			
-			case "warning": classH1 = "warning"; break;	
-		}	
-		$( '#overlayBoxH1Title' ).attr( 'class' , classH1 );	
+			case "okay":    classH1 = "okay"; break;
+			case "warning": classH1 = "warning"; break;
+		}
+		$( '#overlayBoxH1Title' ).attr( 'class' , classH1 );
 		
 		// now decide what buttons to show
 		if( config.msgType.toLowerCase() !== "ajax" )			// no need to show buttons during ajax time, right?
@@ -62,7 +64,7 @@
 			{
 				$( okayOnlySection ).show();
 				// bind close
-				$( 'a#overlayButton_OK' ).bind( 'click', function(){ $.fn.nextGenModal.hideModal(); } );					
+				$( 'a#overlayButton_OK' ).bind( 'click', function(){ $.fn.nextGenModal.hideModal(); } );
 			}else{
 				$(  yesNoSection ).show();
 				
@@ -73,9 +75,11 @@
 					)
 					{
 						if( config.yFC_args == null || config.yFC_args == undefined || config.yFC_args.length < 1 ){
-							window[ config.yesFunctionCall ]();							// no argument	
+							// no argument
+							window[ config.yesFunctionCall ]();
 						}else{
-							window[ config.yesFunctionCall ]( config.yFC_args );		// there's an argument					
+							// there's an argument
+							window[ config.yesFunctionCall ]( config.yFC_args );
 						}
 					}
 					if( config.closeOnChoose ) $.fn.nextGenModal.hideModal();
@@ -87,16 +91,17 @@
 					)
 					{
 						if( config.nFC_args == null || config.nFC_args == undefined || config.nFC_args.length < 1 ){
-							window[ config.noFunctionCall ]();			
+							window[ config.noFunctionCall ]();
 						}else{
-							windows[ config.noFunctionCall ]( config.nFC_args );		// there's an argument	
+							// there's an argument
+							window[ config.noFunctionCall ]( config.nFC_args );
 						}
 					}
 					if( config.closeOnChooseNO ) $.fn.nextGenModal.hideModal();
-				});									
+				});
 			}
 		}else{
-			// but since it's ajax, so show the loader instead.
+			// since it's ajax, show the loader instead.
 			$('div#ajax_loader').show();
 		}
 		// now show modal
@@ -104,7 +109,7 @@
 		// so that when user presses ESC or ENTER/RETURN modal will close
 		$( document ).bind( 'keyup', function(e)
 		 {
-			if( e.which == '27' || e.which == '13' )
+			if( $.fn.nextGenModal.isVisible() && ( e.which == '27' || e.which == '13' ) )
 			{
 				$.fn.nextGenModal.hideModal();
 			}
@@ -119,11 +124,11 @@
 			// not yet shown
 			$( '#overlay' ).fadeIn( 'fast', function(){			// the overlay / blocking the page
 				$( '#box' ).animate( { 'top':'160px' }, 100 );	// the modal proper where we display the messages
-			});				
+			});
 		}
-		return false;		
+		return false;
 	};//constructor
-			
+
 	/*
 		These are the default values.
 	*/
@@ -134,64 +139,62 @@
 			'notice'	- for operations that have details that a user needs to take care of
 			'error'		- obviously
 			'warning'	- confirm some decision or a user needs to make a choice
-			'ajax'		- getting data from the server / client-side processing
-		*/		
+			'ajax'		- getting/sending data from/to the server or client-side processing
+		*/
 		msgType: 'okay',
-		
+
 		/* The title, if user wants to specify. If nothing specified, then we'll just follow 'msgType' value*/
 		title: "",
-		
+
 		/* Of course, the message */
 		message: null,
-					
+
 		/*
 			What buttons should be shown:
 			"okay"	-	the 'okay' only
-			"confirm" = the 'Yes' and 'No' ones			
+			"confirm" = the 'Yes' and 'No' ones
 		*/
 		showButton: "okay",
-		
+
 		/*
 			Show the modal be closed upon choosing YES
 		*/
 		closeOnChoose: true,
-		
+
 		/*
 			Show the modal be closed upon choosing NO
 		*/
 		closeOnChooseNO: true,
-		
+
 		/*
 			The function to call when the Yes button is cliked. Applicable only
 			if the button is displayed
 		*/
 		yesFunctionCall: null,
 		yFC_args: null,
-		
+
 		//when 'no' is clicked 
-		noFunctionCall: null,				
-		nFC_args: null						
+		noFunctionCall: null,
+		nFC_args: null
 	};
-	
+
 	$.fn.nextGenModal.hideModal = function(){
 		//created 31DEC2011-1616
 		//modified 30JAN2012-1920
-		
 		/*
 			This ensures there is no part of the modal proper being visible after it moved upwards
 			( because due to the content put earlier, it might have been enlarged).
 		*/
-		$('div#box p').html( "" );				
-		
+		$('div#box p').html( "" );
+
 		$( '#box' ).animate( { 'top': '-200px' }, 150, function(){
 				$( '#overlay' ).fadeOut( 'fast' );
 		});
 	};
-	
+
 	$.fn.nextGenModal.isVisible = function(){
-		var topLocation_str = $( 'div#box' ).css( 'top' );		
+		var topLocation_str = $( 'div#box' ).css( 'top' );
 		var topLocation_NumOnly = topLocation_str.replace( 'px', '' );	//remove the pixel units
-		return ( parseInt( topLocation_NumOnly ) > 0 );
+		return ( parseInt( topLocation_NumOnly, 10 ) > 0 );
 	};//
-	
 })(jQuery);

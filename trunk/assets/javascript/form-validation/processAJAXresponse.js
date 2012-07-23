@@ -3,10 +3,10 @@
 */
 $(document).ready( function(){
 	$.fn.makeOverlayForResponse = function( xmlText ){
+		var s_title = $(xmlText).find('mtitle').text();
 		var s_type = $(xmlText).find('type').text();
-		var s_title = $(xmlText).find('title').text();
 		var s_message = $(xmlText).find('message').text();
-		var s_redirect = ($(xmlText).find('redirect').size() == 1) ? $(xmlText).find('redirect').text() : "";
+		var s_redirect = ($(xmlText).find('redirect').size() == 1) ? decodeURIComponent($(xmlText).find('redirect').text()) : "";
 		var shouldProceed = (s_type == "okay" &&  $(xmlText).find('resultstring').text() == "PROCEED");
 		$.fn.nextGenModal({
 				msgType: shouldProceed ? "ajax" : s_type,

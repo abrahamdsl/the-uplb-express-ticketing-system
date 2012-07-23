@@ -184,7 +184,7 @@ $(document).ready( function() {
 				$(this).val( $('#lastFocus').val() );
 				return false;
 			}
-			if( parseInt( newVal ) < 1 ) {				
+			if( parseInt( newVal ) < 1 , 10) {				
 				$.fn.nextGenModal({
 				   msgType: 'error',
 				   title: 'bad expectation',
@@ -392,7 +392,7 @@ $(document).ready( function() {
 							});
 							return false;
 						}		
-						numOfDays = parseInt( $('#numOfDays').val() );
+						numOfDays = parseInt( $('#numOfDays').val(), 10 );
 						if( isNaN( numOfDays ) || numOfDays < 1 ){							
 							$.fn.nextGenModal({
 							   msgType: 'error',
@@ -402,7 +402,7 @@ $(document).ready( function() {
 							return false;
 						}						
 						break;
-			case "3":   numOfDays = parseInt( $('#relative_days').val() );
+			case "3":   numOfDays = parseInt( $('#relative_days').val(), 10 );
 						if( isNaN( numOfDays ) || numOfDays < 0 ){							
 							$.fn.nextGenModal({
 							   msgType: 'error',

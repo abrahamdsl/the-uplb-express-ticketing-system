@@ -29,8 +29,8 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/resetbutton_jquery.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>			
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/proceedbutton_jquery.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<?php
 		$this->load->view('html-generic/seatEssentials.inc');
 	?>
@@ -49,7 +49,7 @@ $this->load->view('html-generic/metadata.inc');
 <body>
 <?php
 		$this->load->view('html-generic/overlay_general.inc');
-?>	
+?>
 <div id="main_container">
 	<div id="header">
 		<?php
@@ -85,7 +85,7 @@ $this->load->view('html-generic/metadata.inc');
 				</div>
 			</div>
 			<!-- accordion start -->
-			<form method="post"  action="<?php echo base_url().'seatctrl/create_step3' ?>" name="formLogin" id="formMain" >
+			<form method="post"  action="seatctrl/create_step3" name="formLogin" id="formMain" >
 						<input type="hidden" id="rows" value="<?php echo $rows; ?>" />
 						<input type="hidden" id="cols" value="<?php echo $cols; ?>" />
 						<input type="hidden" id="rows_touchable" value="<?php echo $rows; ?>" />

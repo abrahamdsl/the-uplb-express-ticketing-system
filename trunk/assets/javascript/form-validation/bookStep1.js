@@ -177,7 +177,7 @@ $(document).ready( function() {
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
-		if( parseInt(thisVal) == 10 )
+		if( parseInt(thisVal, 10) == 10 )
 		{		
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -189,7 +189,7 @@ $(document).ready( function() {
 		/* now, sum them up
 		*/
 		// get all values of input for slots of all classes				
-		$( selector_ChangeThis ).val( parseInt(thisVal) + 1);
+		$( selector_ChangeThis ).val( parseInt(thisVal, 10) + 1);
 		return true;		
 		
 	}); //input#addSlots
@@ -209,7 +209,7 @@ $(document).ready( function() {
 			$( selector_ChangeThis ).val( $('#lastFocus').val() );	// restore the former value
 			return false;
 		}
-		if( parseInt(thisVal) == 1 )
+		if( parseInt(thisVal, 10) == 1 )
 		{			
 			$.fn.nextGenModal({
 			   msgType: 'error',
@@ -221,7 +221,7 @@ $(document).ready( function() {
 		/* now, sum them up
 		*/
 		// get all values of input for slots of all classes				
-		$( selector_ChangeThis ).val( parseInt(thisVal) - 1);
+		$( selector_ChangeThis ).val( parseInt(thisVal, 10) - 1);
 		return true;		
 		
 	}); //input#reduceSlots

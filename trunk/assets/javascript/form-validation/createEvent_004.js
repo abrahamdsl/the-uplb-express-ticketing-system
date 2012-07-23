@@ -36,7 +36,7 @@ $(document).ready( function ()
 			});			
 			return;
 		}
-		$("#id_slots").val( parseInt(thisVal) + 1);		
+		$("#id_slots").val( parseInt(thisVal) + 1, 10);		
 	});
 	
 	$("#reduceSlots").click( function() {
@@ -50,7 +50,7 @@ $(document).ready( function ()
 			});
 			return;
 		}
-		$("#id_slots").val( parseInt(thisVal) - 1);		
+		$("#id_slots").val( parseInt(thisVal) - 1, 10);		
 	});
 	
 	$("#buttonReset").click( function() {									

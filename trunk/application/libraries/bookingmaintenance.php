@@ -1436,4 +1436,5 @@ class BookingMaintenance{
 			Array( $guests[0]->Lname.", ".$guests[0]->Fname." ".$guests[0]->Mname." ( ".$guests[0]->Email." ) " )
 		);
 	}//sendEmailOnBookSuccess(..)
+
 }//class

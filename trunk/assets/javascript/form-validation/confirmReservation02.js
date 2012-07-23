@@ -1,5 +1,14 @@
 var confirmed = false;
 
+function atc_success( data ){
+	if( $(data).find('type').text() == "okay" ){
+		$('div#paymentDeadline').html( 'CONFIRMED' );
+		$('div#deadlineCaption').html( 'Congratulations. Enjoy the show.' );
+		confirmed = true;
+		$('a#buttonOK').remove();
+	}
+}
+
 function goHome(){
 	$.fn.nextGenModal({
 	   msgType: 'ajax',
@@ -9,44 +18,30 @@ function goHome(){
 	setTimeout( "location.href='" + CI.base_url + "'", 600 );
 }
 
-function atc_success( data ){
-	if( $(data).find('type').text() == "okay" ){
-		$('div#paymentDeadline').html( 'CONFIRMED' );
-		$('div#deadlineCaption').html( 'Congratulations. Enjoy the show.' );
-		confirmed = true;
-		$('a#buttonOK').remove();
-	}
-	$.fn.makeOverlayForResponse( data );
-}
-
 function formSubmit()
 {
-	go_submit(
-		'atc_success', 
-		'please wait...',
-		'Confirming reservation, one moment please.',
-		'eventctrl/confirm_step3',
-		30000,
-		'',
-		''
-	);
+	$.fn.airtraffic({
+		url_x : 'eventctrl/confirm_step3',
+		msgwait: 'Confirming reservation, one moment please.',
+		atc_fail_func: 'atc_fail'
+	});
 }
 
 $(document).ready( function(){
 	$(document).makeTimestampFriendly();
 	$(document).bookConclusionOnloadRitual();
 	
-	$('a#buttonOK').click( function(){		
+	$('a#buttonOK').click( function(){
 		$.fn.nextGenModal({
-				   msgType: 'warning',
-				   title: 'confirm',
-				   message: 'This will confirm payment of ' + $('table#total td#value_proper span.cost').html() + ' for this booking.<br/></br>Continue?',
-				   yesFunctionCall: 'formSubmit',
-				   closeOnChoose: false
-				});	
+			msgType: 'warning',
+			title: 'confirm',
+			message: 'This will confirm payment of ' + $('table#total td#value_proper span.cost').html() + ' for this booking.<br/></br>Continue?',
+			yesFunctionCall: 'formSubmit',
+			closeOnChoose: false
+		});	
 	});
 	
-	$('a#buttonReset').click( function(){		
+	$('a#buttonReset').click( function(){
 		if( !confirmed )
 		{
 			$.fn.nextGenModal({

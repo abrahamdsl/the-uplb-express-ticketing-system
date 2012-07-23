@@ -1,9 +1,10 @@
 function banishSeat( seatInputIndicator )
 {
 	var divContainingSeat = $( seatInputIndicator ).parent();
-	
-	$( divContainingSeat ).removeClass('dropped');						// remove class that makes it a selected seat
-	$( divContainingSeat ).hide();										// physically hide
+	// remove class that makes it a selected seat
+	$( divContainingSeat ).removeClass('dropped');
+	// physically hide
+	$( divContainingSeat ).hide();
 	
 	// update the seat data indicator
 	$( seatInputIndicator ).val( '' );
@@ -11,22 +12,13 @@ function banishSeat( seatInputIndicator )
 	$( divContainingSeat ).children( '[name$="status"]' ).val( '-1' );
 }
 
-function atc_success( returnedxml )
-{
-	$.fn.makeOverlayForResponse( returnedxml );
-}
-
 function formSubmit()
 {
-	go_submit( 
-		'atc_success',
-		'please wait...',
-		'Submitting the seat information, one moment please.',
-		'seatctrl/create_step3',
-		120000,
-		$( 'form' ).first().serialize(),
-		''
-	);
+	$.fn.airtraffic({
+		atc_success_func: '',
+		msgwait: 'Submitting the seat information, one moment please.',
+		timeout: 120000
+	});
 }
 
 function cancelproc(){
@@ -49,7 +41,7 @@ $(document).ready( function(){
 		});
 	});
 
-	$( '#buttonReset' ).click( function(){				
+	$( '#buttonReset' ).click( function(){
 		$.fn.nextGenModal({
 		   msgType: 'warning',
 		   title: 'confirm',
@@ -58,7 +50,7 @@ $(document).ready( function(){
 		   closeOnChoose: false
 		});
 	});
-	
+
 	$('td.legend input[name^="label_up"]').change( function(){
 		$('td.legend input[name^="label_down"]').val( $(this).val() );
 	});
@@ -78,16 +70,16 @@ $(document).ready( function(){
 		var decision;
 		var colRowIndicatorPosition;
 		var thisOpposite;
-								
+
 		//we are dealing with vertical aisle
 		if( thisIndicator.name.endsWith('number') )		// endsWith() prototyped in generalChecks.js
 		{
 			mode = "number";
 			destroyThis = parseInt( $(thisIndicator).val(), 10 );	// get the column number ( index starts at 1 )
 			y = $('#rows').val();
-			z = $('#cols').val();			
+			z = $('#cols').val();
 			z_handle = $('#cols_touchable');
-			
+
 			/*
 				determine if column indicator is from top or bottom, then assemble the identifier for the matching indicator,
 				so that we can set its value to 'A' too later on
@@ -97,19 +89,19 @@ $(document).ready( function(){
 			{
 				thisOpposite = "down";
 			}else{
-				thisOpposite = "up";				
+				thisOpposite = "up";
 				$.fn.nextGenModal({
 				   msgType: 'okay',
 				   title: 'not yet',
 				   message: 'Making of vertical aisle feature by clicking on the bottom column indicators coming later.  :-)'
 				});
 				return false
-			}			
+			}
 			thisOpposite = 'input[name="label_' + thisOpposite + '_number"][value="' + destroyThis + '"]';			
 		}else
 		// we are dealing with horizontal aisle
-		if( thisIndicator.name.endsWith('letter') )	
-		{										
+		if( thisIndicator.name.endsWith('letter') )
+		{
 			$.fn.nextGenModal({
 			   msgType: 'okay',
 			   title: 'not yet',
@@ -123,7 +115,7 @@ $(document).ready( function(){
 			   message: '"up" or "down" only needed'
 			});
 			return false;
-		}		
+		}
 
 		if( mode2 == "AISLE" )
 		{
@@ -138,10 +130,9 @@ $(document).ready( function(){
 					Adjusting the column indicators, both top and bottom
 				*/
 				// set new value 'A' that means 'Aisle', for the input type=text where the td was clicked
-				$(thisIndicator).val( 'A' );	
-				$(thisOpposite).val( 'A' );				
+				$(thisIndicator).val( 'A' );
+				$(thisOpposite).val( 'A' );
 				// do the same to the corresponding ...
-																
 				for( i = (destroyThis+1), newVal = i, ++z; i < z; i++) 
 				{
 						/*
@@ -150,15 +141,15 @@ $(document).ready( function(){
 						*/
 						var labelUpSelector = 'input[name^="label_up_'+mode+'"][value="'+i+'"]';
 						var labelDownSelector = 'input[name^="label_down_'+mode+'"][value="'+i+'"]';
-						
+
 						if( $(labelUpSelector).val() != 'A' )
-						{						
+						{
 							//alert( $('input[name^="label_up_'+mode+'"][value="'+i+'"]').val(  ) );
 							$('input[name^="label_up_'+mode+'"][value="'+i+'"]').val( newVal - 1 );
 							$('input[name^="label_down_'+mode+'"][value="'+i+'"]').val( newVal - 1);
 							newVal++;
 						}
-				}		
+				}
 
 				/*
 					Now, removing the seats so there's an open space. Get a handle to the hidden input that actually represents the seat,
@@ -166,8 +157,8 @@ $(document).ready( function(){
 				*/
 				var inTheLine = $('input[name^="seatLocatedAt_"][name$="presentation"][value$="_'+ ( destroyThis )+'"]');		// get all seats concerned
 				for( x=0, y=inTheLine.length ; x < y; x++ )
-				{														
-					banishSeat( $(inTheLine[x]) );						
+				{
+					banishSeat( $(inTheLine[x]) );
 				}
 				
 				/*
@@ -178,7 +169,7 @@ $(document).ready( function(){
 					var seatsToModify = $('input[name^="seatLocatedAt_"][name$="_'+x+'_presentation"]');	// get all seats concerned
 					for( a = 0, b = seatsToModify.length; a < b; a++ )
 					{
-						var itsParent = $( seatsToModify[a] ).parent();										
+						var itsParent = $( seatsToModify[a] ).parent();
 						var spanIndicator = $(itsParent).children("span");
 						/*
 							A seat is named like 'seatLocatedAt_x_y_presentation' with 
@@ -186,11 +177,11 @@ $(document).ready( function(){
 						    values on the browser
 						*/
 						var oldValue_arr = $( seatsToModify[a] ).val().split('_'); 
-						var newValue_y = parseInt( oldValue_arr[1]) - 1;		   // so decrease the number
+						var newValue_y = parseInt( oldValue_arr[1], 10) - 1;		   // so decrease the number
 						//update hidden input
 						 $( seatsToModify[a] ).val( oldValue_arr[0] + '_' + newValue_y );
 						 //now, update span - display new column number
-						 $(spanIndicator).html( oldValue_arr[0] + '-' + newValue_y );	
+						 $(spanIndicator).html( oldValue_arr[0] + '-' + newValue_y );
 					}
 				}
 				
@@ -200,5 +191,4 @@ $(document).ready( function(){
 		}
 		
 	});
-
 });
