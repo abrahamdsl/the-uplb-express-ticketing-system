@@ -37,13 +37,13 @@ $this->load->view('html-generic/metadata.inc');
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatsScript2.js'; ?>" ></script>
 	<!--For modal v1-->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic_v2.js'; ?>" ></script>
 	
 </head>
 <body>

@@ -6,42 +6,41 @@ $this->load->view('html-generic/doctype.inc');
 $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
-	$this->pageTitle = "Manage Payment Modes";	
-	$this->load->view('html-generic/segoefont_loader.inc');	
+	$this->pageTitle = "Manage Payment Modes";
+	$this->load->view('html-generic/segoefont_loader.inc');
 	$this->load->view('html-generic/head-title.inc');
 ?>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->				
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/partitionermain.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_basic.css'; ?>"/>		
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managePaymentModes.css'; ?>"/>		
-	<!--For modal v1-->	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/partitionermain.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managebooking01.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/metrotile_colors_jumbled.css'; ?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/managePaymentModes.css'; ?>"/>
+	<!--For modal v1-->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
-  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
+  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/metrotile_action_default.js'; ?>" ></script>
-	<?php			
-		$this->load->view('html-generic/baseURLforJS.inc');	
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
 	?>	
-	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
-	<script type="text/javascript" >		
+	<!--For modal v1-->
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
+	<script type="text/javascript" >
 		$(document).ready( function(){
 			$('a.notyet').click( function(e){
 				e.preventDefault();
 				
 			});
-			
 			$('a#buttonOK').click( function(e){
-				window.location = CI.base_url + 'useracctctrl/managepaymentmode';
+				window.location = CI.base_url;
 			});
 		});
 	</script>
@@ -75,16 +74,16 @@ $this->load->view('html-generic/metadata.inc');
 			<div style="padding-left:10px; clear: both">
 				Manipulate ALL the payment modes.
 				<br/>
-			</div>			
-			<!-- accordion start -->			
+			</div>
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container" >
-			<div id="accordion" class="specialOnMB01" >					
+			<div id="accordion" class="specialOnMB01" >
 				<?php
 					foreach( $paymentChannels as $singleChannel ){
 				?>
 				<h3 id="h_x<?php echo $singleChannel->UniqueID; ?>"><a href="#"><?php echo $singleChannel->Name; ?></a></h3>
-				<div id="x<?php echo $singleChannel->UniqueID; ?>" class="section" >									
-					<div class="bookingDetails" >						
+				<div id="x<?php echo $singleChannel->UniqueID; ?>" class="section" >
+					<div class="bookingDetails" >
 						<div id="pc<?php echo $singleChannel->UniqueID; ?>_details" class="pChannelDetails" >
 							<div id="pChannelName" class="properInfo center_purest" >
 								<?php echo $singleChannel->Name; ?>
@@ -141,10 +140,9 @@ $this->load->view('html-generic/metadata.inc');
 												if( strlen( $value ) < 1 ) continue;
 												$temp = explode('=', $value );
 												$internalDataPair[ $temp[0] ] = $temp[1];
-											}											
+											}
 									?>
 											<table class="center_purest schedulesCentral" >
-											
 									<?php
 											$x = 0;
 											foreach( $internalDataPair as $key => $val )
@@ -170,29 +168,30 @@ $this->load->view('html-generic/metadata.inc');
 									?>
 								</span>
 							</div>
-						</div>								
-					</div>
-					<div class="containingClassTable" >								
-						<div class="metrotile" name="edit" >
-							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericedit.png" alt="Edit payment mode" /></a>
-							<form method="post" action="<?php echo base_url().'useracctctrl/managepaymentmode_edit'; ?>" class="notyet" >
-								<input type="hidden" name="pChannel" value="<?php echo  $singleChannel->UniqueID; ?>" />
-							</form>
 						</div>
-						<div class="metrotile" name="delete" >
-							<a href="<?php echo base_url(); ?>#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericdelete.png" alt="Delete payment mode" /></a>
-							<form method="post" action="<?php echo base_url().'useracctctrl/managepaymentmode_delete'; ?>" >								
-								<input type="hidden" name="pChannel" value="<?php echo  $singleChannel->UniqueID; ?>" />
-							</form>
-						</div>						
-					</div>																											
+					</div>
+					<div class="containingClassTable" >
+						<?php 
+							$uid = $singleChannel->UniqueID;
+						?>
+						<div class="metrotile mtile2" name="edit" >
+							<a href="<?php echo base_url().'useracctctrl/managepaymentmode_edit/'.$uid; ?>">
+								<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericedit.png" alt="Edit payment mode" />
+							</a>
+						</div>
+						<div class="metrotile mtile4" name="delete" >
+							<a href="<?php echo base_url().'useracctctrl/managepaymentmode_delete/'.$uid; ?>">
+								<img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-genericdelete.png" alt="Delete payment mode" />
+							</a>
+						</div>
+					</div>
 				</div>
 				<?php
 					}// foreach
 				?>
 			</div>			
-			<div id="essentialButtonsArea" >											
-					<a class="button" id="buttonOK" ><span class="icon" >Back</span></a>				
+			<div id="essentialButtonsArea" >
+					<a class="button" id="buttonOK" ><span class="icon" >Home</span></a>
 			</div>
 			<div style=" clear:both;"></div>
 		</div>

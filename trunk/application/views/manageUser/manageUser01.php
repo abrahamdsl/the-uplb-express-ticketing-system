@@ -37,40 +37,24 @@ $this->load->view('html-generic/metadata.inc');
 	<!--For modal v1-->	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>"/></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic_v2.js'; ?>" ></script>
 	<?php			
 		$this->load->view('html-generic/baseURLforJS.inc');	
 	?>	
 	<script type="text/javascript" >
 		function formSubmit()
 		{
-			var x = $.ajax({	
-					type: 'POST',
-					url: CI.base_url + 'useracctctrl/isUserExisting2',
-					timeout: 10000,
-					data: $('form').first().serialize(),
-					beforeSend: function(){
-						$.fn.nextGenModal({
-						   msgType: 'ajax',
-						   title: 'processing',
-						   message: 'Contacting server for your request...'
-						});
-					},
-					success: function(data){
-						if( $(data).find('resultstring').text() == 'USERNAME_EXISTS' )
-						{
-							window.location = $('input#ok_proceed').val();
-						}else{
-							if( $(data).find('type').text() != 'okay' ) $.fn.makeOverlayForResponse( data );
-						}
-					}
-				});
+			$.fn.airtraffic_v2({
+				atc_success_func: '',
+				msgwait: 'Checking user, one moment please.',
+				timeout: 15000
+			});
 		}//formSubmit(..)
-		
-		
+
 		$(document).ready( function(){
 			
 			// when filling out 
-			$('input[name="useridentifier"]').change( function() {		
+			$('input[name="useridentifier"]').change( function() {
 				$(this).parent().siblings('span.NameRequired').hide();
 			});
 			
@@ -82,16 +66,22 @@ $this->load->view('html-generic/metadata.inc');
 				window.location = CI.base_url;
 			});
 			$("#buttonOK").click( function(e) {
-				var bNumberHandle = $('input[name="useridentifier"]');			
+				var bNumberHandle = $('input[name="useridentifier"]');
 				var allOK = 0;
 				
+				bNumberHandle.parent().siblings("span.fieldErrorNotice").hide();
 				e.preventDefault();
 				if( bNumberHandle.val() == "" )
-				{				
+				{
 					bNumberHandle.parent().siblings("span.NameRequired").show();
-					allOK++;				
-				}					
-				if( allOK < 1 ) formSubmit();			
+					allOK++;
+				}else
+				if( bNumberHandle.val().length < 5 )
+				{
+					bNumberHandle.parent().siblings("span.minlen").show();
+					allOK++;
+				}
+				if( allOK < 1 ) formSubmit();
 			});
 		});
 	</script>
@@ -112,20 +102,20 @@ $this->load->view('html-generic/metadata.inc');
 			$this->load->view('html-generic/userInfo-bar.inc');
 		?>
 	</div>
-	<div id="main_content" >    	
+	<div id="main_content" >
 		<div id="centralContainer" >
 			<div id="page_title" >
 				Manage User
-			</div>			
+			</div>
 			<div id="instruction" >
 				Please key in ...
-			</div>				
-			<!-- accordion start -->			
+			</div>
+			<!-- accordion start -->
 			<div class="accordionContainer center_purest" >
 				<div id="accordion" >
-					<h3><a href="#" >Key it in</a></h3>					
+					<h3><a href="#" >Key it in</a></h3>	
 					<div>
-					<form method="post" action="#" name="formLogin" id="formMain" >						
+					<form method="post" action="useracctctrl/isUserExisting2" name="formLogin" id="formMain" >						
 						<input type="hidden" id="ok_proceed" value="<?php echo base_url().'useracctctrl/manageUser_step2' ?>" />
 						<div class="mainWizardMainSections" >
 							<span class="MWMS1" >
@@ -134,6 +124,7 @@ $this->load->view('html-generic/metadata.inc');
 							</span>
 							<span class="MWMS2" ><input type="text" name="useridentifier" class="textInputSize" /></span>					
 							<span class="MWMShidden fieldErrorNotice NameRequired" >This is not allowed to be blank</span>
+							<span class="MWMShidden fieldErrorNotice minlen" >At least 5 characters needed</span>
 							<span class="MWMShidden fieldErrorNotice" id="ajaxind" >
 								<img title="ajaxloader" src="<?php echo base_url().'assets/images/ajax-horiz.gif'; ?>" alt="ajax_loader" />
 							</span>	

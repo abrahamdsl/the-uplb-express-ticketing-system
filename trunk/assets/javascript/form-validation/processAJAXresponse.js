@@ -1,5 +1,6 @@
-/*
-	Requires that nextGenModal is declared earlier!
+/**
+*	@revised 28JUL2012-1412
+*	@remarks Requires that nextGenModal is declared earlier!
 */
 $(document).ready( function(){
 	$.fn.makeOverlayForResponse = function( xmlText ){
@@ -11,7 +12,7 @@ $(document).ready( function(){
 		$.fn.nextGenModal({
 				msgType: shouldProceed ? "ajax" : s_type,
 				title: s_title,
-				message: shouldProceed ? "Redirecting you to the next page, please wait.." : s_message
+				message: shouldProceed ? ( s_message == "" ? "Redirecting you to the next page, please wait.." : s_message ): s_message
 		});
 		if(  s_redirect != "" )
 		{

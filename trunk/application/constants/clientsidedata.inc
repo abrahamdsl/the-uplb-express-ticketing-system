@@ -4,6 +4,7 @@
 		define( 'ACTIVITY_STAGE', 'activity_stage' );
 		define( 'ACTIVITY_GUID', 'act_guid' );
 		define( 'ACTIVITY_DATA' , 'activity_data' );
+		define( 'ADMIN_MANAGES_USER' , 'adm_m_usr' );
 		define( 'AUTH_GUID' , 'authguid' );
 		define( 'ATC_GUID' , 'atcguid' );
 		define("BOOKING_PROGRESS_INDICATOR", 'book_step');

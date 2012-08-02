@@ -7,8 +7,8 @@ $this->load->view('html-generic/metadata.inc');
 ?>
 <?php
 	$this->pageTitle = "Login";
-	$this->thisPage_menuCorrespond = "HOME";	
-	$this->load->view('html-generic/segoefont_loader.inc');	
+	$this->thisPage_menuCorrespond = "HOME";
+	$this->load->view('html-generic/segoefont_loader.inc');
 	$this->load->view('html-generic/head-title.inc');
 ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
@@ -98,8 +98,9 @@ $this->load->view('html-generic/metadata.inc');
 			<div id="page_title">
 				Login
 			</div>
-			<div style="padding-left:10px; clear: both">
-				Login to access services.
+			<div id="instruction">
+				Login to access services.<br/>
+				Server time is <?php date_default_timezone_set('Asia/Manila'); echo date('Y-m-d H:i:s')?> ( UTC +0800/PST).
 			</div>
 			
 			<div id="left_content">	
@@ -120,11 +121,14 @@ $this->load->view('html-generic/metadata.inc');
 						</div>
 					</form>
 				</div><!--text_box-->
-				<div class="errorNotice" id="errdiv" style="display:none;" >
+				<div class="errorNotice" id="errdiv" >
 					<span class="FldMsg" id="usernameFldMsg"></span>
 					<span class="FldMsg" id="passwordFldMsg"></span>
 					<ul class="loginWarning">
 						<li>
+						<?php if( $this->clientsidedata_model->getRedirectionURLAfterAuth() !== FALSE ) {?>
+							You have to log-in first before you can access the feature requested.
+						<?php } ?>
 						</li>
 					</ul>
 				</div>
@@ -135,10 +139,15 @@ $this->load->view('html-generic/metadata.inc');
 				
 			</div><!-- left content -->
 			<div style="width: 50%; float: right; border-left: 2px solid orange; margin-right: 10px; padding: 10px 10px 10px 30px; position: relative; top: -60px;" >
+				<h3>Disclaimer</h3>
+				<p>
+					Posted 30JUL2012-2111<br/><br/>
+					I'm doing revisions to this app as of the moment. Information displayed herein may or may not be factual. 
+				</p>
 				<h3>Hi!</h3>
 				<p>
 					Thank you for testing this web application. You may use the following accounts in accessing the application if you don't want to try the sign-up process
-					now.
+					now. 
 				</p>
 				<table class="center_purest" style="padding: 10px;">
 					<thead style="font-size: 1.2em;" >

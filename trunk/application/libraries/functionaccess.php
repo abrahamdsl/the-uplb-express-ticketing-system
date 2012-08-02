@@ -61,6 +61,16 @@ class FunctionAccess{
 		$this->sessionActivity_x =  $this->CI->clientsidedata_model->getSessionActivity();
 	}
 	
+	public function isActivityAdminManagingUser()
+	{
+		return ( $this->sessionActivity_x[0] == ADMIN_MANAGE_USER );
+	}
+	
+	public function isActivityAdminManagingPaymentMode()
+	{
+		return ( $this->sessionActivity_x[0] == ADMIN_MANAGE_PAYMENTMODE );
+	}
+	
 	public function isActivityBookingTickets()
 	{
 		return ( $this->sessionActivity_x[0] == BOOK );
@@ -69,6 +79,11 @@ class FunctionAccess{
 	public function isActivityConfirmBooking()
 	{		
 		return ( $this->sessionActivity_x[0] == CONFIRM_RESERVATION );
+	}
+	
+	public function isActivityManageAccount()
+	{
+		return ( $this->sessionActivity_x[0] == MANAGE_ACCOUNT );
 	}
 	
 	public function isActivityManageBooking()
@@ -99,7 +114,11 @@ class FunctionAccess{
 		return ($this->CI->clientsidedata_model->getPaymentModeExclusion() !== FALSE );
 	}
 	
-	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj)
+	function isIdle(){
+		return( $this->sessionActivity_x[0] == 'IDLE' AND $this->sessionActivity_x[1] == -1 );
+	}
+	
+	public function preBookCheckAJAXUnified( $checkArraysBool, $outputError = true, $stage, $bookingInfoObj, $stagePR = NULL )
 	{
 		/**
 		*	With the introduction of $this->getRedirectionURL(.), we should remove underscore as our
@@ -108,11 +127,17 @@ class FunctionAccess{
 				- TRUE : outputs XML string to stdoutput first and then BOOLEAN
 				- FALSE : simpleXMLElement object
 		*/
+		if( !$this->CI->input->is_ajax_request() ){
+			echo "You need to access this via XMLHttpRequest/AJAX!"; //ec 4103
+			return FALSE;
+		}
 		$notAllowed    = $this->CI->load->view("_stopcodes/4100.xml", '', TRUE);
 		$notAllowedYet = $this->CI->load->view("_stopcodes/4103.xml", '', TRUE);
 		$redirect	   = $this->CI->load->view("_stopcodes/3100.xml", '', TRUE);
 		$crucialData   = $this->CI->load->view("_stopcodes/4002.xml", '', TRUE);
 		$cns_404	   = $this->CI->load->view("_stopcodes/4800.xml", '', TRUE);
+		$previousStill = $this->CI->load->view("_stopcodes/4900.xml", '', TRUE);
+
 		if( $bookingInfoObj === FALSE )
 		{			
 			 if( $outputError )
@@ -124,8 +149,9 @@ class FunctionAccess{
 			 }
 		}
 		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking()
-  		    or $this->isActivityCreatingSeatMap()
-		){			
+  		    or $this->isActivityCreatingSeatMap() or $this->isActivityManageAccount() or $this->isActivityAdminManagingUser()
+			or $this->isActivityAdminManagingPaymentMode()
+		){
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool ) )
 			{
 				if( $this->sessionActivity_x[1] < $stage )
@@ -150,8 +176,29 @@ class FunctionAccess{
 					{
 						if( $adv_check[0] )
 						{	
+							if( !is_null( $stagePR ) ) {
+								if( $stagePR == $adv_check[4] ){
+									if( $outputError )
+									 {
+										 echo $previousStill;
+										 return false;
+									 }else{
+										return ( new SimpleXMLElement( $previousStill ) );
+									 }
+								}
+							}
 							return $this->reactOnShouldBeAdvanced( $outputError, $redirect, $adv_check[4], TRUE, TRUE );
 						}
+					}else
+					if( $adv_check[1] == -1 )
+					{
+						if( $outputError )
+						 {
+							 echo $notAllowed;
+							 return false;
+						 }else{
+							return ( new SimpleXMLElement($notAllowed) );
+						 }
 					}
 					return true;
 				}
@@ -192,7 +239,7 @@ class FunctionAccess{
 		$bookingInfoObj = ( $m_bookingInfoObj === TRUE ) ? TRUE : $this->CI->ndx_model->get( @$m_bookingInfoObj->CURRENT_UUID );
 		return $this->preBookCheckUnified( $checkArraysBool, $stage, $bookingInfoObj );
 	}
-	
+
 	public function preBookCheckUnified( $checkArraysBool, $stage, $bookingInfoObj )
 	{
 		if( $bookingInfoObj === FALSE )
@@ -203,9 +250,9 @@ class FunctionAccess{
 			 return false;
 		}
 		if( $this->isActivityBookingTickets() or $this->isActivityManageBooking() or $this->isActivityConfirmBooking() 
-			or $this->isActivityCreatingSeatMap()
+			or $this->isActivityCreatingSeatMap() OR $this->isActivityAdminManagingUser() OR $this->isActivityAdminManagingPaymentMode()
 		)
-		{				
+		{
 			if( count( $checkArraysBool ) === 0 or !in_array( false, $checkArraysBool, true ) )
 			{
 				if( $this->sessionActivity_x[1] < $stage )
@@ -314,6 +361,7 @@ class FunctionAccess{
 	{
 		return $this->preBookCheckAJAXUnified( Array( $accountNum ), true, $stage, $bookingInfo );
 	}
+	
 	public function preCreateSeatStep1PRCheck(){
 		if( !( ($this->isActivityManageSeatMap() AND $this->sessionActivity_x[1] === STAGE_MS0_HOME) 
 			  or $this->sessionActivity_x[1] === -1 ) 
@@ -326,15 +374,6 @@ class FunctionAccess{
 	
 	public function preCreateSeatStep1FWCheck()
 	{
-		/*if( $this->isActivityCreatingSeatMap() )
-		{  // forward to the appropriate page
-			if( $this->sessionActivity_x[1] > STAGE_CR_SEAT1 ){
-				$this->redirectBookForward( $this->sessionActivity_x[1] );
-				return FALSE;
-			}
-			return TRUE;
-		}
-		return FALSE;*/
 		if( !($this->isActivityCreatingSeatMap() AND $this->sessionActivity_x[1] === STAGE_CR_SEAT1 ) ){
 			$this->redirectBookForward( $this->sessionActivity_x[1] );
 			return FALSE;
@@ -354,7 +393,14 @@ class FunctionAccess{
 	
 	public function preCreateSeatStep3PRCheck()
 	{		
-		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_CR_SEAT2_FW, TRUE );
+		//log_message('debug', 'functionaccess::preCreateSeatStep3PRCheck session ' . print_r( $this->CI->clientsidedata_model->getSessionActivity(),TRUE ) );
+		if( $this->CI->clientsidedata_model->getSessionActivityStage() == STAGE_CR_SEAT3_PR )
+		{
+			echo "WAIT FOR THE OTHER SCRIPT TO FINISH!!!";
+			return FALSE;
+		}
+		
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_CR_SEAT2_FW, TRUE, STAGE_CR_SEAT3_PR );
 	}
 	
 	function preManageBookingChangeSeatCheck( $bNum, $mbookingInfo , $allowedStages ){
@@ -423,6 +469,91 @@ class FunctionAccess{
 		return $this->preManageBookCheckUnified( Array( ), $stage, $mbookingInfo );
 	}
 	
+	function preUseracctctrl__addpaymentmode(){
+		$pre_allowed = Array(
+			STAGE_MPAY_EDIT_1_FW, STAGE_MPAY_ADD_1_FW, 
+			STAGE_MPAY_DEL_1_FW
+		);
+		if( in_array( $this->sessionActivity_x[1], $pre_allowed )
+		) return TRUE;
+		return $this->preBookCheckUnified( Array( ), STAGE_MPAY_1_FW, TRUE );
+	}
+
+	function preUseracctctrl__addpaymentmode_step2(){
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MPAY_ADD_1_FW, TRUE, STAGE_MPAY_ADD_2_PR );
+	}
+
+	function preUseracctctrl__managepaymentmode_edit()
+	{
+		$pre_allowed = Array(
+			STAGE_MPAY_EDIT_1_FW, STAGE_MPAY_ADD_1_FW, 
+			STAGE_MPAY_DEL_1_FW
+		);
+		if( in_array( $this->sessionActivity_x[1], $pre_allowed )
+		) return TRUE;
+		return $this->preBookCheckUnified( Array( ), STAGE_MPAY_1_FW, TRUE );
+	}
+	
+	function preUseracctctrl__managepaymentmode_save(){
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MPAY_EDIT_1_FW, TRUE, STAGE_MPAY_ADD_2_PR );
+	}
+	
+	function preUseracctctrl__changePassword_step2(){
+		return ( $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MACCT0_HOME, TRUE, STAGE_MACCT1_PR )
+		);
+	}
+	
+	function preUseracctctrl__manageAccountSave(){
+		ob_start();
+		$result = $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MACCT0_HOME, TRUE, STAGE_MACCT1_PR );
+		if( !$result ){
+			ob_clean();
+			$result = $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MU_2_FW, TRUE, STAGE_MACCT1_PR );
+		}
+		@ob_end_flush();
+		flush();
+		return $result;
+	}
+	
+	function preUseracctctrl__managepaymentmode(){
+		if( $this->isIdle() or $this->sessionActivity_x[1] == 1201 ) return TRUE;
+		return $this->preBookCheckUnified( Array(), -1, TRUE );
+	}
+	
+	function preUseracctctrl__manageuser(){
+		if( $this->isIdle() ) return TRUE;
+		echo 'You should not be here. Anyway, to admin, please turn on redirection service.';
+		//return $this->preBookCheckUnified( Array(), -1, TRUE );
+	}
+	
+	function preUseracctctrl__manageuser_editrole_save(){
+		return $this->preBookCheckAJAXUnified( Array(), TRUE, STAGE_MU_2_FW, TRUE, STAGE_MACCT1_PR );
+	}
+
+	function preUseracctctrl__manageUser_step2(){
+		
+		return $this->preBookCheckUnified( Array(), STAGE_MU_2_FW, TRUE );
+	}
+	
+	function preUseracctctrl__myAccountPR(){
+		if( !( ($this->isActivityManageAccount() AND $this->sessionActivity_x[1] === STAGE_MS0_HOME) 
+			  or $this->sessionActivity_x[1] === -1 ) 
+		){
+			$this->redirectBookForward( $this->sessionActivity_x[1] );
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	function preUseracctctrl__myAccountFW()
+	{
+		if( !($this->isActivityManageAccount() AND $this->sessionActivity_x[1] === STAGE_MACCT0_HOME ) ){
+			$this->redirectBookForward( $this->sessionActivity_x[1] );
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
 	function redirectBookForward( $stage_sent = FALSE )
 	{
 		/*
@@ -438,12 +569,13 @@ class FunctionAccess{
 		log_message('DEBUG', 'getredirectionurl ' . $stage );
 		switch( $stage )
 		{
+			case -1 : return 'sessionctrl'; break;
 			case STAGE_BOOK_1_PROCESS: return 'eventctrl/book';  break;
 			case STAGE_BOOK_1_FORWARD: return 'eventctrl/book_forward';  break;
 			case STAGE_BOOK_2_PROCESS: return 'eventctrl/book_step2';  break;
 			case STAGE_BOOK_2_FORWARD: return 'eventctrl/book_step2_forward';  break;
 			case STAGE_BOOK_3_PROCESS: return 'eventctrl/book_step3';  break;
-			case STAGE_BOOK_3_FORWARD: return 'eventctrl/book_step3_forward';  break;			
+			case STAGE_BOOK_3_FORWARD: return 'eventctrl/book_step3_forward';  break;
 			case STAGE_BOOK_4_PROCESS: return 'eventctrl/book_step4';  break;
 			case STAGE_BOOK_4_CLASS_1_FORWARD: return 'eventctrl/meow';  break;
 			case STAGE_BOOK_4_CLASS_2_FORWARD: return 'eventctrl/meow2';  break;
@@ -460,6 +592,7 @@ class FunctionAccess{
 			case STAGE_CR_SEAT1: return 'seatctrl/create_forward'; break;
 			case STAGE_CR_SEAT2_FW: return 'seatctrl/create_step2_forward'; break;
 			case STAGE_CR_SEAT3_FW: return 'seatctrl/create_step3_forward'; break;
+			case STAGE_MACCT0_HOME: return 'useracctctrl/myaccount_forward'; break;
 			default: return "sessionctrl/redirect_unknown/".$stage; //3999
 		}
 	}

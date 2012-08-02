@@ -24,7 +24,7 @@ class sat_model extends CI_Model {
 		$this->load->helper('cookie');
 		$this->load->library('session');
 		date_default_timezone_set('Asia/Manila');
-		include_once( APPPATH.'constants/sat.inc' );		
+		include_once( APPPATH.'constants/sat.inc' );
 	}
 	
 	private function updateUnified( $uuid, $entryArray )
@@ -38,7 +38,7 @@ class sat_model extends CI_Model {
 				on $entryArray's contents.
 		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
 		**/	
-		$this->db->where( COL_UUID, $uuid );		
+		$this->db->where( COL_UUID, $uuid );
 		return $this->db->update( COL_DB_TABLE_NAME_SAT, $entryArray );
 	}//updateUnified(..)
 	
@@ -119,10 +119,7 @@ class sat_model extends CI_Model {
 		}		
 		$col_arr[ COL_CONTACT_DATE ] = date("Y-m-d");
 		$col_arr[ COL_CONTACT_TIME ] = date("H:i:s");
-		return $this->updateUnified( 
-			$uuid, 
-			$col_arr
-		);
+		return $this->updateUnified( $uuid, $col_arr );
 	}//update()
 	
 	function updateExpiryDateAndTime( $uuid, $newDate_x = NULL, $newTime_x = NULL )
@@ -134,14 +131,14 @@ class sat_model extends CI_Model {
 		**/
 		$newDate = $newDate_x === NULL ? date("Y-m-d") :$newDate_x ;
 		$newTime = $newTime_x === NULL ? date("H:i:s") :$newTime_x ;
-		return $this->updateUnified( 
+		return $this->updateUnified(
 			$uuid, 
 			Array( COL_EXPIRE_DATE => $newDate, COL_EXPIRE_TIME => $newTime ) 
 		);
 	}//updateExpiryDate()
 	
 	function isOnDB_RecordAdvanced( $guid, $sessionActivityStage )
-	{		
+	{
 		/**
 		*	@created 13JUL2012-1700
 		*	@description Checks if the client session activity stage in the DB is greater than
@@ -157,7 +154,7 @@ class sat_model extends CI_Model {
 			0,
 			"success",
 			$obj->ACTIVITY_NAME,
-			$obj->ACTIVITY_STAGE
+			intval( $obj->ACTIVITY_STAGE )
 		);
 	}
 }

@@ -26,6 +26,11 @@ class clientsidedata_model extends CI_Model {
 		include_once( APPPATH.'constants/clientsidedata.inc');
 	}
 	
+	function deleteAdminManagesUser()
+	{
+		return $this->session->unset_userdata( ADMIN_MANAGES_USER );
+	}
+	
 	function deleteAdminResetsPasswordIndicator()
 	{
 		// USES SESSION DATA
@@ -111,6 +116,26 @@ class clientsidedata_model extends CI_Model {
 	function deleteEventName()
 	{
 		return $this->deleteCookieUnified( EVENT_NAME );
+	}
+	
+	function deleteAllInternalErrors()
+	{
+		return $this->session->unset_userdata( INTERNAL_LAST_ERR );
+	}
+	
+	function deleteLastInternalError()
+	{
+		$arrayized = $this->getAllInternalErrors();
+		if( $arrayized === FALSE ) return FALSE;
+		if( !is_array( $arrayized ) ) return FALSE;
+		$arrlen = count( $arrayized );
+		if( $arrlen == 1 )
+		{
+			return $this->deleteAllInternalErrors();
+		}else{
+			unset( $arrayized[ $arrlen - 1 ] );
+			return $this->setAllInternalErrors( $arrayized );
+		}
 	}
 	
 	function deleteGuestNoSeatXMLFile()
@@ -262,6 +287,11 @@ class clientsidedata_model extends CI_Model {
 		return $this->deleteCookieUnified( VISUALSEAT_DATA );
 	}
 	
+	function getAdminManagesUser()
+	{
+		return $this->session->userdata( ADMIN_MANAGES_USER );
+	}
+	
 	function getAdminResetsPasswordIndicator()
 	{
 		// USES SESSION DATA
@@ -347,6 +377,20 @@ class clientsidedata_model extends CI_Model {
 	function getEventName()
 	{
 		return $this->getCookieUnified( EVENT_NAME );
+	}
+	
+	function getAllInternalErrors()
+	{
+		return $this->session->userdata( INTERNAL_LAST_ERR );
+	}
+	
+	function getLastInternalError( $deleteAllToo = TRUE )
+	{
+		$arrayized = $this->getAllInternalErrors();
+		if( $arrayized === FALSE ) return FALSE;
+		if( $deleteAllToo ) $this->deleteAllInternalErrors();
+		$arrlen = count( $arrayized );
+		return $arrayized[ $arrlen - 1 ];
 	}
 	
 	function getGuestNoSeatXMLFile( )
@@ -514,6 +558,11 @@ class clientsidedata_model extends CI_Model {
 	}//getBookingCookieNames()
 	
 	/*set part*/
+	function setAdminManagesUser( $concernedUserAccountNum )
+	{
+		return $this->session->set_userdata( ADMIN_MANAGES_USER, $concernedUserAccountNum );
+	}
+	
 	function setAdminResetsPasswordIndicator( $concernedUserAccountNum )
 	{
 		// USES SESSION DATA
@@ -603,6 +652,23 @@ class clientsidedata_model extends CI_Model {
 	function setEventName( $value = NULL, $expiry = 3600 )
 	{
 		return $this->setCookieUnified( EVENT_NAME, $value, $expiry );
+	}
+	
+	function setAllInternalErrors( $values )
+	{
+		return $this->session->set_userdata( INTERNAL_LAST_ERR, $values );
+	}
+	
+	function setLastInternalError( $value )
+	{
+		$current_errors = $this->getAllInternalErrors();
+		if( $current_errors === FALSE )
+		{
+			return $this->setAllInternalErrors( Array( $value ) );
+		}else{
+			$current_errors[] = $value;
+			return $this->setAllInternalErrors( $current_errors );
+		}
 	}
 	
 	function setManageBookingNewSeatMatrix( $value = NULL, $expiry = 3600 )
@@ -817,6 +883,7 @@ class clientsidedata_model extends CI_Model {
 		return $this->session->set_userdata( BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
 	}
 	
+	
 	function setManageBookingCookiesOnServerUUIDRef( $UUID )
 	{
 		return $this->session->set_userdata( MANAGE_BOOKING_COOKIES_ON_SERVER_UUID, $UUID );
@@ -864,5 +931,18 @@ class clientsidedata_model extends CI_Model {
 		if( $updateSat ) $this->sat_model->update( $this->getActivityGUID(), $stage );
 		$this->session->set_userdata( ACTIVITY_STAGE, $stage );	
 	}
+	
+	function updateSessionActivityStage_Pure( $stage )
+	{
+		// CREATED 23JUL2012-1413
+		return $this->session->set_userdata( ACTIVITY_STAGE, $stage );
+	}
+	
+	function indirectlyUpdateSat( $stage )
+	{
+		// CREATED 23JUL2012-1413
+		return $this->sat_model->update( $this->getActivityGUID(), $stage );
+	}
+	
 	
 }

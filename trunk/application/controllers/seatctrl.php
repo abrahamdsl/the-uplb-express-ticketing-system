@@ -20,6 +20,7 @@ class seatctrl extends CI_Controller {
 		include_once( APPPATH.'constants/_constants.inc');
 		$this->load->helper('cookie');
 		$this->load->library('airtraffic');
+		$this->load->library('airtraffic_v2');
 		$this->load->library('form_validation');
 		$this->load->library('functionaccess');
 		$this->load->library('inputcheck');
@@ -40,7 +41,7 @@ class seatctrl extends CI_Controller {
 	
 	function index()
 	{		
-		$this->create();
+		$this->manageseatmap();
 	}//index
 	
 	private function checkAndActOnAdmin()
@@ -142,7 +143,7 @@ class seatctrl extends CI_Controller {
 		*	@revised 18JUL2012-1344
 		**/
 		if( !$this->functionaccess->preCreateSeatStep1PRCheck() ) return FALSE;
-		$this->clientsidedata_model->setSessionActivity( SEAT_CREATE, STAGE_CR_SEAT1 );	
+		$this->clientsidedata_model->setSessionActivity( SEAT_CREATE, STAGE_CR_SEAT1 );
 		redirect( 'seatctrl/create_forward');
 	}
 	
@@ -155,7 +156,7 @@ class seatctrl extends CI_Controller {
 		if( !$this->functionaccess->preCreateSeatStep1FWCheck() ) return FALSE;
 		$this->load->view( 'createSeat/createSeat_step1');
 	}
-	
+
 	function create_step2()
 	{
 		/**
@@ -168,6 +169,7 @@ class seatctrl extends CI_Controller {
 		//  We still put this as the JS check can be circumvented.
 		if( !$this->inputcheck->seatctrl__create_step2() )
 	    {
+			$this->clientsidedata_model->deleteAllInternalErrors();
 			$this->load->view( 'errorNotice', $this->seatmaintenance->assembleGenericFormValidationFail() );
 			return FALSE;
 		}
@@ -220,54 +222,39 @@ class seatctrl extends CI_Controller {
 		*	@created <i forgot>
 		*	@description Processing page of the seat map creation.
 		**/	
-		$x;
-		$y;
-		$i;
-		$j;
 		$guid;
 		$uniqueID;
 		$seatmap;
-		$sessionActivity;
-		
+
 		if( !$this->functionaccess->preCreateSeatStep3PRCheck() ) return FALSE;
 		$uniqueID = $this->clientsidedata_model->getSeatMapUniqueID();
 		$seatmap  = $this->seat_model->getSingleMasterSeatMapData( $uniqueID );
+		// check if seat map is still existing.
 		if( $seatmap === FALSE )
 		{
 			$this->postSeatCreateCleanup();
-			$this->seatmaintenance->assembleSeatUID404();
-			return FALSE;
+			return $this->seatmaintenance->assembleSeatUID404();
 		}
-
-		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
-		if( !$this->airtraffic->initialize( NULL, STAGE_CR_SEAT3_FW, 'seatctrl/create_step3_forward', 
-			NULL, 30, 1 )
-		)
-		{
-			return FALSE;
-		}
-		$guid = $this->airtraffic->getGUID();
-		$this->db->trans_begin();	// database checkpoint
+		$this->airtraffic_v2->initialize( STAGE_CR_SEAT3_PR, STAGE_CR_SEAT3_FW );
 		// NOW DO OUR ACTIVITIES!
 		// send the data for processing here and set the seat map as configured
 		if( !$this->seat_model->createDefaultSeats( $uniqueID, $seatmap->Rows, $seatmap->Cols)
 			or !$this->seat_model->setSeatMapStatus( $uniqueID, 'CONFIGURED', NULL )
-		){	
-			log_message('DEBUG','create_step3|'.$guid.'|rolledback|proper');
-			//database rollback
-			$this->db->trans_rollback();
-			$this->airtraffic->terminateService( TRUE );
-			return $this->seatmaintenance->assembleCreateDefaultSeatFail();	
+		){
+			log_message('DEBUG','create_step3|'.$this->airtraffic_v2->getGUID() .'|rolledback|proper');
+			$this->airtraffic_v2->rollback();
+			return $this->seatmaintenance->assembleCreateDefaultSeatFail();
 		}
 		// now, seek clearance and decide whether or not to commit or rollback
-		if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
-			$this->db->trans_commit();
-			log_message('DEBUG','create_step3 cleared for take off ' . $guid);
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','create_step3 cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleProceed( 'seatctrl/create_step3_forward' );
 		}else{
-			$this->db->trans_rollback();
-			log_message('DEBUG','create_step3_final clearance error '. $guid);
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','create_step3_final clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleATC_V2_ClearanceFail();
 		}
-		$this->airtraffic->deleteXML();
 	} //create_step3()
 	
 	function create_step3_forward()
@@ -315,7 +302,7 @@ class seatctrl extends CI_Controller {
 			echo "INVALID_NO-POST-DATA";
 			return false;
 		}
-		
+
 		//get DB entries
 		$masterSeatMapDetails = $this->seat_model->getSingleMasterSeatMapData( $showingTimeObj->Seat_map_UniqueID );
 		$seatMapProperData = $this->seat_model->getEventSeatMapActualSeats( $eventID, $showtimeID );
@@ -332,7 +319,7 @@ class seatctrl extends CI_Controller {
 		$this->checkAndActOnAdmin();
 		$data['seatmaps'] = $this->seat_model->getAllSeatMaps();
 		$this->clientsidedata_model->setSessionActivity( MANAGE_SEATMAP, STAGE_MS0_HOME );
-		$this->load->view( 'manageSeat/manageSeat01', $data );	
+		$this->load->view( 'manageSeat/manageSeat01', $data );
 	}
 	
 	function getMasterSeatmapData()
@@ -359,9 +346,84 @@ class seatctrl extends CI_Controller {
 		//get DB entries
 		$masterSeatMapDetails = $this->seat_model->getSingleMasterSeatMapData( $uniqueID );
 		$masterSeatMapProperData = $this->seat_model->getMasterSeatMapActualSeats( $uniqueID );
-						
+
 		echo $this->makexml_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
 		return true;
 	}// getMasterSeatmapData
+	
+	function testformvalidation()
+	{
+	
+		/*$testme = Array( "aaaa@aaa.com" => TRUE, "abraham_dsl2@yahoo.com"=> TRUE, "sex@yahoo.com.ph"=> TRUE,
+				"a._@yahoo.com"=> FALSE, "@_yahoo.com"=> false, "a@a.com"=> TRUE, "adsllave@uplb.edu.ph"=> TRUE,
+				"meong_sung@dailynk.com.kr"=> TRUE, "_acc@att.net"=> FALSE, "kim.jong-.un@yahoo.com" => false,
+				"ek.ek@yahoo.com-" => FALSE, "horizon_1965@yahoo.com.ph" => TRUE,
+				"abraham.darius.llave@gmail.com" => TRUE
+		);*/
+		/*$testme = Array(
+			"+639183981185" => TRUE,
+			"09183981185" => TRUE,
+			"9183981185" => TRUE,
+			"418048*7" => FALSE,
+			"03241-80487" => FALSE,
+			"024180487" => TRUE,
+			"+6324180487" => TRUE,
+			"+634.94180487" => FALSE,
+			// USA, MS's hotline
+			"4257051900" => TRUE,
+			"04257051900" => TRUE,
+			"+14257051900" => TRUE,
+			"0014257051900" => TRUE
+		);*/
+		/*$testme = Array(
+			"Abraha" => TRUE,
+			"" => (0) ? TRUE : FALSE,
+			"Stephanie JOanne" => (1) ? TRUE : FALSE,
+			"Edriara Ann" => (1) ? TRUE : FALSE,
+			"Ma. Lourdes" => (1) ? TRUE : FALSE,
+			"Crestitalyn-An" => (1) ? TRUE : FALSE,
+			"Toni-Jan Keith" => (1) ? TRUE : FALSE,
+			"Meow--Sung" => (0) ? TRUE : FALSE,
+			"Meow..Sung" => (0) ? TRUE : FALSE,
+			".Gagita" => (0) ? TRUE : FALSE,
+			"Putang i." => (0) ? TRUE : FALSE,
+			"Putang i-" => (0) ? TRUE : FALSE,
+			"-Putang i" => (0) ? TRUE : FALSE,
+			"P_utang i" => (0) ? TRUE : FALSE,
+			"Putang  i" => (0) ? TRUE : FALSE
+		);*/
+		/*$testme = Array(
+			"Wo" => TRUE, "" => TRUE, "Sing Yu" => TRUE, "SHONG MING  GANG" => TRUE,
+			"Kang son:" => FALSE, "Wing Tang \;321=" => FALSE
+		);*/
+		$testme = Array(
+			"200837120" => TRUE, "2008-37120" => TRUE,  "1995.20083" => FALSE,
+			 "2008-39" => FALSE,  "" => FALSE, "&230" => FALSE, "2008-3712000" => FALSE,
+			 "20083-7120" => FALSE
+		);
+	
+		$results = Array();
+		$output = "";
+		foreach( $testme as $key => $val ){
+			//$check = $this->inputcheck->is_email_valid($key);
+			//$check = $this->inputcheck->is_phone_valid($key, "LANDLINE" );
+			//$check = $this->inputcheck->is_name_valid($key, 2);
+			$check = $this->inputcheck->is_studentNum_valid($key );
+			$results[] = $check;
+			$this->clientsidedata_model->deleteLastInternalError();
+		}
+		//output part
+		$x = 0;
+		echo '<table><br/><thead><tr><td>email</td><td>expected</td><td>checked</td><td>verdict</td></tr></thead><tbody>';
+		foreach( $testme as $key => $val ){
+			echo '&nbsp;<tr><br/>';
+			echo '&nbsp;&nbsp;<td>'.$key.'</td><br/>';
+			echo '&nbsp;&nbsp;<td>' . (($val) ? "TRUE" : "FALSE" ).'</td><br/>';
+			echo '&nbsp;&nbsp;<td>' . (($results[$x]) ? "TRUE" : "FALSE" ).'</td><br/>';
+			echo '&nbsp;&nbsp;<td>' . (($val == $results[$x++]) ? "OK" : "FAILED" ).'</td><br/>';
+			echo '&nbsp;</tr><br/>';
+		}
+		echo '</tbody></table>';
+	}
 }//class
 ?>

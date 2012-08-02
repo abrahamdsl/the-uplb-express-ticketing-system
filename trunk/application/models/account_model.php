@@ -52,7 +52,7 @@ class account_model extends CI_Model {
 			//echo 'successfully inserted';
 			log_message('debug', 'successfully inserted | new user creation');
 		}else{
-			//echo 'something went wrong';						
+			//echo 'something went wrong';
 			log_message('error', 'something went wrong during insertion | new user creation');
 		}
 	
@@ -118,7 +118,7 @@ class account_model extends CI_Model {
 	{
 		if( $accountNum == NULL ) return false;
 		
-		$this->db->where('AccountNum', $accountNum);		
+		$this->db->where('AccountNum', $accountNum);
 		$query = $this->db->get('user');
 		
 		// if there was one cell retrieved, then such user with the accountNumber exists
@@ -263,12 +263,13 @@ class account_model extends CI_Model {
 		return $query;
 	}
 	
-	function getUserInfoByAccountNum( $accountNum )
+	function getUserInfoByAccountNum( $accountNum, $allNeeded = TRUE )
 	{
-		/*
-			Created 26FEB2012-2021
+		/**
+		*	@created 26FEB2012-2021
+		*	@revised 30JUL2012-1531
 		*/
-		$sql_command = "SELECT * FROM `user` WHERE `AccountNum` = ?";
+		$sql_command = "SELECT ".( ($allNeeded) ? "*" : "`username`" )." FROM `user` WHERE `AccountNum` = ?";
 		$arr_result = $this->db->query( $sql_command, Array( $accountNum ) )->result();
 		
 		if( count( $arr_result ) === 1 )
@@ -277,36 +278,44 @@ class account_model extends CI_Model {
 			return false;
 	}// getUserInfoByAcctNum
 
-	function getUserInfoByUsername( $username )
+	function getUserInfoByUsername( $username, $allNeeded = TRUE, $accountNumExempt = NULL )
 	{
-		/*
-			Created 29FEB2012-2117
+		/**
+		*	@created 29FEB2012-2117
+		*	@revised 30JUL2012-1531
 		*/
-		$sql_command = "SELECT * FROM `user` WHERE `username` = ?";
-		$arr_result = $this->db->query( $sql_command, Array( $username ) )->result();
+		$sql_command = "SELECT ".( ($allNeeded) ? "*" : "`username`" )." FROM `user` WHERE `username` = ?";
+		$data = Array( $username );
+		if( !is_null( $accountNumExempt ) ){
+			$sql_command .=  " AND `AccountNum` != ?";
+			$data[] = $accountNumExempt;
+		}
+		$arr_result = $this->db->query( $sql_command, $data )->result();
 		
 		if( count( $arr_result ) === 1 )
 			return $arr_result[0];
 		else
 			return false;
-	}// getUserInfoByAcctNum	
+	}// getUserInfoByAcctNum
 	
-	function getUserUPLBConstituencyData( $accountNum )
+	function getUserUPLBConstituencyData( $accountNum, $allNeeded = TRUE )
 	{
-		/*
-			Created 26FEB2012-2021
+		/**
+		*	@created 26FEB2012-2021
+		*	@revised 28JUL2012-1502
 		*/
-		$sql_command = "SELECT * FROM `uplbconstituent` WHERE `AccountNum_ID` = ?";
+		$sql_command = "SELECT ".( ($allNeeded) ? "*" : "`AccountNum_ID`" )." FROM `uplbconstituent` WHERE `AccountNum_ID` = ?";
 		$arr_result = $this->db->query( $sql_command, Array( $accountNum ) )->result();
 		
 		if( count( $arr_result ) === 1 )
 			return $arr_result[0];
 		else
-			return false;
+			return FALSE;
 	}
 	
 	function isEmployeeNumberExisting( $empNum, $includeSelf = TRUE )
 	{
+		if( is_null( $empNum ) ) return FALSE;
 		$accountNum = $this->session->userdata('accountNum');
 		$this->db->where('employeeNumber', $empNum );		
 		$query_obj = $this->db->get('uplbconstituent');
@@ -325,9 +334,11 @@ class account_model extends CI_Model {
 			Param def'n:
 			
 			$includeSelf - BOOLEAN - if true, kasama siya sa count.
+		*	@TODO 28JUL2012-1535 - Refactor so that uses SQL instead of justn $includeSelf
 		*/
+		if( is_null( $studentNum ) ) return FALSE;
 		$accountNum = $this->session->userdata('accountNum');
-		$this->db->where('studentNumber', $studentNum );		
+		$this->db->where('studentNumber', $studentNum );
 		$query_obj = $this->db->get('uplbconstituent');
 		$result_arr = $query_obj->result();
 		
@@ -356,56 +367,49 @@ class account_model extends CI_Model {
 	
 	function setPermissions( $accountNum, $customer = 1, $eventmgr, $receptionist, $admin = NULL, $faculty )
 	{
-		$data = Array(		
+		$data = Array(
 			'EVENT_MANAGER' => $eventmgr, 
 			'CUSTOMER'		=> $customer,  
 			'RECEPTIONIST'  => $receptionist, 
 			'FACULTY'		=> $faculty
 		);
+		// if admin privilege is present, then add
 		if( $admin != NULL ) $data[ 'ADMINISTRATOR' ] = $admin;
 		$where = "`AccountNum_ID` = ".$accountNum; 
-		$sql_command = $this->db->update_string('grand_permission', $data, $where);
-		return $this->db->query( $sql_command );
+		return $this->db->query( 
+			$this->db->update_string('grand_permission', $data, $where)
+		);
 	}//setPermissions(..)
 	
-	function updateMainAccountDetails()
+	function updateMainAccountDetails( $accountNum, $data )
 	{
-		$accountNum = $this->session->userdata('accountNum');
-		$data = array(				
-			'username' => strtolower( $this->input->post( 'username' ) ),			
-			'Fname' => strtoupper( $this->input->post( 'firstName' ) ),
-			'Mname' => strtoupper( $this->input->post( 'middleName' ) ),
-			'Lname' => strtoupper( $this->input->post( 'lastName' ) ),
-			'BookableByFriend' => ( isset( $_POST['allowfriends']) ) ? 1 : 0,
-			'Gender' => strtoupper( $this->input->post( 'gender' ) ),
-			'Cellphone' => $this->input->post( 'cellPhone' ) ,
-			'Landline' => $this->input->post( 'landline' ) ,
-			'Email' => strtoupper( $this->input->post( 'email_01_' ) ),
-			'addr_homestreet' =>  strtoupper( $this->input->post( 'homeAndStreet_addr' ) ),
-			'addr_barangay' => strtoupper( $this->input->post( 'barangay_addr' ) ) ,
-			'addr_cityMunicipality' => strtoupper( $this->input->post( 'cityOrMun_addr' ) ),
-			'addr_province' => strtoupper( $this->input->post( 'province_addr' ) ),			
-			'temp1' => NULL,
-			'temp2' => NULL		
-		);
-		$where = "`AccountNum` = ".$accountNum;
-		$sql_command = $this->db->update_string('user', $data, $where);
-		return $this->db->query( $sql_command );
-		
-		//now for UPLB constituency
+		/**
+		*	@created <March 2012>
+		*	@revised 27JUL2012-1324
+		*/
+		$this->db->where( "`AccountNum`", $accountNum );
+		return $this->db->update( 'user', $data );
 	}
 	
-	function updateUPLBConstituencyDetails()
+	function updateUPLBConstituencyDetails( $accountNum, &$data )
 	{
-		
-		$accountNum = $this->session->userdata('accountNum');
-		$data = array(				
-			'studentNumber' => $this->input->post( 'studentNumber' ),
-			'employeeNumber' => $this->input->post( 'employeeNumber' )
-		);
-		$where = "`AccountNum_ID` = ".$accountNum;
-		$sql_command = $this->db->update_string('uplbconstituent', $data, $where);
-		return $this->db->query( $sql_command );
+		/**
+		*	@created <March 2012>
+		*	@revised 28JUL2012-1446
+		*/		
+		if( $this->getUserUPLBConstituencyData( $accountNum, FALSE ) !== FALSE )
+		{
+			if( $data === FALSE ){
+				return $this->db->delete( 'uplbconstituent', Array(  'AccountNum_ID' => $accountNum ) );
+			}else{
+				$this->db->where( "`AccountNum_ID`", $accountNum );
+				return $this->db->update( 'uplbconstituent', $data );
+			}
+		}else{
+			if( $data === FALSE ) return TRUE;
+			$data[ 'AccountNum_ID' ] = $accountNum;
+			return $this->db->insert( 'uplbconstituent', $data);
+		}
 	}//updateUPLBConstituencyDetails(..)
 }//class
 ?>

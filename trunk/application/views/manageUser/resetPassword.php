@@ -18,17 +18,18 @@ $this->load->view('html-generic/doctype.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageAccount01.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
-	?>	
-	<?php			
-		$this->load->view('html-generic/baseURLforJS.inc');	
+	?>
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
 	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup-actionListener.js'; ?>"/></script>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/changePassword.js'; ?>"/></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic_v2.js'; ?>" ></script>
 </head>
 <body>
 <?php
@@ -36,36 +37,36 @@ $this->load->view('html-generic/doctype.inc');
 ?>	
 <input type="hidden" id="isCurrentPageUserAccount" value="1" /><!-- needed for javascript -->
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>        
-    </div>    
-    <div id="main_content">    	
-    	<div id="centralContainer">           		   
+		?>
+    </div>
+    <div id="main_content">
+    	<div id="centralContainer">
 			<div id="page_title">
 				Reset Password
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction">
 				Please enter new password for user
 				<h3 style="margin-left: 15px;">
 				<?php 
 					echo $userMainInfo->username.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$userMainInfo->Lname; 
-					echo ", ".$userMainInfo->Fname." ".$userMainInfo->Mname;				
+					echo ", ".$userMainInfo->Fname." ".$userMainInfo->Mname;
 				?>
 				</h3>
-			</div>				
-			<!-- start of form -->			
-			<form method="post"  action="<?php echo base_url().'useracctctrl/changePassword_step2' ?>" name="formSignup" id="formMain">
+			</div>
+			<!-- start of form -->
+			<form method="post"  action="useracctctrl/changePassword_step2" name="formSignup" id="formMain">
 				<div class="center_pure">
-					<fieldset class="fieldsCollection">						
-						<div class="row" id="passwordFld">							
+					<fieldset class="fieldsCollection">
+						<div class="row" id="passwordFld">
 							<div class="label" >
 								<label class="label" for="password">New Password</label>
 								<span class="critical" >*</span>
@@ -79,7 +80,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="passwordFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="confirmPasswordFld">							
+						<div class="row" id="confirmPasswordFld">
 							<div class="label" >
 								<label class="label" for="confirmPassword">Confirm Password</label>
 								<span class="critical" >*</span>
@@ -96,17 +97,16 @@ $this->load->view('html-generic/doctype.inc');
 					</fieldset>
 					<?php
 						$this->load->view( 'html-generic/criticalreminder.inc' );
-					?>					
+					?>
 					<div id="essentialButtonsArea">
 						<a class="button" id="buttonOK_special" ><span class="icon">Save Changes</span></a>
 						<a class="button" id="buttonReset_special" ><span class="icon">Reset fields</span></a>
 					</div>
-					
-				</div>							
-			</form> <!--end of form -->		
+				</div>
+			</form>
 		<div style=" clear:both;"></div>
 		</div><!--end of centralContainer-->
-    </div><!--end of main content-->	
+    </div><!--end of main content-->
 <?php
 	$this->load->view('html-generic/footer.inc');
 ?>

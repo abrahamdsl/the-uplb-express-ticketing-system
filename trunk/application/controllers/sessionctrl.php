@@ -59,14 +59,7 @@ class sessionctrl extends CI_Controller {
 		
 		return $agent."|".$this->agent->platform();
 	}
-	
-	function ix_username_valid( $username )
-	{
-		log_message('debug', 'sessionctrl::is_username_valid accessed');
-		return TRUE;
-		return $this->form_validation->is_username_valid( $username );
-	}
-	
+
 	private function preclean( $userAccountNum )
 	{
 		/**
@@ -76,7 +69,7 @@ class sessionctrl extends CI_Controller {
 				only those belonging to him are got.
 				Also, the expired (manage) booking cookies-on-server, Session Activity Tracking on DB data are also deleted.
 		*	@history 20JUL2012-1121 Moved from eventctrl and was privatized.
-		**/
+		*/
 		$bookings = false;
 		
 		if( $this->permission_model->isAdministrator( $userAccountNum ) ){
@@ -87,7 +80,8 @@ class sessionctrl extends CI_Controller {
 		$this->ndx_mb_model->deleteExpiredManageBookingCookiesOnServer();
 		$this->ndx_model->deleteExpiredBookingCookiesOnServer();
 		$this->airtraffic->deleteExpired();
-		$this->sat_model->deleteExpiredSAT();					// delete session activity tracking entries
+		// delete session activity tracking entries
+		$this->sat_model->deleteExpiredSAT();
 		if( $bookings !== false )
 		{
 		  foreach( $bookings as $singleBooking )
@@ -151,10 +145,10 @@ class sessionctrl extends CI_Controller {
 			
 				log_message('DEBUG', 'NEW USER Logging in from ' . $_client_iPv4 );
 				log_message('DEBUG', 'NEW USER Agent Raw : ' . $_client_user_agent );
-				log_message('DEBUG', 'NEW USER Agent + Platform: ' . $client_browserShort_and_OS  );		
+				log_message('DEBUG', 'NEW USER Agent + Platform: ' . $client_browserShort_and_OS  );
 				log_message('DEBUG', 'NEW USER Session UUID ' . $uuid);
 				// check client's browser if permitted
-				$data['UA_CHECK'] = $this->browsersniff_model->decideActionOnUserAgent();				
+				$data['UA_CHECK'] = $this->browsersniff_model->decideActionOnUserAgent();
 				$data['uuid_new_ident'] = $this->usefulfunctions_model->guid();
 				$data['uuid'] = $uuid;
 				$data['_client_user_agent'] = $_client_user_agent;
@@ -171,9 +165,14 @@ class sessionctrl extends CI_Controller {
 						$this->notTestedAndDeny();
 						return false;
 					case ( BR_AGENT_DENIED ) :
-						$this->telemetry_model->add( BR_AGENT_DENIED, $uuid, $_client_iPv4, $_client_user_agent, $client_browserShort_and_OS );
-						$this->agentDenied();
-						return false;
+						if( substr($data['_client_user_agent'], 0, 13 ) == 'W3C_Validator' ){
+							unset( $data['UA_CHECK'] );
+						}else{
+							$this->telemetry_model->add( BR_AGENT_DENIED, $uuid, $_client_iPv4, $_client_user_agent, $client_browserShort_and_OS );
+							$this->agentDenied();
+							return false;
+						}
+						break;
 					case ( BR_BOT_SIMPLE ):
 						$this->telemetry_model->add( BR_BOT_SIMPLE, $uuid, $_client_iPv4, $_client_user_agent, $client_browserShort_and_OS );
 						$this->heyRobot();
@@ -190,6 +189,7 @@ class sessionctrl extends CI_Controller {
 			}else{
 				$this->session->unset_userdata('JUST_LOGGED_OUT');
 			}
+			
 			$this->load->view('loginPage', $data );
 		}
 	} // index
@@ -206,9 +206,9 @@ class sessionctrl extends CI_Controller {
 	function authenticationNeeded()
 	{	
 		// ec 4999
-		$data['LOGIN_WARNING'] = array( " You have to log-in first before you can access the feature requested. " ) ;
-		$this->session->set_userdata($data);
-		$this->index();
+		//$data['LOGIN_WARNING'] = array( "You have to log-in first before you can access the feature requested. " ) ;
+		//$this->session->set_userdata($data);
+		redirect ('sessionctrl/index');
 	}
 	
 	private function getPostLoginRedirection(){
@@ -220,8 +220,6 @@ class sessionctrl extends CI_Controller {
 		$this->clientsidedata_model->deleteRedirectionURLAfterAuth();
 		return ( ( $redirect_to === FALSE ) ? "sessionctrl/userHome" : $redirect_to );
 	}
-	
-	
 	
 	function login()
 	{

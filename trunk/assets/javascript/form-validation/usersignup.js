@@ -1,19 +1,3 @@
-  function startsWith( haystack, needle) 
-  {    
-	// this might be in conflict/redundant with the prototype in generalChecks.js
-    var y = needle.length;
-	var x;
-	
-	if( y == 0 ) return false;
-	
-	for( x = 0 ; x < y; x++)
-	{
-		if( haystack[x] != needle[x] ) return false;
-	}
-	
-	return true;
-  }
-  
   function own_isAlpha(thisChar)
   {
 	var allowedChars = "abcdefghijklmnopqrstuvwxyz";
@@ -34,7 +18,7 @@
 	var y = theUsername.length;
 	var x;
 	
-	if( y < 8 ) return "Insufficient length, must be at least 8 characters";
+	if( y < 5 ) return "Insufficient length, must be at least 5 characters";
 	
 	for ( x = 0; x < y; x++) {	    
 		if( allowedChars.indexOf( theUsername[x] ) == -1 ) return "Invalid character(s) detected";
@@ -47,6 +31,7 @@
   {
 	/*
 		checks if the password is a valid one
+		make sure at sync with library inputcheck::is_password_valid
 	*/
 	var allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890_.~1234567890-=[]{}|\\:;'\"<>,.?/";
 	var thePassword = thePassword_sent.toLowerCase();
@@ -126,7 +111,7 @@
 	var allowedChars = "1234567890";
 	var y = theStudentNumber.length;
 	var x;
-			
+	if( y == 0 ) return "";
 	for ( x = 0; x < y; x++) {	    
 		if( allowedChars.indexOf( theStudentNumber[x] ) == -1 ) return "Invalid character(s) detected (Do not include dash if any)";
 	}	
@@ -140,12 +125,12 @@
   function isEmployeeNumber_valid(theEmployeeNumber)
   {
 	/*
-		checks if the cellphone number is a valid one
+		checks if the employee number is a valid one
 	*/
 	var allowedChars = "1234567890";
 	var y = theEmployeeNumber.length;
 	var x;
-			
+	if( y == 0 ) return "";
 	for ( x = 0; x < y; x++) {	    
 		if( allowedChars.indexOf( theEmployeeNumber[x] ) == -1 ) return "Invalid character(s) detected (Do not include dash if any)";
 	}	
@@ -158,6 +143,11 @@
   
   function isName_valid(theName_sent)
   {
+	/**
+	*	@created <Nov 2011>
+	*	@remarks Make sure always at sync with 
+			.application\libraries\inputcheck.php::is_name_valid
+	*/
 	var allowedChars = "abcdefghijklmnopqrstuvwxyz .-";
 	var theName = theName_sent.toLowerCase();
 	var y = theName.length;
@@ -179,7 +169,7 @@
 	
 	//now check for inappropriate positioning of dots and hypens
 	x = theName.indexOf(".");
-	if( x == 0) return "Invalid dot position";
+	if( x == 0 || x == (y-1) ) return "Invalid dot position";
 	if(  x != -1 && 
 		((x-1) >= 0 ) && 
 		!own_isAlpha(theName[x-1]) 
@@ -200,7 +190,7 @@
   {
 	/*
 		checks if the phone number is a valid one
-		
+		server counterpart: library inputcheck::is_phone_valid
 		Modified 10FEB2012-0946 - Check for digit insufficiency moved earlier in the function.
 			Why did I place it so late ba?
 	*/
@@ -219,7 +209,7 @@
 	
 	if(y < minLength ) return "Insufficient digits";
 	
-	if( theNumber.lastIndexOf("+") > 0 ) return "The '+' sign is only allowed at the beginning";	
+	if( theNumber.lastIndexOf("+") > 0 ) return "The '+' sign is only allowed at the beginning";
 	
 	if( theNumber[0] == "+") 	// means IDD 
 	{
@@ -241,20 +231,26 @@
 }//func
     
 function isEmail_valid(theEmail) {
-	/*
-		checks validity of email address
-		
-		Inspired by Philippine Airlines' Online Booking Web Application.
-		Copyright PAL 2011.
+	/***
+	*	@created <Nov 2011>
+	*	@description checks validity of email address
+	*	@serversidecounterpart library inputcheck::is_email_valid
+	*	@revised 26JUL2012-2238
+	*	@inspiredby Philippine Airlines' Online Booking Web Application.
+			Copyright PAL 2011.
 	*/
-	var allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789-.@_";
+	var specials = "-._";
+	var allowedChars = "abcdefghijklmnopqrstuvwxyz0123456789@" + specials;
 	var atPos = theEmail.indexOf("@");
 	var stopPos = theEmail.lastIndexOf(".");
 	var ch;
 	var checkAT = 0;
 	var IsEmail;
 	var message = "OK";
-
+	var specialPosix;
+	var specialPosixReverse;
+	var emailLen = 0;
+	
 	if (theEmail == "") 
 		return "Email address is required";
 
@@ -263,7 +259,7 @@ function isEmail_valid(theEmail) {
 		message = "false";
 
 	// checks if @ is used first before .
-	if (stopPos < atPos) 
+	if (atPos == 0)
 		message = "false";
 
 	// checks if . does not follow @ immediately
@@ -272,17 +268,26 @@ function isEmail_valid(theEmail) {
 	
 	if(message == "false" ) return "Invalid format";
 	
-	// checks for spaces	
+	// checks for spaces
 	if (theEmail.indexOf(" ") != -1) 
 		return "Spaces not allowed";
 	
-	// checks if the last char in the string is a dot
-	if( stopPos == theEmail.length - 1 ) return "Dot misplaced";
+	// checks if the first or last char is not one of the special symbols
+	specialPosix = specials.indexOf( theEmail[0] );
+	if( specialPosix != -1 )
+	{
+		return "Misplaced '" + specials[ specialPosix ] + "'";
+	}
+	specialPosixReverse = specials.lastIndexOf( theEmail[ theEmail.length - 1] );
+	if( specialPosixReverse != -1 )
+	{
+		return "Misplaced '" + specials[ specialPosixReverse ] + "'";
+	}
+	//if( stopPos == theEmail.length - 1 ) return "Dot misplaced";
 	
 	// checks for invalid characters
-	for(i=0; i<parseInt(theEmail.length, 10); i++) {
+	for(i=0; i<theEmail.length; i++) {
 		ch= theEmail.charAt(i)
-		
 		//Check for more than 1 '@' character
 		if (ch == "@") {
 			checkAT++;
@@ -296,24 +301,23 @@ function isEmail_valid(theEmail) {
 		if (ch == ".") {
 			if( theEmail.charAt(i+1) == "." ) return "Two succeeding dots not allowed";
 			if( theEmail.charAt(i+1) == "-" ) return "Not allowed: '._'";	//another one
-			if( theEmail.charAt(i+1) == "_" ) return "Not allowed: '._'";		
+			if( theEmail.charAt(i+1) == "_" ) return "Not allowed: '._'";
 		}
 		
 		//check for two succeeding hypens
 		if (ch == "-") {
 			if( theEmail.charAt(i+1) == "-" ) return "Two succeeding hypens not allowed";
-			if( theEmail.charAt(i+1) == "." ) return "Not allowed: '-.'";	//another one	
-			if( theEmail.charAt(i+1) == "_" ) return "Not allowed: '-_'";		
+			if( theEmail.charAt(i+1) == "." ) return "Not allowed: '-.'";	//another one
+			if( theEmail.charAt(i+1) == "_" ) return "Not allowed: '-_'";
 		}
 		
 		//check for two succeeding underscores
 		if (ch == "_") {
 			if( theEmail.charAt(i+1) == "_" ) return "Two succeeding underscores not allowed";
-			if( theEmail.charAt(i+1) == "." ) return "Not allowed: '_.'";	//another one	
-			if( theEmail.charAt(i+1) == "-" ) return "Not allowed: '_-'";	
+			if( theEmail.charAt(i+1) == "." ) return "Not allowed: '_.'";	//another one
+			if( theEmail.charAt(i+1) == "-" ) return "Not allowed: '_-'";
 		}
-		
-		
+
 		if ( allowedChars.indexOf( ch ) != -1 ) {
 			IsEmail= true;
 		} else {
@@ -350,7 +354,7 @@ function isEmail_valid(theEmail) {
   {
 	/*
 		updates the message indicators on the input fields in the forms.
-		ASSUMPTION: these are HTML elements, specified by IDs ending in "FldMsg"		
+		ASSUMPTION: these are HTML elements, specified by IDs ending in "FldMsg"
 		
 		customMessage not allowed for errors
 	*/
@@ -362,30 +366,30 @@ function isEmail_valid(theEmail) {
 	{
 		if( customMessage == false )	// meaning it has no content or the passed were: 
 		{								// 0, -0, null, "", 	false, undefined, NaN
-			setThisMsg = '<span style="color:green">OK</span>';			
+			setThisMsg = '<span style="color:green">OK</span>';	
 		}else{
 			setThisMsg = '<span style="color:green">' + customMsg + '</span>';
 		}
 		updateValidIndicator( theField, true );
 	}else{
 		setThisMsg = '<span style="color:red; font-weight:bold">' + moodIndicator + '</span>';
-		updateValidIndicator( theField, false );
+		updateValidIndicator( theField, moodIndicator == "" ? null : false );
 	}
     
 	// now, display
 	thisFldMsg.innerHTML = setThisMsg;
 	
 	// we need to return this for necessity
-	return moodIndicator;		
+	return moodIndicator;
   }//function updateFldMsg
   
   function hideFldMsg( theField )
   {
 	/*
-		Created 09FEB2012-1102 specifically for Book Step 3 Form validation.	
+		Created 09FEB2012-1102 specifically for Book Step 3 Form validation.
 		ASSUMPTIONS
-		* These are HTML elements, specified by IDs ending in "FldMsg"		
-		* The structure of the DOM is depedent on the bookStep3.php page		
+		* These are HTML elements, specified by IDs ending in "FldMsg"
+		* The structure of the DOM is depedent on the bookStep3.php page
 	*/
 	var spanField = 'span[id$="' + theField + 'FldMsg"]';
 	$(spanField).parent().hide();
@@ -409,21 +413,24 @@ function isEmail_valid(theEmail) {
   {
 	/*
 		updates the hidden validity indicators near the input fields in the forms.
-		ASSUMPTION: these are HTML elements, specified by names ending in "_validate"						
+		ASSUMPTION: these are HTML elements, specified by names ending in "_validate"
 		
 		setWhat - boolean: { true | false }
 		
 		10FEB2012-0955 - Correction -  Utang na loob!!!!! For so long, it was 'if(true)' instead of 'if( setWhat )'!!!!!
 	*/	
 	var validityIndicator_Name = theField + "_validate";
-	var thisVI = document.getElementsByName( validityIndicator_Name )[0];	
-
+	var thisVI = document.getElementsByName( validityIndicator_Name )[0];
+	if( setWhat == null ){
+		thisVI.value = "-2";
+	}else
 	if( setWhat )
 	{
 		thisVI.value = "1";
-	}else{
+	}else
+	if( !setWhat ){
 		thisVI.value = "0";
-	}	
+	}
   }//updateValidIndicator
   
   

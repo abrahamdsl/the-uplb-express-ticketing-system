@@ -61,7 +61,7 @@ NUM    STRING  								Message
 1006   BOOKING_CONFIRM_CLEARED				The booking is cleared to undergo confirmation. 
 1150   PAYPAL_IPN_MAIN_VALIDATE_OK          IPN Main method Validation SUCCESS
 1151   PAYPAL_IPN_PLANB_VALIDATE_OK         IPN ALTERNATE Validation SUCCESS
-1500   PAYMENT_MODE_EXISTS					Payment mode exists already
+1500   PAYMENT_MODE_EXISTS					Payment mode name exists already.
 1501   PAYMENT_MODE_DELETED					The payment mode has been successfully deleted.
 1502   PAYMENT_MODE_EDITED					The payment mode has been successfully edited.
 1600   ROLES_EDITED                         User roles have been edited
@@ -94,6 +94,9 @@ NUM    STRING  								Message
 4007   CONFIRM_UNAUTHORIZED					You do not have permission to confirm a reservation for this event
 4008   PAYMENT_MODE_UNAUTHORIZED			This payment mode is not allowed to be used for this event.
 4009   IDENTITY_SPOOF_DETECTED				Before accessing this functionality, some other part of the application has set some security identifier to ensure that the
+4010   INVALID_PASSWORD						The specified password for the user is invalid. ( This is commonly used when changing a password ).
+4015   GEN_FORM_VALIDATION_FAIL				< Generic form validation failure. Echo a custom message instead >
+4020   ACCOUNT_NUM_404						The specified account number is not found in the system.
 												one who contacted the earlier is the same as the latter. Now, the SID submitted did not match.
 4030   EVENT_404							Event not found.
 4031   SHOWING_TIME_404						Showing time not found
@@ -113,6 +116,7 @@ NUM    STRING  								Message
 4405   ATC_DATA_MISSING						At least one required input field is not found.
 4406   ATC_REQUEST_UNKNOWN					The client has requested an ATC service that tower does not know.
 4800 x COOKIE_ON_SERVER404					Cookie on server not found.
+4900 x PREVIOUS_REQUEST_ONGOING             Your earlier request is still being processed. Please trying resubmitting after 30 seconds - 1 minute.
 4998   INVALID_ENTRIES_SPECIFIED            Invalid entries specified.
 4999   LOGIN_NEEDED                         You have to log-in first before you can access the feature requested
 //server error
@@ -151,6 +155,8 @@ NUM    STRING  								Message
 5903   ATC_PREMATURELY_EXITED				The original script terminated immediately before tower was contacted. Please resubmit again. The transaction should have been rolled back.
 5904   <unassigned>
 5905   CUSTFUNC_XML_404                     An internal file in use by the server was missing when it should not be. The transaction should have been rolled back.
+5910   ATC_V2_CLEARANCE_FAIL                Unable to seek clearance to move to the next page. Most probably, the submission of a form was prematurely terminated or there was a database error.
+5999   GENERIC_TRANSACTION_FAIL             Something went wrong while processing your request. The transaction should have been rolled back.
 }
 
 -----------------

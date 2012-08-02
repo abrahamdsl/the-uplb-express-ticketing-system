@@ -11,8 +11,8 @@
 *	Used primarily by sat_model.php
 **/
 		define( 'COL_DB_TABLE_NAME_SAT', '_sess_act' );
-		//if( !defined( 'COL_START_DATE') ) define( 'COL_START_DATE', 'START_DATE');
-		//if( !defined( 'COL_START_TIME') ) define( 'COL_START_TIME', 'START_TIME');
+		if( !defined( 'COL_START_DATE') ) define( 'COL_START_DATE', 'START_DATE');
+		if( !defined( 'COL_START_TIME') ) define( 'COL_START_TIME', 'START_TIME');
 		define( 'COL_CONTACT_DATE', 'CONTACT_DATE');
 		define( 'COL_CONTACT_TIME', 'CONTACT_TIME');
 		define( 'COL_ACT_NAME', 'ACTIVITY_NAME');
