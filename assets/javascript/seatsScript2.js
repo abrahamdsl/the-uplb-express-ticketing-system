@@ -14,10 +14,10 @@ function banishSeat( seatInputIndicator )
 
 function formSubmit()
 {
-	$.fn.airtraffic({
+	$.fn.airtraffic_v2({
 		atc_success_func: '',
 		msgwait: 'Submitting the seat information, one moment please.',
-		timeout: 120000
+		timeout: 15000
 	});
 }
 

@@ -10,23 +10,25 @@ $this->load->view('html-generic/doctype.inc');
 ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/userSignup-rev7.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/><!--For modal v1-->	
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
+	<!--For modal v1-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent04.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/createEvent05.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/manageAccount01.css'; ?>"/>
 	<?php
 		$this->load->view('html-generic/jquery-core.inc');
-	?>		
+	?>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup.js'; ?>"/></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/usersignup-actionListener.js'; ?>"/></script>
-	
-	<?php			
-		$this->load->view('html-generic/baseURLforJS.inc');	
-	?>	
+	<?php
+		$this->load->view('html-generic/baseURLforJS.inc');
+	?>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic_v2.js'; ?>" ></script>
 </head>
 <body>
 <?php
@@ -34,33 +36,31 @@ $this->load->view('html-generic/doctype.inc');
 ?>	
 <input type="hidden" id="isCurrentPageUserAccount" value="1" /><!-- needed for javascript -->
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
 		?>
         <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
+		?>
 		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>        
+		?>
     </div>
-        
-    
-    <div id="main_content">    	
-    	<div id="centralContainer">           		   
+    <div id="main_content">
+    	<div id="centralContainer">
 			<div id="page_title">
 				Profile and Account Settings
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction">
 				Change your basic account and system settings.
-			</div>				
-			<!-- start of form -->			
-			<form method="post"  action="<?php echo base_url().'useracctctrl/manageAccountSave' ?>" name="formSignup" id="formMain">
+			</div>
+			<!-- start of form -->
+			<form method="post"  action="useracctctrl/manageAccountSave" name="formSignup" id="formMain">
 				<div class="center_pure">
-					<fieldset class="fieldsCollection">						
+					<fieldset class="fieldsCollection">
 						<legend class="field_grouping_bar">login credentials</legend>
-						<div class="row" id="usernameFld">							
+						<div class="row" id="usernameFld">
 							<div class="label" >
 								<label class="label" for="username">Username</label>
 								<span class="critical" >*</span>
@@ -74,7 +74,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="usernameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="passwordFld">							
+						<div class="row" id="passwordFld">
 							<div class="label" >
 								<label class="label" for="password">Password</label>
 								<span class="critical" >*</span>
@@ -86,12 +86,12 @@ $this->load->view('html-generic/doctype.inc');
 								<div class="icon"></div>
 								<span id="passwordFldMsg"></span>
 							</div>
-						</div>						
+						</div>
 					</fieldset>
 					<div class="center_pure">
-					<fieldset class="fieldsCollection">						
+					<fieldset class="fieldsCollection">
 						<legend class="field_grouping_bar">personal</legend>
-						<div class="row" id="firstNameFld">														
+						<div class="row" id="firstNameFld">
 							<div class="label" >
 								<label class="label" for="firstName">First name</label>
 								<span class="critical" >*</span>
@@ -105,7 +105,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="firstNameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="middleNameFld">																				
+						<div class="row" id="middleNameFld">
 							<div class="label" >
 								<label class="label" for="middleName">Middle name</label>
 							</div>
@@ -118,11 +118,11 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="middleNameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="lastNameFld">														
+						<div class="row" id="lastNameFld">
 							<div class="label" >
 								<label class="label" for="lastName">Last name</label>
 								<span class="critical" >*</span>
-							</div>							
+							</div>
 							<div class="collection">
 								<input type="text" name="lastName" value="<?php echo $userObj->Lname; ?>" />
 								<input type="hidden" name="lastName_validate" value="1" />
@@ -132,7 +132,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="lastNameFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="genderFld">														
+						<div class="row" id="genderFld">
 							<div class="label" >
 								<label class="label" for="gender">Gender</label>
 								<span class="critical" >*</span>
@@ -148,9 +148,9 @@ $this->load->view('html-generic/doctype.inc');
 							</div>
 						</div>
 					</fieldset>
-					<fieldset class="fieldsCollection">						
+					<fieldset class="fieldsCollection">
 						<legend class="field_grouping_bar">electronic contact</legend>
-						<div class="row" id="cellPhoneFld">														
+						<div class="row" id="cellPhoneFld">
 							<div class="label" >
 								<label class="label" for="cellPhone">Cellphone</label>
 								<span class="critical" >*</span>
@@ -164,7 +164,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="cellPhoneFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="landlineFld">														
+						<div class="row" id="landlineFld">
 							<div class="label" >
 								<label class="label" for="landline">Landline Phone</label>
 							</div>
@@ -177,7 +177,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="landlineFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="email_01_Fld">														
+						<div class="row" id="email_01_Fld">
 							<div class="label" >
 								<label class="label" for="email_01_">E-mail address</label>
 								<span class="critical" >*</span>
@@ -190,11 +190,11 @@ $this->load->view('html-generic/doctype.inc');
 								<div class="icon"></div>
 								<span id="email_01_FldMsg"></span>
 							</div>
-						</div>						
+						</div>
 					</fieldset>
-					<fieldset class="fieldsCollection">						
+					<fieldset class="fieldsCollection">
 						<legend class="field_grouping_bar">address</legend>
-						<div class="row" id="homeAndStreet_addrFld">														
+						<div class="row" id="homeAndStreet_addrFld">
 							<div class="label" >
 								<label class="label" for="homeAndStreet_addr">Home &amp; Street</label>
 							</div>
@@ -207,10 +207,10 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="homeAndStreet_addrFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="barangay_addrFld">														
+						<div class="row" id="barangay_addrFld">
 							<div class="label" >
 								<label class="label" for="barangay_addr">Barangay</label>
-							</div>							
+							</div>
 							<div class="collection">
 								<input type="text" name="barangay_addr" value="<?php echo $userObj->addr_barangay; ?>" />
 								<input type="hidden" name="barangay_addr_validate" value="1" />
@@ -220,7 +220,7 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="barangay_addrFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="cityOrMun_addrFld">														
+						<div class="row" id="cityOrMun_addrFld">
 							<div class="label" >
 								<label class="label" for="cityOrMun_addr">City/Municipality</label>
 							</div>
@@ -232,37 +232,37 @@ $this->load->view('html-generic/doctype.inc');
 								<div class="icon"></div>
 								<span id="cityOrMun_addrFldMsg"></span>
 							</div>
-						</div>	
-						<div class="row" id="province_addrFld">														
+						</div>
+						<div class="row" id="province_addrFld">
 							<div class="label" >
 								<label class="label" for="province_addr">Province</label>
 							</div>
 							<div class="collection">
-								<input type="text" name="province_addr" value="<?php echo $userObj->addr_province	; ?>" />
+								<input type="text" name="province_addr" value="<?php echo $userObj->addr_province; ?>" />
 								<input type="hidden" name="province_addr_validate" value="1" />
 							</div>
 							<div class="msgContainer">
 								<div class="icon"></div>
 								<span id="province_addrFldMsg"></span>
 							</div>
-						</div>							
+						</div>
 					</fieldset>
-					<fieldset class="fieldsCollection uplb">						
+					<fieldset class="fieldsCollection uplb">
 						<legend class="field_grouping_bar">uplb identification</legend>
-						<div id="uplb_ident_explain">						
-						<span>							
+						<div id="uplb_ident_explain">
+						<span>
 							Please enter the details without dashes.
 						</span>
 						<?php
 							$lbCons = ( $uplbConstituencyObj !== false );
 						?>
 					</div>
-						<div class="row" id="uplbConstituentBooleanFld">							
+						<div class="row" id="uplbConstituentBooleanFld">
 							<div class="label" >
 								<label class="label" for="uplbConstituentBoolean">Are you a UPLB student/employee?</label>
 							</div>
 							<div class="collection">
-								<input type="checkbox" name="uplbConstituentBoolean" value="1" <?php if($lbCons){ ?> checked="checked"  <?php } ?> />Yes																											
+								<input type="checkbox" name="uplbConstituentBoolean" value="1" <?php if($lbCons){ ?> checked="checked"  <?php } ?> />Yes
 							</div>
 							<br/>
 							<div class="msgContainer">
@@ -270,13 +270,13 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="uplbConstituentBooleanFldMsg"></span>
 							</div>
 						</div>
-						<div class="row" id="studentNumberFld">														
+						<div class="row" id="studentNumberFld">
 							<div class="label" >
 								<label class="label" for="studentNumber">Student number</label>
 							</div>
 							<div class="collection">
-								<input type="text" name="studentNumber" <?php if(!$lbCons){ ?> disabled="disabled"<?php } ?> maxlength="9" value="<?php if($lbCons) echo $uplbConstituencyObj->studentNumber; ?>" />
-								<input type="hidden" name="studentNumber_validate" value="1" />
+								<input type="text" name="studentNumber" <?php if(!$lbCons){ ?> disabled="disabled"<?php } ?> maxlength="9" value="<?php if($lbCons) { echo $uplbConstituencyObj->studentNumber; } else { echo ' ';}?>" />
+								<input type="hidden" name="studentNumber_validate" value="<?php if($lbCons AND isset($uplbConstituencyObj->studentNumber)){ ?>1<?php }else{?>-2<?php }?>" />
 							</div>
 							<br/>
 							<div class="msgContainer">
@@ -284,26 +284,26 @@ $this->load->view('html-generic/doctype.inc');
 								<span id="studentNumberFldMsg" ></span>
 							</div>
 						</div>
-						<div class="row" id="employeeNumberFld">														
+						<div class="row" id="employeeNumberFld">
 							<div class="label" >
 								<label class="label" for="employeeNumber">Employee number</label>
 							</div>
 							<div class="collection">
-								<input type="text" name="employeeNumber" <?php if(!$lbCons){ ?> disabled="disabled"<?php } ?>  maxlength="10" value="<?php if($lbCons) echo $uplbConstituencyObj->employeeNumber; ?>" />
-								<input type="hidden" name="employeeNumber_validate" value="1" />
+								<input type="text" name="employeeNumber" <?php if(!$lbCons){ ?> disabled="disabled"<?php } ?>  maxlength="10" value="<?php if($lbCons) {echo $uplbConstituencyObj->employeeNumber;} else { echo ' ';}  ?>" />
+								<input type="hidden" name="employeeNumber_validate" value="<?php if($lbCons AND isset($uplbConstituencyObj->employeeNumber)){?>1<?php }else{?>-2<?php }?>" />
 							</div>
 							<br/>
 							<div class="msgContainer">
 								<div class="icon"></div>
 								<span id="employeeNumberFldMsg"></span>
 							</div>
-						</div>										
-					</fieldset>																	
-					<fieldset class="fieldsCollection">						
+						</div>
+					</fieldset>
+					<fieldset class="fieldsCollection">
 						<legend class="field_grouping_bar">booking settings</legend>
-						<div class="row" id="allowfriendsFld">														
+						<div class="row" id="allowfriendsFld">
 							<div class="label" >
-								<label class="label" for="allowfriends">Allow friends to book me</label>								
+								<label class="label" for="allowfriends">Allow friends to book me</label>
 							</div>
 							<div class="collection">
 								<input type="checkbox" name="allowfriends" <?php if( intval($userObj->BookableByFriend) === 1){ ?> checked="checked"  <?php } ?> />
@@ -313,7 +313,7 @@ $this->load->view('html-generic/doctype.inc');
 								<div class="icon"></div>
 								<span id="allowfriendsFldMsg"></span>
 							</div>
-						</div>											
+						</div>
 					</fieldset>
 					<fieldset class="fieldsCollection roles">
 						<legend class="field_grouping_bar">roles</legend>
@@ -330,8 +330,7 @@ $this->load->view('html-generic/doctype.inc');
 							$eventMgrRoleCaption = "" ;
 							$receptionistRoleCaption = "" ;
 							$facultyRoleCaption = "" ;
-							
-						?>		
+						?>
 						<table class="center_purest schedulesCentral" style="text-align: center;" >
 							<thead>
 								<tr>
@@ -351,7 +350,7 @@ $this->load->view('html-generic/doctype.inc');
 								<tr id="eventmanager" class="odd" >
 									<td>Event Manager</td>
 									<td>
-										<?php																				
+										<?php
 										if( intval($permissionsObj->EVENT_MANAGER) === 1 ){
 											$eventMgrRoleCaption = $yesAccess;
 										?>
@@ -368,7 +367,7 @@ $this->load->view('html-generic/doctype.inc');
 								<tr id="receptionist" class="even" >
 									<td>Receptionist</td>
 									<td>
-										<?php																				
+										<?php
 										if( intval($permissionsObj->RECEPTIONIST) === 1 ){
 											$receptionistRoleCaption = $yesAccess;
 										?>
@@ -380,12 +379,12 @@ $this->load->view('html-generic/doctype.inc');
 										<?php } ?>
 									</td>
 									<td><input type="button" name="togglePermission_receptionist" value="<?php echo $receptionistRoleCaption; ?>" /></td>
-									<td><input type="button" name="seeDo_receptionist" value="What can you do" />	</td>
+									<td><input type="button" name="seeDo_receptionist" value="What can you do" /></td>
 								</tr>
 								<tr id="faculty" class="odd"  >
 									<td>Faculty Member</td>
 									<td>
-										<?php																				
+										<?php
 										if( intval($permissionsObj->FACULTY) === 1 ){
 											$facultyRoleCaption = $yesAccess;
 									?>
@@ -404,7 +403,7 @@ $this->load->view('html-generic/doctype.inc');
 								<tr id="administrator" class="even" >
 									<td>Administrator</td>
 									<td>
-										<?php																				
+										<?php
 										if( intval($permissionsObj->ADMINISTRATOR) === 1 ){
 											$adminRoleCaption = $yesAccess;
 										?>
@@ -420,20 +419,18 @@ $this->load->view('html-generic/doctype.inc');
 								</tr>
 							</tbody>
 						</table>
-					</fieldset>					
+					</fieldset>
 					<div id="essentialButtonsArea">
 						<a class="button" id="buttonOK" ><span class="icon">Save Changes</span></a>
 						<a class="button" id="buttonReset" ><span class="icon">Reset fields</span></a>
+						<a class="button" id="buttonCancel" ><span class="icon">Cancel</span></a>
 					</div>
-					
 				</div>
-				
 			</div>
-			</form> <!--end of form -->
+			</form>
 		<div style=" clear:both;"></div>
 		</div><!--end of centralContainer-->
     </div><!--end of main content-->
-	
 <?php
 	$this->load->view('html-generic/footer.inc');
 ?>

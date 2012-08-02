@@ -1843,7 +1843,7 @@ class eventctrl extends CI_Controller {
 		//if user is accessing this without going to step 1 first, redirect
 		if( $this->session->userdata( 'createEvent_step' ) !== 1 or  $this->input->post( 'eventName' ) == FALSE )
 		{
-			$data['error'] = "NO_DATA";			
+			$data['error'] = "NO_DATA";	
 			$this->load->view( 'errorNotice', $data );
 			return false;
 		}

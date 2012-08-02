@@ -24,8 +24,8 @@
 		define( 'COL_SLOT_QUANTITY' , 'SLOT_QUANTITY' );
 		define( 'COL_VISUALSEAT_DATA' , 'VISUALSEAT_DATA' );
 		define( 'COL_EVENT_NAME' , 'EVENT_NAME' );
-		define( 'COL_START_DATE' , 'START_DATE' );
-		define( 'COL_START_TIME' , 'START_TIME' );
+		if( !defined( 'COL_START_DATE') ) define( 'COL_START_DATE', 'START_DATE');
+		if( !defined( 'COL_START_TIME') ) define( 'COL_START_TIME', 'START_TIME');
 		define( 'COL_END_DATE' , 'END_DATE' );
 		define( 'COL_END_TIME' , 'END_TIME' );
 		define( 'COL_EVENT_LOCATION' , 'EVENT_LOCATION' );

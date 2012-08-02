@@ -87,7 +87,7 @@ class payment_model extends CI_Model {
 			return false;
 	}// createPayment(..)
 	
-	function createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
+	/*function createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
 			$email, $comments, $internal_data_type, $internal_data
 	)
 	{
@@ -101,7 +101,7 @@ class payment_model extends CI_Model {
 		*	@description Inserts into database the new payment mode specified by the parameters.
 		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
 		**/
-		
+		/*
 		$uniqueID = $this->getLastPaymentModeUniqueID() + 1 ;
 		$data = Array(
 			'UniqueID'			=>  $uniqueID,
@@ -119,6 +119,14 @@ class payment_model extends CI_Model {
 		);				
 		return $this->db->insert('payment_channel', $data );		
 	}//createPaymentMode(..)
+	*/
+	
+	function createPaymentMode( &$data )
+	{
+		unset( $data[ 'mode' ] );
+		$data[ 'UniqueID' ] = $this->getLastPaymentModeUniqueID() + 1 ;
+		return $this->db->insert('payment_channel', $data );
+	}
 	
 	function createPaymentChannelPermission( $accountNum, $eventID, $showtimeID, $pChannelID  )
 	{
@@ -524,13 +532,13 @@ class payment_model extends CI_Model {
 		return $totalCharges;
 	}//sumTotalCharges(..)
 	
-	function updatePaymentMode( $uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
+	/**function updatePaymentMode( $uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
 			$email, $comments, $internal_data_type, $internal_data
 	)
 	{
-		/**
-		*	@description Simply updates an entry in the `payment_channel` table
-		**/
+		
+		//	@description Simply updates an entry in the `payment_channel` table
+		
 		$data = Array(			
 			'Type'	   			 => $ptype,
 			'Name'	   	         => $name,
@@ -548,6 +556,20 @@ class payment_model extends CI_Model {
 		$sql_command = $this->db->update_string('payment_channel', $data, $where );
 		return $this->db->query( $sql_command );
 	}//updatePaymentMode(..)
+	**/
+	
+	function updatePaymentMode( &$data )
+	{
+		/**
+		*	@revised 01AUG2012-1406
+		*/
+		$uniqueID = $data['uniqueID'];
+		// unset because these aren't DB columns to be updated
+		unset( $data['mode'] );
+		unset( $data['uniqueID'] );
+		$this->db->where( 'UniqueID', $uniqueID );
+		return $this->db->update('payment_channel', $data );
+	}
 	
 	function updatePurchaseComments( $bookingNumber, $uniqueID, $comments )
 	{

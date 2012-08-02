@@ -1,5 +1,5 @@
 $(document).ready( function(){
-	
+	/*
 	$('div.metrotile').click( function(e){
 		e.preventDefault();
 		if( $(this).hasClass( 'notyet' ) ){
@@ -10,7 +10,7 @@ $(document).ready( function(){
 			});
 			return false;
 		}
-		$(this).children('form').first().submit();
+		//$(this).children('form').first().submit();
 	});
-	
+	*/
 });

@@ -1,11 +1,25 @@
 <?php
-
+/**
+*	User account controller
+* 	CREATED <November 2011>
+*	Part of "The UPLB Express Ticketing System"
+*   Special Problem of Abraham Darius Llave / 2008-37120
+*	In partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science
+*	University of the Philippines Los Banos
+*	------------------------------
+*
+*	Contains URIs regarding user account management,signing up and for the Administrator - managing other users and
+		as well as payment modes.
+*/
 class useracctctrl extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		include_once( APPPATH.'constants/_constants.inc');
+		$this->load->library('airtraffic_v2');
+		$this->load->library('functionaccess');
+		$this->load->library('inputcheck');
 		$this->load->library('session');
 		$this->load->library('sessmaintain');
 		$this->load->model('login_model');
@@ -24,85 +38,137 @@ class useracctctrl extends CI_Controller {
 			)
 		) return FALSE;
 	}
-	
+
 	function index()
 	{
 		redirect('sessionctrl');
 	}//index
-	
+
+	private function manageuser_common( $checkPermissionOnly = false )
+	{
+		/**
+		*	@created <March 2012>
+		*	@description Checks if user is an administrator and outputs the view page if ever
+		*	@revised 01AUG2012-1220
+		*/
+		if( !$this->permission_model->isAdministrator() )
+		{   // ec 4101
+			$data['error'] = "NO_PERMISSION";
+			$this->load->view( 'errorNotice', $data );
+			return FALSE;
+		}
+		return TRUE;
+	}// manageuser_common(..)
+
+	private function manageuser_common2()
+	{
+		/**
+		*	@created 31JUL2012-1243
+		*	@history Extracted from $this->manageuser_common2()
+		*	@description Returns info (main info and uplb constituency) needed for the view page when managing users.
+		*/
+		$concernedUserAccountNum = $this->clientsidedata_model->getAdminManagesUser();
+		if( $concernedUserAccountNum === FALSE ) return FALSE;
+		return Array(
+			'accountNum'  => $concernedUserAccountNum,
+			'userMainInfo' => $this->account_model->getUserInfoByAccountNum( $concernedUserAccountNum ),
+			'userUPLBInfo' => $this->account_model->getUserUPLBConstituencyData( $concernedUserAccountNum )
+		);
+	}
+
 	function addpaymentmode()
 	{
-		$this->manageuser_common( true );
+		/**
+		*	@created <March 2012>
+		*	@description Serve page of the add payment mode operation.
+		*	@revised 01AUG2012-1340
+		*/
+		// is admin check
+		if( !$this->manageuser_common( true ) ) return FALSE;
+		// access check
+		if( !$this->functionaccess->preUseracctctrl__addpaymentmode() ) return FALSE;
 		$data['mode'] = 0;
+		$this->clientsidedata_model->updateSessionActivityStage( STAGE_MPAY_ADD_1_FW );
 		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
 	
-	function addpaymentmode_step2(){
-		//HOT-SPOT FOR REFACTORING. VERY COMMON WITH $this->managepaymentmode_save
-				
-		$ptype 		= $this->input->post( 'ptype' ); 
-		$name	 	= $this->input->post( 'name' ); 
-		$person 	= $this->input->post( 'person' ); 
-		$location 	= $this->input->post( 'location' ); 
-		$cellphone  = $this->input->post( 'cellphone' ); 
-		$landline   = $this->input->post( 'landline' ); 
-		$email 		= $this->input->post( 'email' ); 
-		$comments 	= $this->input->post( 'comments' ); 
-		$internal_data_type = $this->input->post( 'internal_data_type' ); 
-		$internal_data 		= $this->input->post( 'internal_data' ); 
-		if( $name === false ){
-			$data['error'] = "NO_DATA";			
-			$data['redirectURI'] = base_url().'useracctctrl/managepaymentmode';
-			$data['defaultAction'] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+	function addpaymentmode_step2() //see @todo
+	{
+		/**
+		*	@created <March 2012>
+		*	@description Save page for adding a new payment mode.
+		*	@revised 01AUG2012-1323
+		*	@todo 
+			-DELETE and use managepaymentmode_save() later
+			-HOT-SPOT FOR REFACTORING. VERY COMMON WITH $this->managepaymentmode_save
+		*/
+		// access check
+		if( !$this->functionaccess->preUseracctctrl__addpaymentmode_step2() ) return FALSE;
+		// harvest details
+		$postData = $this->usefulfunctions_model->extractPaymentModeDetailsFromPOST();
+		// server side form validation
+		if( !$this->inputcheck->useracctctrl__addpaymentmode_step2( $postData ) ){
+			echo var_dump( $_POST );
+			return $this->sessmaintain->assembleGenericFormValidationFail(); //EC 4998
 		}
-		if( strlen($name) < 1 or
-			!$this->usefulfunctions_model->isPaymentModeTypeValid( $ptype ) or
-			!$this->usefulfunctions_model->isInternalDataTypeValid( $internal_data_type ) )
-		{			
-			echo( 'Invalid entries specified!<br/><br/>' ); // EC 4998
-			echo('<a href="javascript: window.history.back();" >Go back</a>' );
-			return false;
-		}
-		if( $this->payment_model->getPaymentModeByName( $name) !== FALSE )
+		// is the name already taken
+		if( $this->payment_model->getPaymentModeByName($postData['Name']) !== FALSE )
 		{
-			echo( 'Payment mode exists already!<br/><br/>' ); // EC 1500
-			echo('<a href="javascript: window.history.back();" >Go back</a>' );
-			return false;
+			return $this->sessmaintain->assemblePaymentModeAlreadyExists();
 		}
-		$result = $this->payment_model->createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
-			$email, $comments, $internal_data_type, $internal_data
-		);
-		if( $result )
-		{
-			$data[ 'theMessage' ] = "The payment mode has been successfully added."; //error code 2500
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'successNotice', $data );
-			return true;
+		$this->airtraffic_v2->initialize( STAGE_MPAY_ADD_2_PR, STAGE_MPAY_1_FW );
+		// now do modify DB
+		$this->payment_model->createPaymentMode( $postData );
+		// now check whether to commit
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','addpaymentmode_step2() cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleProceedSpecific(
+				'useracctctrl/managepaymentmode',
+				'The payment mode has been successfully added.',
+				3000
+			);
 		}else{
-			$data[ 'error' ] = 'CUSTOM';
-			$data[ 'theMessage' ] = "Something went wrong while adding the payment mode. It may have been not saved."; // 5500
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','addpaymentmode_step2() clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleGenericTransactionFail(); // EC 5500 ?
 		}
-	}
+	}//addpaymentmode_step2()
 	
+	function cancel_manage_account()
+	{
+		/**
+		*	@created 28JUL2012-1607
+		*/
+		if( $this->functionaccess->preUseracctctrl__myAccountFW() )
+		{
+			$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
+			return $this->sessmaintain->assembleProceed( "sessionctrl" );
+		}
+		// might not be able to reach here because of internal mechanism in library
+		// functionaccess, but just in case.
+		$this->load->view('_stopcodes/4100.xml');
+		return FALSE;
+	}
+
 	function changePassword_step1()
 	{
+		/**
+		*	@created <Late March 2012>
+		*	@revised 30JUL2012-1530
+		*/
+		if( !$this->functionaccess->preUseracctctrl__myAccountFW() ) return FALSE;
 		$this->load->view('manageAccount/changePassword');
 	}
 	
-	function changePassword_step2(){
-		/*
-			Take note, we don't perform new password confirmation here, inasa na sa JavaScript! hahaha.
+	function changePassword_step2()
+	{
+		/**
+		*	@created <Late March 2012>
+		*	@revised 30JUL2012-1541
+		*	@remarks Take note, we don't perform new password confirmation here, inasa na sa JavaScript! hahaha.
 			( kasalanan na yan ng  naghack/trick dun sa page.javascript)
 		*/
-		if( !$this->input->is_ajax_request() ) die("NOT-ALLOWED"); // EC 4103
-		
 		$accountNum;
 		$userObj;
 		$oldPass 	= FALSE;
@@ -112,46 +178,62 @@ class useracctctrl extends CI_Controller {
 		$whereNextURI = 'useracctctrl/myAccount';
 		$responseDescriptor;
 		$responseCaption;
+		$oldPasswordValid = FALSE;
+		$nextStage = -1;
+		$nextName  = IDLE;
 		
 		$accountNum = $this->clientsidedata_model->getAdminResetsPasswordIndicator();
 		$isAdminResettingPassword = (  $accountNum !== FALSE );
 		$newPass = $this->input->post( "password" );
-		
-		if( !$isAdminResettingPassword ){
+
+		if( $isAdminResettingPassword ){
+			$oldPasswordValid = TRUE;
+			$nextName = ADMIN_MANAGE_USER;
+			$nextStage = STAGE_MU_2_FW;
+		}else{
+			if( !$this->functionaccess->preUseracctctrl__changePassword_step2() ) return FALSE;
 			$accountNum = $this->clientsidedata_model->getAccountNum();
 			$oldPass    = $this->input->post( "oldPassword" );
-			$userObj 	= $this->account_model->getUserInfoByAccountNum( $accountNum );		
-					
-			if( !$this->account_model->authenticateUser( $userObj->username, $oldPass ) )
-			{			
-				echo $this->makexml_model->XMLize_AJAX_Response( 
-					// ec 4003
-					"error", "authentication failure", "AUTH_FAIL", 0, "Invalid current password. Please try again.", "" 
-				);
-				return false;
+			// validate form input
+			if( $this->inputcheck->is_password_valid( $oldPass ) )
+			{
+				$userObj 	= $this->account_model->getUserInfoByAccountNum( $accountNum, FALSE );
+				if( !$this->account_model->authenticateUser( $userObj->username, $oldPass ) )
+				{
+					return $this->sessmaintain->assembleInvalidPasswordCurrent();
+				}
+				$oldPasswordValid = TRUE;
 			}
 		}
-				
-		$result = $this->account_model->setPassword( $newPass, $accountNum );
-		
-		if( $isAdminResettingPassword ){
-			// EC 1002
-			$whereNext = 'manageUser_step2';
-			$responseDescriptor = "The user's password has been changed.";
-			$responseCaption = "Manage User";
-			$this->clientsidedata_model->deleteAdminResetsPasswordIndicator();
+		// validate form input
+		if( !$oldPasswordValid OR !$this->inputcheck->is_password_valid( $newPass ) ){
+			$this->clientsidedata_model->deleteAllInternalErrors();
+			return $this->sessmaintain->assembleGenericFormValidationFail();
+		}
+		$this->airtraffic_v2->initialize( STAGE_MACCT1_PR, $nextStage, $nextName );
+		$result = $this->account_model->setPassword( $newPass, $accountNum );	// main activity
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','changePassword_step2 cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			if( $isAdminResettingPassword ){
+				$responseDescriptor = "The user's password has been changed.";
+				$this->clientsidedata_model->deleteAdminResetsPasswordIndicator();
+			}else{
+				$responseDescriptor = "Your password has been changed.";
+			}
+			return $this->sessmaintain->assembleProceedSpecific(
+				'useracctctrl/' . ( ( $isAdminResettingPassword ) ? 'manageUser_step2' : "myAccount" ),
+				$responseDescriptor,
+				3000
+			);
 		}else{
-		    // EC 1002
-			$whereNext = 'myAccount';
-			$responseDescriptor = "Your password has been changed.";
-			$responseCaption = "My Account";
-		}		
-		$whereNext = '<br/><br/><a href="'.base_url().$whereNextURI.'" >Back to '.$responseCaption.'</a>';		
-		echo $this->makexml_model->XMLize_AJAX_Response( "okay", "success", "PASSWORD_CHANGE-SUCCESS", 0, $responseDescriptor.$whereNext );
-		return true;
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','changePassword_step2 clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleGenericTransactionFail();
+		}
 	}//changePassword_step2
-			
-	function isUserExisting()
+
+	function isUserExisting() // not yet
 	{
 		/*
 			Created 13MAR2012-0118. WTF! Bakit ngayon lang.
@@ -203,55 +285,59 @@ class useracctctrl extends CI_Controller {
 	
 	function isUserExisting2()
 	{
-		/*
-			@purpose Checks if a user is attached to an AccountNum or username being submitted.
-			@assumption  Data submitted is deemed to be accountNum if it is an integer.
+		/**
+		*	@description Checks if a user is attached to an AccountNum or username being submitted.
+		*	@assumption  Data submitted is deemed to be accountNum if it is an integer.
+		*	@revised 31JUL2012-1140 Only now redirects to $this->manageUser_step2
 		*/
 		define( 'ACCOUNTNUM_I', "AccountNum" );
 		define( 'USERNAME_I', "username" );
 		$identifier_val;
-		$identifier_type;		
+		$identifier_type;
 		$accountNum = 0;
-		
-		$identifier_val = $this->input->post( 'useridentifier' );				
-		if( $identifier_val === false or strlen($identifier_val) < 1 ){ 
-			echo $this->makexml_model->XMLize_AJAX_Response( 
-			    // EC 4000
-				"error", "information needed", "INFO_NEEDED", 0, "i need your info please! field: useridentifier", "" 
-			);
-			return false;
+
+		$identifier_val = $this->input->post( 'useridentifier' );
+		// server side form validation
+		if( !$this->inputcheck->useracctctrl__isUserExisting2( $identifier_val ) )
+		{
+			$this->clientsidedata_model->deleteAllInternalErrors();
+			return $this->sessmaintain->assembleGenericFormValidationFail();
 		}
+		// 30JUL2012-2012 - I don't get the second IF condition.
 		$identifier_type = ( is_numeric( $identifier_val) && !( intval( $identifier_val ) == 0 or intval( $identifier_val )== 1  ) ) 
 								? ACCOUNTNUM_I : USERNAME_I;
-			
 		switch( $identifier_type )
 		{
-			case ACCOUNTNUM_I:  $userExists = ( $this->account_model->getUserInfoByAccountNum( $identifier_val ) !== FALSE );
+			case ACCOUNTNUM_I:  $userExists = ( $this->account_model->getUserInfoByAccountNum( $identifier_val, FALSE ) !== FALSE );
 								$accountNum = $identifier_val;
-								break;									
+								break;
 			case USERNAME_I	: 	$userObj =  $this->account_model->getUserInfoByUsername( $identifier_val );
 								$userExists = ( $userObj !== FALSE );
 								if( $userExists ) $accountNum = $userObj->AccountNum;
-								break;								
+								break;
 		}//switch
 		if( $userExists )
 		{
-			echo $this->makexml_model->XMLize_AJAX_Response( 
-			   // EC 4202
-				"okay", "user exists", "USERNAME_EXISTS", 0, "user is existing.", "" 
-			);
-			$this->clientsidedata_model->setSessionActivity( ADMIN_MANAGE_USER, 2, 'accountNum='.$accountNum.";" );
-			return true;
+			$this->airtraffic_v2->initialize( STAGE_CR_SEAT3_PR, STAGE_MU_2_FW, ADMIN_MANAGE_USER );
+			// actually, no DB transaction to "protect" but only the session activity.
+			if( $this->airtraffic_v2->clearance() ){
+				$this->airtraffic_v2->commit();
+				$this->clientsidedata_model->setAdminManagesUser( $accountNum );
+				return $this->sessmaintain->assembleProceed( "useracctctrl/manageUser_step2" );
+			}else{
+				$this->airtraffic_v2->rollback();
+				return $this->sessmaintain->assembleATC_V2_ClearanceFail();
+			}
 		}else{
-			// EC 4001
-			echo $this->makexml_model->XMLize_AJAX_Response( 
-				"error", "not found", "USERNAME_DOES-NOT-EXIST", 0, "username is not existing.", "" 
-			);
-			return false;
+			switch( $identifier_type )
+			{
+				case ACCOUNTNUM_I: return $this->sessmaintain->assembleAccountNum404();
+				case USERNAME_I:    return $this->sessmaintain->assembleUsername404();
+			}
 		}
 	}//isUserExisting2(..)
 	
-	function getUserInfoForBooking()
+	function getUserInfoForBooking()//maybe?
 	{
 		/*
 			Created 26FEB2012-2026
@@ -260,15 +346,17 @@ class useracctctrl extends CI_Controller {
 		$username;
 		$accountNum = false;
 		
-		if( $this->input->is_ajax_request() === false ) redirect('/');				
+		if( $this->input->is_ajax_request() === false ){
+			return $this->sessmaintain->assembleOnlyAJAXAllowed();
+		}
 		
-		$username = $this->input->post( 'username' );						
+		$username = $this->input->post( 'username' );
 		if( $username === "DEFAULT" )
 		{
-			$accountNum = $this->session->userdata( 'accountNum' );
+			$accountNum = $this->clientsidedata_model->getAccountNum();
 			$mainInfo = $this->account_model->getUserInfoByAccountNum( $accountNum );
-		}else{		
-			$mainInfo = $this->account_model->getUserInfoByUsername( $username );	
+		}else{
+			$mainInfo = $this->account_model->getUserInfoByUsername( $username );
 			if( $mainInfo !== false ) $accountNum = intval($mainInfo->AccountNum);
 		}
 		if( $mainInfo === FALSE )
@@ -281,227 +369,217 @@ class useracctctrl extends CI_Controller {
 			echo "ERROR_NO-PERMISSION-TO-BOOK-EXCEPT-HIMSELF";
 			return false;
 		}
-		$uplbConstituencyInfo = $this->account_model->getUserUPLBConstituencyData($accountNum );				
-		echo $this->makexml_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );		
-		return true;	
+		$uplbConstituencyInfo = $this->account_model->getUserUPLBConstituencyData($accountNum );
+		echo $this->makexml_model->XMLize_UserInfoForBooking( $mainInfo, $uplbConstituencyInfo );
+		return true;
 	}//getUserInfoForBooking
-	
-	function manageuser()
-	{
-		die('17JUL2012-1214: Disabled for further maintenance because of internal fault: <code>useracctrctrl/manageuser_common</code>');
-		//for admin only
-		$this->manageuser_common( true );
-		$this->load->view( 'manageUser/manageUser01' );
-	}// manageUser(..)
 	
 	function managepaymentmode()
 	{
-		$this->manageuser_common( true );
+		/**
+		*	@revised 01AUG2012-1425
+		*/
+		if( !$this->manageuser_common( true ) OR
+			!$this->functionaccess->preUseracctctrl__managepaymentmode()
+		) return FALSE;
 		$data['paymentChannels'] = $this->payment_model->getPaymentChannels( true );
-		$this->load->view( 'managePaymentModes/managePaymentModes01', $data );	
+		$this->clientsidedata_model->setSessionActivity( ADMIN_MANAGE_PAYMENTMODE, STAGE_MPAY_1_FW );
+		$this->load->view( 'managePaymentModes/managePaymentModes01', $data );
 	}
 	
-	function managepaymentmode_delete()
+	function managepaymentmode_delete( $uniqueID = FALSE )
 	{
-		$this->manageuser_common( true );
-		$uniqueID = $this->input->post( 'pChannel' );
-		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
-		$data['title'] =  "Be careful on what you wish for";
-		$data['theMessage'] =  "Are you sure you want to delete this payment mode?";
-		$data['yesURI'] = base_url().'useracctctrl/managepaymentmode_delete_process';
-		$data['noURI'] = base_url().'useracctctrl/managepaymentmode';
-		$data['formInputs'] = Array( 
-			'pChannel' => $uniqueID
-		);		
-		$this->load->view( 'confirmationNotice', $data );
+		/**
+		*	@created <April 2012>
+		*	@revised 02AGU2012-1418
+		*	@todo <See $this::managepaymentmode_delete_process >
+		*/
+		if( !$this->manageuser_common( true ) ) return FALSE;
+		if( $uniqueID === false){
+			return $this->sessmaintain->assembleGenericFormValidationFail();
+		}
+		return $this->sessmaintain->assembleManagePaymentModeDeletePrompt( $uniqueID );
 	}
 	
 	function managepaymentmode_delete_process()
 	{
+		/**
+		*	@created <April 2012>
+		*	@revised 02AGU2012-1418
+		*	@todo 
+				- Further revision to comply with session activity tracking in DB,
+				airtraffic_v2 and ajaxifying this in $this->managepaymentmode() instead
+				(like how deletion of an existing works in eventctrl/managebooking )
+				I have left it out for now since this is a rarely used functionality.
+				- Check first if this payment mode is currently in use by existing bookings,
+				or at least warn them about the consequences. For now, I'm so lazy to include
+				it here.
+		*/
 		$this->manageuser_common( true );
 		$uniqueID = $this->input->post( 'pChannel' );
-		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
+		if( $uniqueID === false){
+			return $this->sessmaintain->assembleSpecificFormValidationFail( 'payment mode' );
+		}
 		if( intval($uniqueID) === 0 ){
 			/*
 				Automatic confirmation since free is not removable
 				EC 2515
 			*/
-			$data[ 'error' ] = 'CUSTOM';
-			$data[ 'theMessage' ] = "By this system's design, this payment mode is not designed to be removable. Edit my code if you want to. <br/><br/>:D";			
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+			return $this->sessmaintain->assembleFreePaymentModeNotRemovable();
 		}
-		$result = $this->payment_model->deletePaymentMode( $uniqueID );
-		if( $result )
-		{   // ec 1501
-			$data[ 'theMessage' ] = "The payment mode has been successfully deleted.";			
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'successNotice', $data );
-			return true;
+		$this->db->trans_begin();
+		$this->payment_model->deletePaymentMode( $uniqueID );
+		if( $this->db->trans_status() )
+		{   
+			$this->db->trans_commit();
+			return $this->sessmaintain->assembleManagePaymentModeDeleteOK();
 		}else{
 			//ec 5505
-			$data[ 'error' ] = 'CUSTOM';
-			$data[ 'theMessage' ] = "Something went wrong while processing the deletion of the payment mode. It may have been not deleted. <br/><br/>Please try again.";
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+			$this->db->trans_rollback();
+			return $this->sessmaintain->assembleManagePaymentModeDeleteFail();
 		}
 	}
 	
-	function managepaymentmode_edit()
+	function managepaymentmode_edit( $uniqueID = FALSE )
 	{
-		$this->manageuser_common( true );
-		$uniqueID = $this->input->post( 'pChannel' );
-		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' ); //EC 4000
-		$data['singleChannel'] = $this->payment_model->getSinglePaymentChannelByUniqueID( $uniqueID );		
+		/**
+		*	@revised 01AUG2012-1520
+		*/
+		if( !$this->manageuser_common( true ) OR
+		  !$this->functionaccess->preUseracctctrl__managepaymentmode_edit()
+		){ 
+			die('wahhh');
+			return FALSE;
+		}
+		if( !$this->inputcheck->is_payment_mode_id_valid( $uniqueID, TRUE ) ){
+			return $this->sessmaintain->assembleManagePaymentModeEditValidateFail();
+		}
+		$data['singleChannel'] = $this->payment_model->getSinglePaymentChannelByUniqueID(
+			mysql_real_escape_string( $uniqueID )
+		);
+		if( $data['singleChannel'] === FALSE ){
+			return $this->sessmaintain->assembleManagePaymentModeEdit404();
+		}
 		$data['mode'] = 1;
+		$this->clientsidedata_model->updateSessionActivityStage( STAGE_MPAY_EDIT_1_FW );
 		$this->load->view( 'managePaymentModes/managePaymentModes02', $data );
 	}
-		
+
 	function managepaymentmode_save()
 	{
-		//form-validation skipped here. let javascript take care of that.
-		//die( var_dump($_POST ) );
-		
-		/*
-			$mode Def'n : 0 - NEW ENTRY ; 1 - EDITING AN ENTRY
+		/**
+		*	@created <April 2012>
+		*	@revised 01AUG2012-1410
+		*	@remarks 
+				- Some code for merging of $this->addpaymentmode_step2() is already present.
+				- Definition of post data 'mode' : 0 - NEW ENTRY ; 1 - EDITING AN ENTRY
+		*	@todo Remove $this->addpaymentmode_step2() and use only this. Might be complicated
+				since you have to modify library functionaccess:preBookCheckAJAXUnified
 		*/
-		$mode       = intval( $this->input->post( 'mode' ) );
-		$uniqueID 	= $this->input->post( 'uniqueID' ); 
-		$ptype 		= $this->input->post( 'ptype' ); 
-		$name	 	= $this->input->post( 'name' ); 
-		$person 	= $this->input->post( 'person' ); 
-		$location 	= $this->input->post( 'location' ); 
-		$cellphone  = $this->input->post( 'cellphone' ); 
-		$landline   = $this->input->post( 'landline' ); 
-		$email 		= $this->input->post( 'email' ); 
-		$comments 	= $this->input->post( 'comments' ); 
-		$internal_data_type = $this->input->post( 'internal_data_type' ); 
-		$internal_data 		= $this->input->post( 'internal_data' ); 
-		if( $uniqueID === false or $name === false ){
-			$data['error'] = "NO_DATA";			
-			$data['redirectURI'] = base_url().'useracctctrl/managepaymentmode';
-			$data['defaultAction'] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+		// access check
+		if( !$this->functionaccess->preUseracctctrl__managepaymentmode_save() ) return FALSE;
+		// harvest details
+		$postData = $this->usefulfunctions_model->extractPaymentModeDetailsFromPOST();
+		// server side form validation
+		if( !$this->inputcheck->useracctctrl__addpaymentmode_step2( $postData ) ){
+			return $this->sessmaintain->assembleGenericFormValidationFail(); //EC 4998
 		}
-		if( strlen($uniqueID) < 1 or strlen($name) < 1 or
-			!$this->usefulfunctions_model->isPaymentModeTypeValid( $ptype ) or
-			!$this->usefulfunctions_model->isInternalDataTypeValid( $internal_data_type ) )
-		{			
-			echo( 'Invalid entries specified!<br/><br/>' ); //ec 4998
-			echo('<a href="javascript: window.history.back();" >Go back</a>' );
-			return false;
-		}
-		if( $mode == 0 )
+		$activity = intval($postData['mode']);
+		if( $activity  == 0 )
 		{
-			if( $this->payment_model->getPaymentModeByName( $name) !== FALSE )
+			if( $this->payment_model->getPaymentModeByName($postData['Name']) !== FALSE )
 			{
-				echo( 'Payment mode exists already!<br/><br/>' ); //ec 1500
-				echo('<a href="javascript: window.history.back();" >Go back</a>' );
-				return false;
+				return $this->sessmaintain->assemblePaymentModeAlreadyExists();
 			}
 		}
-		$result = $this->payment_model->updatePaymentMode(
-			$uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
-			$email, $comments, $internal_data_type, $internal_data
-		);
-		if( $result )
-		{  // ec 1502
-			$data[ 'theMessage' ] = "The payment mode has been successfully edited.";			
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'successNotice', $data );
-			return true;
+		$this->airtraffic_v2->initialize( STAGE_MPAY_EDIT_2_PR, STAGE_MPAY_1_FW );
+		//now do activity
+		if( $activity  == 0 )
+		{
+			$this->payment_model->createPaymentMode( $postData );
 		}else{
-		  // EC 5510
-			$data[ 'error' ] = 'CUSTOM';
-			$data[ 'theMessage' ] = "Something went wrong while processing the modification of the payment mode. Your changes may have been not saved.";
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/managepaymentmode';
-			$data[ 'defaultAction' ] = 'Payment modes';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+			$this->payment_model->updatePaymentMode( $postData );
+		}
+		// now check whether to commit
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','managepaymentmode_save() cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleProceedSpecific(
+				'useracctctrl/managepaymentmode',
+				'The payment mode has been successfully ' . ( ( $activity  == 0 ) ? 'added.' : 'edited.' ),
+				3000
+			);
+		}else{
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','managepaymentmode_save() clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleGenericTransactionFail(); // EC 5500/10 ?
 		}
 	}//managepaymentmode_save()
 
-	private function manageuser_common( $checkPermissionOnly = false )
+	function manageuser()
 	{
-		/*
-			Gets main info and uplb constituency info.
+		/**
+		*	@created <March 2012>
+		*	@revised 01AUG2012-1417
 		*/
-		die("17JUL2012-1211: This is up for revision, deprecate use of <code>$this->clientsidedata_model->getSessionActivityDataEntry( 'accountNum' )</code> ");
-		if( !$this->permission_model->isAdministrator() )
-		{   // ec 4101
-			$data['error'] = "NO_PERMISSION";
-			$this->load->view( 'errorNotice', $data );
-			return false;
-		}
-		if( $checkPermissionOnly ) return true;
-		//$concernedUserAccountNum = $this->clientsidedata_model->g e t S e s s i o n A c t i v i t y D a t a E n t r y( 'accountNum' );		
-		$data['accountNum']   = $concernedUserAccountNum;
-		$data['userMainInfo'] = $this->account_model->getUserInfoByAccountNum( $concernedUserAccountNum );
-		$data['userUPLBInfo'] = $this->account_model->getUserUPLBConstituencyData( $concernedUserAccountNum );
-		
-		return $data;
-	}// manageuser_common(..)
-
-	private function manageuser_precheck( $stage = 2 )
-	{
-		$sessionActivity = $this->clientsidedata_model->getSessionActivity( );				
-		if( $sessionActivity[0] != ADMIN_MANAGE_USER and $sessionActivity[1] < $stage )
-		{
-			$data['error'] = "NO_DATA";	// ec 4000
-			$this->load->view( 'errorNotice', $data );
-			return false;
-		}
-	}//manageuser_precheck(..)
+		//for admin only
+		if( !$this->manageuser_common( TRUE ) OR
+		    !$this->functionaccess->preUseracctctrl__manageuser()
+		) return FALSE;
+		$this->clientsidedata_model->setSessionActivity( ADMIN_MANAGE_USER, STAGE_MU_1_FW );
+		$this->load->view( 'manageUser/manageUser01' );
+	}// manageuser(..)
 
 	function manageUser_step2()
-	{		
-		$this->manageuser_precheck( 2 );		
-		$data = $this->manageuser_common();
-		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
-		$this->load->view( 'manageUser/manageUser02', $data);		
+	{
+		/**
+		*	@created <March 2012>
+		*	@description Landing page for the selection of operations for a user being managed by
+				the Admin.
+		*	@revised 31JUL2012-1246
+		*/
+		if( !$this->functionaccess->preUseracctctrl__manageUser_step2() ) return FALSE;
+		$this->load->view( 'manageUser/manageUser02', $this->manageuser_common2() );
 	}//manageUser_step2
 
 	function manageuser_editroles()
 	{
-		$this->manageuser_precheck( 3 );		
-		$data = $this->manageuser_common();
+		/**
+		*	@created <March 2012>
+		*	@description Landing page for the editing of roles of a user.
+		*	@revised 31JUL2012-1935
+		*/
+		if( !$this->functionaccess->preUseracctctrl__manageUser_step2() ) return FALSE;
+		$data = $this->manageuser_common2();
 		$data['permissionObj'] = $this->permission_model->getPermissionStraight( $data['accountNum']  );
 		$this->load->view( 'manageUser/manageUser03_editRoles.php', $data);
 	}//manageuser_editroles(..)
 	
 	function manageuser_editrole_save()
 	{
-		// customer and admin are not included, as they are not removable
-		
-		$this->manageuser_precheck( 2 );
-		$data = $this->manageuser_common();
-		$transResult;
-		
-		$permissionsSent = Array(			
+		/**
+		*	@created <March 2012>
+		*	@description Save URI for the editing of roles of a user.
+		*	@revised 31JUL2012-1937
+		*/
+		if( !$this->functionaccess->preUseracctctrl__manageuser_editrole_save() ) return FALSE;
+
+		// As per program design, the customer and admin role cannot be removed thus not harvested here
+		$permissionsSent = Array(
 			'eventmanager'  => $this->input->post('eventmanager'),
-			'receptionist'  => $this->input->post('receptionist'),			
+			'receptionist'  => $this->input->post('receptionist'),
 			'facultymember' => $this->input->post('facultymember')
 		);
-		foreach( $permissionsSent as $key => $value )
-		{	// check for validity
-			if( !( $value==="1" or $value==="0") )
-			{	//ec 4006
-				$data['error'] = "CUSTOM"; 
-				$data['theMessage'] = "The submitted data to the server is in the incorrect format.";
-				$data['redirectURI'] = base_url()."useracctctrl/manageuser_editroles";
-				$data['defaultAction'] = "Edit Roles";
-				$this->load->view( 'errorNotice', $data );			
-				return false;
-			}
+		// server-side form validation
+		if( !$this->inputcheck->useracctctrl__manageuser_editrole_save( $permissionsSent ) )
+		{
+			$this->clientsidedata_model->deleteAllInternalErrors();
+			return $this->sessmaintain->assembleGenericFormValidationFail();
 		}
-		$transResult =  $this->account_model->setPermissions( 
+		$data = $this->manageuser_common2();
+		$this->airtraffic_v2->initialize( STAGE_MACCT1_PR, STAGE_MU_2_FW, ADMIN_MANAGE_USER );
+		// now, transact with DB
+		$this->account_model->setPermissions(
 			$data['accountNum'],
 			1,
 			$permissionsSent[ 'eventmanager' ],
@@ -509,69 +587,61 @@ class useracctctrl extends CI_Controller {
 			NULL,
 			$permissionsSent[ 'facultymember' ]
 		);
-		if( $transResult ){
-			// ec 1600
-			$data[ 'theMessage' ] = "The roles have been edited.";
-			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/manageUser_step2';
-			$data[ 'defaultAction' ] = 'Manage User';			
-			$this->load->view( 'successNotice', $data );				
+		// now check whether to commit
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','manageuser_editroles_save cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleProceedSpecific( "useracctctrl/manageUser_step2", "The changes in roles have been saved.", 2000 );
 		}else{
-			//ec 5600
-			$data['error'] = "CUSTOM";
-			$data['theMessage'] = "Something went wrong while updating permissions. Your changes might not be saved.";
-			$data[ 'redirect' ] = true;
-			$data['redirectURI'] = base_url()."useracctctrl/manageuser_editroles";
-			$data['defaultAction'] = "Edit Roles";
-			$this->load->view( 'errorNotice', $data );						
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','manageuser_editroles_save clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleGenericTransactionFail();
 		}
 	}//manageuser_editroles_save()
 
 	function manageuser_resetpassword()
 	{
-		$this->manageuser_precheck( 2 );		
-		$data = $this->manageuser_common();		
+		/**
+		*	@created <March 2012>
+		*	@description Page for keying in the new password for the user.
+		*	@revised 31JUL2012-1806
+		*/
+		if( !$this->functionaccess->preUseracctctrl__manageUser_step2() ) return FALSE;
+		$data = $this->manageuser_common2();
 		$this->clientsidedata_model->setAdminResetsPasswordIndicator( $data['accountNum'] );
-		$this->clientsidedata_model->updateSessionActivityStage( 3 );	
 		$this->load->view( 'manageUser/resetPassword', $data);
 	}
 
-	function newUserWelcome()
+	function newUserWelcome()//notyet
 	{
-		$step;
-
 		$step = $this->session->userdata('userSignup_step');	// get where stage it is
-		//$data['userSignup_step'] = 3;							// now next step
-		//$this->session->set_userdata($data);
-		//$isFunctionCallValid = isset($_POST["formValidityIndicator"]);		
-		
+
 		if( $step == 2  )
-		{			
-			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+		{
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 			$this->load->view('newUserWelcome', $data);
 		}else{
-			redirect("useracctctrl"); // redirect to homepage
+			redirect("sessionctrl"); // redirect to homepage
 		}
 		
 	}// newUserWelcome
 	
-	function userSignup()
+	function userSignup()//notyet
 	{
 		/*
 			function for user sign up
 			Part1 - basic info
 		*/		
+		if( $this->login_model->isUser_LoggedIn() ) redirect('sessionctrl');
 		// set some session data to indicate that user is still signing up - first part
-		$data['userSignup_step'] = 1;		
-		
+		$data['userSignup_step'] = 1;
 		$this->session->set_userdata($data);
-		
-		$this->load->view('userSignup');		// now load the webpage
+		$this->load->view('userSignup');
 	} //userSignup
 	
-	function userSignup_step2()
+	function userSignup_step2()//notyet
 	{		
-		
+
 		$step = $this->session->userdata('userSignup_step');
 		$status = $this->session->userdata('userSignup_status');
 		
@@ -579,25 +649,23 @@ class useracctctrl extends CI_Controller {
 			13MAR2012-0114 - Removed the requirement for having a student number during sign-up
 			what the f**k - why did I placed that restriction months ago?
 		*/
-		
+
 		if(  $step == 1 )
-		{					
+		{
 			$data['userSignup_step'] = 2;			// now, new step
 			$this->session->set_userdata($data);
 			
-			$this->account_model->createAccount();	// perform insertion to database			
-			
+			$this->account_model->createAccount();	// perform insertion to database
 			//create default permission
 			$this->permission_model->createDefault( $this->account_model->getAccountNumber(  $this->input->post( 'username' ) ) );	
 		
-		// set these data for use while navigating the site (i.e., the nav bar)			
-			
+			// set these data for use while navigating the site (i.e., the nav bar)	
 			$this->login_model->setUserSession(
 				$this->account_model->getAccountNumber(  $this->input->post( 'username' ) ),
 				$this->account_model->getUser_Names( $this->input->post('username') )
 			);
 			
-			$data['userData'] = $this->login_model->getUserInfo_for_Panel();			
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 			$this->load->view('userSignup_part2', $data);
 		}else{
 			// user is trying to access part 2 without acccomplishing step1, so redirect to step1 first
@@ -606,62 +674,115 @@ class useracctctrl extends CI_Controller {
 	} // userSignup_step2()
 		
 	function manageAccountSave()
-	{		
-		$studentNumber = $this->input->post( 'studentNumber' );
-		$employeeNumber = $this->input->post( 'employeeNumber' );		
-		$_UPLB_Unique_violated = " you have chosen is already being used. No changes have been done to your account.";
+	{
+		/**
+		*	@created <Early March 2012? >
+		*	@remarks Here and in the functions this calls, POST data is directly accessed.
+				Might spell disaster when changing POST names in the view page.
+		*	@revised 25JUL2012-1215
+		*/
+		// ajax only and check access
+		if( !$this->functionaccess->preUseracctctrl__manageAccountSave() ) return FALSE;
 		
-		if( $this->account_model->isStudentNumberExisting( $studentNumber, FALSE ) )
-		{	// EC 4203
-			$data['error'] = "CUSTOM";
-			$data[ 'theMessage' ] = "The new student number".$_UPLB_Unique_violated;
-			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
-			$data[ 'defaultAction' ] = 'Manage Account';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+		$accountNum   = $this->clientsidedata_model->getAccountNum();
+		$details      = $this->usefulfunctions_model->extractUserAccountDetailsFromPOST();
+		$details_uplb = $this->usefulfunctions_model->extractUPLBConstDetailsFromPOST();
+
+		// server-side form validation first
+		if( !$this->inputcheck->useracctctrl__manageAccountSave( $details, $details_uplb ) )
+		{
+			$fieldFriendlyName = "";
+			switch( $this->clientsidedata_model->getLastInternalError() )
+			{
+				case INTERNAL_ERR_USERNAME_FORM_FAIL:   $fieldFriendlyName = "username"; break;
+				case INTERNAL_ERR_PASSWORD_FORM_FAIL:   $fieldFriendlyName = "password"; break;
+				case INTERNAL_ERR_NAME_ALL_FORM_FAIL:   $fieldFriendlyName = "name"; break;
+				case INTERNAL_ERR_EMAIL_ALL_FORM_FAIL:  $fieldFriendlyName = "email address"; break;
+				case INTERNAL_ERR_PHONE_ALL_FORM_FAIL:  $fieldFriendlyName = "phone"; break;
+				case INTERNAL_ERR_STUDENTNUM_FORM_FAIL: $fieldFriendlyName = "student number"; break;
+				case INTERNAL_ERR_EMPNUM_FORM_FAIL:     $fieldFriendlyName = "employee number"; break;
+			}
+			if( $fieldFriendlyName == "" )
+			{
+				return $this->sessmaintain->assembleGenericFormValidationFail();
+			}else{
+				return $this->sessmaintain->assembleSpecificFormValidationFail( $fieldFriendlyName );
+			}
 		}
-		if( $this->account_model->isEmployeeNumberExisting( $employeeNumber, FALSE ) )
-		{	// EC 4204
-			$data['error'] = "CUSTOM";
-			$data[ 'theMessage' ] = "The new employee number".$_UPLB_Unique_violated;
-			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
-			$data[ 'defaultAction' ] = 'Manage Account';
-			$this->load->view( 'errorNotice', $data );
-			return false;
+		// check for these are already taken by others
+		if( $this->account_model->getUserInfoByUsername( $details[ 'username' ], FALSE , $accountNum ) )
+		{
+			return $this->sessmaintain->assembleExistingUsernameWarning();
 		}
-		
-		$transResult =  $this->account_model->updateMainAccountDetails();	
-		$transResult2 =  $this->account_model->updateUPLBConstituencyDetails();		
-		if( $transResult and $transResult2 ){
-			//EC 2700
-			$data[ 'theMessage' ] = "The changes in your account have been saved..";
-			$data[ 'redirect' ] = true;
-			$data[ 'redirectURI' ] = base_url().'useracctctrl/myAccount';
-			$data[ 'defaultAction' ] = 'Manage Account';
-			$this->load->view( 'successNotice', $data );				
+		if( $details_uplb !== FALSE ){
+			if( $this->account_model->isStudentNumberExisting( $details_uplb[ 'studentNumber' ], FALSE ) )
+			{	
+				return $this->sessmaintain->assembleExistingStudentNumWarning();
+			}
+			if( $this->account_model->isEmployeeNumberExisting( $details_uplb[ 'employeeNumber' ], FALSE ) )
+			{
+				return $this->sessmaintain->assembleExistingEmployeeNumWarning();
+			}
+		}
+		// now, transact with DB
+		$this->airtraffic_v2->initialize( STAGE_MACCT1_PR, -1, IDLE );
+		$this->account_model->updateMainAccountDetails( $accountNum, $details );
+		$this->account_model->updateUPLBConstituencyDetails( $accountNum, $details_uplb );
+		if( $this->airtraffic_v2->clearance() ){
+			$this->airtraffic_v2->commit();
+			log_message('DEBUG','manageAccountSave cleared for take off ' . $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleProceedSpecific( "sessionctrl", "The changes in your account have been saved.", 3000 );
+			//return $this->sessmaintain->assembleProceedSpecific( "useracctctrl/myaccount_forward#", "The changes in your account have been saved.", 3000 );
 		}else{
-			$data['error'] = "CUSTOM";
-			$data['theMessage'] = "Something went wrong while saving changes to your account. Your changes might not be saved.";
-			$data[ 'redirect' ] = true;
-			$data['redirectURI'] = base_url()."useracctctrl/myAccount";
-			$data['defaultAction'] = 'Manage Account';
-			$this->load->view( 'errorNotice', $data );						
+			$this->airtraffic_v2->rollback();
+			log_message('DEBUG','manageAccountSave clearance error '. $this->airtraffic_v2->getGUID() );
+			return $this->sessmaintain->assembleGenericTransactionFail();
 		}
 	}//manageAccountSave(..)
-				
+
+	function manageuser_disciplineuser()
+	{
+		/**
+		*	@created 31JUL2012-1543
+		*/
+		die('Feature not yet available.');
+	}
+	
+	function manageuser_viewdetails( $acctnum )
+	{
+		/**
+		*	@created 31JUL2012-1325
+		*/
+		die('Feature not yet available.');
+	}
+	
 	function myAccount()
 	{
-		$accountNum =  $this->session->userdata( 'accountNum' );
-		$userObj = $this->account_model->getUserInfoByAccountNum( $accountNum );
+		/**
+		*	@created <March 2012>
+		*	@revised 29JUL2012-1505
+		*/
+		if( !$this->functionaccess->preUseracctctrl__myAccountPR() ) return FALSE;
+		$this->clientsidedata_model->setSessionActivity( MANAGE_ACCOUNT, STAGE_MACCT0_HOME );
+		redirect('useracctctrl/myaccount_forward');
+	}
+	
+	function myaccount_forward()
+	{
+		/**
+		*	@created 29JUL2012-1511
+		*/
+		if( !$this->functionaccess->preUseracctctrl__myAccountFW() ) return FALSE;
+		$accountNum 		 =  $this->clientsidedata_model->getAccountNum();
+		$userObj 			 = $this->account_model->getUserInfoByAccountNum( $accountNum );
 		$uplbConstituencyObj =  $this->account_model->getUserUPLBConstituencyData( $accountNum );
-		$permissionsObj = $this->permission_model-> getPermissionStraight( $accountNum );
-		
+		$permissionsObj 	 = $this->permission_model-> getPermissionStraight( $accountNum );
+
 		$data['userObj'] 			 = $userObj;
-		$data['uplbConstituencyObj'] = $uplbConstituencyObj;		
-		$data['permissionsObj'] 	 = $permissionsObj;		
-				
+		$data['uplbConstituencyObj'] = $uplbConstituencyObj;
+		$data['permissionsObj'] 	 = $permissionsObj;
+		
+		
 		$this->load->view( 'manageAccount/accountHome', $data );
 	}
 } // class

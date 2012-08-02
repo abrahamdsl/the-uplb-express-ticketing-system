@@ -20,7 +20,7 @@
 		This is because we use the state of the DB entry being deleted as sign of success
 		in sessionctrl/contact_tower
 **/
-class airtraffic{
+class Airtraffic{
 	var $CI;
 	var $x_guid;
 	var $x_sessAct;
@@ -297,4 +297,18 @@ class airtraffic{
 		return $result;
 	}
 
+	function  clearance2()
+	{
+		for( $x = 0; $x < 5; $x++ )
+		{
+			log_message('debug','clearance2 sleeping ' . $x );
+			sleep(1);
+		}
+		return ( (connection_status () === CONNECTION_NORMAL ) and $this->CI->db->trans_status() );
+	}
+	
+	function  terminateService2()
+	{
+		return TRUE;
+	}
 }

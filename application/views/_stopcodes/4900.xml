@@ -1,0 +1,8 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
+<ajaxresponse>
+    <type>error</type>
+    <resultstring>PREVIOUS_REQUEST_ONGOING</resultstring>
+    <resultcode>4900</resultcode>
+    <title>previous request ongoing</title>
+    <message>Your earlier request is still being processed. Please trying resubmitting after 20 - 50 seconds.</message>
+</ajaxresponse>

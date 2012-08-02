@@ -15,15 +15,15 @@ $this->load->view('html-generic/metadata.inc');
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/body_all.css'; ?>"/>	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/buttonOK.css'; ?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/homePage.css'; ?>"/>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/> <!-- needed for accordion -->					
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/jquery-ui-custom.css'; ?>"/><!-- needed for accordion -->
 	<!--For modal v1-->	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/css/overlay_general.css'; ?>"/>
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>	
-	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>		
-  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>				
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery.min.js'; ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url().'assets/jquery/jquery-ui.min.js'; ?>" ></script>
+  	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<!--For modal v1-->	
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>	
-	<script type="text/javascript" >		
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/nextGenModal.js'; ?>" ></script>
+	<script type="text/javascript" >
 		$(document).ready( function(){
 			$('a.notyet').click( function(){
 				$.fn.nextGenModal({
@@ -40,27 +40,23 @@ $this->load->view('html-generic/metadata.inc');
 		$this->load->view('html-generic/overlay_general.inc');
 ?>	
 <div id="main_container">
-	<div id="header">    	    	        
+	<div id="header">
 		<?php
 			$this->load->view('html-generic/headerimage.inc');
-		?>
-        <?php
 			$this->load->view('html-generic/menu-bar.inc');
-		?>		
-		<?php
 			$this->load->view('html-generic/userInfo-bar.inc');
-		?>			
+		?>
     </div>    
-    <div id="main_content">    	
+    <div id="main_content">
     	<div id="centralContainer" class="homepageSpecial" > 
 			<div id="page_title">
 				Functions
 			</div>
-			<div style="padding-left:10px; clear: both">
+			<div id="instruction" >
 				Now, what should we do? :-)
 				<br/>
-			</div>			
-			<!-- accordion start -->			
+			</div>
+			<!-- accordion start -->
 			<div class="center_purest homePage_accordion_container" >
 			<div id="accordion" >
 				<h3><a href="#">Customer</a></h3>
@@ -68,7 +64,7 @@ $this->load->view('html-generic/metadata.inc');
 					<?php
 						if( $permissions->CUSTOMER )
 						{
-					?>															
+					?>
 					<div class="metrotile mtile1" >
 							<a href="<?php echo base_url(); ?>eventctrl/book"><img src="<?php echo base_url(); ?>assets/images/metrotiles/appbar.paper2.png" alt="Purchase ticket" /></a>
 					</div>
@@ -81,7 +77,7 @@ $this->load->view('html-generic/metadata.inc');
 					</div>
 					<div class="metrotile" >
 							<a  class="notyet" href="#"><img src="<?php echo base_url(); ?>assets/images/metrotiles/inquiries.png" alt="Inquiries" /></a>
-					</div>												
+					</div>
 					-->
 					<?php
 						}else{
@@ -131,9 +127,9 @@ $this->load->view('html-generic/metadata.inc');
 					{
 				?>
 				<h3><a href="#">Administration</a></h3>
-				<div>					
+				<div>
 					<div class="metrotile mtile2"  >
-						<a href="<?php echo base_url().'seatctrl/create'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-createseatmap.png" alt="Create Seat Map" /></a>
+						<a href="<?php echo base_url().'useracctctrl/system_settings'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-systemsettings.png" alt="Edit System Settings" /></a>
 					</div>
 					<div class="metrotile mtile7"  >
 						<a href="<?php echo base_url().'seatctrl/manageseatmap'; ?>"><img src="<?php echo base_url(); ?>assets/images/metrotiles/uxt-manageseatmaps.png" alt="Manage Seat Map" /></a>
@@ -164,10 +160,10 @@ $this->load->view('html-generic/metadata.inc');
 				<?php
 					} // ender for administrator
 					if( true == false){	// para lang di to ma-output sa HTML page for the meantime :D
-				?>				
+				?>
 				<!--
 				<h3><a href="#">Announcements</a></h3>
-				<div>															
+				<div>
 					<p>
 					Cras dictum. Pellentesque habitant morbi tristique senectus et netus
 					et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in

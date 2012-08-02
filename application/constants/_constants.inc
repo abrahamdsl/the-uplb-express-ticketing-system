@@ -1,5 +1,4 @@
 <?php
-		define( 'ADMIN_MANAGE_USER', 'ADMIN_MANAGE-USER');
 		/*
 			DB history indicator
 		*/
@@ -26,8 +25,11 @@
 		/*
 			Activity names
 		*/
+		define( 'ADMIN_MANAGE_USER', 'ADMIN_MANAGE-USER');
+		define( 'ADMIN_MANAGE_PAYMENTMODE', 'admmgtpm');
 		define( 'BOOK', 'BOOK' );
 		define( 'CONFIRM_RESERVATION', 'CONFIRM_BOOKING' );
+		define( 'MANAGE_ACCOUNT', 'MANAGE_ACCOUNT' );
 		define( 'MANAGE_BOOKING', 'MANAGE_BOOKING' );
 		define( 'MANAGE_SEATMAP', 'MANAGE_SEATMAP' );
 		define( 'CHECK_IN', 'CHECKIN_IN' );
@@ -124,7 +126,31 @@
 		define( 'STAGE_MBX_CANCEL_FW', 251 );
 		
 		define( 'STAGE_MS0_HOME', 400 );
-		
+		// manage user
+		define( 'STAGE_MU_1_PR', 900 );
+		define( 'STAGE_MU_1_FW', 901 );
+		define( 'STAGE_MU_2_PR', 902 );
+		define( 'STAGE_MU_2_FW', 903 );
+		// manage account
+		define( 'STAGE_MACCT0_HOME', 1000 );
+		define( 'STAGE_MACCT1_PR', 1001 );
+		define( 'STAGE_MACCT1_FW', 1002 );
+		// manage payment mode
+		define( 'STAGE_MPAY_1_PR', 1200 );
+		define( 'STAGE_MPAY_1_FW', 1201 );
+		define( 'STAGE_MPAY_ADD_1_PR', 1250 );
+		define( 'STAGE_MPAY_ADD_1_FW', 1251 );
+		define( 'STAGE_MPAY_ADD_2_PR', 1252 );
+		define( 'STAGE_MPAY_ADD_2_FW', 1253 );
+		define( 'STAGE_MPAY_EDIT_1_PR', 1300 );
+		define( 'STAGE_MPAY_EDIT_1_FW', 1301 );
+		define( 'STAGE_MPAY_EDIT_2_PR', 1302 );
+		define( 'STAGE_MPAY_EDIT_2_FW', 1303 );
+		define( 'STAGE_MPAY_DEL_1_PR', 1350 );
+		define( 'STAGE_MPAY_DEL_1_FW', 1351 );
+		define( 'STAGE_MPAY_DEL_2_PR', 1352 );
+		define( 'STAGE_MPAY_DEL_2_FW', 1353 );
+		// create seat map
 		define( 'STAGE_CR_SEAT1', 5250 );
 		define( 'STAGE_CR_SEAT2_PR', 5251 );
 		define( 'STAGE_CR_SEAT2_FW', 5252 );
@@ -163,5 +189,18 @@
 		define( 'SEAT_COORD404', '-1' );
 		define( 'UP_STUDENTNUM_MINREQUIREMENT_LEN', 8);
 		define( 'UP_EMPNUM_MINREQUIREMENT_LEN', 8);
+		define( 'INTERNAL_LAST_ERR', 'INTERNAL_LAST_ERR' );
+		/*
+			Internal error indicators, mostly used
+			by library inputcheck.php
+		*/
+		define( 'INTERNAL_ERR_USERNAME_FORM_FAIL', 8000 );
+		define( 'INTERNAL_ERR_PASSWORD_FORM_FAIL', 8001 );
+		define( 'INTERNAL_ERR_NAME_ALL_FORM_FAIL', 8002 );
+		define( 'INTERNAL_ERR_PHONE_ALL_FORM_FAIL', 8003 );
+		define( 'INTERNAL_ERR_EMAIL_ALL_FORM_FAIL', 8004 );
+		define( 'INTERNAL_ERR_STUDENTNUM_FORM_FAIL', 8010 );
+		define( 'INTERNAL_ERR_EMPNUM_FORM_FAIL', 8011 );
+		define( 'INTERNAL_ERR_SEATNAME_FORM_FAIL', 8030 );
 		
 ?>

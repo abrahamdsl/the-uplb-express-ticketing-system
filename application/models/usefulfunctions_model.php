@@ -31,11 +31,81 @@ class usefulfunctions_model extends CI_Model {
 		return strpos($Haystack, $Needle) === 0;
 	}
 	
+	function extractUserAccountDetailsFromPOST()
+	{
+		/**
+		*	@created 29JUL2012-1307
+		*	@description Returns an array of the POST data submitted when signing up or
+				updating a user's account. The array is associative and the keys are database
+				columns for table `user`.
+		*/
+		return Array(
+			'username'				=> strtolower( $this->input->post( 'username' ) ),
+			'Fname'					=> strtoupper( $this->input->post( 'firstName' ) ),
+			'Mname' 				=> strtoupper( $this->input->post( 'middleName' ) ),
+			'Lname' 				=> strtoupper( $this->input->post( 'lastName' ) ),
+			'BookableByFriend' 		=> ($this->input->post('allowfriends')!==FALSE ) ? 1 : 0,
+			'Gender' 				=> strtoupper( $this->input->post( 'gender' ) ),
+			'Cellphone' 			=> $this->input->post( 'cellPhone' ) ,
+			'Landline'  			=> $this->input->post( 'landline' ) ,
+			'Email' 				=> strtoupper( $this->input->post( 'email_01_' ) ),
+			'addr_homestreet' 		=> strtoupper( $this->input->post( 'homeAndStreet_addr' ) ),
+			'addr_barangay'   		=> strtoupper( $this->input->post( 'barangay_addr' ) ) ,
+			'addr_cityMunicipality' => strtoupper( $this->input->post( 'cityOrMun_addr' ) ),
+			'addr_province'   		=> strtoupper( $this->input->post( 'province_addr' ) ),
+			'temp1' => NULL,
+			'temp2' => NULL
+		);
+	}//extractUserAccountDetailsFromPOST
+	
+	function extractUPLBConstDetailsFromPOST()
+	{
+		/**
+		*	@created 29JUL2012-1307
+		*	@description Returns an array of the POST data of UPLB constituency submitted when signing up or
+				updating a user's account. The array is associative and the keys are database
+				columns for table `uplbconstituent`.
+		*/
+		$snum = $this->input->post( 'studentNumber' );
+		$enum = $this->input->post( 'employeeNumber' );
+		// if both are not included in POST, return both FALSE
+		if( $snum === FALSE AND $enum === FALSE )	return FALSE;
+		return Array(
+			'studentNumber'  => ( $snum == "" ) ? NULL : $snum,
+			'employeeNumber' => ( $enum == "" ) ? NULL : $enum
+		);
+	}//extractUPLBConstDetailsFromPOST()
+	
+	function extractPaymentModeDetailsFromPOST()
+	{
+		/**
+		*	@created 01AUG2012-1238
+		*	@description Returns an array of the POST data of payment mode details.
+		*/
+		$mode = $this->input->post( 'mode' );
+		$uniqueID = $this->input->post( 'uniqueID' );
+		$data = Array(
+			'Type'	   			 => $this->input->post( 'ptype' ),
+			'Name'	   	         => $this->input->post( 'name' ),
+			'Contact_Person' 	 => $this->input->post( 'person' ),
+			'Location'		 	 => $this->input->post( 'location' ),
+			'Cellphone'		 	 => $this->input->post( 'cellphone' ),
+			'Landline'		 	 => $this->input->post( 'landline' ),
+			'Email'		     	 => $this->input->post( 'email' ),
+			'Comments'		 	 => $this->input->post( 'comments' ),
+			'internal_data_type' => $this->input->post( 'internal_data_type' ),
+			'internal_data'		 => $this->input->post( 'internal_data' )
+		);
+		if( $mode !== FALSE ) $data[ 'mode' ] = $mode;
+		if( $uniqueID !== FALSE ) $data[ 'uniqueID' ] = $uniqueID;
+		return $data;
+	}//extractPaymentModeDetailsFromPOST()
+	
 	function getRealIpAddr()
 	{
-		/*
-			Gets the CLIENT's IP address.
-			From: http://roshanbh.com.np/2007/12/getting-real-ip-address-in-php.html
+		/**
+		*	@description Gets the CLIENT's IP address.
+		*	@sourcehttp://roshanbh.com.np/2007/12/getting-real-ip-address-in-php.html
 		*/
 		if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
 		{
@@ -106,7 +176,7 @@ class usefulfunctions_model extends CI_Model {
 	function removeWIN5_Data( $needle, $haystack )
 	{
 		$tokenizedHaystack;
-		$muchTokenizedHaystack = Array();		
+		$muchTokenizedHaystack = Array();
 		$exclude = NULL;
 		$newdata = "";
 		
@@ -148,31 +218,23 @@ class usefulfunctions_model extends CI_Model {
 	
 	function isHourValid_24( $hour )
 	{
-		$thisHour = intval( $hour, 10 );		
+		$thisHour = intval( $hour, 10 );
 		if( $thisHour > 23 ) return false;
 		
 		return true;
 	}
 	
-	function isInternalDataTypeValid( $text )
-	{
-		$validTypes = Array( 'WIN5', 'XML' );
-		return in_array( strtoupper( $text), $validTypes, true );
-	}
+	
 	
 	function isMinuteValid( $minute )
 	{		
-		$thisMinute = intval( $minute, 10 );			
+		$thisMinute = intval( $minute, 10 );
 		if( $thisMinute > 59 ) return false;
 		
 		return true;
 	}
 
-	function isPaymentModeTypeValid( $text )
-	{
-		$validTypes = Array( 'COD', 'ONLINE', 'OTHER' );
-		return in_array( strtoupper( $text), $validTypes, true );
-	}
+	
 	
 	function isSecondValid( $seconds )
 	{

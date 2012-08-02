@@ -60,7 +60,7 @@ class seatmaintenance{
 		/**
 		*	@created 07JUL2012-1648
 		**/
-		echo $this->CI->makexml_model->XMLize_AJAX_Response(						
+		echo $this->CI->makexml_model->XMLize_AJAX_Response(
 				"error", 
 				"error", 
 				"CPROPER_DB_ERR",
@@ -119,13 +119,15 @@ class seatmaintenance{
 		*	@created 07JUL2012-1630	
 		**/		
 		echo $this->CI->makexml_model->XMLize_AJAX_Response(
-							"error", 
-							"error", 
-							"SMAPUID404",
-							0, 
-							"",
-							""
-					);
+			"error", 
+			"error", 
+			"SMAPUID404",
+			0, 
+			"Cannot find seat map specified! Did you just accidentally erase it?<br/><br/>You will be redirected to seat maps in 5 seconds.",
+			"seatctrl/manageseatmap",
+			5000
+		);
+		return FALSE;
 	}//assembleSeatUID404
 
 	function assembleSeatToDelete404()

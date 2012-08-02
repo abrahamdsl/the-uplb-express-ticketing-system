@@ -10,10 +10,11 @@
 *	This is the new "overlay_general.js". It was refactored, and here is the result.
 *   I just realized, it was so messy so I did this.
 */
+var inputCurrentlyFocused = "";
 (function($){
 	// the settings of this modal instance
 	var config;
-
+	
 	/*
 		Our constructor function
 	*/
@@ -21,7 +22,8 @@
 		var classH1;
 		var yesNoSection = 'div#overlayEssentialButtonsArea';
 		var okayOnlySection = 'div#overlayEssentialButtonsArea_OkayOnly';
-
+		var temp;
+		
 		config = null;
 		config = $.fn.nextGenModal.defaults;
 		if (settings) config = $.extend($.fn.nextGenModal.defaults, settings);	// there are settings submitted so
@@ -105,11 +107,16 @@
 			$('div#ajax_loader').show();
 		}
 		// now show modal
-		
+		temp = $("*:focus").attr('name');
+		if( typeof temp != 'undefined' )
+		{
+			inputCurrentlyFocused = temp;
+			$("*:focus").blur();
+		}
 		// so that when user presses ESC or ENTER/RETURN modal will close
 		$( document ).bind( 'keyup', function(e)
 		 {
-			if( $.fn.nextGenModal.isVisible() && ( e.which == '27' || e.which == '13' ) )
+			if( $.fn.nextGenModal.isVisible() && ( e.which == 27 || e.which == 13 ) )
 			{
 				$.fn.nextGenModal.hideModal();
 			}
@@ -190,6 +197,8 @@
 		$( '#box' ).animate( { 'top': '-200px' }, 150, function(){
 				$( '#overlay' ).fadeOut( 'fast' );
 		});
+		
+		if( typeof inputCurrentlyFocused != 'undefined' ) $('input[name="'+inputCurrentlyFocused+'"]').focus();
 	};
 
 	$.fn.nextGenModal.isVisible = function(){
