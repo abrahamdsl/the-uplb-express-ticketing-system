@@ -170,7 +170,7 @@ class seat_model extends CI_Model {
 		return $uniqueID;
 	}// createSeatMap
 	
-	function copyDefaultSeatsToActual( $seatMapUniqueID )
+	function copyDefaultSeatsToActual( $seatMapUniqueID, $eventID, $showtimeID )
 	{
 		/**
 		*	@created 04FEB2012-1415
@@ -178,12 +178,16 @@ class seat_model extends CI_Model {
 				This is the first step, copy the entries of the seat map in the table `seats_default` to 
 				`seats_actual` then we just update the copied entries in the latter table when processing sent 
 				information to the server.
-		*	@revised 13FEB2012-1235 -  Removed `Seat_map_UniqueID` as one of the selected columns
+		*	@revised 04AUG2012-1514 - Now includes EventID and ShowtimeID when copying. We have to since we have fixed
+				the SQL structure of `seats_actual` wherein previously, the fields `EventID`,`Showing_Time_ID`
+				can be NULL.
 		*/
+		$actual_addtl = "`EventID`,`Showing_Time_ID`,";
+		$addendum = $eventID . " AS `EventID`, " . $showtimeID ." AS `Showing_Time_ID`,";
 		$fields = "`Matrix_x`, `Matrix_y`, `Visual_row`, `Visual_col`, `Status`, `Comments`";
-		$sql_command = "INSERT `seats_actual` ( ".$fields." ) SELECT ".$fields." FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
-				
-		return $this->db->query( $sql_command, Array( $seatMapUniqueID ) );	
+
+		$sql_command = "INSERT `seats_actual` ( " . $actual_addtl . $fields." ) SELECT ". $addendum .$fields." FROM `seats_default` WHERE `Seat_map_UniqueID` = ? ";
+		return $this->db->query( $sql_command, Array( $seatMapUniqueID ) );
 	}//copyDefaultSeatsToActual(..)
 
 	function deleteSeatMap( $uniqueID )

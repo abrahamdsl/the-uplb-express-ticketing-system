@@ -359,9 +359,7 @@ class seatmaintenance{
 			//update the seat map of the showing time
 			$this->CI->event_model->setShowingTimeSeatMap( $seatmapUID, $eventID, $showtimeID );
 			// duplicate seat pattern to the table containing actual seats
-			$this->CI->seat_model->copyDefaultSeatsToActual( $seatmapUID );
-			// update the eventID and UniqueID of the newly duplicated seats
-			$this->CI->seat_model->updateNewlyCopiedSeats( $eventID,  $showtimeID );
+			$this->CI->seat_model->copyDefaultSeatsToActual( $seatmapUID, $eventID,  $showtimeID );
 			// turn the previously retrieved ticket classes into an array accessible by the class name
 		}
 		$ticketClasses = $this->CI->ticketclass_model->makeArray_NameAsKey( $ticketClasses_obj );

@@ -86,43 +86,20 @@ class payment_model extends CI_Model {
 		else
 			return false;
 	}// createPayment(..)
-	
-	/*function createPaymentMode( $ptype, $name, $person, $location, $cellphone, $landline,
-			$email, $comments, $internal_data_type, $internal_data
-	)
+
+	function createPaymentMode( &$data )
 	{
 		/**
 		*	@created (can't remember)
 		*	@params Obviously for the others, but for some:
-				- $internal_data - as it's name implies, internal data use for that payment mode.
+				- 'internal_data' - as it's name implies, internal data use for that payment mode.
 						Since contents differ per payment mode, they are stored as plain-text 
 						with respective formatting on its own right and retrieved on their specific use.
-				- $internal_data_type - either { "XML" | "WIN5" }
+				- 'internal_data_type' - either { "XML" | "WIN5" }
 		*	@description Inserts into database the new payment mode specified by the parameters.
+		*	@revised <Revision 43>
 		*	@returns BOOLEAN - whether transaction was carried out successfully (TRUE) or not (FALSE)
 		**/
-		/*
-		$uniqueID = $this->getLastPaymentModeUniqueID() + 1 ;
-		$data = Array(
-			'UniqueID'			=>  $uniqueID,
-			'Type'	   			 => $ptype,
-			'Name'	   	         => $name,
-			'Contact_Person' 	 => $person,
-			'Location'		 	 => $location,
-			'Cellphone'		 	 => $cellphone,
-			'Landline'		 	 => $landline,
-			'Email'		     	 => $email,
-			'Comments'		 	 => $comments,
-			'internal_data_type' => $internal_data_type,
-			'internal_data'		 => $internal_data
-			
-		);				
-		return $this->db->insert('payment_channel', $data );		
-	}//createPaymentMode(..)
-	*/
-	
-	function createPaymentMode( &$data )
-	{
 		unset( $data[ 'mode' ] );
 		$data[ 'UniqueID' ] = $this->getLastPaymentModeUniqueID() + 1 ;
 		return $this->db->insert('payment_channel', $data );
@@ -211,7 +188,7 @@ class payment_model extends CI_Model {
 	function generatePaymentUniqueID()
 	{
 		/**
-		*	@created (can't remember)
+		*	@created <can't remember>
 		*	@description Generates random numbers for use as a payment's unique ID.
 		*	@returns INTEGER - The unique payment ID.
 		**/
@@ -227,7 +204,7 @@ class payment_model extends CI_Model {
 	function getLastPaymentModeUniqueID()
 	{	
 		/**
-		*	@created (can't remember)
+		*	@created <can't remember>
 		*	@description Gets the largest payment unique ID in the DB.
 		*	@returns INTEGER - The unique payment ID.
 		**/
@@ -531,37 +508,12 @@ class payment_model extends CI_Model {
 		
 		return $totalCharges;
 	}//sumTotalCharges(..)
-	
-	/**function updatePaymentMode( $uniqueID, $ptype, $name, $person, $location, $cellphone, $landline,
-			$email, $comments, $internal_data_type, $internal_data
-	)
-	{
-		
-		//	@description Simply updates an entry in the `payment_channel` table
-		
-		$data = Array(			
-			'Type'	   			 => $ptype,
-			'Name'	   	         => $name,
-			'Contact_Person' 	 => $person,
-			'Location'		 	 => $location,
-			'Cellphone'		 	 => $cellphone,
-			'Landline'		 	 => $landline,
-			'Email'		     	 => $email,
-			'Comments'		 	 => $comments,
-			'internal_data_type' => $internal_data_type,
-			'internal_data'		 => $internal_data
-			
-		);		
-		$where = "`UniqueID` = ".$uniqueID; 
-		$sql_command = $this->db->update_string('payment_channel', $data, $where );
-		return $this->db->query( $sql_command );
-	}//updatePaymentMode(..)
-	**/
-	
+
 	function updatePaymentMode( &$data )
 	{
 		/**
 		*	@revised 01AUG2012-1406
+		*	@description Simply updates an entry in the `payment_channel` table
 		*/
 		$uniqueID = $data['uniqueID'];
 		// unset because these aren't DB columns to be updated

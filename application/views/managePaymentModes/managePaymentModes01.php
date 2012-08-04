@@ -27,7 +27,7 @@ $this->load->view('html-generic/metadata.inc');
   	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/accordionEssentials.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<!--<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>-->
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/metrotile_action_default.js'; ?>" ></script>
+	
 	<?php
 		$this->load->view('html-generic/baseURLforJS.inc');
 	?>	
