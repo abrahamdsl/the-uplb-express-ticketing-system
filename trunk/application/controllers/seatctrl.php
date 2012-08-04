@@ -67,14 +67,14 @@ class seatctrl extends CI_Controller {
 		$this->clientsidedata_model->setSessionActivity( IDLE, -1 );
 	}
 	
-	function deleteseatmap()
+	function deleteseatmap( $uniqueID = FALSE )
 	{
 		/**
 		*	@created <i forgot>
 		*	@description Confirmation page before deleting a seat map.
+		*	@revised 04AUG2012-1427
 		**/
 		$this->checkAndActOnAdmin();
-		$uniqueID = $this->input->post( 'uniqueID' );
 		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );
 		$data['title'] =  "Be careful on what you wish for";
 		$data['theMessage'] =  "Are you sure you want to delete this seat map?"; // EC 2850
@@ -97,7 +97,7 @@ class seatctrl extends CI_Controller {
 		// this is to check whether this is utilized by another function here, or accessed thru web
 		$is_inner_use = is_array( $inner_util );
 		$uniqueID = $is_inner_use ? @$inner_util[0] : @$this->input->post( 'uniqueID' );
-		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );		
+		if( $uniqueID === false) die( 'INVALID_INPUT-NEEDED' );	
 		$result = $this->seat_model->deleteSeatMap( $uniqueID );
 		if( $result )
 		{
@@ -350,6 +350,11 @@ class seatctrl extends CI_Controller {
 		echo $this->makexml_model->XMLize_SeatMap_Master( $masterSeatMapDetails, $masterSeatMapProperData );
 		return true;
 	}// getMasterSeatmapData
+	
+	function editseatmap()
+	{
+		die("Feature not yet available.");
+	}
 	
 	function testformvalidation()
 	{

@@ -781,9 +781,13 @@ class useracctctrl extends CI_Controller {
 		$data['userObj'] 			 = $userObj;
 		$data['uplbConstituencyObj'] = $uplbConstituencyObj;
 		$data['permissionsObj'] 	 = $permissionsObj;
-		
-		
+
 		$this->load->view( 'manageAccount/accountHome', $data );
+	}
+	
+	function system_settings()
+	{
+		die("Feature coming later.");
 	}
 } // class
 ?>
