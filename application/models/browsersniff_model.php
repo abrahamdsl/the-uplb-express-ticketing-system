@@ -1332,13 +1332,13 @@ class browsersniff_model extends CI_Model {
 						Webkit-based browsers: Safari & Chrome
 						
 						Chrome: and Safari
-						  would show not tested warning but still permit if version is less than 19.0 and 533.21 respectively
+						  would show not tested warning but still permit if version is less than 18.0 and 533.21 respectively
 					*/
 					$ver_split =  explode( '.', $sniffedData[11][1] );
 					switch( $sniffedData[11][0] )
 					{
 						case 'chrome':
-							if( $ver_split[0] < 19 and $ver_split[1] <= 0 ) 
+							if( $ver_split[0] < 18 and $ver_split[1] <= 0 ) 
 								return BR_NOT_TESTED_BUT_PERMIT_STILL; 
 							else 
 								return BR_ALLOWED;  

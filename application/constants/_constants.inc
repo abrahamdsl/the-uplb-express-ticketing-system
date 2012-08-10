@@ -71,28 +71,36 @@
 		/*
 			Session stages
 		*/
-		define( 'STAGE_BOOK_1_PROCESS', 0 );
-		define( 'STAGE_BOOK_1_FORWARD', 1 );
-		define( 'STAGE_BOOK_2_PROCESS', 2 );
-		define( 'STAGE_BOOK_2_FORWARD', 3 );
-		define( 'STAGE_BOOK_3_PROCESS', 4 );
-		define( 'STAGE_BOOK_3_FORWARD', 5 );
-		define( 'STAGE_BOOK_4_PROCESS', 6 );
-		define( 'STAGE_BOOK_4_CLASS_1_FORWARD', 7 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_CLASS_2_FORWARD', 8 );	// only if student number/emp num is entered in book_4_forward
-		define( 'STAGE_BOOK_4_FORWARD', 9 );
-		define( 'STAGE_BOOK_5_PROCESS', 10 );
-		define( 'STAGE_BOOK_5_FORWARD', 11 );
-		define( 'STAGE_BOOK_6_PROCESS', 12 );
-		define( 'STAGE_BOOK_6_PAYMENTPROCESSING', 13 );
-		define( 'STAGE_BOOK_6_FORWARD', 14 );
-		
+		// new user sign up
+		define( 'STAGE_NEWSIGN_1_PROCESS', 0 );
+		define( 'STAGE_NEWSIGN_1_FORWARD', 1 );
+		define( 'STAGE_NEWSIGN_2_PROCESS', 2 );
+		define( 'STAGE_NEWSIGN_2_FORWARD', 3 );
+		define( 'STAGE_NEWSIGN_3_PROCESS', 4 );
+		define( 'STAGE_NEWSIGN_3_FORWARD', 5 );
+		// booking process
+		define( 'STAGE_BOOK_1_PROCESS', 10 );
+		define( 'STAGE_BOOK_1_FORWARD', 11 );
+		define( 'STAGE_BOOK_2_PROCESS', 12 );
+		define( 'STAGE_BOOK_2_FORWARD', 13 );
+		define( 'STAGE_BOOK_3_PROCESS', 14 );
+		define( 'STAGE_BOOK_3_FORWARD', 15 );
+		define( 'STAGE_BOOK_4_PROCESS', 16 );
+		define( 'STAGE_BOOK_4_CLASS_1_FORWARD', 17 );	// only if student number/emp num is entered in book_4_forward
+		define( 'STAGE_BOOK_4_CLASS_2_FORWARD', 18 );	// only if student number/emp num is entered in book_4_forward
+		define( 'STAGE_BOOK_4_FORWARD', 19 );
+		define( 'STAGE_BOOK_5_PROCESS', 20 );
+		define( 'STAGE_BOOK_5_FORWARD', 21 );
+		define( 'STAGE_BOOK_6_PROCESS', 22 );
+		define( 'STAGE_BOOK_6_PAYMENTPROCESSING', 23 );
+		define( 'STAGE_BOOK_6_FORWARD', 24 );
+		// booking confirmation by payment agents
 		define( 'STAGE_CONFIRM_1_FORWARD', 101 );
 		define( 'STAGE_CONFIRM_2_PROCESS', 102 );
 		define( 'STAGE_CONFIRM_2_FORWARD', 103 );
 		define( 'STAGE_CONFIRM_3_PROCESS', 104 );
 		define( 'STAGE_CONFIRM_3_FORWARD', 105 );
-		
+		// manage booking
 		define( 'STAGE_MB0_HOME', 200 );
 		define( 'STAGE_MB0_PREP_PR', 201 );
 		define( 'STAGE_MB0_PREP_FW', 202 );
