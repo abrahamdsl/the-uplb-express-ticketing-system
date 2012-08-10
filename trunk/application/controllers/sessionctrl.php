@@ -103,7 +103,7 @@ class sessionctrl extends CI_Controller {
 	private function strictlyNotAllowedStandard()
 	{
 		$this->sorryNoticeHeader();
-		echo "We're sorry, we have blacklisted your browser from using this system. due to incompabilities attributable to the browser";
+		echo "We're sorry, we have blacklisted your browser from using this system, due to incompabilities attributable to the browser";
 		echo " not following established web standards or your browser is just plain outdated.";
 		echo " Please upgrade to a more recent one.";
 	}
@@ -447,6 +447,22 @@ class sessionctrl extends CI_Controller {
 		echo 'now rolling back<br/>';
 		$this->db->trans_rollback();
 		var_dump( $this->db->get( 'event' )->result() );
+	}
+	
+	function serverpushtest()
+	{
+		ob_start();
+		header('Content-Type: text/event-stream');
+		header('Cache-Control: no-cache');
+		//generate random number for demonstration
+		$new_data = rand(0, 1000);
+		$sleep = rand( 0, 5);
+		log_message('DEBUG','Sleep for seconds ' . $sleep );
+		echo "retry: 1000\n\n";
+		echo "data: Panggapsumnida: gad " .$new_data . date('Y-m-d H:i:s') ."\n\n";
+		//sleep( $sleep );
+		//echo the new number
+		ob_end_flush();
 	}
 }//class
 ?>
