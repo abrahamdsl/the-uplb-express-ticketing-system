@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 02, 2012 at 07:14 AM
+-- Generation Time: Sep 02, 2012 at 03:51 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -100,9 +100,9 @@ CREATE TABLE IF NOT EXISTS `event` (
 --
 
 INSERT INTO `event` (`EventID`, `Name`, `Location`, `Description`, `FB_RSVP`, `Temp`, `ByUser`) VALUES
-(261, 'Isko''t Iska 2012: BANGAgeddon', 'DL Umali Hall', 'echos', '', 100, 582327),
-(819, 'Sample', 'Wherever', 'echos', '', 100, 582327),
-(985, 'Some Random Event', 'Secret Location', 'echos', '', 100, 582327);
+(261, 'Isko''t Iska 2012: BANGAgeddon', 'DL Umali Hall', 'ss', '', 100, 582327),
+(819, 'Sample', 'Wherever', 'nazi', '', 100, 582327),
+(985, 'Some Random Event', 'Secret Location', 'hitler', '', 100, 582327);
 
 -- --------------------------------------------------------
 
@@ -692,60 +692,60 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('1933e0c4-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19167873-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1953cedc-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18fa0717-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 09:13:58'),
-('19342af3-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 06:34:30'),
+('18fa0717-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('19342af3-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1916c361-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('195424a2-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18fa635c-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 09:13:58'),
-('19347b2b-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 07:25:13'),
-('19170b0b-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:41:33'),
+('18fa635c-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('19347b2b-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('19170b0b-7df9-11e1-8168-4cba9d4cadf0', 7, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('195471e4-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('18faaaed-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 09:13:58'),
-('1934c3d8-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 07:25:13'),
-('191763bd-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:41:33'),
+('18faaaed-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('1934c3d8-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('191763bd-7df9-11e1-8168-4cba9d4cadf0', 8, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1954cca2-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18faf106-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('19350bfc-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 07:25:13'),
-('1917b10e-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:41:33'),
+('19350bfc-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('1917b10e-7df9-11e1-8168-4cba9d4cadf0', 9, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19551a0b-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fb3661-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('193554b3-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 07:54:15'),
-('1917f86f-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:17:11'),
+('193554b3-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('1917f86f-7df9-11e1-8168-4cba9d4cadf0', 10, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('195563e7-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fb7c13-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('19359e5e-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 07:54:15'),
-('19183f9a-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:17:11'),
+('19359e5e-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('19183f9a-7df9-11e1-8168-4cba9d4cadf0', 11, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1955ad00-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fbc1a8-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1935f65c-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:00:10'),
-('191886d3-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:17:11'),
+('1935f65c-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('191886d3-7df9-11e1-8168-4cba9d4cadf0', 12, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1955f720-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fc0773-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1936a2f1-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:00:10'),
-('1918cdf9-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-26 10:17:11'),
+('1936a2f1-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('1918cdf9-7df9-11e1-8168-4cba9d4cadf0', 13, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1956423f-7df9-11e1-8168-4cba9d4cadf0', 14, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fc4e5a-7df9-11e1-8168-4cba9d4cadf0', 14, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1936ff44-7df9-11e1-8168-4cba9d4cadf0', 14, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:09:02'),
+('1936ff44-7df9-11e1-8168-4cba9d4cadf0', 14, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19192d20-7df9-11e1-8168-4cba9d4cadf0', 14, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1956991c-7df9-11e1-8168-4cba9d4cadf0', 15, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fc944c-7df9-11e1-8168-4cba9d4cadf0', 15, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('19375b6b-7df9-11e1-8168-4cba9d4cadf0', 15, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:09:02'),
+('19375b6b-7df9-11e1-8168-4cba9d4cadf0', 15, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1919762a-7df9-11e1-8168-4cba9d4cadf0', 15, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1956ee8f-7df9-11e1-8168-4cba9d4cadf0', 16, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fcdb85-7df9-11e1-8168-4cba9d4cadf0', 16, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1937b243-7df9-11e1-8168-4cba9d4cadf0', 16, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:16:09'),
+('1937b243-7df9-11e1-8168-4cba9d4cadf0', 16, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1919c130-7df9-11e1-8168-4cba9d4cadf0', 16, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19573e30-7df9-11e1-8168-4cba9d4cadf0', 17, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fd39d5-7df9-11e1-8168-4cba9d4cadf0', 17, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1938222e-7df9-11e1-8168-4cba9d4cadf0', 17, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:16:10'),
+('1938222e-7df9-11e1-8168-4cba9d4cadf0', 17, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('191a091e-7df9-11e1-8168-4cba9d4cadf0', 17, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('19578a03-7df9-11e1-8168-4cba9d4cadf0', 18, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fd85bc-7df9-11e1-8168-4cba9d4cadf0', 18, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('19387a2b-7df9-11e1-8168-4cba9d4cadf0', 18, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 08:59:42'),
+('19387a2b-7df9-11e1-8168-4cba9d4cadf0', 18, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('191a506b-7df9-11e1-8168-4cba9d4cadf0', 18, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('1957d981-7df9-11e1-8168-4cba9d4cadf0', 19, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fdcbcb-7df9-11e1-8168-4cba9d4cadf0', 19, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('1938c3a5-7df9-11e1-8168-4cba9d4cadf0', 19, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-11 09:09:06'),
+('1938c3a5-7df9-11e1-8168-4cba9d4cadf0', 19, 261, 2, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('191a978d-7df9-11e1-8168-4cba9d4cadf0', 19, 261, 2, 1, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('195824c2-7df9-11e1-8168-4cba9d4cadf0', 20, 261, 2, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('18fe11d1-7df9-11e1-8168-4cba9d4cadf0', 20, 261, 2, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1184,12 +1184,12 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('683fdf86-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6831136c-7df9-11e1-8168-4cba9d4cadf0', 3, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('684fa220-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('6822c352-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
-INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
+('6822c352-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6840343b-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('68315b81-7df9-11e1-8168-4cba9d4cadf0', 4, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('684fe93c-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('68230ad5-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
+('68230ad5-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL);
+INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_Class_GroupID`, `Ticket_Class_UniqueID`, `Status`, `Assigned_To_User`, `Seat_x`, `Seat_y`, `Sold_by`, `Start_Contact`) VALUES
 ('68407d14-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('6831a7ad-7df9-11e1-8168-4cba9d4cadf0', 5, 261, 3, 2, 4, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('68503148-7df9-11e1-8168-4cba9d4cadf0', 6, 261, 3, 2, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -1478,7 +1478,7 @@ INSERT INTO `event_slot` (`UUID`, `UniqueID`, `EventID`, `Showtime_ID`, `Ticket_
 ('01750cfc-7dfa-11e1-8168-4cba9d4cadf0', 1, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0183f25a-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0166b4b2-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
-('01755493-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, '2012-06-09 09:15:45'),
+('01755493-7dfa-11e1-8168-4cba9d4cadf0', 2, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0184608d-7dfa-11e1-8168-4cba9d4cadf0', 3, 985, 1, 1, 1, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('0166fe14-7dfa-11e1-8168-4cba9d4cadf0', 3, 985, 1, 1, 2, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
 ('01759bbe-7dfa-11e1-8168-4cba9d4cadf0', 3, 985, 1, 1, 3, 'AVAILABLE', NULL, NULL, NULL, 0, NULL),
@@ -5428,11 +5428,11 @@ CREATE TABLE IF NOT EXISTS `showing_time` (
 --
 
 INSERT INTO `showing_time` (`UniqueID`, `EventID`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Book_Completion_Option`, `Book_Completion_Days`, `Book_Completion_Time`, `Selling_Start_Date`, `Selling_Start_Time`, `Selling_End_Date`, `Selling_End_Time`, `NoMoreSeat_StillSell`, `SeatRequiredOnConfirmation`, `Location`, `Seat_map_UniqueID`, `Slots`, `Ticket_Class_GroupID`, `Status`, `UUID`) VALUES
-(1, 261, '2012-08-22', '19:00:00', '2012-08-22', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-22', '10:54:31', 1, 1, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(1, 819, '2012-08-31', '19:00:00', '2012-08-31', '23:35:00', 'FIXED_SAMEDAY', 0, '00:15:00', '1970-01-01', '00:00:00', '1970-01-01', '00:00:01', 0, 0, NULL, NULL, 101, 1, 'BEING_CONFIGURED', NULL),
-(1, 985, '2012-07-29', '19:00:00', '2012-08-30', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-28', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
-(2, 261, '2012-08-25', '19:00:00', '2012-08-25', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-08-24', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
-(3, 261, '2012-08-26', '19:00:00', '2012-08-26', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-08-25', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
+(1, 261, '2012-09-22', '19:00:00', '2012-09-22', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-09-22', '10:54:31', 1, 1, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(1, 819, '0000-00-00', '19:00:00', '0000-00-00', '23:35:00', 'FIXED_SAMEDAY', 0, '00:15:00', '1970-01-01', '00:00:00', '2012-09-18', '00:00:01', 0, 0, NULL, NULL, 101, 1, 'BEING_CONFIGURED', NULL),
+(1, 985, '2012-09-29', '19:00:00', '2012-09-30', '00:30:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-09-28', '19:00:00', 1, 0, NULL, 9765048, 200, 1, 'CONFIGURED', NULL),
+(2, 261, '2012-09-25', '19:00:00', '2012-09-25', '23:45:00', 'FIXED_SAMEDAY', 0, '18:00:00', '2012-04-04', '00:00:00', '2012-09-24', '17:00:00', 1, 0, NULL, 9765048, 500, 1, 'CONFIGURED', NULL),
+(3, 261, '2012-09-26', '19:00:00', '2012-09-26', '23:45:00', 'FIXED_SAMEDAY', 0, '17:00:00', '2012-04-04', '03:00:00', '2012-09-25', '16:00:00', 1, 1, NULL, 9192978, 200, 2, 'CONFIGURED', NULL);
 
 -- --------------------------------------------------------
 
@@ -5794,12 +5794,14 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{152C2C77-C49B-D098-D7F9-6808EC74160B}', '2012-06-20', '12:02:00', '110.75.173.215', 'BROWSER_BOT_SIMPLE', 'Yahoo! Slurp China', 'Inktomi Slurp|Unknown Platform', NULL, NULL),
 ('{152f478a-368f-4836-bec2-a66ab644c055}', '2012-05-19', '15:50:41', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{161e2f64-06fc-4961-8554-07c77b0c7e8f}', '2012-05-19', '15:50:18', '125.162.195.176', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
+('{17CAE4A1-E451-440F-94F0-7FD27C8945A8}', '2012-09-02', '23:51:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_', '', NULL, NULL),
 ('{1921233F-F4AF-7458-A843-913FFD6184C6}', '2012-07-08', '19:58:00', '124.6.181.67', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5', 'Chrome 19.0.1084.52|Unknown Windows OS', NULL, NULL),
 ('{19239A36-840D-24F4-3557-91106D7E3A8F}', '2012-07-25', '16:58:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{1C9F03A0-3EA6-2B55-F42C-2782E637B6E2}', '2012-06-26', '09:07:00', '66.249.71.11', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{1D1AC70D-A1DF-8910-42F4-B52467916035}', '2012-07-13', '15:15:00', '121.54.100.146', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16', 'Chrome 10.0.648.204|Unknown Windows OS', NULL, NULL),
 ('{1E809FEC-BFB1-044C-3FC3-7419D10BBDB3}', '2012-07-07', '14:35:00', '207.46.13.50', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{1EB22358-4121-289D-810A-979461C185B6}', '2012-07-15', '20:37:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
+('{21736C3C-2EF2-470C-8602-38F693FF5B69}', '2012-09-02', '23:50:00', '127.0.0.1', 'LOGGED_OUT_PAGE', 'REF_{EF6F3F21-EE5B-48CC-8F5A-AFE1E7C087CF}', '', NULL, NULL),
 ('{24392338-e6fc-41b4-90b4-fe007427482f}', '2012-05-19', '15:49:53', '121.54.48.124', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{256CFB18-7513-51D6-6B24-C3654427AA0D}', '2012-06-15', '22:35:00', '74.125.70.83', 'BROWSER_BOT_SIMPLE', 'Google-Site-Verification/1.0', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{25a88d5f-0e45-47e0-b1a3-9ffcebfa9f23}', '2012-05-20', '04:24:58', '112.201.95.114', 'LOGGED_OUT_PAGE', 'REF_{caae5628-c282-430f-af42-a6ebe4dfdbba}', '', NULL, NULL),
@@ -5817,6 +5819,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{3A24FDFB-468B-986D-7AB0-528E284969D7}', '2012-06-29', '23:07:00', '66.249.71.11', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{3ABBFFAA-12CB-07D4-CEC6-9D72CFF74B30}', '2012-07-24', '15:18:00', '207.46.13.214', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
 ('{3BE1D412-674B-B581-C227-015DF26E3619}', '2012-07-17', '01:58:00', '69.58.178.57', 'BROWSER_UNKNOWN_BUT_PERMIT_STILL', 'REF_{028BBD2E-F15A-9CD7-8EFF-C21C5E59787F}', '', NULL, NULL),
+('{412B7277-9112-4EF8-A871-30ECF2F29FE9}', '2012-09-02', '23:48:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1', 'Chrome 21.0.1180.83|Unknown Windows OS', NULL, NULL),
 ('{4250377c-b13d-4683-99af-42d961add225}', '2012-05-19', '18:35:37', '112.207.37.116', 'LOGGED_OUT_PAGE', '', '', NULL, NULL),
 ('{4284AEB1-FC22-A80F-3CD1-DCC152CCA984}', '2012-07-07', '21:53:00', '69.171.237.1', 'BROWSER_BOT_SIMPLE', 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{428CF15A-72C6-A1E1-29A0-3A5EBCBF9697}', '2012-06-16', '19:27:00', '121.1.24.118, 7', 'LOGIN_PAGE', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.8 (KHTML, like Gecko; Google Web Preview) Chrome/19.0.1084.36 Safari/536.8', 'Chrome 19.0.1084.36|Linux', NULL, NULL),
@@ -5901,6 +5904,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{A857FE27-CB7C-C458-1C21-56512C91624B}', '2012-06-18', '07:47:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{AA1D0B0E-619E-9948-779F-A81F6951E61F}', '2012-07-09', '06:36:00', '66.249.71.11', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{AEB27CAA-AD0D-0D19-98F6-53B95F1108D6}', '2012-06-18', '19:59:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
+('{AFB1E18E-447E-4AA1-BEFD-E3E5B7173D7A}', '2012-09-02', '23:47:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1', 'Chrome 21.0.1180.83|Unknown Windows OS', NULL, NULL),
 ('{B1DC7475-B29E-B851-0E08-053BC173AAA1}', '2012-06-23', '17:58:00', '66.220.149.246', 'BROWSER_BOT_SIMPLE', 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{B5ECB4B2-1713-ABFE-C70F-CDDCDE6C23E8}', '2012-07-23', '19:49:00', '157.56.94.172', 'BROWSER_BOT_SIMPLE', 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)', 'MSNBot|Unknown Platform', NULL, NULL),
 ('{B8657412-C34D-BBF5-4208-B9622896B08D}', '2012-07-03', '17:09:00', '112.207.29.103', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1; rv:11.0) Gecko/20100101 Firefox/11.0', 'Firefox 11.0|Unknown Windows OS', NULL, NULL),
@@ -5922,6 +5926,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{E7E02035-F007-2EE7-35CB-E28533410ADF}', '2012-07-02', '23:56:00', '66.228.44.129', 'BROWSER_BOT_SIMPLE', 'WhatWeb/0.4.7', 'Unidentified User Agent|Unknown Platform', NULL, NULL),
 ('{EC129FEA-D44E-77B4-9ED7-996D5EF791DD}', '2012-06-17', '12:12:00', '198.186.192.44', 'BROWSER_BOT_SIMPLE', '0', 'Unidentified User Agent|', NULL, NULL),
 ('{EDB57B1D-F177-5AF7-3587-8E7AD3C378BC}', '2012-06-25', '04:25:00', '199.21.99.107', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
+('{EF6F3F21-EE5B-48CC-8F5A-AFE1E7C087CF}', '2012-09-02', '23:48:00', '127.0.0.1', 'LOGIN_PAGE', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1', 'Chrome 21.0.1180.83|Unknown Windows OS', NULL, NULL),
 ('{F28AA508-09BD-4FB6-CAFC-0DA6078B462B}', '2012-06-26', '18:45:00', '66.249.71.122', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Googlebot|Unknown Platform', NULL, NULL),
 ('{F36ADD9B-C90F-2C25-CE91-3BC8BB25369E}', '2012-06-20', '21:37:00', '50.193.202.82', 'BROWSER_BOT_SIMPLE', '0', 'Unidentified User Agent|', NULL, NULL),
 ('{F5FD71B5-9419-8D0A-C03B-F41FF845789F}', '2012-07-15', '12:05:00', '66.249.71.37', 'BROWSER_BOT_SIMPLE', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Mozilla 5.0|Unknown Platform', NULL, NULL),
@@ -5948,6 +5953,7 @@ INSERT INTO `_telemetry_basic` (`UUID`, `RecDATE`, `RecTIME`, `IPV4_ADDRESS`, `E
 ('{e957141a-83ac-4945-96ba-c916f8832e46}', '2012-05-19', '15:51:08', '112.202.113.55', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{ee215baa-5d74-4f93-aa56-c41a414b7935}', '2012-05-19', '16:21:20', '121.1.59.244', 'LOGIN_PAGE', '', '', NULL, NULL),
 ('{f96c3eb1-691c-4e6a-a953-a4b10be18de7}', '2012-05-19', '18:33:27', '112.207.37.116', 'LOGIN_PAGE', '', '', NULL, NULL);
+
 --
 -- Constraints for dumped tables
 --
