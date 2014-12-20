@@ -49,6 +49,7 @@ class eventctrl extends CI_Controller {
 		$this->load->model('transactionlist_model');
 		$this->load->model('usefulfunctions_model');
 		$this->load->library('airtraffic');
+		$this->load->library('airtraffic_v2');
 		$this->load->library('email');
 		$this->load->library('bookingmaintenance');
 		$this->load->library('functionaccess');
@@ -794,8 +795,8 @@ class eventctrl extends CI_Controller {
 	
 	function book_step5()
 	{
-		/*
-			Created 13FEB2012-2334
+		/**
+		*	@created 13FEB2012-2334
 		*/
 		$slots;
 		$x;
@@ -812,6 +813,7 @@ class eventctrl extends CI_Controller {
 		$showtimeNotMeant;
 		$ticketClassNotMeant;
 		$actStageAfterThis;
+		$processingStageNumber;
 		/*
 			Format of $seat_assignments
 			INT => Array(
@@ -905,10 +907,10 @@ class eventctrl extends CI_Controller {
 					);
 					echo $this->makexml_model->XMLize_AJAX_Response(
 							"error", 
-							"error", 
+							"seat selection", 
 							"SEAT_REQUIRED",
-							0, 
-							"",
+							4600, 
+							"You must specify seats for all the guests at this stage. This was enforced by the event manager.",
 							""
 					);
 					return FALSE;
@@ -1057,16 +1059,12 @@ class eventctrl extends CI_Controller {
 			$ticketClassNotMeant = ($m_bookingInfo->GO_TICKETCLASS == MB_STAGESTAT_NOTMEANT );
 		}
 		$actStageAfterThis = ( $isActivityManageBooking ) ? STAGE_MB4_CONFIRM_PR : STAGE_BOOK_5_FORWARD;
+		$processingStageNumber = ( $isActivityManageBooking ) ? STAGE_MB3_SELECT_SEAT_PR : STAGE_BOOK_5_PROCESS;
+		
 		// initialize air traffic - i.e., URI and session activity name and stage to be set on success
-		if( !$this->airtraffic->initialize( NULL, $actStageAfterThis, $redirectURL, NULL, 30, 1 )
-		){
-			return FALSE;
-		}
-		$this->db->trans_begin();	// database checkpoint
-		$this->booking_model->updateBooking2ndStatus(
-			$bookingNumber,
-			( $isActivityManageBooking ) ? STAGE_MB3_SELECT_SEAT_PR : STAGE_BOOK_5_PROCESS
-		);
+		$this->airtraffic_v2->initialize( STAGE_BOOK_5_PROCESS, $actStageAfterThis );
+		
+		$this->booking_model->updateBooking2ndStatus( $bookingNumber, $processingStageNumber );
 		for( $x = 0; $x < $slots; $x++ )
 		{
 			if( !(  $seat_assignments[ $x ][ "x" ] !== SEAT_COORD404 and  $seat_assignments[ $x ][ "y" ] !== SEAT_COORD404 ) ){
@@ -1174,20 +1172,21 @@ class eventctrl extends CI_Controller {
 		/*<area id="book-step5-pr-pre-fw-prerequisite-part2" made="16JUL2012-1448" > */ {
 		//duplicates with area#pre-book-step5-fw-prerequisite
 		$this->ndx_model->updatePurchaseID( $guid, $this->prepPurchaseCookies( $purchases ) );
-		$this->ndx_model->updateVisualSeatData( $guid, $this->prepSeatVisualData( $sendSeatInfoToView  ) );		
+		$this->ndx_model->updateVisualSeatData( $guid, $this->prepSeatVisualData( $sendSeatInfoToView  ) );
 		}
 		// </area>
 		
 		/* <area id="book-step5-pr-db-decide" made="16JUL2012-1448" > */ {
 			// now, seek clearance and decide whether or not to commit or rollback
-			if( $this->airtraffic->clearance() and $this->airtraffic->terminateService() ){
-				$this->db->trans_commit();
-				log_message('DEBUG','book_step5 cleared for take off ' . $this->airtraffic->getGUID() . ' Going to ' . $redirectURL);
+			if( $this->airtraffic_v2->clearance() ){
+				$this->airtraffic_v2->commit();
+				log_message('DEBUG','book_step5_pr cleared for take off ' . $this->airtraffic_v2->getGUID() );
+				return $this->sessmaintain->assembleProceed( $redirectURL );
 			}else{
-				$this->db->trans_rollback();
-				log_message('DEBUG','book_step5 clearance error '. $this->airtraffic->getGUID() );
+				$this->airtraffic_v2->rollback();
+				log_message('DEBUG','book_step5_pr clearance error '. $this->airtraffic_v2->getGUID() );
+				return $this->sessmaintain->assembleATC_V2_ClearanceFail();
 			}
-			$this->airtraffic->deleteXML();
 		}
 		// </area>
 	}//book_step5(..)
@@ -1348,13 +1347,14 @@ class eventctrl extends CI_Controller {
 		redirect( 'eventctrl/book_step6_forward' );
 	}//book_step6
 	
-	function book_step6_forward()
+	function book_step6_forward( $review_x = FALSE )
 	{	
 		/**
 		*	@created 28FEB2012-1420
 		*	@description Moved from book_step6, majority.
 				Processes the HTML page to be outputted upon the conclusion of
 				the Purchase or booking of a ticket/Posting of a reservation
+		* 	@arguments $review - if 'review', it means redirected to here via mb_prep
 		**/
 		$paymentChannel;
 		$paymentChannel_obj;
@@ -1364,6 +1364,7 @@ class eventctrl extends CI_Controller {
 		$guid;
 		$bookingInfo;
 		$sendSeatInfoToView;
+		$review = ( $review_x === FALSE ) ? FALSE : TRUE;
 		
 		$guid = $this->clientsidedata_model->getBookingCookiesOnServerUUIDRef();
 		$bookingInfo = $this->ndx_model->get( $guid );
@@ -1379,8 +1380,14 @@ class eventctrl extends CI_Controller {
 		$slots					 = $bookingInfo->SLOT_QUANTITY;
 		$ticketClassUniqueID	 = $bookingInfo->TICKET_CLASS_UNIQUE_ID;
 		$billingInfo  			 = $this->bookingmaintenance->getBillingRelevantData( $bookingNumber );
-		$totalCharges 			 = $this->clientsidedata_model->getPurchaseTotalCharge();
-		$paymentChannel 		 = ( $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : $this->clientsidedata_model->getPaymentChannel();					
+		// 18NOV2012-1235: $totalCharges still using  ??
+		// changed to utilizing $billingInfo
+		$totalCharges 			 = ( $review ) ?  $billingInfo[ AKEY_AMOUNT_DUE ] : $this->clientsidedata_model->getPurchaseTotalCharge();
+		$paymentChannel 		 = ( $totalCharges === FREE_AMOUNT ) ? FACTORY_AUTOCONFIRMFREE_UNIQUEID : (
+						// if we are reviewing this newly, unpaid booking, get the payment channel ID at the concerned field of the first
+						// entry of the unpaid purchases array being returned, else, this is a booking in progress and use the cookies.
+						( $review ) ? $billingInfo[ AKEY_UNPAID_PURCHASES_ARRAY ][0]->Payment_Channel_ID :  $this->clientsidedata_model->getPaymentChannel()
+		);
 		$paymentChannel_obj    = $this->payment_model->getSinglePaymentChannel( $eventID, $showtimeID, $paymentChannel );
 		$data['singleChannel'] = $paymentChannel_obj;
 		$data['guests']        = $this->guest_model->getGuestDetails( $bookingNumber );
@@ -2646,6 +2653,7 @@ class eventctrl extends CI_Controller {
 		$reverse = FALSE;
 		$go_MB_COS = TRUE;
 		
+		// Get booking number and redirection URL, check first if in POST data, else use the strings in the calling URL.
 		$bookingNumber = ( $bb_sent === FALSE ) ? $this->input->post( 'bookingNumber' ) : mysql_real_escape_string( $bb_sent );
 		$redirectTo    = ( $go_next_sent === FALSE ) ? $this->input->post( 'next' ) : mysql_real_escape_string( $go_next_sent );
 		if( !$this->clientsidedata_model->getSessionActivityStage() ===  STAGE_MB0_PREP_FW )
@@ -2686,14 +2694,15 @@ class eventctrl extends CI_Controller {
 				$redirectURI = "viewdetails";
 				break;
 			case 6 :
+				//die( var_dump( $this->booking_model->isBookingUpForChange( $bookingNumber ) ) );
 				if( $this->booking_model->isBookingUpForChange( $bookingNumber ) )
 				{
 					$redirectURI = "managebooking_pendingchange_viewdetails/".$bookingNumber;
-					$reverse = TRUE;					
-				}else{					
+					$reverse = TRUE;
+				}else{
 					$this->clientsidedata_model->setMBViewDetailsNewBookingTag();
 					$go_MB_COS = false;
-					$redirectURI = "book_step6_forward";
+					$redirectURI = "book_step6_forward/review";
 					
 					/*
 					$visualRep = $this->seat_model->getVisualRepresentation(
@@ -3561,7 +3570,9 @@ class eventctrl extends CI_Controller {
 		}//if
 		}
 		// </area>
-		
+		//var_dump( $noPendingPayment  );
+		//var_dump( $data );
+		//die();
 		/* <area id="mb_fin_fw_load_data_for_view" > */{
 		if( !$noPendingPayment ){
 			$data['bookingNumber']  = $bookingNumber;
@@ -3611,8 +3622,9 @@ class eventctrl extends CI_Controller {
 		//</area>
 	}// managebooking_finalize_forward()
 	
-	function managebooking_pendingchange_viewdetails( $bookingNumber = FALSE )
+	function managebooking_pendingchange_viewdetails( $bookingNumber_x = FALSE )
 	{
+		$bookingNumber = mysql_real_escape_string( $bookingNumber_x );
 		// access check
 		$guid_mb = $this->clientsidedata_model->getManageBookingCookiesOnServerUUIDRef();
 		$m_bookingInfo = $this->ndx_mb_model->get( $guid_mb );

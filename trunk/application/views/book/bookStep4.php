@@ -44,6 +44,7 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/generalChecks.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/makeTimestampFriendly.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStepsCommon.js'; ?>" ></script>
+	
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookStep4.js'; ?>" ></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/bookGuestAnchorsBelow.js'; ?>" ></script>
 	<?php 
@@ -57,7 +58,8 @@ $this->load->view('html-generic/metadata.inc');
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/jquery.drag_drop_multi_select_alpha.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/seatV2/seatManipulation.js'; ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/form-validation/processAJAXresponse.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic.js'; ?>" ></script>	
+	<script type="text/javascript" src="<?php echo base_url().'assets/javascript/airtraffic_v2.js'; ?>" ></script>
+	
 </head>
 <body>
 <?php

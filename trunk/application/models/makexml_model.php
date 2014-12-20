@@ -98,7 +98,7 @@ class makexml_model extends CI_Model {
         $tempFile .= ".xml";        
 		
         if(!file_exists($tempFile)){
-            return $tempFile;		
+            return $tempFile;
 	    }else{
 		    return $this->createTempfile();
 		}
