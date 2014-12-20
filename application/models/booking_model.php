@@ -299,14 +299,13 @@ class booking_model extends CI_Model {
 	
 	function isBookingUpForChange( $bookingNumberOrObj )
 	{
-		/*
-			Created 10MAR2012-1535
+		/**
+		*	@created 10MAR2012-1535
+		*	@description Detects if the current booking is an existing one waiting for changes to be completed,
+				i.e. (1) Change ticket class and/or (2) Change showing time
 			
-			Detects if the current booking is an existing one waiting for changes to be completed,
-			i.e. (1) Change ticket class and/or (2) Change showing time
-			
-			The parameter that can be passed can be either a the booking number or
-			the MYSQL Object of that booking number.
+				The parameter that can be passed can be either the booking number or
+				the MYSQL Object of that booking number.
 		*/
 		$bookingObj = null;
 		if( is_string( $bookingNumberOrObj ) ) 

@@ -1,3 +1,4 @@
+
 var guestConcerned = -1;
 var isModeManageBookingChooseSeat;
 var matrices;		// serialized seat identifiers to be sent to the server to check if occupied
@@ -107,11 +108,11 @@ function formSubmit( ){
 	matrix_visual= [];
 	matrix_count = [];
 	
-	$.fn.nextGenModal({
+	/*$.fn.nextGenModal({
 	   msgType: 'ajax',
 	   title: '',
 	   message: ''
-	});
+	});*/
 		// get seat matrix data
 		for( x = 0; x< slots; x++ )
 		{
@@ -133,11 +134,18 @@ function formSubmit( ){
 				if( parseInt(matrix, 10) != 0 ) matrices += ( matrix + '-' );
 			}
 		}
-		$.fn.airtraffic({
-			msgwait: 'Verifying seat availability ...',
+		
+		
+		// 18NOV2012-1330 I really don't know why but in Firefox 10.0.2, if I remove these spaces, the following command will fail.
+		
+		
+		$.fn.airtraffic_v2({
+			atc_success_func: '',
 			atc_fail_func: 'atc_fail',
+			msgwait: 'Contacting server ...',
 			atc_ff_mode: 0,
-			atc_sf_mode: 0
+			atc_sf_mode: 0,
+			timeout: 15000
 		});
 }
 
@@ -171,7 +179,7 @@ function manipulateGuestSeat( mode, matrixInfo )
 		$( 'input[name="' + seatVisualIdentifier + '"]' ).show();
 	}else{
 		$( 'input#' + seatChooseBtnIdentifier  ).val( "Choose seat" );		// revert values
-		$( 'input[name="' + seatMatrixIdentifier + '"]' ).val( "0" );		
+		$( 'input[name="' + seatMatrixIdentifier + '"]' ).val( "0" );
 		$( 'input[name="' + seatVisualIdentifier + '"]' ).hide();
 	}
 }//manipulateGuestSeat( .. )

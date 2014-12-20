@@ -9,6 +9,7 @@
 *	Handles form submission in connection and client-side user redirection in line with our "Air Traffic" principle.
 *	@dependencies nextGenModal, JQuery, CI.base_url should be declared/loaded. before this is loaded.
 *	@todo 23JUL2012-2030 Remove some variables/options that are only needed in Air Traffic Control version 1.
+*	@updated 18NOV2012-1217 
 **/
 function cannotFindServer(){
 	$.fn.nextGenModal({ msgType: 'error', title: "can't find server", message: 'Did you just lose your Internet connection?' });
@@ -24,6 +25,9 @@ function cannotFindServer(){
 		config = $.fn.airtraffic_v2.defaults;
 		
 		if (settings) config = $.extend($.fn.airtraffic_v2.defaults, settings);
+		//alert( 'trya');
+		//alert( CI.base_url );
+		//alert( 'lunch');
 		var x = $.ajax({
 			type: 'POST',
 			// if cconfig.url_x is not supplied during construction, just get from the first form
@@ -35,11 +39,20 @@ function cannotFindServer(){
 				$.fn.nextGenModal({ msgType: 'ajax', title: config.msgtitle, message: config.msgwait });
 			},
 			success: function(data){
-				if( config.atc_success_func != '' ){
-					window[ config.atc_success_func ]( data );
-					if( config.atc_sf_mode == 0 ) return true;
+				if( $(data).find('type').text() == 'okay' )
+				{
+					if( config.atc_success_func != '' ){
+						window[ config.atc_success_func ]( data );
+						if( config.atc_sf_mode == 0 ) return true;
+					}
+					$.fn.makeOverlayForResponse( data );
+				}else{
+					if( config.atc_fail_func != '' ){
+						window[ config.atc_fail_func ]( data );
+						if( config.atc_ff_mode == 0 ) return true;
+					}
+					$.fn.makeOverlayForResponse( data );
 				}
-				$.fn.makeOverlayForResponse( data );
 				return true;
 			}
 		});
@@ -59,14 +72,14 @@ function cannotFindServer(){
 		// Title and message to be displayed in modal when submitting information.
 		msgtitle: 'please wait ...',
 		msgwait: 'Contacting server for your request, one moment please.',
+		// Function to call when the first function call's "type" tag is not equal to "okay"
+		atc_fail_func: '',
 		// URI to send ajax request!!! - Should be supplied
 		url_x: '',
 		// Timeout in millisecs (JQuery rules) how long should an AJAX call last.
 		timeout: 30000,
 		// Serialized form data to be submitted to url_x. Default is from the first form.
 		ser_data: '',
-		// Function to call when the first function call's "type" tag is not equal to "okay"
-		atc_fail_func: '',
 		/*
 			INT. How to deal with atc_fail_func/atc_success_func
 				0 - call the specified func and terminate

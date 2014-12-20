@@ -115,6 +115,10 @@ NUM    STRING  								Message
 4404   IVA_ACCESS_DENIED					You are already cleared and should not be calling the control tower err, function. Another function should handle you before attempting to call this.
 4405   ATC_DATA_MISSING						At least one required input field is not found.
 4406   ATC_REQUEST_UNKNOWN					The client has requested an ATC service that tower does not know.
+4600   SEAT_REQUIRED						You must select seats for all guests in this booking.
+4601   SEAT_RACE							Another user is currently booking a ticket for this event and was the first to take seat ' + matrix_visual[ resultData[1] ] + ' (Guest ' + matrix_count[ resultData[1] ] + ').<br/><br/> Please choose another seat.
+4602   CIRCUMVENT_SEAT_BLOCK				The seat you have selected is not assigned to your ticket class.
+4603   INVALID_SEAT_DATA					Invalid seat data received by the server or seat is non-existent. Are you hacking the app?
 4800 x COOKIE_ON_SERVER404					Cookie on server not found.
 4900 x PREVIOUS_REQUEST_ONGOING             Your earlier request is still being processed. Please trying resubmitting after 30 seconds - 1 minute.
 4998   INVALID_ENTRIES_SPECIFIED            Invalid entries specified.

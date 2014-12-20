@@ -29,6 +29,36 @@ class Airtraffic_v2{
 
 		include_once( APPPATH.'constants/_constants.inc');
 	}
+
+	function clearance()
+	{
+		/**
+		*	@created 23JUL2012-1913
+		*	@description returns clearance
+		*/
+		return ( (connection_status () == CONNECTION_NORMAL ) AND $this->CI->db->trans_status() );
+	}
+	
+	function commit()
+	{
+		/**
+		*	@created 23JUL2012-1913
+		*	@description commits transaction
+		*/
+		/*  
+			Is next session activity name not defined? Then only update the activity stage
+			in CI session cookie and session tracking in DB ( yah, it's there in 
+			clientsidedata_model::updateSessionActivityStage )
+		*/
+		if( is_null( $this->nextSession[0] ) ){
+			$this->CI->clientsidedata_model->updateSessionActivityStage( $this->nextSession[1] );
+		}else{
+		// else, set a new session activity
+			$this->CI->clientsidedata_model->setSessionActivity( $this->nextSession[0], $this->nextSession[1] );
+		}
+		// database commit
+		$this->CI->db->trans_commit();
+	}
 	
 	function getGUID()
 	{
@@ -75,34 +105,5 @@ class Airtraffic_v2{
 			$this->CI->sat_model->update( $this->activityGuid, $this->currentSession[1], $this->currentSession[0] );
 		}
 	}
-	
-	function commit()
-	{
-		/**
-		*	@created 23JUL2012-1913
-		*	@description commits transaction
-		*/
-		/*  
-			Is next session activity name not defined? Then only update the activity stage
-			in CI session cookie and session tracking in DB ( yah, it's there in 
-			clientsidedata_model::updateSessionActivityStage )
-		*/
-		if( is_null( $this->nextSession[0] ) ){
-			$this->CI->clientsidedata_model->updateSessionActivityStage( $this->nextSession[1] );
-		}else{
-		// else, set a new session activity
-			$this->CI->clientsidedata_model->setSessionActivity( $this->nextSession[0], $this->nextSession[1] );
-		}
-		// database commit
-		$this->CI->db->trans_commit();
-	}
-	
-	function clearance()
-	{
-		/**
-		*	@created 23JUL2012-1913
-		*	@description returns clearance
-		*/
-		return ( (connection_status () == CONNECTION_NORMAL ) AND $this->CI->db->trans_status() );
-	}
+
 }
